@@ -23,6 +23,9 @@ REPORT_DIR = ROOT / "data" / "reports"
 BASE_URL = "https://newekimemo.wiki.fc2.com"
 JST = timezone(timedelta(hours=9))
 PARSER_VERSION = "sample_first5_html_table_matrix.v1"
+KEY_DENKO_LEVELS = ("1", "15", "30", "50", "60", "70", "80", "92", "96", "100")
+DEFAULT_FOCUS_LEVELS = ("30", "50")
+VU_LEVELS = ("92", "96", "100")
 
 LIST_PAGES = {
     "original": "https://newekimemo.wiki.fc2.com/wiki/%E9%A1%94%E7%94%BB%E5%83%8F%E3%83%BB%E3%82%BF%E3%82%A4%E3%83%97%E3%83%BB%E5%B1%9E%E6%80%A7%E3%83%BB%E8%89%B2%E3%83%BB%E3%82%B9%E3%82%AD%E3%83%AB%E5%90%8D%2F%E3%82%AA%E3%83%AA%E3%82%B8%E3%83%8A%E3%83%AB%E3%81%A7%E3%82%93%E3%81%93",
@@ -917,6 +920,22 @@ def compact_component_value_zh(level: str, value: dict[str, Any]) -> str:
     return "，".join(parts)
 
 
+def skill_level_cell(values: dict[str, dict[str, Any]], lv: str) -> str:
+    row = values.get(lv)
+    if not row:
+        return ""
+    parts = []
+    if row.get("effect"):
+        parts.append(row["effect"])
+    if row.get("probability"):
+        parts.append(json.dumps(row["probability"], ensure_ascii=False))
+    if row.get("duration"):
+        parts.append(f"time {row['duration']}")
+    if row.get("cooldown"):
+        parts.append(f"CD {row['cooldown']}")
+    return " / ".join(parts)
+
+
 def compact_skill_level_zh(row: dict[str, Any]) -> str:
     parts = []
     if row.get("effect"):
@@ -942,7 +961,7 @@ def join_unique_values(rows: list[dict[str, str]], keys: list[str]) -> str | Non
 
 
 def extract_key_level_stats(record: dict[str, Any]) -> dict[str, dict[str, str]]:
-    target_levels = {"15", "30", "50", "60", "70", "80"}
+    target_levels = set(KEY_DENKO_LEVELS)
     best: tuple[int, list[dict[str, str]]] | None = None
     for table_index, headers, rows in find_detail_tables(record):
         if {"Lv", "AP", "HP"}.issubset(set(headers)):
@@ -1067,13 +1086,18 @@ def write_report(records: list[dict[str, Any]], skill_rows: list[dict[str, Any]]
         lines.append("  </table>")
     lines.append("  <h2>技能分量</h2>")
     lines.append("  <table>")
-    lines.append("    <thead><tr><th>denko_id</th><th>name</th><th>component</th><th>effect</th><th>target</th><th>filters</th><th>Lv50/base</th><th>Lv60</th><th>conditions</th></tr></thead>")
+    lines.append("    <thead><tr><th>denko_id</th><th>name</th><th>component</th><th>effect</th><th>target</th><th>filters</th><th>Lv30</th><th>Lv50/base</th><th>Lv60</th><th>VU 92/96/100</th><th>conditions</th></tr></thead>")
     lines.append("    <tbody>")
     for skill in skill_rows:
         for component in skill.get("skill_components", []) or []:
             values = component.get("values_by_denko_level") or {}
+            lv30 = values.get("30") or {}
             lv50_or_base = values.get("50") or values.get("base") or {}
             lv60 = values.get("60") or {}
+            vu_values = []
+            for lv in VU_LEVELS:
+                if values.get(lv):
+                    vu_values.append(compact_component_value_zh(lv, values[lv]))
             lines.append(
                 "      <tr>"
                 f"<td>{esc(skill['denko_id'])}</td>"
@@ -1082,8 +1106,10 @@ def write_report(records: list[dict[str, Any]], skill_rows: list[dict[str, Any]]
                 f"<td>{esc(component.get('effect_kind'))}</td>"
                 f"<td>{esc(', '.join(component.get('target_scope') or []))}</td>"
                 f"<td>{esc(json.dumps(component.get('target_filters') or {}, ensure_ascii=False))}</td>"
+                f"<td>{esc(compact_component_value_zh('30', lv30) if lv30 else '')}</td>"
                 f"<td>{esc(compact_component_value_zh('50' if values.get('50') else 'base', lv50_or_base) if lv50_or_base else '')}</td>"
                 f"<td>{esc(compact_component_value_zh('60', lv60) if lv60 else '')}</td>"
+                f"<td>{esc(' / '.join(vu_values))}</td>"
                 f"<td>{esc(json.dumps(component.get('trigger_conditions') or {}, ensure_ascii=False))}</td>"
                 "</tr>"
             )
@@ -1093,35 +1119,17 @@ def write_report(records: list[dict[str, Any]], skill_rows: list[dict[str, Any]]
     for pool in ("original", "extra"):
         lines.append(f"  <h3>{esc(pool)}</h3>")
         lines.append("  <table>")
-        lines.append("    <thead><tr><th>denko_id</th><th>name</th><th>Lv50</th><th>Lv60</th><th>Lv70</th><th>Lv80</th><th>Lv92</th><th>Lv96</th><th>Lv100</th></tr></thead>")
+        skill_headers = "".join(f"<th>Lv{level}</th>" for level in KEY_DENKO_LEVELS)
+        lines.append(f"    <thead><tr><th>denko_id</th><th>name</th>{skill_headers}</tr></thead>")
         lines.append("    <tbody>")
         for skill in [s for s in skill_rows if s["pool"] == pool]:
             values = skill.get("values_by_denko_level", {})
-            def skill_cell(lv: str) -> str:
-                row = values.get(lv)
-                if not row:
-                    return ""
-                parts = []
-                if row.get("effect"):
-                    parts.append(row["effect"])
-                if row.get("probability"):
-                    parts.append(json.dumps(row["probability"], ensure_ascii=False))
-                if row.get("duration"):
-                    parts.append(f"time {row['duration']}")
-                if row.get("cooldown"):
-                    parts.append(f"CD {row['cooldown']}")
-                return " / ".join(parts)
+            skill_cells = "".join(f"<td>{esc(skill_level_cell(values, level))}</td>" for level in KEY_DENKO_LEVELS)
             lines.append(
                 "      <tr>"
                 f"<td>{esc(skill['denko_id'])}</td>"
                 f"<td>{esc(skill['name'])}</td>"
-                f"<td>{esc(skill_cell('50'))}</td>"
-                f"<td>{esc(skill_cell('60'))}</td>"
-                f"<td>{esc(skill_cell('70'))}</td>"
-                f"<td>{esc(skill_cell('80'))}</td>"
-                f"<td>{esc(skill_cell('92'))}</td>"
-                f"<td>{esc(skill_cell('96'))}</td>"
-                f"<td>{esc(skill_cell('100'))}</td>"
+                f"{skill_cells}"
                 "</tr>"
             )
         lines.append("    </tbody>")
@@ -1130,23 +1138,20 @@ def write_report(records: list[dict[str, Any]], skill_rows: list[dict[str, Any]]
     for pool in ("original", "extra"):
         lines.append(f"  <h3>{esc(pool)}</h3>")
         lines.append("  <table>")
-        lines.append("    <thead><tr><th>denko_id</th><th>name</th><th>Lv15</th><th>Lv30</th><th>Lv50</th><th>Lv60</th><th>Lv70</th><th>Lv80</th></tr></thead>")
+        stat_headers = "".join(f"<th>Lv{level}</th>" for level in KEY_DENKO_LEVELS)
+        lines.append(f"    <thead><tr><th>denko_id</th><th>name</th>{stat_headers}</tr></thead>")
         lines.append("    <tbody>")
         for skill in [s for s in skill_rows if s["pool"] == pool]:
             nodes = skill.get("key_level_stats", {})
             def cell(lv: str) -> str:
                 node = nodes.get(lv)
                 return f"AP {node.get('AP')} / HP {node.get('HP')}" if node else ""
+            stat_cells = "".join(f"<td>{esc(cell(level))}</td>" for level in KEY_DENKO_LEVELS)
             lines.append(
                 "      <tr>"
                 f"<td>{esc(skill['denko_id'])}</td>"
                 f"<td>{esc(skill['name'])}</td>"
-                f"<td>{esc(cell('15'))}</td>"
-                f"<td>{esc(cell('30'))}</td>"
-                f"<td>{esc(cell('50'))}</td>"
-                f"<td>{esc(cell('60'))}</td>"
-                f"<td>{esc(cell('70'))}</td>"
-                f"<td>{esc(cell('80'))}</td>"
+                f"{stat_cells}"
                 "</tr>"
             )
         lines.append("    </tbody>")

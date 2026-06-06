@@ -27,6 +27,7 @@ Important rules:
 - Recommendation pages are prior-only.
 - Skill reverse lookup pages are candidate/discovery sources only; use detail pages to confirm values, duration, cooldown, probability, and exact conditions.
 - Do not flatten one skill into one label; split team-building effects into `skill_components`.
+- Skill/value checkpoint levels are `1/15/30/50/60/70/80/92/96/100`; default practical comparison focuses on `30` and `50`, and `92/96/100` are VU-only.
 - Observed teams/screenshots are case/calibration-only.
 - LLM only receives the smallest ambiguous Japanese snippet.
 - Stop after every 30 parsed denko records for periodic key/schema review.

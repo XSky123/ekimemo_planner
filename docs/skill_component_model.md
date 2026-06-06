@@ -21,6 +21,23 @@ Each `skill_fact` may contain:
 - `values_by_denko_level`: raw expanded skill-level rows for the whole skill.
 - `lv50`: compatibility shortcut only.
 
+## Key Levels
+
+Only these denko levels should be treated as key skill/value checkpoints:
+
+- `1`
+- `15`
+- `30`
+- `50`
+- `60`
+- `70`
+- `80`
+- `92`
+- `96`
+- `100`
+
+Levels `92`, `96`, and `100` are VU-specific and should only appear when the denko/page has VU data. For early practical team building, prioritize levels `30` and `50`: one newly obtained denko usually caps at `50`, and level `30` is the important pre-cap comparison point.
+
 Each `skill_component` contains:
 
 - `component_id`: stable local id such as `atk_buff`, `exp_gain`, or `damage_reduction`.

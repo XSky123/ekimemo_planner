@@ -110,9 +110,9 @@
     },
     "key_level_stats": {
       "type": "object",
-      "description": "AP/HP/Exp rows at key levels 15, 30, 50, 60, 70, and 80 when present.",
+      "description": "AP/HP/Exp rows at key levels 1, 15, 30, 50, 60, 70, 80, and VU-only 92/96/100 when present. Default practical comparison focus is 30 and 50.",
       "patternProperties": {
-        "^(15|30|50|60|70|80)$": {
+        "^(1|15|30|50|60|70|80|92|96|100)$": {
           "type": "object",
           "properties": {
             "AP": { "type": ["string", "null"] },

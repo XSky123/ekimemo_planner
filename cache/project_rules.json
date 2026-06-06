@@ -60,6 +60,30 @@
       "Do not silently overwrite Japanese source facts."
     ]
   },
+  "gameplay_level_policy": {
+    "key_denko_levels": [
+      1,
+      15,
+      30,
+      50,
+      60,
+      70,
+      80,
+      92,
+      96,
+      100
+    ],
+    "default_focus_levels": [
+      30,
+      50
+    ],
+    "vu_only_levels": [
+      92,
+      96,
+      100
+    ],
+    "rule": "Treat only these levels as key checkpoints for skill values and AP/HP summaries. Levels 92/96/100 are VU-specific and should appear only when VU data exists. For newly obtained or low-investment denko, prioritize level 30 and level 50 comparisons."
+  },
   "report_policy": {
     "default_format": "html",
     "language": "zh",
