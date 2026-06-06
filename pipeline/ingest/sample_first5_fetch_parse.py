@@ -595,7 +595,7 @@ def build_skill_components(
                     "effect_kind": parsed["effect_kind"],
                     "target_scope": infer_target_scope(common_text, parsed["effect_kind"]),
                     "target_filters": infer_target_filters(common_text, parsed["effect_kind"]),
-                    "trigger_conditions": infer_trigger_conditions(common_text),
+                    "trigger_conditions": infer_trigger_conditions(common_text, parsed["effect_kind"]),
                     "activation_type": activation_type,
                     "condition_raw": trigger_condition or effect_summary,
                     "remarks_raw": skill_remarks,
@@ -605,7 +605,29 @@ def build_skill_components(
                     "review_reasons": ["component_semantics_need_review"],
                 },
             )
+            enrich_component_from_value_text(component, parsed["value"].get("source_text"))
             component["values_by_denko_level"][denko_level] = parsed["value"]
+    for parsed in parse_probability_boost_components(common_text, values_by_denko_level):
+        component_id = parsed["component_id"]
+        component = components.setdefault(
+            component_id,
+            {
+                "component_id": component_id,
+                "effect_kind": parsed["effect_kind"],
+                "target_scope": infer_target_scope(common_text, parsed["effect_kind"]),
+                "target_filters": infer_target_filters(common_text, parsed["effect_kind"]),
+                "trigger_conditions": infer_trigger_conditions(common_text, parsed["effect_kind"]),
+                "activation_type": activation_type,
+                "condition_raw": trigger_condition or effect_summary,
+                "remarks_raw": skill_remarks,
+                "values_by_denko_level": {},
+                "confidence": "medium",
+                "needs_review": True,
+                "review_reasons": ["component_semantics_need_review", "vu_probability_modifier"],
+            },
+        )
+        enrich_component_from_value_text(component, parsed["value"].get("source_text"))
+        component["values_by_denko_level"][parsed["denko_level"]] = parsed["value"]
     if components:
         return sorted(components.values(), key=lambda item: item["component_id"])
 
@@ -675,6 +697,52 @@ def parse_level_components(common_text: str, row_fact: dict[str, Any]) -> list[d
     return components
 
 
+def parse_probability_boost_components(
+    common_text: str,
+    values_by_denko_level: dict[str, dict[str, Any]],
+) -> list[dict[str, Any]]:
+    if "(2)" not in common_text:
+        return []
+    out = []
+    for denko_level, row_fact in values_by_denko_level.items():
+        probability = row_fact.get("probability") or {}
+        boost_parts = []
+        for value in probability.values():
+            if "(2)" in value:
+                boost_parts.append(value)
+        if not boost_parts:
+            continue
+        raw = " ".join(boost_parts)
+        boost_match = re.search(r"\(2\)\s*([+＋]\d+%[～~][+＋]?\d+%)", raw)
+        out.append(
+            {
+                "component_id": "activation_probability_boost",
+                "effect_kind": "activation_probability_boost",
+                "denko_level": denko_level,
+                "value": {
+                    "value_raw": raw,
+                    "value_numeric": None,
+                    "unit": "percent_range" if boost_match else "raw_probability_modifier",
+                    "probability": probability,
+                    "duration": row_fact.get("duration"),
+                    "cooldown": row_fact.get("cooldown"),
+                    "skill_level": row_fact.get("skill_level"),
+                    "source_text": row_fact.get("special_explanation"),
+                    "raw_row": row_fact.get("raw_row"),
+                },
+            }
+        )
+    return out
+
+
+def enrich_component_from_value_text(component: dict[str, Any], source_text: str | None) -> None:
+    if not source_text:
+        return
+    filters = component.setdefault("target_filters", {})
+    if "先頭の場合は2両目" in source_text:
+        filters["position_exception_raw"] = "自身が先頭の場合は2両目"
+
+
 def component_value(
     effect_kind: str,
     row_fact: dict[str, Any],
@@ -712,7 +780,7 @@ def skill_disable_value_raw(text: str) -> str:
 
 
 def infer_target_scope(text: str, effect_kind: str) -> list[str]:
-    if "先頭車両" in text:
+    if "先頭車両" in text or "先頭から1両目" in text:
         return ["front_car"]
     if "相手と自身の編成内" in text:
         return ["opponent_team", "own_team"]
@@ -727,6 +795,12 @@ def infer_target_scope(text: str, effect_kind: str) -> list[str]:
 
 def infer_target_filters(text: str, effect_kind: str) -> dict[str, Any]:
     filters: dict[str, Any] = {}
+    if "自身を除く" in text:
+        filters["exclude_self"] = True
+    if "自身を除く先頭から1両目" in text:
+        filters["position_exception_raw"] = "自身が先頭の場合は2両目"
+    if "2両目" in text and ("先頭" in text or "先頭車両" in text):
+        filters["position_exception_raw"] = "自身が先頭の場合は2両目"
     attr_match = re.search(r"(heat|cool|eco|flat)属性", text)
     if attr_match:
         filters["attribute"] = attr_match.group(1)
@@ -737,7 +811,7 @@ def infer_target_filters(text: str, effect_kind: str) -> dict[str, Any]:
     return filters
 
 
-def infer_trigger_conditions(text: str) -> dict[str, Any]:
+def infer_trigger_conditions(text: str, effect_kind: str | None = None) -> dict[str, Any]:
     trigger: dict[str, Any] = {}
     hp_threshold = re.search(r"HPが(\d+)%以下", text)
     if hp_threshold:
@@ -747,6 +821,8 @@ def infer_trigger_conditions(text: str) -> dict[str, Any]:
         trigger["event_hint"] = "access"
     if "被アクセス" in text:
         trigger["event_hint"] = "accessed"
+    if effect_kind == "activation_probability_boost" and "いつでもアクティブ" in text and "でんこ数" in text:
+        trigger["active_skill_holder_count_based"] = True
     time_match = re.search(r"(\d{1,2}:\d{2}[～\-]\d{1,2}:\d{2})", text)
     if time_match:
         trigger["time_window_raw"] = time_match.group(1)

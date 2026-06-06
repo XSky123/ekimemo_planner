@@ -10,6 +10,7 @@ This model is for team building. A single wiki skill may contain several indepen
 - self EXP increase
 - Lv92+ additional probability or extra condition
 - fixed damage plus damage reduction
+- activation probability boost, for example a VU-only `(2)` effect that increases trigger probability based on team composition
 
 Do not collapse these into one `effect_kind` list. Store them as separate `skill_components`.
 
