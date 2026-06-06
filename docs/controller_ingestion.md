@@ -73,3 +73,8 @@ Each batch review should include:
 - schema suggestions and parser changes
 
 Reports are written as HTML under `data/reports/`.
+
+Batch reports should include a fixed 5-slot skill component matrix per denko. Each
+slot should expose `kind`, `condition`, `Lv30`, `Lv50`, `probability`, `duration`,
+and `CD` so team-building candidates can be compared without reopening several
+wiki tables.

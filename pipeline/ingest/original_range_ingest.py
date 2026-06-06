@@ -55,6 +55,68 @@ def component_kind_counts(skill_rows: list[dict[str, Any]]) -> Counter[str]:
     return counts
 
 
+COMPONENT_SLOT_COUNT = 5
+REPORT_LEVEL_ORDER = ("30", "50", "60", "70", "80", "92", "96", "100", "base", "15", "5", "1")
+
+
+def compact_report_json(value: Any) -> str:
+    if value in (None, "", [], {}):
+        return ""
+    if isinstance(value, (dict, list)):
+        return json.dumps(value, ensure_ascii=False, sort_keys=True)
+    return str(value)
+
+
+def component_condition_report(component: dict[str, Any]) -> str:
+    parts = []
+    for label, key in [
+        ("target", "target_scope"),
+        ("filters", "target_filters"),
+        ("trigger", "trigger_conditions"),
+        ("activation", "activation_type"),
+        ("raw", "condition_raw"),
+    ]:
+        text = compact_report_json(component.get(key))
+        if text:
+            parts.append(f"{label}: {text}")
+    return "\n".join(parts)
+
+
+def component_value_report(component: dict[str, Any], level: str) -> str:
+    values = component.get("values_by_denko_level") or {}
+    value = values.get(level)
+    if not value:
+        return ""
+    return base.compact_component_value_zh(level, value)
+
+
+def component_field_by_level_report(component: dict[str, Any], field: str) -> str:
+    values = component.get("values_by_denko_level") or {}
+    grouped: dict[str, list[str]] = {}
+    for level in REPORT_LEVEL_ORDER:
+        value = values.get(level, {}).get(field)
+        text = compact_report_json(value)
+        if not text:
+            continue
+        label = "base" if level == "base" else f"Lv{level}"
+        grouped.setdefault(text, []).append(label)
+    return "\n".join(f"{'/'.join(levels)}: {text}" for text, levels in grouped.items())
+
+
+def component_slot_cells(component: dict[str, Any] | None) -> list[str]:
+    if not component:
+        return [""] * 7
+    return [
+        compact_report_json(component.get("effect_kind") or component.get("component_id")),
+        component_condition_report(component),
+        component_value_report(component, "30"),
+        component_value_report(component, "50") or component_value_report(component, "base"),
+        component_field_by_level_report(component, "probability"),
+        component_field_by_level_report(component, "duration"),
+        component_field_by_level_report(component, "cooldown"),
+    ]
+
+
 def write_html_report(
     start: int,
     end: int,
@@ -79,7 +141,7 @@ def write_html_report(
         "<head>",
         '<meta charset="utf-8">',
         f"<title>Original {start}-{end} Ingestion Review</title>",
-        "<style>body{font-family:system-ui,sans-serif;line-height:1.5;margin:24px}table{border-collapse:collapse;width:100%;margin:12px 0 24px}th,td{border:1px solid #ccc;padding:6px 8px;vertical-align:top}th{background:#f5f5f5}code{background:#f6f8fa;padding:1px 4px}</style>",
+        "<style>body{font-family:system-ui,sans-serif;line-height:1.5;margin:24px}table{border-collapse:collapse;width:100%;margin:12px 0 24px}th,td{border:1px solid #ccc;padding:6px 8px;vertical-align:top}th{background:#f5f5f5}code{background:#f6f8fa;padding:1px 4px}.table-scroll{overflow-x:auto}.component-matrix{font-size:12px;min-width:3600px}.component-matrix th,.component-matrix td{white-space:pre-wrap;min-width:120px;max-width:260px}.component-matrix .base-col{min-width:90px}.component-matrix .condition-col{min-width:260px;max-width:340px}</style>",
         "</head><body>",
         f"<h1>Original {start}-{end} 数据读取报告</h1>",
         "<p>controller-first 执行：本批只使用脚本、缓存与确定性 parser；未调用 LLM。</p>",
@@ -105,35 +167,42 @@ def write_html_report(
             f"{len(batch)} records, {esc(dict(batch_classification))}</p>"
         )
 
-    lines.append("<h2>技能分量摘要</h2>")
-    lines.append(
-        "<table><thead><tr><th>denko_id</th><th>name</th><th>skill</th><th>class</th><th>components</th><th>summary_zh</th><th>review_reasons</th></tr></thead><tbody>"
-    )
+    lines.append("<h2>技能分量矩阵</h2>")
+    lines.append("<p>每个でんこ固定预留 5 个技能分量槽。一般技能只有 1-2 个分量，空槽表示当前 parser 没有识别到更多独立效果。</p>")
+    base_headers = ["denko_id", "name", "type", "attribute", "color", "skill", "class"]
+    slot_fields = ["kind", "condition", "Lv30内容", "Lv50内容", "probability", "duration", "CD"]
+    header_cells = [f'<th class="base-col">{esc(header)}</th>' for header in base_headers]
+    for slot in range(1, COMPONENT_SLOT_COUNT + 1):
+        for field in slot_fields:
+            css_class = ' class="condition-col"' if field == "condition" else ""
+            header_cells.append(f"<th{css_class}>skill{slot}_{esc(field)}</th>")
+    header_cells.append('<th class="base-col">review_reasons</th>')
+    lines.append('<div class="table-scroll">')
+    lines.append(f'<table class="component-matrix"><thead><tr>{"".join(header_cells)}</tr></thead><tbody>')
     for denko in denko_rows:
         ident = denko["identity"]
         skill = by_id.get(ident["denko_id"], {})
-        component_text = []
-        for component in skill.get("skill_components") or []:
-            values = component.get("values_by_denko_level") or {}
-            lv30 = base.compact_component_value_zh("30", values["30"]) if values.get("30") else ""
-            lv50 = base.compact_component_value_zh("50", values["50"]) if values.get("50") else ""
-            component_text.append(
-                f"{component.get('component_id')} [{', '.join(component.get('target_scope') or [])}] {lv30} {lv50}".strip()
-            )
+        components = list(skill.get("skill_components") or [])[:COMPONENT_SLOT_COUNT]
+        component_cells = []
+        for slot_index in range(COMPONENT_SLOT_COUNT):
+            component = components[slot_index] if slot_index < len(components) else None
+            component_cells.extend(f"<td>{esc(cell)}</td>" for cell in component_slot_cells(component))
         lines.append(
             "<tr>"
             f"<td>{esc(ident['denko_id'])}</td>"
             f"<td>{esc(ident['name'])}</td>"
+            f"<td>{esc(ident.get('type'))}</td>"
+            f"<td>{esc(ident.get('attribute'))}</td>"
+            f"<td>{esc(ident.get('color'))}</td>"
             f"<td>{esc(skill.get('skill_name'))}</td>"
             f"<td>{esc(classify_skill_row(skill) if skill else 'missing')}</td>"
-            f"<td>{esc(' / '.join(component_text))}</td>"
-            f"<td>{esc(skill.get('summary_zh'))}</td>"
+            f"{''.join(component_cells)}"
             f"<td>{esc(skill.get('record_meta', {}).get('review_reasons'))}</td>"
             "</tr>"
         )
     lines.extend(
         [
-            "</tbody></table>",
+            "</tbody></table></div>",
             "<h2>Controller 判定</h2>",
             "<ul>",
             "<li>本报告中的 <code>needs_manual_review</code> 主要来自样本阶段默认复核标记，不代表全部解析失败。</li>",
