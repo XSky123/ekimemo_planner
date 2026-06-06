@@ -8,6 +8,7 @@
     "complete": false
   },
   "rules": {
+    "controller_ingestion": "docs/controller_ingestion.md",
     "execution_rules": "docs/data_reading_execution_rules.md",
     "wiki_id_mapping": "docs/wiki_id_mapping.md",
     "table_parsing": "docs/table_parsing.md",

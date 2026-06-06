@@ -44,13 +44,48 @@
     "llm_scope": "Only send the smallest failed or ambiguous source snippet needed for semantic parsing.",
     "reuse_rule": "If content_hash is unchanged and confidence is sufficient, reuse cache."
   },
+  "controller_policy": {
+    "mode": "controller_first",
+    "rule": "For hundreds of denko records, the controller must run deterministic scripts and cached parsers first. LLM/model calls are fallback only for parser failures, low-confidence semantic splits, repeated unknown templates, or conflict resolution.",
+    "batch_size_default": 30,
+    "batch_size_range": [
+      20,
+      30
+    ],
+    "script_first_steps": [
+      "read manifest/index",
+      "reuse cached raw pages when content_hash is unchanged",
+      "fetch missing/stale pages",
+      "run DOM/table-matrix parser",
+      "extract skill_components deterministically",
+      "write records, index, review_queue, and HTML report"
+    ],
+    "llm_allowed_only_for": [
+      "minimal ambiguous Japanese snippets",
+      "unknown detail-page templates after deterministic parsing fails",
+      "semantic component splits with low confidence",
+      "conflicts between list/detail/manual override sources",
+      "periodic review summaries when script-generated metrics are insufficient"
+    ],
+    "llm_forbidden_for": [
+      "whole wiki pages",
+      "whole database",
+      "records already parsed with sufficient confidence",
+      "repeating unchanged content_hash pages"
+    ],
+    "review_rule": "After each 20-30 denko batch, generate an HTML review report, summarize parser failures and schema drift, auto-fix deterministic parser rules when safe, and only then continue."
+  },
   "dimension_policy": {
     "agent_may_refine_keys": true,
     "rule": "During data reading, the agent/parser may judge whether captured keys are sufficient and add or refine optional fields when the source page proves the current schema is incomplete.",
     "review_cadence": {
       "enabled": true,
       "batch_size": 30,
-      "rule": "After every 30 denko records parsed, stop and review whether captured keys, schemas, review reasons, and evidence fields are still adequate before continuing."
+      "batch_size_range": [
+        20,
+        30
+      ],
+      "rule": "After every 20-30 denko records parsed, stop and review whether captured keys, schemas, review reasons, and evidence fields are still adequate before continuing. Default batch size is 30 unless a smaller batch is useful for template risk."
     },
     "requirements": [
       "Keep existing stable keys when possible.",

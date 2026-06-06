@@ -7,9 +7,10 @@ Read order for this step:
 1. `steps/step1_data_reading/README.md`
 2. `steps/step1_data_reading/manifest.json`
 3. `steps/step1_data_reading/checklist.md`
-4. `docs/data_reading_execution_rules.md`
-5. `docs/skill_component_model.md`
-6. Relevant schemas in `schemas/`
+4. `docs/controller_ingestion.md`
+5. `docs/data_reading_execution_rules.md`
+6. `docs/skill_component_model.md`
+7. Relevant schemas in `schemas/`
 
 Goal:
 
@@ -29,10 +30,11 @@ Important rules:
 - Do not flatten one skill into one label; split team-building effects into `skill_components`.
 - Skill/value checkpoint levels are `1/15/30/50/60/70/80/92/96/100`; default practical comparison focuses on `30` and `50`, and `92/96/100` are VU-only.
 - Observed teams/screenshots are case/calibration-only.
+- Use controller-first ingestion: scripts/cache/parsers first, LLM only for minimal ambiguous snippets or repeated parser failures.
 - LLM only receives the smallest ambiguous Japanese snippet.
-- Stop after every 30 parsed denko records for periodic key/schema review.
+- Stop after every 20-30 parsed denko records for periodic key/schema review.
 - Default human-facing reports are exported as HTML under `data/reports/`.
-- Every 30 parsed denko records, review whether the current keys still fit skill templates before continuing.
+- Every 20-30 parsed denko records, review whether the current keys still fit skill templates before continuing.
 
 Outputs:
 
