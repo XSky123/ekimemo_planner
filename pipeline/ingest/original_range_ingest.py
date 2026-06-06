@@ -67,12 +67,23 @@ def compact_report_json(value: Any) -> str:
     return str(value)
 
 
+def compact_report_field(value: Any) -> str:
+    if value in (None, "", [], {}):
+        return ""
+    if isinstance(value, dict) and len(value) == 1:
+        return str(next(iter(value.values())))
+    return compact_report_json(value)
+
+
 def component_condition_report(component: dict[str, Any]) -> str:
     parts = []
     for label, key in [
+        ("label", "condition_label"),
+        ("role", "effect_role"),
         ("target", "target_scope"),
         ("filters", "target_filters"),
         ("trigger", "trigger_conditions"),
+        ("scaling", "scaling_conditions"),
         ("activation", "activation_type"),
         ("raw", "condition_raw"),
     ]:
@@ -87,7 +98,7 @@ def component_value_report(component: dict[str, Any], level: str) -> str:
     value = values.get(level)
     if not value:
         return ""
-    return base.compact_component_value_zh(level, value)
+    return value.get("value_raw") or ""
 
 
 def component_field_by_level_report(component: dict[str, Any], field: str) -> str:
@@ -95,19 +106,24 @@ def component_field_by_level_report(component: dict[str, Any], field: str) -> st
     grouped: dict[str, list[str]] = {}
     for level in REPORT_LEVEL_ORDER:
         value = values.get(level, {}).get(field)
-        text = compact_report_json(value)
+        text = compact_report_field(value)
         if not text:
             continue
         label = "base" if level == "base" else f"Lv{level}"
         grouped.setdefault(text, []).append(label)
+    if len(grouped) == 1:
+        return next(iter(grouped))
     return "\n".join(f"{'/'.join(levels)}: {text}" for text, levels in grouped.items())
 
 
 def component_slot_cells(component: dict[str, Any] | None) -> list[str]:
     if not component:
         return [""] * 7
+    kind = compact_report_json(component.get("component_id") or component.get("effect_kind"))
+    if component.get("component_id") and component.get("effect_kind") != component.get("component_id"):
+        kind = f"{component.get('component_id')} ({component.get('effect_kind')})"
     return [
-        compact_report_json(component.get("effect_kind") or component.get("component_id")),
+        kind,
         component_condition_report(component),
         component_value_report(component, "30"),
         component_value_report(component, "50") or component_value_report(component, "base"),

@@ -15,7 +15,7 @@
 <tr><th>review_queue</th><td>44</td></tr>
 <tr><th>classification</th><td>{&#x27;needs_manual_review&#x27;: 44}</td></tr>
 <tr><th>review_reasons</th><td>{&#x27;sample_parse_needs_human_review&#x27;: 44}</td></tr>
-<tr><th>component_kinds</th><td>{&#x27;def_buff&#x27;: 19, &#x27;exp_gain&#x27;: 5, &#x27;atk_buff&#x27;: 13, &#x27;activation_probability_boost&#x27;: 4, &#x27;fixed_damage&#x27;: 4, &#x27;damage_reduction&#x27;: 4, &#x27;additional_fixed_damage&#x27;: 1, &#x27;extra_access&#x27;: 1, &#x27;score_gain&#x27;: 2, &#x27;film_series_effect_boost&#x27;: 1, &#x27;additional_score_gain&#x27;: 1}</td></tr>
+<tr><th>component_kinds</th><td>{&#x27;def_buff&#x27;: 27, &#x27;exp_gain&#x27;: 5, &#x27;atk_buff&#x27;: 20, &#x27;activation_probability_boost&#x27;: 4, &#x27;fixed_damage&#x27;: 4, &#x27;damage_reduction&#x27;: 4, &#x27;additional_fixed_damage&#x27;: 1, &#x27;extra_access&#x27;: 1, &#x27;score_gain&#x27;: 2, &#x27;film_series_effect_boost&#x27;: 1, &#x27;additional_score_gain&#x27;: 1}</td></tr>
 </tbody></table>
 <h2>分批复盘</h2>
 <p><strong>original:120 - original:149</strong>: 30 records, {&#x27;needs_manual_review&#x27;: 30}</p>
@@ -26,20 +26,31 @@
 <table class="component-matrix"><thead><tr><th class="base-col">denko_id</th><th class="base-col">name</th><th class="base-col">type</th><th class="base-col">attribute</th><th class="base-col">color</th><th class="base-col">skill</th><th class="base-col">class</th><th>skill1_kind</th><th class="condition-col">skill1_condition</th><th>skill1_Lv30内容</th><th>skill1_Lv50内容</th><th>skill1_probability</th><th>skill1_duration</th><th>skill1_CD</th><th>skill2_kind</th><th class="condition-col">skill2_condition</th><th>skill2_Lv30内容</th><th>skill2_Lv50内容</th><th>skill2_probability</th><th>skill2_duration</th><th>skill2_CD</th><th>skill3_kind</th><th class="condition-col">skill3_condition</th><th>skill3_Lv30内容</th><th>skill3_Lv50内容</th><th>skill3_probability</th><th>skill3_duration</th><th>skill3_CD</th><th>skill4_kind</th><th class="condition-col">skill4_condition</th><th>skill4_Lv30内容</th><th>skill4_Lv50内容</th><th>skill4_probability</th><th>skill4_duration</th><th>skill4_CD</th><th>skill5_kind</th><th class="condition-col">skill5_condition</th><th>skill5_Lv30内容</th><th>skill5_Lv50内容</th><th>skill5_probability</th><th>skill5_duration</th><th>skill5_CD</th><th class="base-col">review_reasons</th></tr></thead><tbody>
 <tr><td>original:120</td><td>新藤原ぼたん</td><td>サポーター</td><td>eco</td><td>橙</td><td>記念の鉄道写真</td><td>needs_manual_review</td><td>def_buff</td><td>target: [&quot;team_all&quot;]
 filters: {&quot;attribute&quot;: &quot;eco&quot;}
+scaling: {&quot;basis&quot;: &quot;team_each_denko_max_link_time_sum&quot;}
 activation: いつでもアクティブ
-raw: 編成内各でんこの最も長いリンク時間の合計により編成内eco属性のDEF増加</td><td>Lv30，DEF 0%，発動率 100%</td><td>Lv50，DEF 0%，発動率 100%</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: {&quot;発動率&quot;: &quot;100%&quot;}</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+raw: 編成内各でんこの最も長いリンク時間の合計により編成内eco属性のDEF増加</td><td>DEF 0%～+12%</td><td>DEF 0%～+16%</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
 <tr><td>original:121</td><td>生駒わかな</td><td>トリックスター</td><td>cool</td><td>紫</td><td>古典文学に思いを馳せて</td><td>needs_manual_review</td><td>exp_gain</td><td>target: [&quot;team_all&quot;]
 trigger: {&quot;event_hint&quot;: &quot;access&quot;}
+scaling: {&quot;basis&quot;: &quot;same_theme_film_wearer_count&quot;, &quot;max_count&quot;: 7}
 activation: いつでもアクティブ
-raw: 編成内に同じテーマのフィルムを着たでんこがいるとアクセスしたでんこに経験値付与 ※わかなと同じフィルムでなくともよい</td><td>Lv30，経験値付与 0，発動率 100%</td><td>Lv50，経験値付与 0，発動率 100%</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: {&quot;発動率&quot;: &quot;100%&quot;}</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:122</td><td>小浜まい</td><td>サポーター</td><td>eco</td><td>緑</td><td>自分を変えたいんです……！</td><td>needs_manual_review</td><td>atk_buff</td><td>target: [&quot;team_all&quot;]
-filters: {&quot;attribute&quot;: &quot;eco&quot;, &quot;type&quot;: &quot;defender&quot;}
+raw: 編成内に同じテーマのフィルムを着たでんこがいるとアクセスしたでんこに経験値付与 ※わかなと同じフィルムでなくともよい 同種のラッピングをつけたでんこの最大数(上限7体)に比例して増加</td><td>経験値付与 0～210</td><td>経験値付与 0～240</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:122</td><td>小浜まい</td><td>サポーター</td><td>eco</td><td>緑</td><td>自分を変えたいんです……！</td><td>needs_manual_review</td><td>atk_buff_1 (atk_buff)</td><td>label: (1)
+role: default_effect
+target: [&quot;team_all&quot;]
+filters: {&quot;attribute&quot;: &quot;eco&quot;}
 activation: マスターにおまかせ
-raw: (1)編成内eco属性でんこのATK増加 / (2)相手が の場合は(1)に追加でATK増加 ディフェンダー</td><td>Lv30，ATK +6%，発動率 100%，45分，CD 2時間15分</td><td>Lv50，ATK +7%，発動率 100%，45分，CD 2時間15分</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: {&quot;発動率&quot;: &quot;100%&quot;}</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: 45分</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: 2時間15分</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:123</td><td>諫早ちどり</td><td>サポーター</td><td>heat</td><td>赤</td><td>あたししか勝たん！</td><td>needs_manual_review</td><td>atk_buff</td><td>target: [&quot;team_all&quot;]
+raw: (1)編成内eco属性でんこのATK増加</td><td>ATK +12%</td><td>ATK +14%</td><td>100%</td><td>45分</td><td>2時間15分</td><td>atk_buff_2 (atk_buff)</td><td>label: (2)
+role: additional_effect
+target: [&quot;team_all&quot;]
+filters: {&quot;type&quot;: &quot;defender&quot;}
+activation: マスターにおまかせ
+raw: (2)相手が の場合は(1)に追加でATK増加 ディフェンダー</td><td>ATK +6%</td><td>ATK +7%</td><td>100%</td><td>45分</td><td>2時間15分</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:123</td><td>諫早ちどり</td><td>サポーター</td><td>heat</td><td>赤</td><td>あたししか勝たん！</td><td>needs_manual_review</td><td>atk_buff_1 (atk_buff)</td><td>label: (1)
+role: default_effect
+target: [&quot;team_all&quot;]
 filters: {&quot;attribute&quot;: &quot;heat&quot;}
 activation: マスターにおまかせ
-raw: (1)編成内heat属性のATK増加 / (2)発動中の最大与ダメージ値に応じて追加でATK増加</td><td>Lv30，ATK 0%，発動率 100%，40分，CD 2時間20分</td><td>Lv50，ATK 0%，発動率 100%，45分，CD 2時間15分</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: {&quot;発動率&quot;: &quot;100%&quot;}</td><td>Lv30: 40分
+raw: (1)編成内heat属性のATK増加</td><td>ATK +6%</td><td>ATK +7%</td><td>100%</td><td>Lv30: 40分
 Lv50: 45分
 Lv60: 50分
 Lv70: 55分
@@ -51,11 +62,29 @@ Lv60: 2時間10分
 Lv70: 2時間5分
 Lv80: 2時間
 Lv15: 2時間25分
-Lv5: 2時間30分</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:124</td><td>横浜みちる</td><td>ディフェンダー</td><td>cool</td><td>桃</td><td>デートスポット調査力</td><td>needs_manual_review</td><td>def_buff</td><td>target: [&quot;self&quot;]
-trigger: {&quot;event_hint&quot;: &quot;accessed&quot;}
+Lv5: 2時間30分</td><td>atk_buff_2 (atk_buff)</td><td>label: (2)
+role: additional_effect
+target: [&quot;team_all&quot;]
+scaling: {&quot;basis&quot;: &quot;max_damage_dealt_during_skill&quot;, &quot;cap_varies_by_skill_level&quot;: true}
 activation: マスターにおまかせ
-raw: (1)自身のDEF上昇 / (2)前回の自身の被アクセスから2分以内の被アクセス時に(1)に追加でDEF上昇</td><td>Lv30，DEF +30%，発動率 100%，40分，CD 3時間20分</td><td>Lv50，DEF +35%，発動率 100%，45分，CD 3時間15分</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: {&quot;発動率&quot;: &quot;100%&quot;}</td><td>Lv30: 40分
+raw: (2)発動中の最大与ダメージ値に応じて追加でATK増加 効果(2)の上限値はスキルLv.で異なる</td><td>ATK 0%～+12%</td><td>ATK 0%～+14%</td><td>100%</td><td>Lv30: 40分
+Lv50: 45分
+Lv60: 50分
+Lv70: 55分
+Lv80: 1時間
+Lv15: 35分
+Lv5: 30分</td><td>Lv30: 2時間20分
+Lv50: 2時間15分
+Lv60: 2時間10分
+Lv70: 2時間5分
+Lv80: 2時間
+Lv15: 2時間25分
+Lv5: 2時間30分</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:124</td><td>横浜みちる</td><td>ディフェンダー</td><td>cool</td><td>桃</td><td>デートスポット調査力</td><td>needs_manual_review</td><td>def_buff_1 (def_buff)</td><td>label: (1)
+role: default_effect
+target: [&quot;self&quot;]
+activation: マスターにおまかせ
+raw: (1)自身のDEF上昇</td><td>DEF +12%</td><td>DEF +14%</td><td>100%</td><td>Lv30: 40分
 Lv50: 45分
 Lv60: 50分
 Lv70: 55分
@@ -67,27 +96,59 @@ Lv60: 3時間10分
 Lv70: 3時間5分
 Lv80: 3時間
 Lv15: 3時間25分
-Lv5: 3時間30分</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+Lv5: 3時間30分</td><td>def_buff_2 (def_buff)</td><td>label: (2)
+role: additional_effect
+target: [&quot;self&quot;]
+trigger: {&quot;event_hint&quot;: &quot;accessed&quot;}
+activation: マスターにおまかせ
+raw: (2)前回の自身の被アクセスから2分以内の被アクセス時に(1)に追加でDEF上昇</td><td>DEF +30%</td><td>DEF +35%</td><td>100%</td><td>Lv30: 40分
+Lv50: 45分
+Lv60: 50分
+Lv70: 55分
+Lv80: 1時間
+Lv15: 35分
+Lv5: 30分</td><td>Lv30: 3時間20分
+Lv50: 3時間15分
+Lv60: 3時間10分
+Lv70: 3時間5分
+Lv80: 3時間
+Lv15: 3時間25分
+Lv5: 3時間30分</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
 <tr><td>original:125</td><td>青海川しゅか</td><td>サポーター</td><td>cool</td><td>青</td><td>頼れるお姉さん</td><td>needs_manual_review</td><td>activation_probability_boost</td><td>target: [&quot;team_all&quot;]
 activation: いつでもアクティブ
-raw: (1)DEF増加 / (2)発動回数に応じて追加でDEF増加</td><td>Lv30，(1)75% (2)100%，発動率 (1)75% (2)100%</td><td>Lv50，(1)75% (2)100%，発動率 (1)75% (2)100%</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: {&quot;発動率&quot;: &quot;(1)75% (2)100%&quot;}</td><td></td><td></td><td>def_buff</td><td>target: [&quot;team_all&quot;]
+raw: (1)DEF増加 / (2)発動回数に応じて追加でDEF増加</td><td>(1)75% (2)100%</td><td>(1)75% (2)100%</td><td>(1)75% (2)100%</td><td></td><td></td><td>def_buff_1 (def_buff)</td><td>label: (1)
+role: default_effect
+target: [&quot;team_all&quot;]
 activation: いつでもアクティブ
-raw: (1)DEF増加 / (2)発動回数に応じて追加でDEF増加</td><td>Lv30，DEF 0%，発動率 (1)75% (2)100%</td><td>Lv50，DEF 0%，発動率 (1)75% (2)100%</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: {&quot;発動率&quot;: &quot;(1)75% (2)100%&quot;}</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:126</td><td>白兎ももな</td><td>サポーター</td><td>eco</td><td>桃</td><td>ももなの花占い</td><td>needs_manual_review</td><td>atk_buff</td><td>target: [&quot;team_all&quot;]
+raw: (1)DEF増加</td><td>DEF +4%</td><td></td><td>(1)75% (2)100%</td><td></td><td></td><td>def_buff_2 (def_buff)</td><td>label: (2)
+role: additional_effect
+target: [&quot;team_all&quot;]
+activation: いつでもアクティブ
+raw: (2)発動回数に応じて追加でDEF増加</td><td>DEF 0%～+10</td><td>DEF 0%～+12</td><td>(1)75% (2)100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:126</td><td>白兎ももな</td><td>サポーター</td><td>eco</td><td>桃</td><td>ももなの花占い</td><td>needs_manual_review</td><td>atk_buff_1 (atk_buff)</td><td>label: (1)
+role: default_effect
+target: [&quot;team_all&quot;]
 filters: {&quot;attribute&quot;: &quot;eco&quot;}
+scaling: {&quot;max_count&quot;: 5}
 activation: マスターにおまかせ
-raw: (1)編成内のeco属性のでんこの数(上限5体)に応じてATK増加 / (2)相手の編成のeco属性のでんこの数(上限5体)に応じてATK増加</td><td>Lv30，ATK 0%，発動率 100%，45分，CD 2時間15分</td><td>Lv50，ATK 0%，発動率 100%，45分，CD 2時間15分</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: {&quot;発動率&quot;: &quot;100%&quot;}</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: 45分</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: 2時間15分</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+raw: (1)編成内のeco属性のでんこの数(上限5体)に応じてATK増加</td><td>ATK +1%～+12%</td><td>ATK +1%～+14%</td><td>100%</td><td>45分</td><td>2時間15分</td><td>atk_buff_2 (atk_buff)</td><td>label: (2)
+role: supplemental_effect
+target: [&quot;team_all&quot;]
+filters: {&quot;attribute&quot;: &quot;eco&quot;}
+scaling: {&quot;max_count&quot;: 5}
+activation: マスターにおまかせ
+raw: (2)相手の編成のeco属性のでんこの数(上限5体)に応じてATK増加</td><td>ATK 0%～+17%</td><td>ATK 0%～+19%</td><td>100%</td><td>45分</td><td>2時間15分</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
 <tr><td>original:127</td><td>千旦あずさ</td><td>サポーター</td><td>eco</td><td>緑</td><td>クールな小生意気ガール</td><td>needs_manual_review</td><td>atk_buff</td><td>filters: {&quot;attribute&quot;: &quot;eco&quot;}
 activation: いつでもアクティブ
-raw: のみの編成時、相手のATK減少 eco属性</td><td>Lv30，ATK -8%，発動率 100%</td><td></td><td>Lv30/Lv60/Lv80/Lv5: {&quot;発動率&quot;: &quot;100%&quot;}</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+raw: のみの編成時、相手のATK減少 eco属性</td><td>ATK -8%</td><td></td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
 <tr><td>original:128</td><td>所沢にこ</td><td>トリックスター</td><td>cool</td><td>青</td><td>いつもにこにこ</td><td>needs_manual_review</td><td>exp_gain</td><td>target: [&quot;team_all&quot;]
 trigger: {&quot;event_hint&quot;: &quot;access&quot;}
 activation: いつでもアクティブ
-raw: 編成内でんこがアクセスしリンクに失敗すると経験値付与</td><td>Lv30，経験値付与 185，発動率 100%</td><td>Lv50，経験値付与 220，発動率 100%</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: {&quot;発動率&quot;: &quot;100%&quot;}</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+raw: 編成内でんこがアクセスしリンクに失敗すると経験値付与</td><td>経験値付与 185</td><td>経験値付与 220</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
 <tr><td>original:129</td><td>五所川原べにか</td><td>サポーター</td><td>heat</td><td>橙</td><td>器用な頭脳派……？</td><td>needs_manual_review</td><td>fixed_damage</td><td>target: [&quot;team_all&quot;]
 trigger: {&quot;event_hint&quot;: &quot;access&quot;}
 activation: マスターにおまかせ
-raw: 【発動条件】編成内のでんこがアクセスしたとき / 【効果】アクセスしたでんこのATK増加量の合計（上限100%）によって変動</td><td>Lv30，固定ダメージ 0，発動率 100%，40分，CD 2時間20分</td><td>Lv50，固定ダメージ 0，発動率 100%，45分，CD 2時間15分</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: {&quot;発動率&quot;: &quot;100%&quot;}</td><td>Lv30: 40分
+raw: 【発動条件】編成内のでんこがアクセスしたとき / 【効果】アクセスしたでんこのATK増加量の合計（上限100%）によって変動</td><td>固定ダメージ 0～30</td><td>固定ダメージ 0～40</td><td>100%</td><td>Lv30: 40分
 Lv50: 45分
 Lv60: 50分
 Lv70: 55分
@@ -103,30 +164,33 @@ Lv5: 2時間30分</td><td></td><td></td><td></td><td></td><td></td><td></td><td>
 <tr><td>original:130</td><td>竹原せとら</td><td>サポーター</td><td>cool</td><td>青</td><td>ちょっとミステリアス？</td><td>needs_manual_review</td><td>damage_reduction</td><td>target: [&quot;team_all&quot;]
 filters: {&quot;attribute&quot;: &quot;cool&quot;}
 activation: いつでもアクティブ
-raw: cool属性のみの編成で編成内の被ダメージを固定値で軽減</td><td>Lv30，ダメージ軽減 24，発動率 100%</td><td>Lv50，ダメージ軽減 28，発動率 100%</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: {&quot;発動率&quot;: &quot;100%&quot;}</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+raw: cool属性のみの編成で編成内の被ダメージを固定値で軽減</td><td>ダメージ軽減 24</td><td>ダメージ軽減 28</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
 <tr><td>original:131</td><td>勝田ミキ</td><td>サポーター</td><td>eco</td><td>桃</td><td>ロックンロール魂</td><td>needs_manual_review</td><td>damage_reduction</td><td>target: [&quot;team_all&quot;]
 trigger: {&quot;event_hint&quot;: &quot;access&quot;}
 activation: いつでもアクティブ
-raw: coolとecoのみ編成 (1)編成内のでんこがアクセス時に固定ダメージ (2)編成内のでんこがアクセスされた時にダメージ軽減</td><td>Lv30，ダメージ軽減 12，発動率 100%</td><td>Lv50，ダメージ軽減 14，発動率 100%</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: {&quot;発動率&quot;: &quot;100%&quot;}</td><td></td><td></td><td>fixed_damage</td><td>target: [&quot;team_all&quot;]
+raw: coolとecoのみ編成 (1)編成内のでんこがアクセス時に固定ダメージ (2)編成内のでんこがアクセスされた時にダメージ軽減</td><td>ダメージ軽減 12</td><td>ダメージ軽減 14</td><td>100%</td><td></td><td></td><td>fixed_damage</td><td>target: [&quot;team_all&quot;]
 trigger: {&quot;event_hint&quot;: &quot;access&quot;}
 activation: いつでもアクティブ
-raw: coolとecoのみ編成 (1)編成内のでんこがアクセス時に固定ダメージ (2)編成内のでんこがアクセスされた時にダメージ軽減</td><td>Lv30，固定ダメージ 12，発動率 100%</td><td>Lv50，固定ダメージ 14，発動率 100%</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: {&quot;発動率&quot;: &quot;100%&quot;}</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+raw: coolとecoのみ編成 (1)編成内のでんこがアクセス時に固定ダメージ (2)編成内のでんこがアクセスされた時にダメージ軽減</td><td>固定ダメージ 12</td><td>固定ダメージ 14</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
 <tr><td>original:132</td><td>東海なな</td><td>サポーター</td><td>cool</td><td>青</td><td>withカチカチアイス！</td><td>needs_manual_review</td><td>activation_probability_boost</td><td>target: [&quot;team_all&quot;]
 filters: {&quot;attribute&quot;: &quot;cool&quot;}
 activation: いつでもアクティブ
-raw: 発動条件：cool属性のみの編成 効果(1)：編成内DEF増加 効果(2)：(1)発動時、相手のATK減少 効果(3)：(2)発動時、編成内の被ダメージを固定値で軽減</td><td>Lv30，(1)70% (2) (1)発動で70% (3) (2)発動で70%，発動率 (1)70% (2) (1)発動で70% (3) (2)発動で70%</td><td>Lv50，(1)70% (2) (1)発動で70% (3) (2)発動で70%，発動率 (1)70% (2) (1)発動で70% (3) (2)発動で70%</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: {&quot;発動率&quot;: &quot;(1)70% (2) (1)発動で70% (3) (2)発動で70%&quot;}</td><td></td><td></td><td>atk_buff</td><td>target: [&quot;team_all&quot;]
+raw: 発動条件：cool属性のみの編成 効果(1)：編成内DEF増加 効果(2)：(1)発動時、相手のATK減少 効果(3)：(2)発動時、編成内の被ダメージを固定値で軽減</td><td>(1)70% (2) (1)発動で70% (3) (2)発動で70%</td><td>(1)70% (2) (1)発動で70% (3) (2)発動で70%</td><td>(1)70% (2) (1)発動で70% (3) (2)発動で70%</td><td></td><td></td><td>atk_buff_2 (atk_buff)</td><td>label: (2)
+role: supplemental_effect
+target: [&quot;team_all&quot;]
 filters: {&quot;attribute&quot;: &quot;cool&quot;}
 activation: いつでもアクティブ
-raw: 発動条件：cool属性のみの編成 効果(1)：編成内DEF増加 効果(2)：(1)発動時、相手のATK減少 効果(3)：(2)発動時、編成内の被ダメージを固定値で軽減</td><td>Lv30，ATK -6%，発動率 (1)70% (2) (1)発動で70% (3) (2)発動で70%</td><td>Lv50，ATK -7%，発動率 (1)70% (2) (1)発動で70% (3) (2)発動で70%</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: {&quot;発動率&quot;: &quot;(1)70% (2) (1)発動で70% (3) (2)発動で70%&quot;}</td><td></td><td></td><td>damage_reduction</td><td>target: [&quot;team_all&quot;]
+raw: 発動条件：cool属性のみの編成 効果(1)：編成内DEF増加 効果(2)：(1)発動時、相手のATK減少 効果(3)：(2)発動時、編成内の被ダメージを固定値で軽減 効果それぞれで70%の発動率</td><td>ATK -6%</td><td>ATK -7%</td><td>(1)70% (2) (1)発動で70% (3) (2)発動で70%</td><td></td><td></td><td>damage_reduction</td><td>target: [&quot;team_all&quot;]
 filters: {&quot;attribute&quot;: &quot;cool&quot;}
 activation: いつでもアクティブ
-raw: 発動条件：cool属性のみの編成 効果(1)：編成内DEF増加 効果(2)：(1)発動時、相手のATK減少 効果(3)：(2)発動時、編成内の被ダメージを固定値で軽減</td><td>Lv30，ダメージ軽減 13，発動率 (1)70% (2) (1)発動で70% (3) (2)発動で70%</td><td>Lv50，ダメージ軽減 16，発動率 (1)70% (2) (1)発動で70% (3) (2)発動で70%</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: {&quot;発動率&quot;: &quot;(1)70% (2) (1)発動で70% (3) (2)発動で70%&quot;}</td><td></td><td></td><td>def_buff</td><td>target: [&quot;team_all&quot;]
-filters: {&quot;attribute&quot;: &quot;cool&quot;}
+raw: 発動条件：cool属性のみの編成 効果(1)：編成内DEF増加 効果(2)：(1)発動時、相手のATK減少 効果(3)：(2)発動時、編成内の被ダメージを固定値で軽減 効果それぞれで70%の発動率</td><td>ダメージ軽減 13</td><td>ダメージ軽減 16</td><td>(1)70% (2) (1)発動で70% (3) (2)発動で70%</td><td></td><td></td><td>def_buff_1 (def_buff)</td><td>label: (1)
+role: default_effect
+target: [&quot;team_all&quot;]
 activation: いつでもアクティブ
-raw: 発動条件：cool属性のみの編成 効果(1)：編成内DEF増加 効果(2)：(1)発動時、相手のATK減少 効果(3)：(2)発動時、編成内の被ダメージを固定値で軽減</td><td>Lv30，DEF +6%，発動率 (1)70% (2) (1)発動で70% (3) (2)発動で70%</td><td>Lv50，DEF +7%，発動率 (1)70% (2) (1)発動で70% (3) (2)発動で70%</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: {&quot;発動率&quot;: &quot;(1)70% (2) (1)発動で70% (3) (2)発動で70%&quot;}</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+raw: (1)：編成内DEF増加 効果(2)：(1)発動時、相手のATK減少 効果(3)：(2)発動時、編成内の被ダメージを固定値で軽減 効果それぞれで70%の発動率</td><td>DEF +6%</td><td>DEF +7%</td><td>(1)70% (2) (1)発動で70% (3) (2)発動で70%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
 <tr><td>original:133</td><td>越美きらら</td><td>サポーター</td><td>heat</td><td>赤</td><td>あだ名をつけたい☆</td><td>needs_manual_review</td><td>def_buff</td><td>target: [&quot;team_all&quot;]
 activation: でんこにおまかせ
-raw: 編成内のDEF増加 ※編成内でんこがリブート時に他にリンクしているでんこがいない場合クールタイムに</td><td>Lv30，DEF +12%，発動率 100%，CD 40分</td><td>Lv50，DEF +14%，発動率 100%，CD 35分</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: {&quot;発動率&quot;: &quot;100%&quot;}</td><td></td><td>Lv30: 40分
+raw: 編成内のDEF増加 ※編成内でんこがリブート時に他にリンクしているでんこがいない場合クールタイムに</td><td>DEF +12%</td><td>DEF +14%</td><td>100%</td><td></td><td>Lv30: 40分
 Lv50: 35分
 Lv60: 30分
 Lv70: 25分
@@ -135,34 +199,41 @@ Lv15: 45分
 Lv5: 50分</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
 <tr><td>original:134</td><td>福分おとは</td><td>サポーター</td><td>cool</td><td>青</td><td>普通へのあこがれ</td><td>needs_manual_review</td><td>activation_probability_boost</td><td>target: [&quot;team_all&quot;]
 activation: マスターにおまかせ
-raw: (1)残り効果時間(上限20分)に応じて編成内ATK増加 (2)編成内でんこがリンクする度に効果時間延長(上限40分)</td><td>Lv30，(1)100% (2)60%，発動率 (1)100% (2)60%，30分，CD 1時間30分</td><td>Lv50，(1)100% (2)60%，発動率 (1)100% (2)60%，30分，CD 1時間30分</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: {&quot;発動率&quot;: &quot;(1)100% (2)60%&quot;}</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: 30分</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: 1時間30分</td><td>atk_buff</td><td>target: [&quot;team_all&quot;]
+raw: (1)残り効果時間(上限20分)に応じて編成内ATK増加 (2)編成内でんこがリンクする度に効果時間延長(上限40分)</td><td>(1)100% (2)60%</td><td>(1)100% (2)60%</td><td>(1)100% (2)60%</td><td>30分</td><td>1時間30分</td><td>atk_buff_1 (atk_buff)</td><td>label: (1)
+role: default_effect
+target: [&quot;team_all&quot;]
 activation: マスターにおまかせ
-raw: (1)残り効果時間(上限20分)に応じて編成内ATK増加 (2)編成内でんこがリンクする度に効果時間延長(上限40分)</td><td>Lv30，ATK +1%，発動率 (1)100% (2)60%，30分，CD 1時間30分</td><td>Lv50，ATK +1%，発動率 (1)100% (2)60%，30分，CD 1時間30分</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: {&quot;発動率&quot;: &quot;(1)100% (2)60%&quot;}</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: 30分</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: 1時間30分</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+raw: (1)残り効果時間(上限20分)に応じて編成内ATK増加 (2)編成内でんこがリンクする度に効果時間延長(上限40分) (2)は発動率60%</td><td>ATK +1%～+17%</td><td>ATK +1%～+19%</td><td>(1)100% (2)60%</td><td>30分</td><td>1時間30分</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
 <tr><td>original:135</td><td>寿むつみ</td><td>トリックスター</td><td>cool</td><td>青</td><td>スリルを求めて……</td><td>needs_manual_review</td><td>activation_probability_boost</td><td>target: [&quot;team_all&quot;]
 trigger: {&quot;event_hint&quot;: &quot;access&quot;}
 activation: マスターにおまかせ
-raw: (1)ATK増加 / (2)でんこ毎のリンク駅数(上限2駅)に応じて追加でATK増加 / (3)リンク時、確率でリブート(アクセス時のリンク駅数に応じて確率増加、上限2駅)</td><td>Lv30，(1)(2)100% (3)5～25%，発動率 (1)(2)100% (3)5～25%，30分，CD 2時間</td><td>Lv50，(1)(2)100% (3)5～25%，発動率 (1)(2)100% (3)5～25%，30分，CD 2時間</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: {&quot;発動率&quot;: &quot;(1)(2)100% (3)5～25%&quot;}</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: 30分</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: 2時間</td><td>atk_buff</td><td>target: [&quot;team_all&quot;]
-trigger: {&quot;event_hint&quot;: &quot;access&quot;}
+raw: (1)ATK増加 / (2)でんこ毎のリンク駅数(上限2駅)に応じて追加でATK増加 / (3)リンク時、確率でリブート(アクセス時のリンク駅数に応じて確率増加、上限2駅)</td><td>(1)(2)100% (3)5～25%</td><td>(1)(2)100% (3)5～25%</td><td>(1)(2)100% (3)5～25%</td><td>30分</td><td>2時間</td><td>atk_buff_1 (atk_buff)</td><td>label: (1)
+role: default_effect
+target: [&quot;team_all&quot;]
 activation: マスターにおまかせ
-raw: (1)ATK増加 / (2)でんこ毎のリンク駅数(上限2駅)に応じて追加でATK増加 / (3)リンク時、確率でリブート(アクセス時のリンク駅数に応じて確率増加、上限2駅)</td><td>Lv30，ATK 0%，発動率 (1)(2)100% (3)5～25%，30分，CD 2時間</td><td>Lv50，ATK 0%，発動率 (1)(2)100% (3)5～25%，30分，CD 2時間</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: {&quot;発動率&quot;: &quot;(1)(2)100% (3)5～25%&quot;}</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: 30分</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: 2時間</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+raw: (1)ATK増加</td><td>ATK +6%</td><td>ATK +7%</td><td>(1)(2)100% (3)5～25%</td><td>30分</td><td>2時間</td><td>atk_buff_2 (atk_buff)</td><td>label: (2)
+role: additional_effect
+target: [&quot;team_all&quot;]
+activation: マスターにおまかせ
+raw: (2)でんこ毎のリンク駅数(上限2駅)に応じて追加でATK増加</td><td>ATK 0%～+24%</td><td>ATK 0%～+28%</td><td>(1)(2)100% (3)5～25%</td><td>30分</td><td>2時間</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
 <tr><td>original:136</td><td>但馬ひょうこ</td><td>サポーター</td><td>heat</td><td>橙</td><td>よっこいしょっと……</td><td>needs_manual_review</td><td>atk_buff</td><td>target: [&quot;team_all&quot;]
 activation: でんこにおまかせ
-raw: 発動条件：編成内の誰かがリンクした / 効果：編成内のでんこのATKとDEFが増加</td><td>Lv30，ATK +20%，発動率 100%，20分，CD 1時間30分</td><td>Lv50，ATK +23%，発動率 100%，20分，CD 1時間30分</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: {&quot;発動率&quot;: &quot;100%&quot;}</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: 20分</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: 1時間30分</td><td>def_buff</td><td>target: [&quot;team_all&quot;]
+raw: 発動条件：編成内の誰かがリンクした / 効果：編成内のでんこのATKとDEFが増加 効果発動したうえで編成内でんこのHPが0になった場合クールタイムに</td><td>ATK +20%</td><td>ATK +23%</td><td>100%</td><td>20分</td><td>1時間30分</td><td>def_buff</td><td>target: [&quot;team_all&quot;]
 activation: でんこにおまかせ
-raw: 発動条件：編成内の誰かがリンクした / 効果：編成内のでんこのATKとDEFが増加</td><td>Lv30，DEF +20%，発動率 100%，20分，CD 1時間30分</td><td>Lv50，DEF +23%，発動率 100%，20分，CD 1時間30分</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: {&quot;発動率&quot;: &quot;100%&quot;}</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: 20分</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: 1時間30分</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+raw: 発動条件：編成内の誰かがリンクした / 効果：編成内のでんこのATKとDEFが増加 効果発動したうえで編成内でんこのHPが0になった場合クールタイムに</td><td>DEF +20%</td><td>DEF +23%</td><td>100%</td><td>20分</td><td>1時間30分</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
 <tr><td>original:137</td><td>王子保こはな</td><td>サポーター</td><td>eco</td><td>桃</td><td>フレッシュでんこ</td><td>needs_manual_review</td><td>additional_fixed_damage</td><td>target: [&quot;team_all&quot;]
 filters: {&quot;attribute&quot;: &quot;eco&quot;, &quot;type&quot;: &quot;trickster&quot;}
 trigger: {&quot;event_hint&quot;: &quot;access&quot;}
 activation: いつでもアクティブ
-raw: (1)編成内 のアクセス時、相手に軽減不能なダメージ追加 トリックスター / (2)編成内トリックスターが の場合、(1)に追加で軽減不能なダメージ eco属性</td><td>Lv30，追加固定ダメージ +7，発動率 100%</td><td>Lv50，追加固定ダメージ +9，発動率 100%</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: {&quot;発動率&quot;: &quot;100%&quot;}</td><td></td><td></td><td>fixed_damage</td><td>target: [&quot;team_all&quot;]
+raw: (1)編成内 のアクセス時、相手に軽減不能なダメージ追加 トリックスター / (2)編成内トリックスターが の場合、(1)に追加で軽減不能なダメージ eco属性</td><td>追加固定ダメージ +7</td><td>追加固定ダメージ +9</td><td>100%</td><td></td><td></td><td>fixed_damage</td><td>target: [&quot;team_all&quot;]
 filters: {&quot;type&quot;: &quot;trickster&quot;}
 trigger: {&quot;event_hint&quot;: &quot;access&quot;}
 activation: いつでもアクティブ
-raw: (1)編成内 のアクセス時、相手に軽減不能なダメージ追加 トリックスター / (2)編成内トリックスターが の場合、(1)に追加で軽減不能なダメージ eco属性</td><td>Lv30，固定ダメージ +18，発動率 100%</td><td>Lv50，固定ダメージ +21，発動率 100%</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: {&quot;発動率&quot;: &quot;100%&quot;}</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+raw: (1)編成内 のアクセス時、相手に軽減不能なダメージ追加 トリックスター / (2)編成内トリックスターが の場合、(1)に追加で軽減不能なダメージ eco属性</td><td>固定ダメージ +18</td><td>固定ダメージ +21</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
 <tr><td>original:138</td><td>宇都宮らいか</td><td>サポーター</td><td>heat</td><td>黄</td><td>閃いちゃった！</td><td>needs_manual_review</td><td>damage_reduction</td><td>target: [&quot;team_all&quot;]
 filters: {&quot;attribute&quot;: &quot;heat&quot;}
 activation: マスターにおまかせ
-raw: 発動条件：編成内の でんこが3体以上 heat属性 / 効果：ダメージを受けたでんこのリンク駅数(上限3駅)に応じてその被ダメージを固定値軽減</td><td>Lv30，ダメージ軽減 0，発動率 100%，25分，CD 2時間35分</td><td>Lv50，ダメージ軽減 0，発動率 100%，30分，CD 2時間30分</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: {&quot;発動率&quot;: &quot;100%&quot;}</td><td>Lv30: 25分
+raw: 発動条件：編成内の でんこが3体以上 heat属性 / 効果：ダメージを受けたでんこのリンク駅数(上限3駅)に応じてその被ダメージを固定値軽減</td><td>ダメージ軽減 0～69</td><td>ダメージ軽減 0～78</td><td>100%</td><td>Lv30: 25分
 Lv50: 30分
 Lv60: 35分
 Lv70: 40分
@@ -175,22 +246,27 @@ Lv70: 2時間20分
 Lv80: 2時間15分
 Lv15: 2時間40分
 Lv5: 2時間45分</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:139</td><td>荒井まやか</td><td>ディフェンダー</td><td>cool</td><td>黄</td><td>このご恩は必ずや……！</td><td>needs_manual_review</td><td>def_buff</td><td>target: [&quot;team_all&quot;]
+<tr><td>original:139</td><td>荒井まやか</td><td>ディフェンダー</td><td>cool</td><td>黄</td><td>このご恩は必ずや……！</td><td>needs_manual_review</td><td>def_buff_1 (def_buff)</td><td>label: (1)
+role: default_effect
+target: [&quot;team_all&quot;]
 filters: {&quot;attribute&quot;: &quot;cool&quot;}
 trigger: {&quot;event_hint&quot;: &quot;access&quot;}
 activation: いつでもアクティブ
-raw: (1)編成内すべてのでんこが のとき、自身のDEF増加 (2)前回アクセスされてから12分以内にアクセスされてダメージを受けた時、回復 (3)バッテリー使用不可 cool属性</td><td>Lv30，DEF +24%，発動率 100%</td><td>Lv50，DEF +28%，発動率 100%</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: {&quot;発動率&quot;: &quot;100%&quot;}</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+raw: (1)編成内すべてのでんこが のとき、自身のDEF増加 (2)前回アクセスされてから12分以内にアクセスされてダメージを受けた時、回復 (3)バッテリー使用不可 cool属性 (2)(3)は編成内の属性を問わず発動する</td><td>DEF +24%</td><td>DEF +28%</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
 <tr><td>original:140</td><td>山口ゆづる</td><td>サポーター</td><td>eco</td><td>黄</td><td>数多の伝説を持つでんこ</td><td>needs_manual_review</td><td>def_buff</td><td>target: [&quot;team_all&quot;]
 filters: {&quot;attribute&quot;: &quot;eco&quot;}
 activation: いつでもアクティブ
-raw: 発動条件：編成内すべてのでんこが 効果：編成内のでんこのタイプ数によって編成内DEF増加 eco属性</td><td></td><td>Lv50，DEF +3%，発動率 100%</td><td>Lv50/Lv70/Lv15: {&quot;発動率&quot;: &quot;100%&quot;}</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:141</td><td>大三東きっか</td><td>ディフェンダー</td><td>heat</td><td>黄</td><td>平和が一番っしょ♪</td><td>needs_manual_review</td><td>def_buff</td><td>target: [&quot;team_all&quot;]
+raw: 発動条件：編成内すべてのでんこが 効果：編成内のでんこのタイプ数によって編成内DEF増加 eco属性</td><td></td><td>DEF +3% ～ +12%</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:141</td><td>大三東きっか</td><td>ディフェンダー</td><td>heat</td><td>黄</td><td>平和が一番っしょ♪</td><td>needs_manual_review</td><td>def_buff_2 (def_buff)</td><td>label: (2)
+role: supplemental_effect
+target: [&quot;team_all&quot;]
+scaling: {&quot;max_count&quot;: 5}
 activation: いつでもアクティブ
-raw: （1）編成内のリンクしているでんこの数に応じて自身のDEF増加（上限5体） / （2）自身がリンクしている場合、編成内のでんこのDEF増加</td><td>Lv30，DEF +9%，発動率 100%</td><td>Lv50，DEF +10%，発動率 100%</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: {&quot;発動率&quot;: &quot;100%&quot;}</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+raw: （1）編成内のリンクしているでんこの数に応じて自身のDEF増加（上限5体） / （2）自身がリンクしている場合、編成内のでんこのDEF増加</td><td>DEF +9%</td><td>DEF +10%</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
 <tr><td>original:142</td><td>南小谷れんげ</td><td>トリックスター</td><td>eco</td><td>緑</td><td>適応力の達人</td><td>needs_manual_review</td><td>extra_access</td><td>target: [&quot;self&quot;]
 trigger: {&quot;event_hint&quot;: &quot;access&quot;, &quot;hp_threshold_percent&quot;: 50, &quot;operator&quot;: &quot;lte&quot;}
 activation: マスターにおまかせ
-raw: 自身がリンク失敗時相手のHPが50%以下で同じ仮想ホームにアクセス</td><td>Lv30，もう1度だけアクセス，発動率 100%，18分，CD 3時間12分</td><td>Lv50，もう1度だけアクセス，発動率 100%，21分，CD 3時間9分</td><td>Lv30/Lv50/Lv60/Lv70/Lv15/Lv5: {&quot;発動率&quot;: &quot;100%&quot;}</td><td>Lv30: 18分
+raw: 自身がリンク失敗時相手のHPが50%以下で同じ仮想ホームにアクセス</td><td>もう1度だけアクセス</td><td>もう1度だけアクセス</td><td>100%</td><td>Lv30: 18分
 Lv50: 21分
 Lv60: 24分
 Lv70: 27分
@@ -204,39 +280,54 @@ Lv5: 3時間18分</td><td></td><td></td><td></td><td></td><td></td><td></td><td>
 <tr><td>original:143</td><td>鶴舞さとみ</td><td>トリックスター</td><td>heat</td><td>橙</td><td>ふるさとの為ならば</td><td>needs_manual_review</td><td>exp_gain</td><td>target: [&quot;team_all&quot;]
 trigger: {&quot;event_hint&quot;: &quot;access&quot;}
 activation: でんこにおまかせ
-raw: 発動条件：編成内のでんこがチェックインした時、チェックインした場所と駅の距離が500m以内 / 効果：一定時間、編成内のでんこがアクセスした時、アクセスしたでんこに経験値付与</td><td>Lv30，経験値付与 185，発動率 100%，15分</td><td>Lv50，経験値付与 220，発動率 100%，15分</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: {&quot;発動率&quot;: &quot;100%&quot;}</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: 15分</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+raw: 発動条件：編成内のでんこがチェックインした時、チェックインした場所と駅の距離が500m以内 / 効果：一定時間、編成内のでんこがアクセスした時、アクセスしたでんこに経験値付与</td><td>経験値付与 185</td><td>経験値付与 220</td><td>100%</td><td>15分</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
 <tr><td>original:144</td><td>今井浜マオ</td><td>サポーター</td><td>cool</td><td>黄</td><td>ポジティブ・ラッキーガール</td><td>needs_manual_review</td><td>def_buff</td><td>target: [&quot;team_all&quot;]
 filters: {&quot;attribute&quot;: &quot;cool&quot;}
+scaling: {&quot;max_count&quot;: 5}
 activation: マスターにおまかせ
-raw: 編成内のcool属性数(上限5体)に応じて編成内cool属性のDEF増加</td><td>Lv30，DEF +1%，発動率 100%，30分，CD 2時間</td><td>Lv50，DEF +1%，発動率 100%，30分，CD 2時間</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: {&quot;発動率&quot;: &quot;100%&quot;}</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: 30分</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: 2時間</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+raw: 編成内のcool属性数(上限5体)に応じて編成内cool属性のDEF増加</td><td>DEF +1%～+18%</td><td>DEF +1%～+24%</td><td>100%</td><td>30分</td><td>2時間</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
 <tr><td>original:145</td><td>土佐久礼りょう</td><td>トリックスター</td><td>cool</td><td>桃</td><td>想いを綴る、無限の帆船</td><td>needs_manual_review</td><td>def_buff</td><td>target: [&quot;team_all&quot;]
 filters: {&quot;attribute&quot;: &quot;cool&quot;}
 activation: いつでもアクティブ
-raw: 編成内が全て のとき、自編成及び相手編成の先頭でんこのDEF増加 cool属性</td><td>Lv30，DEF +8%，発動率 100%</td><td>Lv50，DEF +10%，発動率 100%</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: {&quot;発動率&quot;: &quot;100%&quot;}</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:146</td><td>桑川ゆうり</td><td>ディフェンダー</td><td>heat</td><td>橙</td><td>食材を求めて三千里</td><td>needs_manual_review</td><td>def_buff</td><td>target: [&quot;self&quot;]
+raw: 編成内が全て のとき、自編成及び相手編成の先頭でんこのDEF増加 cool属性</td><td>DEF +8%</td><td>DEF +10%</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:146</td><td>桑川ゆうり</td><td>ディフェンダー</td><td>heat</td><td>橙</td><td>食材を求めて三千里</td><td>needs_manual_review</td><td>def_buff_1 (def_buff)</td><td>label: (1)
+role: default_effect
+target: [&quot;self&quot;]
 filters: {&quot;attribute&quot;: &quot;heat&quot;}
 activation: マスターにおまかせ
-raw: （1）一定時間、編成しているでんこがすべて の時に、自身のDEFが増加 heat属性 / （2）自身にバッテリーを使用してから6分間、追加でDEFが増加</td><td>Lv30，DEF +30%，発動率 100%，30分，CD 3時間15分</td><td>Lv50，DEF +35%，発動率 100%，30分，CD 3時間15分</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: {&quot;発動率&quot;: &quot;100%&quot;}</td><td>Lv30/Lv50/Lv15/Lv5: 30分
+raw: （1）一定時間、編成しているでんこがすべて の時に、自身のDEFが増加 heat属性 / （2）自身にバッテリーを使用してから6分間、追加でDEFが増加</td><td>DEF +12%</td><td>DEF +14%</td><td>100%</td><td>Lv30/Lv50/Lv15/Lv5: 30分
 Lv60: 35分
 Lv70: 40分
 Lv80: 45分</td><td>Lv30/Lv50/Lv15/Lv5: 3時間15分
 Lv60: 3時間10分
 Lv70: 3時間5分
-Lv80: 3時間</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+Lv80: 3時間</td><td>def_buff_2 (def_buff)</td><td>label: (2)
+role: supplemental_effect
+target: [&quot;self&quot;]
+filters: {&quot;attribute&quot;: &quot;heat&quot;}
+activation: マスターにおまかせ
+raw: （1）一定時間、編成しているでんこがすべて の時に、自身のDEFが増加 heat属性 / （2）自身にバッテリーを使用してから6分間、追加でDEFが増加</td><td>DEF +30%</td><td>DEF +35%</td><td>100%</td><td>Lv30/Lv50/Lv15/Lv5: 30分
+Lv60: 35分
+Lv70: 40分
+Lv80: 45分</td><td>Lv30/Lv50/Lv15/Lv5: 3時間15分
+Lv60: 3時間10分
+Lv70: 3時間5分
+Lv80: 3時間</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
 <tr><td>original:147</td><td>加太こなた</td><td>トリックスター</td><td>eco</td><td>紫</td><td>はじまりは此方より</td><td>needs_manual_review</td><td>exp_gain</td><td>target: [&quot;team_all&quot;]
 trigger: {&quot;event_hint&quot;: &quot;access&quot;}
 activation: マスターにおまかせ
-raw: （1）スキルを発動してから1時間後に自編成内でんこに経験値付与 / （2）スキルをアクティブにしてから発動までに3回以上アクセスしていた駅属性の数に応じて、追加で経験値付与</td><td>Lv30，経験値付与 200，発動率 100%，CD 3時間15分</td><td>Lv50，経験値付与 250，発動率 100%，CD 3時間15分</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: {&quot;発動率&quot;: &quot;100%&quot;}</td><td></td><td>Lv30/Lv50/Lv15/Lv5: 3時間15分
+raw: （1）スキルを発動してから1時間後に自編成内でんこに経験値付与 / （2）スキルをアクティブにしてから発動までに3回以上アクセスしていた駅属性の数に応じて、追加で経験値付与 スキル発動時にこなたが編成されていなくても発動</td><td>経験値付与 200</td><td>経験値付与 250</td><td>100%</td><td></td><td>Lv30/Lv50/Lv15/Lv5: 3時間15分
 Lv60: 3時間10分
 Lv70: 3時間5分
 Lv80: 3時間</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
 <tr><td>original:148</td><td>倉敷れお</td><td>サポーター</td><td>heat</td><td>桃</td><td>きびだんごでお友達☆</td><td>needs_manual_review</td><td>atk_buff</td><td>target: [&quot;team_all&quot;]
 filters: {&quot;attribute&quot;: &quot;heat&quot;, &quot;exclude_self&quot;: true}
 trigger: {&quot;event_hint&quot;: &quot;access&quot;}
+scaling: {&quot;max_count&quot;: 4}
 activation: いつでもアクティブ
-raw: アクセスした駅の天気が晴れの場合、自身を除く編成内の の数に応じて、自身を除く編成内のでんこのATK上昇（上限4体） heat属性でんこ</td><td>Lv30，ATK 0%，発動率 100%</td><td>Lv50，ATK 0%，発動率 100%</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: {&quot;発動率&quot;: &quot;100%&quot;}</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+raw: アクセスした駅の天気が晴れの場合、自身を除く編成内の の数に応じて、自身を除く編成内のでんこのATK上昇（上限4体） heat属性でんこ 天気はアクセス結果の記載に依存</td><td>ATK 0%～+10%</td><td>ATK 0%～+12%</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
 <tr><td>original:149</td><td>日暮里ハルカゼ</td><td>アタッカー</td><td>cool</td><td>桃</td><td>不器用オーバーワーク</td><td>needs_manual_review</td><td>atk_buff</td><td>activation: マスターにおまかせ
-raw: （1）一定時間ATK増加 / （2）リンク失敗の場合、確率でリブート、スキル強制終了</td><td>Lv30，ATK +37%，発動率 (1)100% (2)15%，40分，CD 2時間20分</td><td>Lv50，ATK +44%，発動率 (1)100% (2)15%，45分，CD 2時間15分</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: {&quot;発動率&quot;: &quot;(1)100% (2)15%&quot;}</td><td>Lv30: 40分
+raw: （1）一定時間ATK増加 / （2）リンク失敗の場合、確率でリブート、スキル強制終了</td><td>ATK +37%</td><td>ATK +44%</td><td>(1)100% (2)15%</td><td>Lv30: 40分
 Lv50: 45分
 Lv60: 50分
 Lv70: 55分
@@ -252,11 +343,13 @@ Lv5: 2時間30分</td><td></td><td></td><td></td><td></td><td></td><td></td><td>
 <tr><td>original:150</td><td>有田いまり</td><td>トリックスター</td><td>eco</td><td>紫</td><td>一か八か☆どーんと行ってみよう！</td><td>needs_manual_review</td><td>score_gain</td><td>target: [&quot;front_car&quot;]
 trigger: {&quot;event_hint&quot;: &quot;access&quot;}
 activation: マスターにおまかせ
-raw: 一定時間、先頭車両のでんこがアクセスされてリブートしなかった時、 受けたダメージが奇数なら先頭車両のでんこのリンク駅数に応じてスコア獲得 受けたダメージが偶数なら先頭車両のでんこをリブートさせ、リブート時に獲得するスコアを0にする</td><td>Lv30，スコア獲得 1200/駅，発動率 100%，15分，CD 12時間</td><td>Lv50，スコア獲得 1650/駅，発動率 100%，15分，CD 12時間</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: {&quot;発動率&quot;: &quot;100%&quot;}</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: 15分</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: 12時間</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:151</td><td>福神あおね</td><td>サポーター</td><td>cool</td><td>青</td><td>淑女を目指して</td><td>needs_manual_review</td><td>atk_buff</td><td>target: [&quot;team_all&quot;]
+raw: 一定時間、先頭車両のでんこがアクセスされてリブートしなかった時、 受けたダメージが奇数なら先頭車両のでんこのリンク駅数に応じてスコア獲得 受けたダメージが偶数なら先頭車両のでんこをリブートさせ、リブート時に獲得するスコアを0にする 1回発動でクールタイム のスキルは対象外 うらら</td><td>スコア獲得 1200/駅</td><td>スコア獲得 1650/駅</td><td>100%</td><td>15分</td><td>12時間</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:151</td><td>福神あおね</td><td>サポーター</td><td>cool</td><td>青</td><td>淑女を目指して</td><td>needs_manual_review</td><td>atk_buff_1 (atk_buff)</td><td>label: (1)
+role: default_effect
+target: [&quot;team_all&quot;]
 filters: {&quot;attribute&quot;: &quot;cool&quot;}
 activation: マスターにおまかせ
-raw: (1)自編成のでんこが全て の場合、編成内全員のATK増加 cool属性 / (2)発動中の合計与ダメージ値に応じて追加でATK増加</td><td>Lv30，ATK 0%，発動率 100%，33分，CD 2時間27分</td><td>Lv50，ATK 0%，発動率 100%，36分，CD 2時間24分</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: {&quot;発動率&quot;: &quot;100%&quot;}</td><td>Lv30: 33分
+raw: (1)自編成のでんこが全て の場合、編成内全員のATK増加 cool属性</td><td>ATK +12%</td><td>ATK +14%</td><td>100%</td><td>Lv30: 33分
 Lv50: 36分
 Lv60: 39分
 Lv70: 42分
@@ -268,12 +361,30 @@ Lv60: 2時間21分
 Lv70: 2時間18分
 Lv80: 2時間15分
 Lv15: 2時間30分
-Lv5: 2時間33分</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:152</td><td>鬼怒川にいな</td><td>サポーター</td><td>heat</td><td>橙</td><td>秘密のメイドさん</td><td>needs_manual_review</td><td>def_buff</td><td>target: [&quot;team_all&quot;]
-filters: {&quot;attribute&quot;: &quot;heat&quot;}
+Lv5: 2時間33分</td><td>atk_buff_2 (atk_buff)</td><td>label: (2)
+role: additional_effect
+target: [&quot;team_all&quot;]
+scaling: {&quot;cap_varies_by_skill_level&quot;: true}
+activation: マスターにおまかせ
+raw: (2)発動中の合計与ダメージ値に応じて追加でATK増加 効果(2)の上限値はスキルLv.で異なる</td><td>ATK 0%～+15%</td><td>ATK 0%～+17</td><td>100%</td><td>Lv30: 33分
+Lv50: 36分
+Lv60: 39分
+Lv70: 42分
+Lv80: 45分
+Lv15: 30分
+Lv5: 27分</td><td>Lv30: 2時間27分
+Lv50: 2時間24分
+Lv60: 2時間21分
+Lv70: 2時間18分
+Lv80: 2時間15分
+Lv15: 2時間30分
+Lv5: 2時間33分</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:152</td><td>鬼怒川にいな</td><td>サポーター</td><td>heat</td><td>橙</td><td>秘密のメイドさん</td><td>needs_manual_review</td><td>def_buff_1 (def_buff)</td><td>label: (1)
+role: default_effect
+target: [&quot;self&quot;]
 trigger: {&quot;event_hint&quot;: &quot;accessed&quot;}
 activation: マスターにおまかせ
-raw: 発動条件：編成内のでんこが全て heat属性 / 効果(1)：自身以外の被アクセス時にDEFが増加 / 効果(2)：自身以外のアクセス時に相手のDEFが減少</td><td>Lv30，DEF -11%，発動率 100%，25分，CD 2時間35分</td><td>Lv50，DEF -14%，発動率 100%，30分，CD 2時間30分</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: {&quot;発動率&quot;: &quot;100%&quot;}</td><td>Lv30: 25分
+raw: (1)：自身以外の被アクセス時にDEFが増加 / 効果(2)：自身以外のアクセス時に相手のDEFが減少</td><td>DEF +11%</td><td>DEF +14%</td><td>100%</td><td>Lv30: 25分
 Lv50: 30分
 Lv60: 35分
 Lv70: 40分
@@ -285,40 +396,87 @@ Lv60: 2時間25分
 Lv70: 2時間20分
 Lv80: 2時間15分
 Lv15: 2時間40分
-Lv5: 2時間45分</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+Lv5: 2時間45分</td><td>def_buff_2 (def_buff)</td><td>label: (2)
+role: supplemental_effect
+target: [&quot;team_all&quot;]
+filters: {&quot;attribute&quot;: &quot;heat&quot;}
+trigger: {&quot;event_hint&quot;: &quot;accessed&quot;}
+activation: マスターにおまかせ
+raw: 発動条件：編成内のでんこが全て heat属性 / 効果(1)：自身以外の被アクセス時にDEFが増加 / 効果(2)：自身以外のアクセス時に相手のDEFが減少</td><td>DEF -11%</td><td>DEF -14%</td><td>100%</td><td>Lv30: 25分
+Lv50: 30分
+Lv60: 35分
+Lv70: 40分
+Lv80: 45分
+Lv15: 20分
+Lv5: 15分</td><td>Lv30: 2時間35分
+Lv50: 2時間30分
+Lv60: 2時間25分
+Lv70: 2時間20分
+Lv80: 2時間15分
+Lv15: 2時間40分
+Lv5: 2時間45分</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
 <tr><td>original:153</td><td>土合もくり</td><td>トリックスター</td><td>eco</td><td>緑</td><td>たまこは大親友</td><td>needs_manual_review</td><td>exp_gain</td><td>target: [&quot;team_all&quot;]
 trigger: {&quot;event_hint&quot;: &quot;access&quot;}
 activation: いつでもアクティブ
-raw: (1)今日のアクセス駅数(上限20駅)に応じて経験値付与 / (2)アクセスした駅の天気が曇りの場合、編成内のでんこに経験値付与</td><td>Lv30，経験値付与 0，発動率 100%</td><td>Lv50，経験値付与 0，発動率 100%</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: {&quot;発動率&quot;: &quot;100%&quot;}</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:154</td><td>東田坂上ほなみ</td><td>サポーター</td><td>cool</td><td>青</td><td>満足度100%を目指して</td><td>needs_manual_review</td><td>def_buff</td><td>target: [&quot;team_all&quot;]
+raw: (1)今日のアクセス駅数(上限20駅)に応じて経験値付与 / (2)アクセスした駅の天気が曇りの場合、編成内のでんこに経験値付与</td><td>経験値付与 0～120</td><td>経験値付与 0～140</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:154</td><td>東田坂上ほなみ</td><td>サポーター</td><td>cool</td><td>青</td><td>満足度100%を目指して</td><td>needs_manual_review</td><td>def_buff_1 (def_buff)</td><td>label: (1)
+role: default_effect
+target: [&quot;team_all&quot;]
 filters: {&quot;attribute&quot;: &quot;cool&quot;}
 activation: いつでもアクティブ
-raw: と の両属性のでんこのみ編成 cool eco / (1)cool属性のでんこがリンク中は編成内全員のDEF増加 / (2)eco属性のでんこがリンク中は編成内全員のDEF増加</td><td>Lv30，DEF +7%，発動率 100%</td><td></td><td>Lv30/Lv60/Lv80/Lv5: {&quot;発動率&quot;: &quot;100%&quot;}</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:155</td><td>豊野このは</td><td>サポーター</td><td>cool</td><td>青</td><td>お腹が空いてもご安心♪</td><td>needs_manual_review</td><td>def_buff</td><td>target: [&quot;team_all&quot;]
+raw: (1)cool属性のでんこがリンク中は編成内全員のDEF増加</td><td>DEF +7%</td><td></td><td>100%</td><td></td><td></td><td>def_buff_2 (def_buff)</td><td>label: (2)
+role: supplemental_effect
+target: [&quot;team_all&quot;]
+filters: {&quot;attribute&quot;: &quot;eco&quot;}
+activation: いつでもアクティブ
+raw: (2)eco属性のでんこがリンク中は編成内全員のDEF増加 (1)と(2)は重複発動可</td><td>DEF +7%</td><td></td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:155</td><td>豊野このは</td><td>サポーター</td><td>cool</td><td>青</td><td>お腹が空いてもご安心♪</td><td>needs_manual_review</td><td>def_buff_1 (def_buff)</td><td>label: (1)
+role: default_effect
+target: [&quot;team_all&quot;]
+filters: {&quot;attribute&quot;: &quot;cool&quot;}
+activation: いつでもアクティブ
+raw: (1)編成内 のDEF増加 cool属性でんこ</td><td>DEF +6%</td><td>DEF +7%</td><td>100%</td><td></td><td></td><td>def_buff_2 (def_buff)</td><td>label: (2)
+role: additional_effect
+target: [&quot;team_all&quot;]
 filters: {&quot;attribute&quot;: &quot;cool&quot;}
 trigger: {&quot;event_hint&quot;: &quot;access&quot;}
 activation: いつでもアクティブ
-raw: (1)編成内 のDEF増加 cool属性でんこ / (2)アクセスされた編成内cool属性でんこに50分以上リンクしている駅がある場合、(1)に追加でDEF増加</td><td>Lv30，DEF +10%，発動率 100%</td><td>Lv50，DEF +12%，発動率 100%</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: {&quot;発動率&quot;: &quot;100%&quot;}</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+raw: (2)アクセスされた編成内cool属性でんこに50分以上リンクしている駅がある場合、(1)に追加でDEF増加</td><td>DEF +10%</td><td>DEF +12%</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
 <tr><td>original:156</td><td>生山ほたる</td><td>ディフェンダー</td><td>heat</td><td>橙</td><td>どんぐりの背比べ</td><td>needs_manual_review</td><td>def_buff</td><td>target: [&quot;team_all&quot;]
 filters: {&quot;type&quot;: &quot;defender&quot;}
 activation: いつでもアクティブ
-raw: 発動条件：編成内の が3体以上 ディフェンダー / 効果(1)：編成内のATK・DEF増加 / 効果(2)：自身のリンク中は編成内のDEFが追加で増加</td><td>Lv30，DEF +9%，発動率 100%</td><td>Lv50，DEF +7%，発動率 100%</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: {&quot;発動率&quot;: &quot;100%&quot;}</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+raw: 発動条件：編成内の が3体以上 ディフェンダー / 効果(1)：編成内のATK・DEF増加 / 効果(2)：自身のリンク中は編成内のDEFが追加で増加</td><td>DEF +6%</td><td>DEF +7%</td><td>100%</td><td></td><td></td><td>def_buff_2 (def_buff)</td><td>label: (2)
+role: supplemental_effect
+target: [&quot;team_all&quot;]
+filters: {&quot;type&quot;: &quot;defender&quot;}
+activation: いつでもアクティブ
+raw: 発動条件：編成内の が3体以上 ディフェンダー / 効果(1)：編成内のATK・DEF増加 / 効果(2)：自身のリンク中は編成内のDEFが追加で増加</td><td>DEF +9%</td><td></td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
 <tr><td>original:157</td><td>阿仁合にあ</td><td>サポーター</td><td>heat</td><td>赤</td><td>お姉ちゃんにお任せ☆</td><td>needs_manual_review</td><td>fixed_damage</td><td>trigger: {&quot;event_hint&quot;: &quot;access&quot;}
 activation: いつでもアクティブ
-raw: (1)先頭のアクセス時相手に固定ダメージ / (2)先頭がAP&lt;最大HPの場合、その差に応じて固定ダメージ量増加</td><td>Lv30，固定ダメージ 7，発動率 100%</td><td>Lv50，固定ダメージ 9，発動率 100%</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: {&quot;発動率&quot;: &quot;100%&quot;}</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:158</td><td>会津あやか</td><td>ディフェンダー</td><td>cool</td><td>青</td><td>I ♡ バッテリー</td><td>needs_manual_review</td><td>def_buff</td><td>target: [&quot;team_all&quot;]
-filters: {&quot;attribute&quot;: &quot;eco&quot;}
+raw: (1)先頭のアクセス時相手に固定ダメージ / (2)先頭がAP&lt;最大HPの場合、その差に応じて固定ダメージ量増加</td><td>固定ダメージ 7</td><td>固定ダメージ 9</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:158</td><td>会津あやか</td><td>ディフェンダー</td><td>cool</td><td>青</td><td>I ♡ バッテリー</td><td>needs_manual_review</td><td>def_buff_1 (def_buff)</td><td>label: (1)
+role: default_effect
+target: [&quot;self&quot;]
 activation: マスターにおまかせ
-raw: 発動条件： と のみ編成 cool eco / (1)自身のDEFが増加 / (2)編成内にeco属性のでんこが3体以上いる場合、追加でDEF増加 / (3)自身にバッテリー使用の度に効果時間延長(最大1時間まで)</td><td>Lv30，DEF +21%，発動率 100%，20分，CD 3時間20分</td><td>Lv50，DEF +21%，発動率 100%，20分，CD 3時間15分</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: {&quot;発動率&quot;: &quot;100%&quot;}</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: 20分</td><td>Lv30: 3時間20分
+raw: (1)自身のDEFが増加</td><td>DEF +18%</td><td>DEF +21%</td><td>100%</td><td>20分</td><td>Lv30: 3時間20分
 Lv50: 3時間15分
 Lv60: 3時間10分
 Lv70: 3時間5分
 Lv80: 3時間
 Lv15: 3時間25分
-Lv5: 3時間30分</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:159</td><td>富士山たかな</td><td>トリックスター</td><td>heat</td><td>赤</td><td>まとうは心</td><td>needs_manual_review</td><td>film_series_effect_boost</td><td>target: [&quot;team_all&quot;]
+Lv5: 3時間30分</td><td>def_buff_2 (def_buff)</td><td>label: (2)
+role: additional_effect
+target: [&quot;team_all&quot;]
+filters: {&quot;attribute&quot;: &quot;eco&quot;}
 activation: マスターにおまかせ
-raw: 同じフィルムシリーズ効果のあるフィルムを着用しているでんこが2体以上いる場合に、フィルム効果を着用数+1～2体分強化（上限7体）</td><td>Lv30，フィルムシリーズ効果の着用数 +1，発動率 100%，30分，CD 4時間</td><td>Lv50，フィルムシリーズ効果の着用数 +1，発動率 100%，30分，CD 3時間30分</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: {&quot;発動率&quot;: &quot;100%&quot;}</td><td>Lv30/Lv50/Lv15/Lv5: 30分
+raw: (2)編成内にeco属性のでんこが3体以上いる場合、追加でDEF増加</td><td>DEF +21%</td><td></td><td>100%</td><td>20分</td><td>Lv30: 3時間20分
+Lv60: 3時間10分
+Lv80: 3時間
+Lv5: 3時間30分</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:159</td><td>富士山たかな</td><td>トリックスター</td><td>heat</td><td>赤</td><td>まとうは心</td><td>needs_manual_review</td><td>film_series_effect_boost</td><td>target: [&quot;team_all&quot;]
+scaling: {&quot;max_count&quot;: 7}
+activation: マスターにおまかせ
+raw: 同じフィルムシリーズ効果のあるフィルムを着用しているでんこが2体以上いる場合に、フィルム効果を着用数+1～2体分強化（上限7体）</td><td>フィルムシリーズ効果の着用数 +1</td><td>フィルムシリーズ効果の着用数 +1</td><td>100%</td><td>Lv30/Lv50/Lv15/Lv5: 30分
 Lv60: 1時間
 Lv70: 1時間30分
 Lv80: 2時間</td><td>Lv30: 4時間
@@ -330,15 +488,49 @@ Lv15: 4時間30分
 Lv5: 5時間</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
 <tr><td>original:160</td><td>朝倉あさみ</td><td>サポーター</td><td>eco</td><td>橙</td><td>電光掲示板を持つでんこ</td><td>needs_manual_review</td><td>def_buff</td><td>target: [&quot;team_all&quot;]
 filters: {&quot;attribute&quot;: &quot;heat&quot;}
+trigger: {&quot;time_window_raw&quot;: &quot;6:00～18:00&quot;}
 activation: いつでもアクティブ
-raw: 発動条件： と がそれぞれ2体ずつ heat属性 eco属性 / 効果：昼間は編成内のDEF増加</td><td>Lv30，DEF +12%，発動率 100%</td><td>Lv50，DEF +14%，発動率 100%</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: {&quot;発動率&quot;: &quot;100%&quot;}</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+raw: 発動条件： と がそれぞれ2体ずつ heat属性 eco属性 / 効果：昼間は編成内のDEF増加 昼間は6:00～18:00</td><td>DEF +12%</td><td>DEF +14%</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
 <tr><td>original:161</td><td>伊川谷さとり</td><td>サポーター</td><td>eco</td><td>緑</td><td>シキねえちゃんの助手です☆</td><td>needs_manual_review</td><td>atk_buff</td><td>target: [&quot;team_all&quot;]
 activation: いつでもアクティブ
-raw: 相手の残りHPが80%以上の場合、編成内のATK増加</td><td>Lv30，ATK +8%，発動率 100%</td><td>Lv50，ATK +10%，発動率 100%</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: {&quot;発動率&quot;: &quot;100%&quot;}</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:162</td><td>福住みぞれ</td><td>サポーター</td><td>cool</td><td>桃</td><td>夏の氷みぞれ・冬のみぞれ鍋</td><td>needs_manual_review</td><td>atk_buff</td><td>target: [&quot;team_all&quot;]
-trigger: {&quot;event_hint&quot;: &quot;access&quot;}
+raw: 相手の残りHPが80%以上の場合、編成内のATK増加</td><td>ATK +8%</td><td>ATK +10%</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:162</td><td>福住みぞれ</td><td>サポーター</td><td>cool</td><td>桃</td><td>夏の氷みぞれ・冬のみぞれ鍋</td><td>needs_manual_review</td><td>atk_buff_1 (atk_buff)</td><td>label: (1)
+role: default_effect
+target: [&quot;team_all&quot;]
 activation: マスターにおまかせ
-raw: アクセスした駅の気温に応じて編成内のATK・DEFを増減 (1)30℃以上 / (2)15℃～25℃ / (3)10℃以下</td><td>Lv30，ATK -20%，発動率 100%，25分，CD 2時間35分</td><td>Lv50，ATK -20%，発動率 100%，30分，CD 2時間30分</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: {&quot;発動率&quot;: &quot;100%&quot;}</td><td>Lv30: 25分
+raw: (1)30℃以上</td><td>ATK +24%</td><td>ATK +28%</td><td>100%</td><td>Lv30: 25分
+Lv50: 30分
+Lv60: 35分
+Lv70: 40分
+Lv80: 45分
+Lv15: 20分
+Lv5: 15分</td><td>Lv30: 2時間35分
+Lv50: 2時間30分
+Lv60: 2時間25分
+Lv70: 2時間20分
+Lv80: 2時間15分
+Lv15: 2時間40分
+Lv5: 2時間45分</td><td>atk_buff_2 (atk_buff)</td><td>label: (2)
+role: supplemental_effect
+target: [&quot;team_all&quot;]
+activation: マスターにおまかせ
+raw: (2)15℃～25℃</td><td>ATK +12%</td><td>ATK +14%</td><td>100%</td><td>Lv30: 25分
+Lv50: 30分
+Lv60: 35分
+Lv70: 40分
+Lv80: 45分
+Lv15: 20分
+Lv5: 15分</td><td>Lv30: 2時間35分
+Lv50: 2時間30分
+Lv60: 2時間25分
+Lv70: 2時間20分
+Lv80: 2時間15分
+Lv15: 2時間40分
+Lv5: 2時間45分</td><td>atk_buff_3 (atk_buff)</td><td>label: (3)
+role: supplemental_effect
+target: [&quot;team_all&quot;]
+activation: マスターにおまかせ
+raw: (3)10℃以下</td><td>ATK -20%</td><td>ATK -20%</td><td>100%</td><td>Lv30: 25分
 Lv50: 30分
 Lv60: 35分
 Lv70: 40分
@@ -353,7 +545,7 @@ Lv15: 2時間40分
 Lv5: 2時間45分</td><td>def_buff</td><td>target: [&quot;team_all&quot;]
 trigger: {&quot;event_hint&quot;: &quot;access&quot;}
 activation: マスターにおまかせ
-raw: アクセスした駅の気温に応じて編成内のATK・DEFを増減 (1)30℃以上 / (2)15℃～25℃ / (3)10℃以下</td><td>Lv30，DEF +24%，発動率 100%，25分，CD 2時間35分</td><td>Lv50，DEF +28%，発動率 100%，30分，CD 2時間30分</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: {&quot;発動率&quot;: &quot;100%&quot;}</td><td>Lv30: 25分
+raw: アクセスした駅の気温に応じて編成内のATK・DEFを増減 (1)30℃以上 / (2)15℃～25℃ / (3)10℃以下</td><td>DEF +24%</td><td>DEF +28%</td><td>100%</td><td>Lv30: 25分
 Lv50: 30分
 Lv60: 35分
 Lv70: 40分
@@ -365,12 +557,12 @@ Lv60: 2時間25分
 Lv70: 2時間20分
 Lv80: 2時間15分
 Lv15: 2時間40分
-Lv5: 2時間45分</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+Lv5: 2時間45分</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
 <tr><td>original:163</td><td>豊橋ちわ</td><td>トリックスター</td><td>heat</td><td>橙</td><td>ちくわの穴を覗いてみれば</td><td>needs_manual_review</td><td>additional_score_gain</td><td>target: [&quot;team_all&quot;]
 filters: {&quot;attribute&quot;: &quot;heat&quot;}
 trigger: {&quot;event_hint&quot;: &quot;access&quot;}
 activation: マスターにおまかせ
-raw: 発動条件：編成内のheat属性でんこがアクセスした / (1)効果時間内に与えた合計ダメージが一定値に到達するとスコア獲得(1回のみ) / (2)(1)発動後、1000ダメージごとに追加でスコア獲得</td><td>Lv30，スコア獲得 1200，発動率 100%，40分，CD 5時間20分</td><td>Lv50，スコア獲得 1400，発動率 100%，45分，CD 5時間15分</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: {&quot;発動率&quot;: &quot;100%&quot;}</td><td>Lv30: 40分
+raw: 発動条件：編成内のheat属性でんこがアクセスした / (1)効果時間内に与えた合計ダメージが一定値に到達するとスコア獲得(1回のみ) / (2)(1)発動後、1000ダメージごとに追加でスコア獲得 発動条件を満たすアクセスのみ集計される</td><td>スコア獲得 1200</td><td>スコア獲得 1400</td><td>100%</td><td>Lv30: 40分
 Lv50: 45分
 Lv60: 50分
 Lv70: 55分
@@ -386,7 +578,7 @@ Lv5: 5時間30分</td><td>score_gain</td><td>target: [&quot;team_all&quot;]
 filters: {&quot;attribute&quot;: &quot;heat&quot;}
 trigger: {&quot;event_hint&quot;: &quot;access&quot;}
 activation: マスターにおまかせ
-raw: 発動条件：編成内のheat属性でんこがアクセスした / (1)効果時間内に与えた合計ダメージが一定値に到達するとスコア獲得(1回のみ) / (2)(1)発動後、1000ダメージごとに追加でスコア獲得</td><td>Lv30，スコア獲得 7000，発動率 100%，40分，CD 5時間20分</td><td>Lv50，スコア獲得 9000，発動率 100%，45分，CD 5時間15分</td><td>Lv30/Lv50/Lv60/Lv70/Lv80/Lv15/Lv5: {&quot;発動率&quot;: &quot;100%&quot;}</td><td>Lv30: 40分
+raw: 発動条件：編成内のheat属性でんこがアクセスした / (1)効果時間内に与えた合計ダメージが一定値に到達するとスコア獲得(1回のみ) / (2)(1)発動後、1000ダメージごとに追加でスコア獲得 発動条件を満たすアクセスのみ集計される</td><td>スコア獲得 7000</td><td>スコア獲得 9000</td><td>100%</td><td>Lv30: 40分
 Lv50: 45分
 Lv60: 50分
 Lv70: 55分
@@ -406,5 +598,5 @@ Lv5: 5時間30分</td><td></td><td></td><td></td><td></td><td></td><td></td><td>
 <li>若同类 review reason 在后续批次重复出现，应优先调整 parser 规则，再考虑 LLM snippet。</li>
 <li>本批次输出用于 Step1 数据读取，不启动 solver。</li>
 </ul>
-<p>generated_at: 2026-06-06T21:36:11.508355+09:00</p>
+<p>generated_at: 2026-06-06T22:02:40.010137+09:00</p>
 </body></html>
