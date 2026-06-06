@@ -226,7 +226,14 @@ def source_meta(url: str, content_hash: str, authority: str, confidence: str = "
     }
 
 
-def parse_list_page(pool: str, url: str, html_text: str) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+def parse_list_page(
+    pool: str,
+    url: str,
+    html_text: str,
+    limit: int | None = 5,
+    id_min: int | None = None,
+    id_max: int | None = None,
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
     root = parse_dom(html_text)
     tables = root.find_all("table")
     records: list[dict[str, Any]] = []
@@ -299,7 +306,17 @@ def parse_list_page(pool: str, url: str, html_text: str) -> tuple[list[dict[str,
             if required_missing:
                 reviews.append(review_item(record, "identity", f"missing required fields: {required_missing}"))
             records.append(record)
-    return records[:5], reviews
+    if id_min is not None or id_max is not None:
+        records = [
+            record
+            for record in records
+            if record["identity"].get("id_number") is not None
+            and (id_min is None or record["identity"]["id_number"] >= id_min)
+            and (id_max is None or record["identity"]["id_number"] <= id_max)
+        ]
+    if limit is not None:
+        records = records[:limit]
+    return records, reviews
 
 
 def review_item(record: dict[str, Any], field_path: str, reason: str) -> dict[str, Any]:
@@ -552,11 +569,12 @@ def skill_level_row_fact(headers: list[str], row: dict[str, str]) -> dict[str, A
     probability = {h: row.get(h, "") for h in headers if "発動率" in h and row.get(h)}
     duration = first_matching_value(row, ["効果時間", "発動時間"])
     cooldown = first_matching_value(row, ["クールタイム", "CD"])
+    effect = row.get("効果") or " ".join(row.get(h, "") for h in headers if h.startswith("効果") and row.get(h))
     return {
         "skill_level": row.get("スキルLv"),
         "denko_level": parse_denko_level(row.get("スキルLv", "")),
         "special_explanation": row.get("コメント"),
-        "effect": row.get("効果"),
+        "effect": effect or None,
         "duration": duration,
         "cooldown": cooldown,
         "probability": probability,
@@ -605,6 +623,7 @@ def build_skill_components(
                     "review_reasons": ["component_semantics_need_review"],
                 },
             )
+            adjust_component_semantics(component, common_text)
             enrich_component_from_value_text(component, parsed["value"].get("source_text"))
             component["values_by_denko_level"][denko_level] = parsed["value"]
     for parsed in parse_probability_boost_components(common_text, values_by_denko_level):
@@ -626,6 +645,7 @@ def build_skill_components(
                 "review_reasons": ["component_semantics_need_review", "vu_probability_modifier"],
             },
         )
+        adjust_component_semantics(component, common_text)
         enrich_component_from_value_text(component, parsed["value"].get("source_text"))
         component["values_by_denko_level"][parsed["denko_level"]] = parsed["value"]
     if components:
@@ -669,17 +689,27 @@ def parse_level_components(common_text: str, row_fact: dict[str, Any]) -> list[d
         components.append(component_value("hp_recovery", row_fact, hp_match.group(0), int(hp_match.group(1)), "percent_hp"))
 
     for kind, pattern, unit in [
-        ("exp_gain", r"経験値付与\s*(\d+)", "flat_exp"),
-        ("fixed_damage", r"固定ダメージ\s*(\d+)", "flat_damage"),
-        ("damage_reduction", r"ダメージ軽減\s*(\d+)", "flat_damage"),
+        ("exp_gain", r"経験値付与\s*([+＋]?\d+)", "flat_exp"),
+        ("additional_fixed_damage", r"追加固定ダメージ\s*([+＋]?\d+)", "flat_damage"),
+        ("fixed_damage", r"(?<!追加)固定ダメージ\s*([+＋]?\d+)", "flat_damage"),
+        ("damage_reduction", r"ダメージ軽減\s*([+＋]?\d+)", "flat_damage"),
+        ("film_series_effect_boost", r"フィルムシリーズ効果の着用数\s*([+＋]\d+)", "count"),
     ]:
         match = re.search(pattern, effect_text)
         if match:
-            components.append(component_value(kind, row_fact, match.group(0), int(match.group(1)), unit))
+            components.append(component_value(kind, row_fact, match.group(0), parse_signed_number(match.group(1)), unit))
+
+    score_matches = list(re.finditer(r"スコア獲得\s*([+＋]?\d+)(?:/駅)?", effect_text))
+    for index, match in enumerate(score_matches):
+        kind = "score_gain" if index == 0 else "additional_score_gain"
+        unit = "score_per_station" if "/駅" in match.group(0) else "score"
+        components.append(component_value(kind, row_fact, match.group(0), parse_signed_number(match.group(1)), unit))
 
     access_match = re.search(r"追加アクセス\s*\+?\s*(\d+)回", text)
     if access_match:
         components.append(component_value("extra_access", row_fact, access_match.group(0), int(access_match.group(1)), "count"))
+    elif "もう1度だけアクセス" in text:
+        components.append(component_value("extra_access", row_fact, "もう1度だけアクセス", 1, "count"))
 
     if "フットバー" in text:
         components.append(component_value("footbar", row_fact, "相手をフットバーすことがある", None, "boolean"))
@@ -738,9 +768,20 @@ def parse_probability_boost_components(
 def enrich_component_from_value_text(component: dict[str, Any], source_text: str | None) -> None:
     if not source_text:
         return
+    target_scope = component.setdefault("target_scope", [])
+    if "編成内" in source_text and not target_scope:
+        target_scope.append("team_all")
     filters = component.setdefault("target_filters", {})
     if "先頭の場合は2両目" in source_text:
         filters["position_exception_raw"] = "自身が先頭の場合は2両目"
+
+
+def adjust_component_semantics(component: dict[str, Any], common_text: str) -> None:
+    if component.get("effect_kind") == "fixed_damage" and (
+        "追加固定ダメージ" in common_text or ("(2)" in common_text and "属性" in common_text)
+    ):
+        filters = component.setdefault("target_filters", {})
+        filters.pop("attribute", None)
 
 
 def component_value(
@@ -784,7 +825,7 @@ def infer_target_scope(text: str, effect_kind: str) -> list[str]:
         return ["front_car"]
     if "相手と自身の編成内" in text:
         return ["opponent_team", "own_team"]
-    if "編成内の全てのでんこ" in text or "編成内でんこ" in text or "編成内のでんこ" in text:
+    if "編成内の全てのでんこ" in text or "編成内でんこ" in text or "編成内のでんこ" in text or "編成内" in text:
         return ["team_all"]
     if "メロ自身" in text or "自身" in text:
         return ["self"]
@@ -804,8 +845,16 @@ def infer_target_filters(text: str, effect_kind: str) -> dict[str, Any]:
     attr_match = re.search(r"(heat|cool|eco|flat)属性", text)
     if attr_match:
         filters["attribute"] = attr_match.group(1)
-    if "サポーター" in text:
-        filters["type"] = "supporter"
+    type_map = {
+        "アタッカー": "attacker",
+        "ディフェンダー": "defender",
+        "サポーター": "supporter",
+        "トリックスター": "trickster",
+    }
+    for raw_type, normalized_type in type_map.items():
+        if raw_type in text:
+            filters["type"] = normalized_type
+            break
     if effect_kind == "skill_disable":
         filters["disabled_skill_target"] = skill_disable_value_raw(text)
     return filters
