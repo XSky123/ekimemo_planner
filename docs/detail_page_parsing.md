@@ -33,3 +33,21 @@ Use screenshots when visual layout matters or when merged cells make text-only r
 - Collapsed regions
 - Multi-effect skills with numbered effects
 
+## Step1 Skill Fact Keys
+
+Current detail-page extraction should first try to populate these fact keys:
+
+- `trigger_condition`: raw Japanese trigger condition from `発動条件` or `発動条件・効果`.
+- `effect_summary`: raw Japanese effect summary from `効果` or `発動条件・効果`.
+- `activation_type`: raw Japanese `アクティベーションタイプ`.
+- `skill_remarks`: raw Japanese `備考`.
+- `lv50.skill_level`: raw Japanese skill level row label, normally `Lv.4 (でんこLv.50)`.
+- `lv50.special_explanation`: raw Japanese `コメント` at denko level 50.
+- `lv50.effect`: raw Japanese `効果` at denko level 50.
+- `lv50.duration`: raw Japanese `効果時間` or `発動時間` at denko level 50.
+- `lv50.cooldown`: raw Japanese `クールタイム` or `CD` at denko level 50.
+- `lv50.probability`: all raw Japanese columns whose header contains `発動率`.
+- `lv50.raw_row`: full expanded raw row for manual review.
+- `key_level_stats`: AP/HP/Exp at levels `15`, `30`, `50`, `60`, `70`, and `80`.
+
+Keep `lv50` as `null` when the page has no standard skill-level row or the template is special. Keep `key_level_stats` empty when no reliable AP/HP table is found.

@@ -385,16 +385,22 @@ def build_skill_fact_records(records: list[dict[str, Any]]) -> list[dict[str, An
     for record in records:
         ident = record["identity"]
         detail = record.get("detail_page_probe", {})
+        skill_detail = extract_skill_detail(record)
+        key_level_stats = extract_key_level_stats(record)
+        review_reasons = []
+        if not skill_detail.get("lv50"):
+            review_reasons.append("lv50_skill_row_not_found")
+        if not key_level_stats:
+            review_reasons.append("key_level_stats_not_found")
+        review_reasons.append("sample_parse_needs_human_review")
         meta = source_meta(
             detail.get("source_url") or ident.get("detail_url"),
             detail.get("detail_hash"),
             "detail_page",
-            "low",
+            "medium" if skill_detail else "low",
         )
-        meta["review_reasons"] = [
-            "sample_detail_probe_only",
-            "full_skill_fact_not_extracted",
-        ]
+        meta["needs_review"] = True
+        meta["review_reasons"] = review_reasons
         rows.append(
             {
                 "record_meta": meta,
@@ -403,16 +409,160 @@ def build_skill_fact_records(records: list[dict[str, Any]]) -> list[dict[str, An
                 "pool": ident["pool"],
                 "skill_name": record.get("list_page_fields", {}).get("skill_name"),
                 "detail_url": ident.get("detail_url"),
+                "trigger_condition": skill_detail.get("trigger_condition"),
+                "activation_type": skill_detail.get("activation_type"),
+                "skill_remarks": skill_detail.get("skill_remarks"),
+                "effect_summary": skill_detail.get("effect_summary"),
+                "lv50": skill_detail.get("lv50"),
+                "key_level_stats": key_level_stats,
+                "source_tables": skill_detail.get("source_tables"),
                 "skill_table_candidates": detail.get("skill_like_tables", []),
-                "note_zh": "样本阶段只探测详情页技能相关表格，尚未确认完整 skill_fact。",
+                "note_zh": "样本阶段已抽取核心技能字段和关键 AP/HP 节点，仍需人工复核复杂表格。",
             }
         )
     return rows
 
 
+def table_dicts(matrix: list[list[dict[str, Any]]]) -> tuple[list[str], list[dict[str, str]]]:
+    if not matrix:
+        return [], []
+    headers = [cell["text"] for cell in matrix[0]]
+    rows: list[dict[str, str]] = []
+    for row in matrix[1:]:
+        item: dict[str, str] = {}
+        for i, header in enumerate(headers):
+            if not header:
+                header = f"column_{i}"
+            item[header] = row[i]["text"] if i < len(row) else ""
+        rows.append(item)
+    return headers, rows
+
+
+def find_detail_tables(record: dict[str, Any]) -> list[tuple[int, list[str], list[dict[str, str]]]]:
+    ident = record["identity"]
+    raw_path = RAW_DIR / f"sample_detail_{ident['denko_id'].replace(':', '_')}.html"
+    if not raw_path.exists():
+        return []
+    root = parse_dom(raw_path.read_text(encoding="utf-8", errors="replace"))
+    found = []
+    for i, table in enumerate(root.find_all("table")):
+        headers, rows = table_dicts(expand_table(table))
+        if headers:
+            found.append((i, headers, rows))
+    return found
+
+
+def extract_skill_detail(record: dict[str, Any]) -> dict[str, Any]:
+    tables = find_detail_tables(record)
+    condition_table = None
+    skill_level_table = None
+    for table_index, headers, rows in tables:
+        header_text = " ".join(headers)
+        if not condition_table and "アクティベーションタイプ" in header_text and any(h in header_text for h in ["発動条件", "発動条件・効果", "効果"]):
+            condition_table = (table_index, headers, rows)
+        if not skill_level_table and "スキルLv" in header_text and any("でんこLv" in (row.get("スキルLv", "") or "") for row in rows):
+            skill_level_table = (table_index, headers, rows)
+    if not condition_table and not skill_level_table:
+        return {}
+
+    trigger_condition = None
+    activation_type = None
+    skill_remarks = None
+    effect_summary = None
+    condition_table_index = None
+    if condition_table:
+        condition_table_index, headers, rows = condition_table
+        if rows:
+            trigger_condition = join_unique_values(rows, ["発動条件"])
+            combined_condition_effect = join_unique_values(rows, ["発動条件・効果"])
+            if not trigger_condition:
+                trigger_condition = combined_condition_effect
+            effect_summary = join_unique_values(rows, ["効果"]) or combined_condition_effect
+            activation_type = join_unique_values(rows, ["アクティベーションタイプ"])
+            skill_remarks = join_unique_values(rows, ["備考"])
+
+    lv50 = None
+    skill_level_table_index = None
+    if skill_level_table:
+        skill_level_table_index, headers, rows = skill_level_table
+        candidates = [row for row in rows if re.search(r"でんこLv\.?\s*50", row.get("スキルLv", ""))]
+        if not candidates:
+            candidates = [row for row in rows if row.get("スキルLv", "").startswith("Lv.4")]
+        if candidates:
+            row = candidates[0]
+            probability = {h: row.get(h, "") for h in headers if "発動率" in h and row.get(h)}
+            duration = first_matching_value(row, ["効果時間", "発動時間"])
+            cooldown = first_matching_value(row, ["クールタイム", "CD"])
+            lv50 = {
+                "skill_level": row.get("スキルLv"),
+                "special_explanation": row.get("コメント"),
+                "effect": row.get("効果"),
+                "duration": duration,
+                "cooldown": cooldown,
+                "probability": probability,
+                "raw_row": row,
+            }
+
+    return {
+        "trigger_condition": trigger_condition,
+        "activation_type": activation_type,
+        "skill_remarks": skill_remarks,
+        "effect_summary": effect_summary,
+        "lv50": lv50,
+        "source_tables": {
+            "condition_table_index": condition_table_index,
+            "skill_level_table_index": skill_level_table_index,
+        },
+    }
+
+
+def first_matching_value(row: dict[str, str], names: list[str]) -> str | None:
+    for name in names:
+        for key, value in row.items():
+            if name in key and value:
+                return value
+    return None
+
+
+def join_unique_values(rows: list[dict[str, str]], keys: list[str]) -> str | None:
+    values: list[str] = []
+    for row in rows:
+        for key in keys:
+            value = row.get(key)
+            if value and value not in values:
+                values.append(value)
+    return " / ".join(values) if values else None
+
+
+def extract_key_level_stats(record: dict[str, Any]) -> dict[str, dict[str, str]]:
+    target_levels = {"15", "30", "50", "60", "70", "80"}
+    best: tuple[int, list[dict[str, str]]] | None = None
+    for table_index, headers, rows in find_detail_tables(record):
+        if {"Lv", "AP", "HP"}.issubset(set(headers)):
+            if not best or len(rows) > len(best[1]):
+                best = (table_index, rows)
+    if not best:
+        return {}
+    table_index, rows = best
+    out: dict[str, dict[str, str]] = {}
+    for row in rows:
+        lv = row.get("Lv")
+        if lv in target_levels:
+            out[lv] = {
+                "AP": row.get("AP", ""),
+                "HP": row.get("HP", ""),
+                "Exp": row.get("Exp", ""),
+                "source_table_index": str(table_index),
+            }
+    return out
+
+
 def build_skill_review_items(skill_rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
     reviews: list[dict[str, Any]] = []
     for row in skill_rows:
+        reason = "sample skill fact needs human review"
+        if not row.get("lv50"):
+            reason = "Lv50 skill row not found or not applicable"
         reviews.append(
             {
                 "record_meta": row["record_meta"],
@@ -423,7 +573,7 @@ def build_skill_review_items(skill_rows: list[dict[str, Any]]) -> list[dict[str,
                     "detail_url": row["detail_url"],
                 },
                 "field_path": "skill_fact",
-                "reason": "sample probe did not fully extract trigger/target/effect/values yet",
+                "reason": reason,
                 "severity": "info",
                 "evidence": {
                     "source_section": "detail_page_probe",
@@ -474,12 +624,13 @@ def write_report(records: list[dict[str, Any]], skill_rows: list[dict[str, Any]]
     for pool in ("original", "extra"):
         lines.append(f"  <h3>{esc(pool)}</h3>")
         lines.append("  <table>")
-        lines.append("    <thead><tr><th>denko_id</th><th>wiki_no</th><th>name</th><th>type</th><th>attribute</th><th>color</th><th>skill_name</th><th>VU</th><th>detail tables</th><th>detail rowspan/colspan</th></tr></thead>")
+        lines.append("    <thead><tr><th>denko_id</th><th>wiki_no</th><th>name</th><th>type</th><th>attribute</th><th>color</th><th>skill_name</th><th>VU</th><th>effect summary</th><th>Lv50 effect</th><th>activation</th><th>condition</th><th>duration</th><th>CD</th><th>probability</th><th>remarks</th></tr></thead>")
         lines.append("    <tbody>")
         for record in [r for r in records if r["identity"]["pool"] == pool]:
             ident = record["identity"]
             fields = record["list_page_fields"]
-            detail = record.get("detail_page_probe", {})
+            skill = next((s for s in skill_rows if s["denko_id"] == ident["denko_id"]), {})
+            lv50 = skill.get("lv50") or {}
             lines.append(
                 "      <tr>"
                 f"<td>{esc(ident['denko_id'])}</td>"
@@ -490,8 +641,39 @@ def write_report(records: list[dict[str, Any]], skill_rows: list[dict[str, Any]]
                 f"<td>{esc(ident.get('color'))}</td>"
                 f"<td>{esc(fields.get('skill_name'))}</td>"
                 f"<td>{esc(fields.get('vu_marker'))}</td>"
-                f"<td>{esc(detail.get('table_count', ''))}</td>"
-                f"<td>{esc(detail.get('rowspan_count', ''))}/{esc(detail.get('colspan_count', ''))}</td>"
+                f"<td>{esc(skill.get('effect_summary'))}</td>"
+                f"<td>{esc(lv50.get('effect'))}</td>"
+                f"<td>{esc(skill.get('activation_type'))}</td>"
+                f"<td>{esc(skill.get('trigger_condition'))}</td>"
+                f"<td>{esc(lv50.get('duration'))}</td>"
+                f"<td>{esc(lv50.get('cooldown'))}</td>"
+                f"<td>{esc(json.dumps(lv50.get('probability'), ensure_ascii=False) if lv50.get('probability') else '')}</td>"
+                f"<td>{esc(skill.get('skill_remarks'))}</td>"
+                "</tr>"
+            )
+        lines.append("    </tbody>")
+        lines.append("  </table>")
+    lines.append("  <h2>关键 AP/HP 节点</h2>")
+    for pool in ("original", "extra"):
+        lines.append(f"  <h3>{esc(pool)}</h3>")
+        lines.append("  <table>")
+        lines.append("    <thead><tr><th>denko_id</th><th>name</th><th>Lv15</th><th>Lv30</th><th>Lv50</th><th>Lv60</th><th>Lv70</th><th>Lv80</th></tr></thead>")
+        lines.append("    <tbody>")
+        for skill in [s for s in skill_rows if s["pool"] == pool]:
+            nodes = skill.get("key_level_stats", {})
+            def cell(lv: str) -> str:
+                node = nodes.get(lv)
+                return f"AP {node.get('AP')} / HP {node.get('HP')}" if node else ""
+            lines.append(
+                "      <tr>"
+                f"<td>{esc(skill['denko_id'])}</td>"
+                f"<td>{esc(skill['name'])}</td>"
+                f"<td>{esc(cell('15'))}</td>"
+                f"<td>{esc(cell('30'))}</td>"
+                f"<td>{esc(cell('50'))}</td>"
+                f"<td>{esc(cell('60'))}</td>"
+                f"<td>{esc(cell('70'))}</td>"
+                f"<td>{esc(cell('80'))}</td>"
                 "</tr>"
             )
         lines.append("    </tbody>")
@@ -502,8 +684,8 @@ def write_report(records: list[dict[str, Any]], skill_rows: list[dict[str, Any]]
             "  <ul>",
             "    <li>ID 映射可从列表页稳定抽取：Original 规范化为 <code>original:NNN</code>，Extra 规范化为 <code>extra:NNN</code>。</li>",
             "    <li>Original 样本中 No.1 起的 <code>備考</code> 使用了继承单元格，证明 table matrix 展开是必要的。</li>",
-            "    <li>详情页探测记录了 table 数量、rowspan/colspan 数量和技能相关表格摘要；这一步只做证据探测，不把未复核字段当最终技能事实。</li>",
-            f"    <li>skill_fact 样本条目数：{len(skill_rows)}，全部标记为 low confidence / needs_review，因为尚未完整抽取 trigger、target、effect、values。</li>",
+            "    <li>详情页技能表已抽取 Lv50 効果、特殊条件、アクティベーションタイプ、効果時間、CD、発動率、備考；仍需人工复核复杂模板。</li>",
+            f"    <li>skill_fact 样本条目数：{len(skill_rows)}，当前标记为 needs_review，以便确认复杂表格和特殊模板。</li>",
             "    <li>本次没有启动 solver，也没有导入推荐页 prior 或 observed team case。</li>",
             f"    <li>review_queue 条目数：{len(reviews)}。</li>",
             "  </ul>",

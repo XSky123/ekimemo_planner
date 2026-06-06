@@ -27,6 +27,8 @@ Important rules:
 - Observed teams/screenshots are case/calibration-only.
 - LLM only receives the smallest ambiguous Japanese snippet.
 - Stop after every 30 parsed denko records for periodic key/schema review.
+- Default human-facing reports are exported as HTML under `data/reports/`.
+- Every 30 parsed denko records, review whether the current keys still fit skill templates before continuing.
 
 Outputs:
 
@@ -36,3 +38,4 @@ Outputs:
 - `data/records/observed_team_cases.jsonl`
 - `data/indexes/denko_index.json`
 - `data/review_queue/review_queue.jsonl`
+- `data/reports/*.html`
