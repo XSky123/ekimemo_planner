@@ -380,6 +380,67 @@ def enrich_details(records: list[dict[str, Any]], reviews: list[dict[str, Any]])
             record["identity"]["full_name"] = summary["detail_title"]
 
 
+def build_skill_fact_records(records: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+    for record in records:
+        ident = record["identity"]
+        detail = record.get("detail_page_probe", {})
+        meta = source_meta(
+            detail.get("source_url") or ident.get("detail_url"),
+            detail.get("detail_hash"),
+            "detail_page",
+            "low",
+        )
+        meta["review_reasons"] = [
+            "sample_detail_probe_only",
+            "full_skill_fact_not_extracted",
+        ]
+        rows.append(
+            {
+                "record_meta": meta,
+                "denko_id": ident["denko_id"],
+                "name": ident["name"],
+                "pool": ident["pool"],
+                "skill_name": record.get("list_page_fields", {}).get("skill_name"),
+                "detail_url": ident.get("detail_url"),
+                "skill_table_candidates": detail.get("skill_like_tables", []),
+                "note_zh": "样本阶段只探测详情页技能相关表格，尚未确认完整 skill_fact。",
+            }
+        )
+    return rows
+
+
+def build_skill_review_items(skill_rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    reviews: list[dict[str, Any]] = []
+    for row in skill_rows:
+        reviews.append(
+            {
+                "record_meta": row["record_meta"],
+                "review_id": f"sample-{row['denko_id']}-skill_fact",
+                "entity_ref": {
+                    "denko_id": row["denko_id"],
+                    "name": row["name"],
+                    "detail_url": row["detail_url"],
+                },
+                "field_path": "skill_fact",
+                "reason": "sample probe did not fully extract trigger/target/effect/values yet",
+                "severity": "info",
+                "evidence": {
+                    "source_section": "detail_page_probe",
+                    "table_index": None,
+                    "row_index": None,
+                    "column_name": None,
+                    "raw_html_snippet": None,
+                    "text_snippet": None,
+                    "screenshot_path": None,
+                    "cell_origin_by_column": {},
+                },
+                "status": "open",
+            }
+        )
+    return reviews
+
+
 def write_jsonl(path: Path, rows: list[dict[str, Any]]) -> None:
     path.write_text(
         "".join(json.dumps(row, ensure_ascii=False, sort_keys=True) + "\n" for row in rows),
@@ -387,7 +448,7 @@ def write_jsonl(path: Path, rows: list[dict[str, Any]]) -> None:
     )
 
 
-def write_report(records: list[dict[str, Any]], reviews: list[dict[str, Any]]) -> None:
+def write_report(records: list[dict[str, Any]], skill_rows: list[dict[str, Any]], reviews: list[dict[str, Any]]) -> None:
     def esc(value: Any) -> str:
         return html.escape("" if value is None else str(value))
 
@@ -442,12 +503,14 @@ def write_report(records: list[dict[str, Any]], reviews: list[dict[str, Any]]) -
             "    <li>ID 映射可从列表页稳定抽取：Original 规范化为 <code>original:NNN</code>，Extra 规范化为 <code>extra:NNN</code>。</li>",
             "    <li>Original 样本中 No.1 起的 <code>備考</code> 使用了继承单元格，证明 table matrix 展开是必要的。</li>",
             "    <li>详情页探测记录了 table 数量、rowspan/colspan 数量和技能相关表格摘要；这一步只做证据探测，不把未复核字段当最终技能事实。</li>",
+            f"    <li>skill_fact 样本条目数：{len(skill_rows)}，全部标记为 low confidence / needs_review，因为尚未完整抽取 trigger、target、effect、values。</li>",
             "    <li>本次没有启动 solver，也没有导入推荐页 prior 或 observed team case。</li>",
             f"    <li>review_queue 条目数：{len(reviews)}。</li>",
             "  </ul>",
             "  <h2>输出文件</h2>",
             "  <ul>",
             "    <li><code>data/records/sample_first5_denko_facts.jsonl</code></li>",
+            "    <li><code>data/records/sample_first5_skill_facts.jsonl</code></li>",
             "    <li><code>data/indexes/sample_first5_denko_index.json</code></li>",
             "    <li><code>data/review_queue/sample_first5_review_queue.jsonl</code></li>",
             "    <li><code>data/reports/sample_first5_report_zh.html</code></li>",
@@ -477,6 +540,9 @@ def main() -> int:
         all_records.extend(records)
         all_reviews.extend(reviews)
 
+    skill_rows = build_skill_fact_records(all_records)
+    all_reviews.extend(build_skill_review_items(skill_rows))
+
     index = {
         "schema_version": 1,
         "parser_version": PARSER_VERSION,
@@ -494,13 +560,14 @@ def main() -> int:
         ],
     }
     write_jsonl(RECORD_DIR / "sample_first5_denko_facts.jsonl", all_records)
+    write_jsonl(RECORD_DIR / "sample_first5_skill_facts.jsonl", skill_rows)
     write_jsonl(REVIEW_DIR / "sample_first5_review_queue.jsonl", all_reviews)
     (INDEX_DIR / "sample_first5_denko_index.json").write_text(
         json.dumps(index, ensure_ascii=False, indent=2, sort_keys=True),
         encoding="utf-8",
     )
-    write_report(all_records, all_reviews)
-    print(json.dumps({"records": len(all_records), "reviews": len(all_reviews)}, ensure_ascii=False))
+    write_report(all_records, skill_rows, all_reviews)
+    print(json.dumps({"denko_records": len(all_records), "skill_records": len(skill_rows), "reviews": len(all_reviews)}, ensure_ascii=False))
     return 0
 
 

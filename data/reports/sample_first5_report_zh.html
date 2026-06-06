@@ -42,12 +42,14 @@
     <li>ID 映射可从列表页稳定抽取：Original 规范化为 <code>original:NNN</code>，Extra 规范化为 <code>extra:NNN</code>。</li>
     <li>Original 样本中 No.1 起的 <code>備考</code> 使用了继承单元格，证明 table matrix 展开是必要的。</li>
     <li>详情页探测记录了 table 数量、rowspan/colspan 数量和技能相关表格摘要；这一步只做证据探测，不把未复核字段当最终技能事实。</li>
+    <li>skill_fact 样本条目数：10，全部标记为 low confidence / needs_review，因为尚未完整抽取 trigger、target、effect、values。</li>
     <li>本次没有启动 solver，也没有导入推荐页 prior 或 observed team case。</li>
-    <li>review_queue 条目数：0。</li>
+    <li>review_queue 条目数：10。</li>
   </ul>
   <h2>输出文件</h2>
   <ul>
     <li><code>data/records/sample_first5_denko_facts.jsonl</code></li>
+    <li><code>data/records/sample_first5_skill_facts.jsonl</code></li>
     <li><code>data/indexes/sample_first5_denko_index.json</code></li>
     <li><code>data/review_queue/sample_first5_review_queue.jsonl</code></li>
     <li><code>data/reports/sample_first5_report_zh.html</code></li>
