@@ -401,6 +401,9 @@ def build_skill_fact_records(records: list[dict[str, Any]]) -> list[dict[str, An
         )
         meta["needs_review"] = True
         meta["review_reasons"] = review_reasons
+        normalized_skill = skill_detail.get("normalized_skill")
+        lv50 = skill_detail.get("lv50")
+        values_by_denko_level = skill_detail.get("values_by_denko_level")
         rows.append(
             {
                 "record_meta": meta,
@@ -413,10 +416,13 @@ def build_skill_fact_records(records: list[dict[str, Any]]) -> list[dict[str, An
                 "activation_type": skill_detail.get("activation_type"),
                 "skill_remarks": skill_detail.get("skill_remarks"),
                 "effect_summary": skill_detail.get("effect_summary"),
-                "lv50": skill_detail.get("lv50"),
+                "normalized_skill": normalized_skill,
+                "lv50": lv50,
+                "values_by_denko_level": values_by_denko_level,
                 "key_level_stats": key_level_stats,
                 "source_tables": skill_detail.get("source_tables"),
                 "skill_table_candidates": detail.get("skill_like_tables", []),
+                "summary_zh": build_summary_zh(normalized_skill, lv50, values_by_denko_level),
                 "note_zh": "样本阶段已抽取核心技能字段和关键 AP/HP 节点，仍需人工复核复杂表格。",
             }
         )
@@ -482,33 +488,29 @@ def extract_skill_detail(record: dict[str, Any]) -> dict[str, Any]:
             skill_remarks = join_unique_values(rows, ["備考"])
 
     lv50 = None
+    values_by_denko_level: dict[str, dict[str, Any]] = {}
     skill_level_table_index = None
     if skill_level_table:
         skill_level_table_index, headers, rows = skill_level_table
+        for row in rows:
+            denko_level = parse_denko_level(row.get("スキルLv", ""))
+            if not denko_level:
+                continue
+            values_by_denko_level[denko_level] = skill_level_row_fact(headers, row)
         candidates = [row for row in rows if re.search(r"でんこLv\.?\s*50", row.get("スキルLv", ""))]
         if not candidates:
             candidates = [row for row in rows if row.get("スキルLv", "").startswith("Lv.4")]
         if candidates:
-            row = candidates[0]
-            probability = {h: row.get(h, "") for h in headers if "発動率" in h and row.get(h)}
-            duration = first_matching_value(row, ["効果時間", "発動時間"])
-            cooldown = first_matching_value(row, ["クールタイム", "CD"])
-            lv50 = {
-                "skill_level": row.get("スキルLv"),
-                "special_explanation": row.get("コメント"),
-                "effect": row.get("効果"),
-                "duration": duration,
-                "cooldown": cooldown,
-                "probability": probability,
-                "raw_row": row,
-            }
+            lv50 = skill_level_row_fact(headers, candidates[0])
 
     return {
         "trigger_condition": trigger_condition,
         "activation_type": activation_type,
         "skill_remarks": skill_remarks,
         "effect_summary": effect_summary,
+        "normalized_skill": normalize_skill_semantics(trigger_condition, effect_summary, activation_type, values_by_denko_level),
         "lv50": lv50,
+        "values_by_denko_level": values_by_denko_level,
         "source_tables": {
             "condition_table_index": condition_table_index,
             "skill_level_table_index": skill_level_table_index,
@@ -522,6 +524,147 @@ def first_matching_value(row: dict[str, str], names: list[str]) -> str | None:
             if name in key and value:
                 return value
     return None
+
+
+def parse_denko_level(skill_level: str) -> str | None:
+    match = re.search(r"でんこLv\.?\s*(\d+)", skill_level)
+    return match.group(1) if match else None
+
+
+def skill_level_row_fact(headers: list[str], row: dict[str, str]) -> dict[str, Any]:
+    probability = {h: row.get(h, "") for h in headers if "発動率" in h and row.get(h)}
+    duration = first_matching_value(row, ["効果時間", "発動時間"])
+    cooldown = first_matching_value(row, ["クールタイム", "CD"])
+    return {
+        "skill_level": row.get("スキルLv"),
+        "denko_level": parse_denko_level(row.get("スキルLv", "")),
+        "special_explanation": row.get("コメント"),
+        "effect": row.get("効果"),
+        "duration": duration,
+        "cooldown": cooldown,
+        "probability": probability,
+        "raw_row": row,
+    }
+
+
+def normalize_skill_semantics(
+    trigger_condition: str | None,
+    effect_summary: str | None,
+    activation_type: str | None,
+    values_by_denko_level: dict[str, dict[str, Any]],
+) -> dict[str, Any]:
+    text = " ".join(value for value in [trigger_condition, effect_summary] if value)
+    effect_kind: list[str] = []
+    target_scope: list[str] = []
+    trigger: dict[str, Any] = {}
+    confidence = "low"
+    review_reasons: list[str] = []
+
+    if "HPを回復" in text or "回復" in text:
+        effect_kind.append("hp_recovery")
+    if "フットバー" in text:
+        effect_kind.append("footbar")
+    if "DEF" in text:
+        effect_kind.append("def_modifier")
+    if "追加アクセス" in text:
+        effect_kind.append("extra_access")
+    if "スキル無効化" in text:
+        effect_kind.append("skill_disable")
+    if "経験値" in text:
+        effect_kind.append("exp_gain")
+    if "固定ダメージ" in text:
+        effect_kind.append("fixed_damage")
+    if "ダメージ軽減" in text:
+        effect_kind.append("damage_reduction")
+    if "思い出しアクセス" in text:
+        effect_kind.append("memory_access_boost")
+
+    if "編成内でんこ" in text or "編成内のでんこ" in text or "編成内の全てのでんこ" in text:
+        target_scope.append("team_all")
+    elif "自身" in text or "自分" in text:
+        target_scope.append("self")
+
+    hp_threshold = re.search(r"HPが(\d+)%以下", text)
+    if hp_threshold:
+        trigger["hp_threshold_percent"] = int(hp_threshold.group(1))
+        trigger["operator"] = "lte"
+
+    if "マスターにおまかせ" in (activation_type or ""):
+        activation_mode = "passive_auto"
+    elif "いつでもアクティブ" in (activation_type or ""):
+        activation_mode = "always_active"
+    else:
+        activation_mode = None
+        review_reasons.append("unknown_activation_type")
+
+    if effect_kind and (target_scope or trigger):
+        confidence = "medium"
+    else:
+        review_reasons.append("semantic_rule_not_enough")
+
+    return {
+        "effect_kind": effect_kind,
+        "target_scope": target_scope,
+        "trigger": trigger,
+        "activation_mode": activation_mode,
+        "confidence": confidence,
+        "review_reasons": review_reasons,
+        "available_denko_levels": sorted(values_by_denko_level.keys(), key=lambda x: int(x)),
+    }
+
+
+def build_summary_zh(
+    normalized_skill: dict[str, Any] | None,
+    lv50: dict[str, Any] | None,
+    values_by_denko_level: dict[str, dict[str, Any]] | None,
+) -> str | None:
+    if not normalized_skill:
+        return None
+    effect_labels = {
+        "hp_recovery": "HP回复",
+        "footbar": "フットバー",
+        "def_modifier": "DEF变化",
+        "extra_access": "追加访问",
+        "skill_disable": "技能无效化",
+        "exp_gain": "经验值获得",
+        "fixed_damage": "固定伤害",
+        "damage_reduction": "伤害减轻",
+        "memory_access_boost": "思い出しアクセス强化",
+    }
+    target_labels = {
+        "team_all": "编成内全员",
+        "self": "自身",
+    }
+    parts = []
+    effect_kind = normalized_skill.get("effect_kind") or []
+    if effect_kind:
+        parts.append("技能：" + "、".join(effect_labels.get(kind, kind) for kind in effect_kind))
+    trigger = normalized_skill.get("trigger") or {}
+    if trigger.get("hp_threshold_percent") is not None:
+        parts.append(f"条件：HP{trigger['hp_threshold_percent']}%以下")
+    target_scope = normalized_skill.get("target_scope") or []
+    if target_scope:
+        parts.append("对象：" + "、".join(target_labels.get(target, target) for target in target_scope))
+    if lv50:
+        parts.append("Lv50：" + compact_skill_level_zh(lv50))
+    lv60 = (values_by_denko_level or {}).get("60")
+    if lv60:
+        parts.append("Lv60：" + compact_skill_level_zh(lv60))
+    return "；".join(parts) if parts else None
+
+
+def compact_skill_level_zh(row: dict[str, Any]) -> str:
+    parts = []
+    if row.get("effect"):
+        parts.append(row["effect"])
+    probability = row.get("probability") or {}
+    if probability:
+        parts.append("，".join(f"{key} {value}" for key, value in probability.items()))
+    if row.get("duration"):
+        parts.append(row["duration"])
+    if row.get("cooldown"):
+        parts.append(f"CD {row['cooldown']}")
+    return "，".join(parts)
 
 
 def join_unique_values(rows: list[dict[str, str]], keys: list[str]) -> str | None:
@@ -624,13 +767,14 @@ def write_report(records: list[dict[str, Any]], skill_rows: list[dict[str, Any]]
     for pool in ("original", "extra"):
         lines.append(f"  <h3>{esc(pool)}</h3>")
         lines.append("  <table>")
-        lines.append("    <thead><tr><th>denko_id</th><th>wiki_no</th><th>name</th><th>type</th><th>attribute</th><th>color</th><th>skill_name</th><th>VU</th><th>effect summary</th><th>Lv50 effect</th><th>activation</th><th>condition</th><th>duration</th><th>CD</th><th>probability</th><th>remarks</th></tr></thead>")
+        lines.append("    <thead><tr><th>denko_id</th><th>wiki_no</th><th>name</th><th>type</th><th>attribute</th><th>color</th><th>skill_name</th><th>VU</th><th>summary_zh</th><th>effect kind</th><th>target</th><th>trigger</th><th>effect summary</th><th>Lv50 effect</th><th>activation</th><th>condition</th><th>duration</th><th>CD</th><th>probability</th><th>remarks</th></tr></thead>")
         lines.append("    <tbody>")
         for record in [r for r in records if r["identity"]["pool"] == pool]:
             ident = record["identity"]
             fields = record["list_page_fields"]
             skill = next((s for s in skill_rows if s["denko_id"] == ident["denko_id"]), {})
             lv50 = skill.get("lv50") or {}
+            normalized = skill.get("normalized_skill") or {}
             lines.append(
                 "      <tr>"
                 f"<td>{esc(ident['denko_id'])}</td>"
@@ -641,6 +785,10 @@ def write_report(records: list[dict[str, Any]], skill_rows: list[dict[str, Any]]
                 f"<td>{esc(ident.get('color'))}</td>"
                 f"<td>{esc(fields.get('skill_name'))}</td>"
                 f"<td>{esc(fields.get('vu_marker'))}</td>"
+                f"<td>{esc(skill.get('summary_zh'))}</td>"
+                f"<td>{esc(', '.join(normalized.get('effect_kind') or []))}</td>"
+                f"<td>{esc(', '.join(normalized.get('target_scope') or []))}</td>"
+                f"<td>{esc(json.dumps(normalized.get('trigger') or {}, ensure_ascii=False))}</td>"
                 f"<td>{esc(skill.get('effect_summary'))}</td>"
                 f"<td>{esc(lv50.get('effect'))}</td>"
                 f"<td>{esc(skill.get('activation_type'))}</td>"
@@ -649,6 +797,43 @@ def write_report(records: list[dict[str, Any]], skill_rows: list[dict[str, Any]]
                 f"<td>{esc(lv50.get('cooldown'))}</td>"
                 f"<td>{esc(json.dumps(lv50.get('probability'), ensure_ascii=False) if lv50.get('probability') else '')}</td>"
                 f"<td>{esc(skill.get('skill_remarks'))}</td>"
+                "</tr>"
+            )
+        lines.append("    </tbody>")
+        lines.append("  </table>")
+    lines.append("  <h2>技能等级值</h2>")
+    for pool in ("original", "extra"):
+        lines.append(f"  <h3>{esc(pool)}</h3>")
+        lines.append("  <table>")
+        lines.append("    <thead><tr><th>denko_id</th><th>name</th><th>Lv50</th><th>Lv60</th><th>Lv70</th><th>Lv80</th><th>Lv92</th><th>Lv96</th><th>Lv100</th></tr></thead>")
+        lines.append("    <tbody>")
+        for skill in [s for s in skill_rows if s["pool"] == pool]:
+            values = skill.get("values_by_denko_level", {})
+            def skill_cell(lv: str) -> str:
+                row = values.get(lv)
+                if not row:
+                    return ""
+                parts = []
+                if row.get("effect"):
+                    parts.append(row["effect"])
+                if row.get("probability"):
+                    parts.append(json.dumps(row["probability"], ensure_ascii=False))
+                if row.get("duration"):
+                    parts.append(f"time {row['duration']}")
+                if row.get("cooldown"):
+                    parts.append(f"CD {row['cooldown']}")
+                return " / ".join(parts)
+            lines.append(
+                "      <tr>"
+                f"<td>{esc(skill['denko_id'])}</td>"
+                f"<td>{esc(skill['name'])}</td>"
+                f"<td>{esc(skill_cell('50'))}</td>"
+                f"<td>{esc(skill_cell('60'))}</td>"
+                f"<td>{esc(skill_cell('70'))}</td>"
+                f"<td>{esc(skill_cell('80'))}</td>"
+                f"<td>{esc(skill_cell('92'))}</td>"
+                f"<td>{esc(skill_cell('96'))}</td>"
+                f"<td>{esc(skill_cell('100'))}</td>"
                 "</tr>"
             )
         lines.append("    </tbody>")

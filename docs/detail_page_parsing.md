@@ -41,6 +41,7 @@ Current detail-page extraction should first try to populate these fact keys:
 - `effect_summary`: raw Japanese effect summary from `効果` or `発動条件・効果`.
 - `activation_type`: raw Japanese `アクティベーションタイプ`.
 - `skill_remarks`: raw Japanese `備考`.
+- `normalized_skill`: derived semantic hints for solver use, for example effect kind, target scope, HP threshold, and activation mode.
 - `lv50.skill_level`: raw Japanese skill level row label, normally `Lv.4 (でんこLv.50)`.
 - `lv50.special_explanation`: raw Japanese `コメント` at denko level 50.
 - `lv50.effect`: raw Japanese `効果` at denko level 50.
@@ -48,6 +49,7 @@ Current detail-page extraction should first try to populate these fact keys:
 - `lv50.cooldown`: raw Japanese `クールタイム` or `CD` at denko level 50.
 - `lv50.probability`: all raw Japanese columns whose header contains `発動率`.
 - `lv50.raw_row`: full expanded raw row for manual review.
+- `values_by_denko_level`: all expanded skill-level rows keyed by denko level. This prevents confusing `でんこLv.50` with nearby rows such as `でんこLv.60`.
 - `key_level_stats`: AP/HP/Exp at levels `15`, `30`, `50`, `60`, `70`, and `80`.
 
 Keep `lv50` as `null` when the page has no standard skill-level row or the template is special. Keep `key_level_stats` empty when no reliable AP/HP table is found.
