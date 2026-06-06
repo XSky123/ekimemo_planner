@@ -26,6 +26,7 @@ Important rules:
 - Recommendation pages are prior-only.
 - Observed teams/screenshots are case/calibration-only.
 - LLM only receives the smallest ambiguous Japanese snippet.
+- Stop after every 30 parsed denko records for periodic key/schema review.
 
 Outputs:
 

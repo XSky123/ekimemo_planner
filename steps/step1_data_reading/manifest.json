@@ -11,7 +11,8 @@
     "execution_rules": "docs/data_reading_execution_rules.md",
     "wiki_id_mapping": "docs/wiki_id_mapping.md",
     "table_parsing": "docs/table_parsing.md",
-    "detail_page_parsing": "docs/detail_page_parsing.md"
+    "detail_page_parsing": "docs/detail_page_parsing.md",
+    "periodic_review": "steps/step1_data_reading/periodic_review.md"
   },
   "manifest": "data/ingestion_manifest.json",
   "schemas": [
@@ -25,4 +26,3 @@
     "excluded": ["special", "collaboration", "excel_import", "solver"]
   }
 }
-

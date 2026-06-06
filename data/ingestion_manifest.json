@@ -49,7 +49,13 @@
     "agent_may_refine_keys": true,
     "change_log_required": true,
     "review_required_for_required_fields": true,
-    "evidence_required": true
+    "evidence_required": true,
+    "periodic_review": {
+      "enabled": true,
+      "batch_size": 30,
+      "review_output_dir": "data/reports",
+      "review_queue_required": true
+    }
   },
   "report_policy": {
     "default_format": "html",

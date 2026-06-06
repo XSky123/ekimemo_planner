@@ -163,6 +163,31 @@ review item 至少保留一种证据：
 
 不要静默覆盖日语原文事实。
 
+## 定期复盘规则
+
+每解析 30 个でんこ后必须暂停批处理，复盘一次 key / schema / review queue 是否合适。
+
+复盘内容：
+
+- 当前必填字段是否稳定可抽。
+- 是否有重复出现但 schema 无法承接的新维度。
+- `review_reasons` 是否过粗或过细。
+- `source_section`、`table_index`、`row_index`、`cell_origin_by_column` 是否足够定位证据。
+- 是否出现列表页与详情页系统性冲突。
+- 是否有字段应该从临时 debug key 升级为正式 optional key。
+- 是否需要截图确认的比例过高。
+
+复盘输出：
+
+- 写入 `data/reports/`，默认 HTML。
+- 标记本批范围，例如 `batch_start_denko_id`、`batch_end_denko_id`、`record_count`。
+- 如果需要改 schema，先写复盘结论和 change reason，再改 schema。
+- 复盘完成前不要继续下一批。
+
+默认频率：
+
+- `batch_size = 30`
+
 ## 报告输出规则
 
 - 人类可读报告默认导出 HTML。

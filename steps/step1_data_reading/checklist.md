@@ -22,6 +22,7 @@ Parser requirements:
 - Ambiguous fields go to `review_queue`.
 - Use screenshots when layout cannot be proven from HTML/text.
 - Parser/agent may add optional keys when the page proves current dimensions are insufficient, but must record `change_reason` and evidence.
+- After every 30 denko records, stop and review whether keys/schema/review reasons are still adequate.
 - Human-readable reports must be exported as HTML under `data/reports/`.
 
 Do not:

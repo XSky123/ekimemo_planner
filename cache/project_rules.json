@@ -47,6 +47,11 @@
   "dimension_policy": {
     "agent_may_refine_keys": true,
     "rule": "During data reading, the agent/parser may judge whether captured keys are sufficient and add or refine optional fields when the source page proves the current schema is incomplete.",
+    "review_cadence": {
+      "enabled": true,
+      "batch_size": 30,
+      "rule": "After every 30 denko records parsed, stop and review whether captured keys, schemas, review reasons, and evidence fields are still adequate before continuing."
+    },
     "requirements": [
       "Keep existing stable keys when possible.",
       "Record why a key was added or changed.",
