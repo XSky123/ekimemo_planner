@@ -33,6 +33,44 @@
         "available_denko_levels": { "type": "array", "items": { "type": "string" } }
       }
     },
+    "skill_components": {
+      "type": "array",
+      "description": "Atomic solver-facing skill effects. One denko skill may contain multiple components, each with its own target, conditions, values, probability, duration, and cooldown by denko level.",
+      "items": {
+        "type": "object",
+        "required": ["component_id", "effect_kind", "values_by_denko_level"],
+        "properties": {
+          "component_id": { "type": "string" },
+          "effect_kind": { "type": "string" },
+          "target_scope": { "type": "array", "items": { "type": "string" } },
+          "target_filters": { "type": "object" },
+          "trigger_conditions": { "type": "object" },
+          "activation_type": { "type": ["string", "null"] },
+          "condition_raw": { "type": ["string", "null"] },
+          "remarks_raw": { "type": ["string", "null"] },
+          "values_by_denko_level": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "properties": {
+                "value_raw": { "type": ["string", "null"] },
+                "value_numeric": { "type": ["number", "null"] },
+                "unit": { "type": ["string", "null"] },
+                "probability": { "type": "object" },
+                "duration": { "type": ["string", "null"] },
+                "cooldown": { "type": ["string", "null"] },
+                "skill_level": { "type": ["string", "null"] },
+                "source_text": { "type": ["string", "null"] },
+                "raw_row": { "type": "object" }
+              }
+            }
+          },
+          "confidence": { "type": "string" },
+          "needs_review": { "type": "boolean" },
+          "review_reasons": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
     "activation_type": {
       "type": ["string", "null"],
       "description": "Raw Japanese アクティベーションタイプ."

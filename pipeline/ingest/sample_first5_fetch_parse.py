@@ -404,6 +404,7 @@ def build_skill_fact_records(records: list[dict[str, Any]]) -> list[dict[str, An
         normalized_skill = skill_detail.get("normalized_skill")
         lv50 = skill_detail.get("lv50")
         values_by_denko_level = skill_detail.get("values_by_denko_level")
+        skill_components = skill_detail.get("skill_components")
         rows.append(
             {
                 "record_meta": meta,
@@ -417,12 +418,13 @@ def build_skill_fact_records(records: list[dict[str, Any]]) -> list[dict[str, An
                 "skill_remarks": skill_detail.get("skill_remarks"),
                 "effect_summary": skill_detail.get("effect_summary"),
                 "normalized_skill": normalized_skill,
+                "skill_components": skill_components,
                 "lv50": lv50,
                 "values_by_denko_level": values_by_denko_level,
                 "key_level_stats": key_level_stats,
                 "source_tables": skill_detail.get("source_tables"),
                 "skill_table_candidates": detail.get("skill_like_tables", []),
-                "summary_zh": build_summary_zh(normalized_skill, lv50, values_by_denko_level),
+                "summary_zh": build_summary_zh(skill_components, normalized_skill, lv50, values_by_denko_level),
                 "note_zh": "样本阶段已抽取核心技能字段和关键 AP/HP 节点，仍需人工复核复杂表格。",
             }
         )
@@ -502,13 +504,25 @@ def extract_skill_detail(record: dict[str, Any]) -> dict[str, Any]:
             candidates = [row for row in rows if row.get("スキルLv", "").startswith("Lv.4")]
         if candidates:
             lv50 = skill_level_row_fact(headers, candidates[0])
+    if not values_by_denko_level:
+        flat_values = extract_flat_skill_values(tables)
+        if flat_values:
+            values_by_denko_level.update(flat_values)
 
+    skill_components = build_skill_components(
+        trigger_condition,
+        effect_summary,
+        activation_type,
+        skill_remarks,
+        values_by_denko_level,
+    )
     return {
         "trigger_condition": trigger_condition,
         "activation_type": activation_type,
         "skill_remarks": skill_remarks,
         "effect_summary": effect_summary,
         "normalized_skill": normalize_skill_semantics(trigger_condition, effect_summary, activation_type, values_by_denko_level),
+        "skill_components": skill_components,
         "lv50": lv50,
         "values_by_denko_level": values_by_denko_level,
         "source_tables": {
@@ -545,6 +559,195 @@ def skill_level_row_fact(headers: list[str], row: dict[str, str]) -> dict[str, A
         "probability": probability,
         "raw_row": row,
     }
+
+
+def extract_flat_skill_values(tables: list[tuple[int, list[str], list[dict[str, str]]]]) -> dict[str, dict[str, Any]]:
+    for _table_index, headers, rows in tables:
+        if "効果" not in headers or "スキルLv" in headers:
+            continue
+        if not any(header in headers for header in ["効果時間", "発動時間", "クールタイム", "発動率"]):
+            continue
+        if not rows:
+            continue
+        return {"base": skill_level_row_fact(headers, rows[0]) | {"denko_level": "base"}}
+    return {}
+
+
+def build_skill_components(
+    trigger_condition: str | None,
+    effect_summary: str | None,
+    activation_type: str | None,
+    skill_remarks: str | None,
+    values_by_denko_level: dict[str, dict[str, Any]],
+) -> list[dict[str, Any]]:
+    common_text = " ".join(value for value in [trigger_condition, effect_summary] if value)
+    components: dict[str, dict[str, Any]] = {}
+    for denko_level, row_fact in values_by_denko_level.items():
+        for parsed in parse_level_components(common_text, row_fact):
+            component_id = parsed["component_id"]
+            component = components.setdefault(
+                component_id,
+                {
+                    "component_id": component_id,
+                    "effect_kind": parsed["effect_kind"],
+                    "target_scope": infer_target_scope(common_text, parsed["effect_kind"]),
+                    "target_filters": infer_target_filters(common_text, parsed["effect_kind"]),
+                    "trigger_conditions": infer_trigger_conditions(common_text),
+                    "activation_type": activation_type,
+                    "condition_raw": trigger_condition or effect_summary,
+                    "remarks_raw": skill_remarks,
+                    "values_by_denko_level": {},
+                    "confidence": "medium",
+                    "needs_review": True,
+                    "review_reasons": ["component_semantics_need_review"],
+                },
+            )
+            component["values_by_denko_level"][denko_level] = parsed["value"]
+    if components:
+        return sorted(components.values(), key=lambda item: item["component_id"])
+
+    fallback = normalize_skill_semantics(trigger_condition, effect_summary, activation_type, values_by_denko_level)
+    return [
+        {
+            "component_id": f"component_{i + 1:02d}_{effect_kind}",
+            "effect_kind": effect_kind,
+            "target_scope": fallback.get("target_scope", []),
+            "target_filters": {},
+            "trigger_conditions": fallback.get("trigger", {}),
+            "activation_type": activation_type,
+            "condition_raw": trigger_condition or effect_summary,
+            "remarks_raw": skill_remarks,
+            "values_by_denko_level": {},
+            "confidence": "low",
+            "needs_review": True,
+            "review_reasons": ["component_values_not_parsed"],
+        }
+        for i, effect_kind in enumerate(fallback.get("effect_kind", []))
+    ]
+
+
+def parse_level_components(common_text: str, row_fact: dict[str, Any]) -> list[dict[str, Any]]:
+    raw_row = row_fact.get("raw_row") or {}
+    effect_text = row_fact.get("effect") or ""
+    text = " ".join(value for value in [common_text, row_fact.get("special_explanation"), effect_text] if value)
+    components: list[dict[str, Any]] = []
+
+    for kind, pattern, unit in [
+        ("atk_buff", r"ATK\s*([+-]?\d+)\s*[％%]", "percent"),
+        ("def_buff", r"DEF\s*([+-]?\d+)\s*[％%]", "percent"),
+    ]:
+        for match in re.finditer(pattern, effect_text):
+            components.append(component_value(kind, row_fact, match.group(0), int(match.group(1)), unit))
+
+    hp_match = re.search(r"HPの\s*(\d+)\s*[％%]", effect_text)
+    if hp_match:
+        components.append(component_value("hp_recovery", row_fact, hp_match.group(0), int(hp_match.group(1)), "percent_hp"))
+
+    for kind, pattern, unit in [
+        ("exp_gain", r"経験値付与\s*(\d+)", "flat_exp"),
+        ("fixed_damage", r"固定ダメージ\s*(\d+)", "flat_damage"),
+        ("damage_reduction", r"ダメージ軽減\s*(\d+)", "flat_damage"),
+    ]:
+        match = re.search(pattern, effect_text)
+        if match:
+            components.append(component_value(kind, row_fact, match.group(0), int(match.group(1)), unit))
+
+    access_match = re.search(r"追加アクセス\s*\+?\s*(\d+)回", text)
+    if access_match:
+        components.append(component_value("extra_access", row_fact, access_match.group(0), int(access_match.group(1)), "count"))
+
+    if "フットバー" in text:
+        components.append(component_value("footbar", row_fact, "相手をフットバーすことがある", None, "boolean"))
+
+    if "スキル無効化" in text or "スキルを無効化" in text:
+        components.append(component_value("skill_disable", row_fact, skill_disable_value_raw(text), None, "boolean"))
+
+    station_count = raw_row.get("思い出しアクセス可能駅数")
+    if station_count:
+        components.append(component_value("memory_access_station_count", row_fact, station_count, parse_signed_number(station_count), "station_count"))
+    memory_time = raw_row.get("思い出しアクセス可能時間")
+    if memory_time:
+        components.append(component_value("memory_access_time", row_fact, memory_time, None, "duration"))
+
+    return components
+
+
+def component_value(
+    effect_kind: str,
+    row_fact: dict[str, Any],
+    value_raw: str,
+    value_numeric: int | None,
+    unit: str,
+) -> dict[str, Any]:
+    return {
+        "component_id": f"{effect_kind}",
+        "effect_kind": effect_kind,
+        "value": {
+            "value_raw": value_raw,
+            "value_numeric": value_numeric,
+            "unit": unit,
+            "probability": row_fact.get("probability") or {},
+            "duration": row_fact.get("duration"),
+            "cooldown": row_fact.get("cooldown"),
+            "skill_level": row_fact.get("skill_level"),
+            "source_text": row_fact.get("special_explanation"),
+            "raw_row": row_fact.get("raw_row"),
+        },
+    }
+
+
+def parse_signed_number(value: str) -> int | None:
+    match = re.search(r"([+-]?\d+)", value)
+    return int(match.group(1)) if match else None
+
+
+def skill_disable_value_raw(text: str) -> str:
+    for attr in ["heat", "cool", "eco", "flat"]:
+        if attr in text:
+            return f"{attr}属性でんこのスキル無効化"
+    return "スキル無効化"
+
+
+def infer_target_scope(text: str, effect_kind: str) -> list[str]:
+    if "先頭車両" in text:
+        return ["front_car"]
+    if "相手と自身の編成内" in text:
+        return ["opponent_team", "own_team"]
+    if "編成内の全てのでんこ" in text or "編成内でんこ" in text or "編成内のでんこ" in text:
+        return ["team_all"]
+    if "メロ自身" in text or "自身" in text:
+        return ["self"]
+    if effect_kind in {"memory_access_station_count", "memory_access_time"}:
+        return ["team_all"]
+    return []
+
+
+def infer_target_filters(text: str, effect_kind: str) -> dict[str, Any]:
+    filters: dict[str, Any] = {}
+    attr_match = re.search(r"(heat|cool|eco|flat)属性", text)
+    if attr_match:
+        filters["attribute"] = attr_match.group(1)
+    if "サポーター" in text:
+        filters["type"] = "supporter"
+    if effect_kind == "skill_disable":
+        filters["disabled_skill_target"] = skill_disable_value_raw(text)
+    return filters
+
+
+def infer_trigger_conditions(text: str) -> dict[str, Any]:
+    trigger: dict[str, Any] = {}
+    hp_threshold = re.search(r"HPが(\d+)%以下", text)
+    if hp_threshold:
+        trigger["hp_threshold_percent"] = int(hp_threshold.group(1))
+        trigger["operator"] = "lte"
+    if "アクセス" in text:
+        trigger["event_hint"] = "access"
+    if "被アクセス" in text:
+        trigger["event_hint"] = "accessed"
+    time_match = re.search(r"(\d{1,2}:\d{2}[～\-]\d{1,2}:\d{2})", text)
+    if time_match:
+        trigger["time_window_raw"] = time_match.group(1)
+    return trigger
 
 
 def normalize_skill_semantics(
@@ -609,15 +812,26 @@ def normalize_skill_semantics(
         "activation_mode": activation_mode,
         "confidence": confidence,
         "review_reasons": review_reasons,
-        "available_denko_levels": sorted(values_by_denko_level.keys(), key=lambda x: int(x)),
+        "available_denko_levels": sorted(values_by_denko_level.keys(), key=level_sort_key),
     }
 
 
+def level_sort_key(level: str) -> tuple[int, int]:
+    if level == "base":
+        return (0, 0)
+    if level.isdigit():
+        return (1, int(level))
+    return (2, 0)
+
+
 def build_summary_zh(
+    skill_components: list[dict[str, Any]] | None,
     normalized_skill: dict[str, Any] | None,
     lv50: dict[str, Any] | None,
     values_by_denko_level: dict[str, dict[str, Any]] | None,
 ) -> str | None:
+    if skill_components:
+        return "；".join(component_summary_zh(i + 1, component) for i, component in enumerate(skill_components))
     if not normalized_skill:
         return None
     effect_labels = {
@@ -651,6 +865,56 @@ def build_summary_zh(
     if lv60:
         parts.append("Lv60：" + compact_skill_level_zh(lv60))
     return "；".join(parts) if parts else None
+
+
+def component_summary_zh(index: int, component: dict[str, Any]) -> str:
+    effect_labels = {
+        "atk_buff": "ATK增加",
+        "def_buff": "DEF增加",
+        "hp_recovery": "HP回复",
+        "footbar": "フットバー",
+        "extra_access": "追加访问",
+        "skill_disable": "技能无效化",
+        "exp_gain": "经验值获得",
+        "fixed_damage": "固定伤害",
+        "damage_reduction": "伤害减轻",
+        "memory_access_station_count": "思い出しアクセス駅数",
+        "memory_access_time": "思い出しアクセス时间",
+    }
+    target_labels = {
+        "team_all": "编成内全员",
+        "front_car": "先头车",
+        "self": "自身",
+        "own_team": "自己编成",
+        "opponent_team": "对方编成",
+    }
+    values = component.get("values_by_denko_level") or {}
+    preferred_level = "50" if "50" in values else ("base" if "base" in values else next(iter(values), None))
+    value_text = ""
+    if preferred_level:
+        value = values[preferred_level]
+        value_text = compact_component_value_zh(preferred_level, value)
+    targets = "、".join(target_labels.get(target, target) for target in component.get("target_scope", []))
+    prefix = f"技能分量{index}：{effect_labels.get(component.get('effect_kind'), component.get('effect_kind'))}"
+    if targets:
+        prefix += f" / 对象：{targets}"
+    if value_text:
+        prefix += f" / {value_text}"
+    return prefix
+
+
+def compact_component_value_zh(level: str, value: dict[str, Any]) -> str:
+    parts = [f"Lv{level}" if level != "base" else "基础"]
+    if value.get("value_raw"):
+        parts.append(value["value_raw"])
+    probability = value.get("probability") or {}
+    if probability:
+        parts.append("，".join(f"{key} {item}" for key, item in probability.items()))
+    if value.get("duration"):
+        parts.append(value["duration"])
+    if value.get("cooldown"):
+        parts.append(f"CD {value['cooldown']}")
+    return "，".join(parts)
 
 
 def compact_skill_level_zh(row: dict[str, Any]) -> str:
@@ -801,6 +1065,30 @@ def write_report(records: list[dict[str, Any]], skill_rows: list[dict[str, Any]]
             )
         lines.append("    </tbody>")
         lines.append("  </table>")
+    lines.append("  <h2>技能分量</h2>")
+    lines.append("  <table>")
+    lines.append("    <thead><tr><th>denko_id</th><th>name</th><th>component</th><th>effect</th><th>target</th><th>filters</th><th>Lv50/base</th><th>Lv60</th><th>conditions</th></tr></thead>")
+    lines.append("    <tbody>")
+    for skill in skill_rows:
+        for component in skill.get("skill_components", []) or []:
+            values = component.get("values_by_denko_level") or {}
+            lv50_or_base = values.get("50") or values.get("base") or {}
+            lv60 = values.get("60") or {}
+            lines.append(
+                "      <tr>"
+                f"<td>{esc(skill['denko_id'])}</td>"
+                f"<td>{esc(skill['name'])}</td>"
+                f"<td>{esc(component.get('component_id'))}</td>"
+                f"<td>{esc(component.get('effect_kind'))}</td>"
+                f"<td>{esc(', '.join(component.get('target_scope') or []))}</td>"
+                f"<td>{esc(json.dumps(component.get('target_filters') or {}, ensure_ascii=False))}</td>"
+                f"<td>{esc(compact_component_value_zh('50' if values.get('50') else 'base', lv50_or_base) if lv50_or_base else '')}</td>"
+                f"<td>{esc(compact_component_value_zh('60', lv60) if lv60 else '')}</td>"
+                f"<td>{esc(json.dumps(component.get('trigger_conditions') or {}, ensure_ascii=False))}</td>"
+                "</tr>"
+            )
+    lines.append("    </tbody>")
+    lines.append("  </table>")
     lines.append("  <h2>技能等级值</h2>")
     for pool in ("original", "extra"):
         lines.append(f"  <h3>{esc(pool)}</h3>")
