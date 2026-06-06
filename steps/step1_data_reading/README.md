@@ -24,6 +24,7 @@ Important rules:
 - Detail pages also require table matrix parsing.
 - Use screenshot evidence when visual layout is needed.
 - Recommendation pages are prior-only.
+- Skill reverse lookup pages are candidate/discovery sources only; use detail pages to confirm values, duration, cooldown, probability, and exact conditions.
 - Observed teams/screenshots are case/calibration-only.
 - LLM only receives the smallest ambiguous Japanese snippet.
 - Stop after every 30 parsed denko records for periodic key/schema review.
@@ -35,6 +36,7 @@ Outputs:
 - `data/records/denko_facts.jsonl`
 - `data/records/skill_facts.jsonl`
 - `data/records/recommendation_priors.jsonl`
+- `data/records/reverse_skill_lookup_candidates.jsonl`
 - `data/records/observed_team_cases.jsonl`
 - `data/indexes/denko_index.json`
 - `data/review_queue/review_queue.jsonl`

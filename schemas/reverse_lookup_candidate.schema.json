@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "reverse_lookup_candidate.schema.json",
+  "title": "ReverseLookupCandidate",
+  "description": "Candidate row parsed from the wiki skill reverse lookup table. This is a discovery source, not final skill fact authority.",
+  "type": "object",
+  "required": [
+    "record_meta",
+    "lookup_category",
+    "effect_raw",
+    "denko_name",
+    "detail_url",
+    "source_table_index",
+    "source_row_index"
+  ],
+  "properties": {
+    "record_meta": { "$ref": "record_meta.schema.json" },
+    "lookup_category": { "type": ["string", "null"] },
+    "target_section": { "type": ["string", "null"] },
+    "effect_group": { "type": ["string", "null"] },
+    "effect_raw": { "type": ["string", "null"] },
+    "target_position_raw": { "type": ["string", "null"] },
+    "target_type_raw": { "type": ["string", "null"] },
+    "target_attribute_raw": { "type": ["string", "null"] },
+    "condition_raw": { "type": ["string", "null"] },
+    "pool_raw": { "type": ["string", "null"] },
+    "denko_name": { "type": "string" },
+    "wiki_page_title": { "type": ["string", "null"] },
+    "detail_url": { "type": ["string", "null"] },
+    "marker_raw": { "type": ["string", "null"] },
+    "has_team_attribute_condition_marker": { "type": "boolean" },
+    "has_external_condition_marker": { "type": "boolean" },
+    "condition_hint_raw": { "type": ["string", "null"] },
+    "source_table_index": { "type": "integer" },
+    "source_row_index": { "type": "integer" }
+  }
+}
