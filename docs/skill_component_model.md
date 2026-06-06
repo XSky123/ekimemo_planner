@@ -79,3 +79,16 @@ Mark `needs_review = true` when:
 - target scope is inferred from Japanese prose,
 - value parsing is numeric but not yet manually verified,
 - the effect depends on weather, temperature, station, mileage, position, opponent, or current team composition.
+
+## Parser Health Rules
+
+Use these checks during batch ingestion before trusting the component matrix:
+
+- Labeled effects such as `(1)`, `(2)`, `(3)` are independent components unless the page clearly says they are inseparable. Do not merge two labels into one component just because they share duration, cooldown, or probability.
+- Normalize fullwidth and halfwidth parentheses, percent signs, range marks, and line breaks before splitting components. Mixed notation should not change semantics.
+- A labeled probability such as `(1)75% (2)100%` belongs in the per-label probability field. It is not a skill content value and should not create an `activation_probability_boost` component unless probability change itself is the effect.
+- If labels are combined as `(1)(2)` or otherwise cannot be separated deterministically, add `review_reason = compound_labeled_effect_needs_manual_review` instead of guessing.
+- If a source skill table has key rows for Lv30 or Lv50 but a parsed component has a blank value at either level, add `review_reason = key_level_component_missing`.
+- If the source condition/effect rows contain multiple labels but emitted components are fewer than the label count, add `review_reason = labeled_component_count_mismatch`.
+- Multi-attribute requirements such as `coolとecoのみ編成` should be represented as an array, for example `{ "attributes": ["cool", "eco"], "formation_only": true }`.
+- Access direction is a real trigger dimension. Distinguish own active access, being accessed, and being accessed while holding a station when the source text does so.
