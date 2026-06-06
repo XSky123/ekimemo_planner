@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>Sample First 5 Denko Report</title>
+  <style>
+    body { font-family: system-ui, sans-serif; line-height: 1.5; margin: 24px; }
+    table { border-collapse: collapse; width: 100%; margin: 12px 0 24px; }
+    th, td { border: 1px solid #ccc; padding: 6px 8px; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f6f8fa; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>Sample First 5 Denko Report</h1>
+  <p>本次测试抓取 Original 前 5 与 Extra 前 5。结构化事实保留日语原文，说明层使用中文。</p>
+  <h2>结构化结果摘要</h2>
+  <h3>original</h3>
+  <table>
+    <thead><tr><th>denko_id</th><th>wiki_no</th><th>name</th><th>type</th><th>attribute</th><th>color</th><th>skill_name</th><th>VU</th><th>detail tables</th><th>detail rowspan/colspan</th></tr></thead>
+    <tbody>
+      <tr><td>original:000</td><td>0</td><td>のぞみ</td><td>サポーター</td><td>flat</td><td>青</td><td>目指せステーションマスター♪</td><td></td><td>7</td><td>1/1</td></tr>
+      <tr><td>original:001</td><td>1</td><td>黄陽セリア</td><td>サポーター</td><td>eco</td><td>黄</td><td>検測開始しま～す?</td><td>◆</td><td>106</td><td>28/11</td></tr>
+      <tr><td>original:002</td><td>2</td><td>為栗メロ</td><td>アタッカー</td><td>eco</td><td>橙</td><td>きゃのんぱんち</td><td>◆</td><td>132</td><td>19/14</td></tr>
+      <tr><td>original:003</td><td>3</td><td>新阪ルナ</td><td>ディフェンダー</td><td>cool</td><td>紫</td><td>ナイトライダー</td><td>◆</td><td>143</td><td>24/13</td></tr>
+      <tr><td>original:004</td><td>4</td><td>恋浜みろく</td><td>トリックスター</td><td>heat</td><td>赤</td><td>ダブルアクセス</td><td>◆</td><td>131</td><td>20/12</td></tr>
+    </tbody>
+  </table>
+  <h3>extra</h3>
+  <table>
+    <thead><tr><th>denko_id</th><th>wiki_no</th><th>name</th><th>type</th><th>attribute</th><th>color</th><th>skill_name</th><th>VU</th><th>detail tables</th><th>detail rowspan/colspan</th></tr></thead>
+    <tbody>
+      <tr><td>extra:001</td><td>EX01</td><td>エルミーヌ・ワロン</td><td>トリックスター</td><td>heat</td><td>青</td><td>記憶回路は特別製!</td><td></td><td>29</td><td>15/25</td></tr>
+      <tr><td>extra:002</td><td>EX02</td><td>赤壕まひる</td><td>トリックスター</td><td>heat</td><td>赤</td><td>ゴーイングマイレール</td><td></td><td>38</td><td>13/25</td></tr>
+      <tr><td>extra:003</td><td>EX03</td><td>波篠すすぐ</td><td>トリックスター</td><td>cool</td><td>青</td><td>お片付けしちゃいましょ！</td><td></td><td>38</td><td>13/23</td></tr>
+      <tr><td>extra:004</td><td>EX04</td><td>末永てすと</td><td>トリックスター</td><td>eco</td><td>青</td><td>徹底点検安全確認</td><td></td><td>39</td><td>17/23</td></tr>
+      <tr><td>extra:005</td><td>EX05</td><td>果鳴ツヅキ</td><td>サポーター</td><td>cool</td><td>青</td><td>レイルメイク</td><td></td><td>38</td><td>12/25</td></tr>
+    </tbody>
+  </table>
+  <h2>中文解释</h2>
+  <ul>
+    <li>ID 映射可从列表页稳定抽取：Original 规范化为 <code>original:NNN</code>，Extra 规范化为 <code>extra:NNN</code>。</li>
+    <li>Original 样本中 No.1 起的 <code>備考</code> 使用了继承单元格，证明 table matrix 展开是必要的。</li>
+    <li>详情页探测记录了 table 数量、rowspan/colspan 数量和技能相关表格摘要；这一步只做证据探测，不把未复核字段当最终技能事实。</li>
+    <li>本次没有启动 solver，也没有导入推荐页 prior 或 observed team case。</li>
+    <li>review_queue 条目数：0。</li>
+  </ul>
+  <h2>输出文件</h2>
+  <ul>
+    <li><code>data/records/sample_first5_denko_facts.jsonl</code></li>
+    <li><code>data/indexes/sample_first5_denko_index.json</code></li>
+    <li><code>data/review_queue/sample_first5_review_queue.jsonl</code></li>
+    <li><code>data/reports/sample_first5_report_zh.html</code></li>
+  </ul>
+</body>
+</html>

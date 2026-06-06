@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "record_meta.schema.json",
+  "title": "RecordMeta",
+  "type": "object",
+  "required": [
+    "source_url",
+    "source_authority",
+    "content_hash",
+    "parser_version",
+    "parsed_at",
+    "confidence",
+    "needs_review",
+    "review_reasons"
+  ],
+  "properties": {
+    "source_url": { "type": ["string", "null"] },
+    "source_authority": {
+      "type": "string",
+      "enum": [
+        "denko_list",
+        "detail_page",
+        "recommendation_prior",
+        "observed_team_case",
+        "manual_override",
+        "skill_list_or_reverse_index",
+        "cache",
+        "inferred"
+      ]
+    },
+    "content_hash": { "type": ["string", "null"] },
+    "parser_version": { "type": "string" },
+    "parsed_at": { "type": "string" },
+    "confidence": { "type": "string", "enum": ["high", "medium", "low"] },
+    "needs_review": { "type": "boolean" },
+    "review_reasons": { "type": "array", "items": { "type": "string" } }
+  }
+}

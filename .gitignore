@@ -1,0 +1,22 @@
+# Local/editor noise
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Python/build/cache noise
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Runtime outputs
+logs/
+tmp/
+
+# Keep data structure, but avoid committing bulky fetched pages by default
+data/raw_pages/*
+!data/raw_pages/.gitkeep
+data/review_evidence/screenshots/*
+!data/review_evidence/screenshots/.gitkeep

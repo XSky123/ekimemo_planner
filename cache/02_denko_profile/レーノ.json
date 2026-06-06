@@ -1,0 +1,48 @@
+{
+  "main_denko": {
+    "name": "レーノ",
+    "full_name": "八雲レーノ",
+    "number": "No.30",
+    "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E5%85%AB%E9%9B%B2%E3%83%AC%E3%83%BC%E3%83%8E",
+    "pool": "original",
+    "type": "アタッカー",
+    "attribute": "eco",
+    "color": "桃",
+    "position": "usually_front",
+    "skill_name": "ナイトレイダー / ナイトメア",
+    "skill_summary": "夜の間はATKが増加し、昼の間はDEFが減少する。Lv92以降はリンクしてから一定時間、相手に軽減されない固定ダメージを追加で与える。",
+    "attack_style": [
+      "第一击突破型",
+      "常驻攻击型",
+      "固定伤害型",
+      "链接循环型",
+      "eco属性队核心"
+    ],
+    "needs_link": "only_for_fixed_damage_after_vu",
+    "needs_access": true,
+    "needs_weather": false,
+    "needs_time": "night_18_to_6_for_atk",
+    "strengths": [
+      "夜间常时ATK上升，不需要手动开本体技能",
+      "Lv92以后链接开始后12分钟内可追加軽減不能固定ダメージ",
+      "作为ecoアタッカー，可接eco属性辅助和先頭辅助"
+    ],
+    "weaknesses": [
+      "昼间没有攻击收益且DEF-30%，不适合白天强行作为主力",
+      "固定ダメージ需要先链接，第一击未必吃得到",
+      "固定ダメージ数值/VU等级差异需要逐级确认"
+    ],
+    "source_url": [
+      "https://newekimemo.wiki.fc2.com/wiki/%E5%85%AB%E9%9B%B2%E3%83%AC%E3%83%BC%E3%83%8E",
+      "https://newekimemo.wiki.fc2.com/wiki/%E3%82%AA%E3%83%AA%E3%82%B8%E3%83%8A%E3%83%AB%E3%81%A7%E3%82%93%E3%81%93%E3%82%B9%E3%82%AD%E3%83%AB%E4%B8%80%E8%A6%A7%E3%83%BB%E5%8A%B9%E6%9E%9C",
+      "https://newekimemo.wiki.fc2.com/wiki/%E9%A1%94%E7%94%BB%E5%83%8F%E3%83%BB%E3%82%BF%E3%82%A4%E3%83%97%E3%83%BB%E5%B1%9E%E6%80%A7%E3%83%BB%E8%89%B2%E3%83%BB%E3%82%B9%E3%82%AD%E3%83%AB%E5%90%8D%2F%E3%82%AA%E3%83%AA%E3%82%B8%E3%83%8A%E3%83%AB%E3%81%A7%E3%82%93%E3%81%93"
+    ],
+    "evidence": [
+      "個別ページ: No.30 / 八雲レーノ / アタッカー / eco / 桃",
+      "技能一览: 夜の間はATK増加、昼の間はDEF減少。18:00〜翌6:00にATK+、6:00〜18:00にDEF-30%",
+      "個別ページ: Lv92以降はリンクしてから12分間、相手に軽減されないダメージを追加"
+    ],
+    "confidence": "medium",
+    "needs_review": true
+  }
+}

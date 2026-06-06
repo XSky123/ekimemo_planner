@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "denko_fact.schema.json",
+  "title": "DenkoFact",
+  "type": "object",
+  "required": ["record_meta", "identity", "skills"],
+  "properties": {
+    "record_meta": { "$ref": "record_meta.schema.json" },
+    "identity": {
+      "type": "object",
+      "required": ["denko_id", "name", "pool", "detail_url"],
+      "properties": {
+        "denko_id": {
+          "type": "string",
+          "description": "Stable project id, e.g. original:006 or extra:035."
+        },
+        "wiki_no": {
+          "type": ["string", "null"],
+          "description": "Wiki No. cell as source text, e.g. 6 or EX35."
+        },
+        "name": { "type": "string" },
+        "full_name": { "type": ["string", "null"] },
+        "aliases": { "type": "array", "items": { "type": "string" } },
+        "number": { "type": ["string", "null"] },
+        "id_pool": {
+          "type": "string",
+          "description": "original, extra, special, collaboration, or unknown."
+        },
+        "id_number": {
+          "type": ["integer", "null"],
+          "description": "Numeric part of the wiki id for sorting and joins."
+        },
+        "wiki_page_title": { "type": ["string", "null"] },
+        "pool": { "type": "string" },
+        "detail_url": { "type": "string" },
+        "type": { "type": ["string", "null"] },
+        "attribute": { "type": ["string", "null"] },
+        "color": { "type": ["string", "null"] }
+      }
+    },
+    "growth": {
+      "type": "object",
+      "properties": {
+        "level_cap": { "type": ["integer", "null"] },
+        "is_vu_available": { "type": ["boolean", "null"] },
+        "vu_changes": { "type": "array", "items": { "type": "string" } },
+        "mileage_final_ap": { "type": ["integer", "null"] },
+        "mileage_final_hp": { "type": ["integer", "null"] }
+      }
+    },
+    "skills": {
+      "type": "array",
+      "items": { "$ref": "skill_fact.schema.json" }
+    },
+    "summary_zh": { "type": ["string", "null"] }
+  }
+}

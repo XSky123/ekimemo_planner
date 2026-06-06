@@ -1,0 +1,38 @@
+{
+  "つむぎ": {
+    "field": "cooldown_profile_and_condition",
+    "new_value": {
+      "condition": "cooldown_member_count",
+      "requires": "編成内にクールタイム中のでんこがいること",
+      "count_rule": "activation=permanent/conditional_permanent 且 cooldown=none 的常驻技能不能计入冷却中成员；只有实际进入 CT 或场景明确预热到 CT 的成员可计入",
+      "hard_constraints": [
+        "cooldown_member_count>=1"
+      ]
+    },
+    "reason": "用户补充：つむぎ只有队伍里有冷却中的でんこ才发动，常驻技能不算。"
+  },
+  "福分おとは": {
+    "field": "nonmatching_attribute_enabler",
+    "new_value": {
+      "number": "No.134",
+      "type": "サポーター",
+      "attribute": "cool",
+      "effect_kind": [
+        "ATK増加",
+        "効果時間延長"
+      ],
+      "target": "編成内",
+      "enables": [
+        "enables_nonmatching_attribute_synergy",
+        "enables_atk_increase_threshold",
+        "enables_effect_duration_extension"
+      ],
+      "conflicts": [
+        "breaks_all_eco"
+      ],
+      "rule": "不是 eco 也不要直接排除；若能帮助 eco 成员达成 ATK 增加量阈值或维持技能窗口，作为混属性启用件计算净收益，但不能同时声称 all_eco 成立。"
+    },
+    "source_url": "https://ekimemo.com/news/20231201150000_1",
+    "reason": "No.134 是 cool，但官方说明其技能可提高編成内 ATK，并可因リンク延长效果时间，适合作为非同属性启用件样例。"
+  }
+}

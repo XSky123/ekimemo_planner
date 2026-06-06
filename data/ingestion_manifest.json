@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "updated_at": "2026-06-06T00:00:00+09:00",
+  "default_mode": "fill",
+  "execution_rules": {
+    "path": "docs/data_reading_execution_rules.md",
+    "purpose": "Human and AI handoff rules for Phase 1 data reading, caching, parsing, priors, evidence, and review."
+  },
+  "scope": {
+    "pools": ["original", "extra"],
+    "excluded_for_step1": ["special", "collaboration", "excel_import", "solver"]
+  },
+  "source_entrypoints": {
+    "denko_lists": [
+      {
+        "pool": "original",
+        "source_authority": "detail_page",
+        "url": "https://newekimemo.wiki.fc2.com/wiki/%E9%A1%94%E7%94%BB%E5%83%8F%E3%83%BB%E3%82%BF%E3%82%A4%E3%83%97%E3%83%BB%E5%B1%9E%E6%80%A7%E3%83%BB%E8%89%B2%E3%83%BB%E3%82%B9%E3%82%AD%E3%83%AB%E5%90%8D%2F%E3%82%AA%E3%83%AA%E3%82%B8%E3%83%8A%E3%83%AB%E3%81%A7%E3%82%93%E3%81%93"
+      },
+      {
+        "pool": "extra",
+        "source_authority": "detail_page",
+        "url": "https://newekimemo.wiki.fc2.com/wiki/%E9%A1%94%E7%94%BB%E5%83%8F%E3%83%BB%E3%82%BF%E3%82%A4%E3%83%97%E3%83%BB%E5%B1%9E%E6%80%A7%E3%83%BB%E8%89%B2%E3%83%BB%E3%82%B9%E3%82%AD%E3%83%AB%E5%90%8D%2F%E3%82%A8%E3%82%AF%E3%82%B9%E3%83%88%E3%83%A9%E3%81%A7%E3%82%93%E3%81%93"
+      }
+    ],
+    "recommendation_priors": [
+      {
+        "pool": "original",
+        "source_authority": "recommendation_prior",
+        "url": "https://newekimemo.wiki.fc2.com/wiki/%E5%88%9D%E5%BF%83%E8%80%85%E5%90%91%E3%81%91%E3%82%AA%E3%83%AA%E3%82%B8%E3%83%8A%E3%83%AB%E3%81%A7%E3%82%93%E3%81%93%E3%82%AA%E3%82%B9%E3%82%B9%E3%83%A1%E5%BA%A6"
+      },
+      {
+        "pool": "extra",
+        "source_authority": "recommendation_prior",
+        "url": "https://newekimemo.wiki.fc2.com/wiki/%E5%88%9D%E5%BF%83%E8%80%85%E5%90%91%E3%81%91%E3%82%A8%E3%82%AF%E3%82%B9%E3%83%88%E3%83%A9%E3%81%A7%E3%82%93%E3%81%93%E3%82%AA%E3%82%B9%E3%82%B9%E3%83%A1%E5%BA%A6"
+      }
+    ]
+  },
+  "outputs": {
+    "denko_facts": "data/records/denko_facts.jsonl",
+    "skill_facts": "data/records/skill_facts.jsonl",
+    "recommendation_priors": "data/records/recommendation_priors.jsonl",
+    "observed_team_cases": "data/records/observed_team_cases.jsonl",
+    "denko_index": "data/indexes/denko_index.json",
+    "review_queue": "data/review_queue/review_queue.jsonl",
+    "reports_dir": "data/reports"
+  },
+  "dimension_policy": {
+    "agent_may_refine_keys": true,
+    "change_log_required": true,
+    "review_required_for_required_fields": true,
+    "evidence_required": true
+  },
+  "report_policy": {
+    "default_format": "html",
+    "language": "zh",
+    "output_dir": "data/reports"
+  },
+  "parser_requirements": {
+    "list_table_parser": "html_table_matrix",
+    "detail_table_parser": "html_table_matrix",
+    "must_expand_rowspan": true,
+    "must_expand_colspan": true,
+    "skip_repeated_header_rows": true,
+    "valid_row_anchor": "wiki_no",
+    "malformed_row_action": "write_review_queue",
+    "ambiguous_detail_field_action": "write_review_queue",
+    "screenshot_evidence_dir": "data/review_evidence/screenshots",
+    "screenshot_when_needed": true,
+    "notes": [
+      "Original list page has confirmed merged cells such as rowspan in remarks.",
+      "A checked denko detail page had multiple tables plus rowspan and colspan.",
+      "Do not parse denko list pages from rendered text lines or raw td positions.",
+      "Do not parse detail skill/status/wrapping tables from raw td positions.",
+      "Use screenshot evidence when visual layout is needed to confirm ambiguous fields."
+    ]
+  },
+  "status": {
+    "prepared": true,
+    "fetch_started": false,
+    "parse_started": false,
+    "solver_started": false
+  }
+}

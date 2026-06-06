@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "review_queue_item.schema.json",
+  "title": "ReviewQueueItem",
+  "type": "object",
+  "required": [
+    "record_meta",
+    "review_id",
+    "entity_ref",
+    "field_path",
+    "reason",
+    "evidence"
+  ],
+  "properties": {
+    "record_meta": { "$ref": "record_meta.schema.json" },
+    "review_id": { "type": "string" },
+    "entity_ref": {
+      "type": "object",
+      "properties": {
+        "denko_id": { "type": ["string", "null"] },
+        "name": { "type": ["string", "null"] },
+        "detail_url": { "type": ["string", "null"] }
+      }
+    },
+    "field_path": { "type": "string" },
+    "reason": { "type": "string" },
+    "severity": { "type": "string", "enum": ["info", "warning", "blocking"] },
+    "evidence": {
+      "type": "object",
+      "properties": {
+        "source_section": { "type": ["string", "null"] },
+        "table_index": { "type": ["integer", "null"] },
+        "row_index": { "type": ["integer", "null"] },
+        "column_name": { "type": ["string", "null"] },
+        "raw_html_snippet": { "type": ["string", "null"] },
+        "text_snippet": { "type": ["string", "null"] },
+        "screenshot_path": { "type": ["string", "null"] },
+        "cell_origin_by_column": {
+          "type": "object",
+          "additionalProperties": { "type": "string" }
+        }
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": ["open", "confirmed", "corrected", "rejected"]
+    }
+  }
+}
+

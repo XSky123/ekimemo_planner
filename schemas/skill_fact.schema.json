@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "skill_fact.schema.json",
+  "title": "SkillFact",
+  "type": "object",
+  "required": ["skill_name", "activation", "trigger_phase", "target_scope", "effect_kind", "conditions"],
+  "properties": {
+    "skill_name": { "type": ["string", "null"] },
+    "skill_summary_ja": { "type": ["string", "null"] },
+    "activation": { "type": "string" },
+    "trigger_phase": { "type": "array", "items": { "type": "string" } },
+    "target_scope": { "type": "array", "items": { "type": "string" } },
+    "side": { "type": "array", "items": { "type": "string" } },
+    "effect_kind": { "type": "array", "items": { "type": "string" } },
+    "values_by_skill_level": { "type": "object" },
+    "probability_by_skill_level": { "type": "object" },
+    "duration_by_skill_level": { "type": "object" },
+    "cooldown_by_skill_level": { "type": "object" },
+    "conditions": {
+      "type": "object",
+      "properties": {
+        "team_attribute_condition": { "type": ["string", "null"] },
+        "team_type_condition": { "type": ["string", "null"] },
+        "position_condition": { "type": ["string", "null"] },
+        "link_condition": { "type": ["string", "null"] },
+        "weather_condition": { "type": ["string", "null"] },
+        "temperature_condition": { "type": ["string", "null"] },
+        "time_condition": { "type": ["string", "null"] },
+        "station_condition": { "type": ["string", "null"] },
+        "opponent_condition": { "type": ["string", "null"] },
+        "vu_condition": { "type": ["string", "null"] }
+      }
+    },
+    "hard_constraints": { "type": "array", "items": { "type": "string" } },
+    "soft_constraints": { "type": "array", "items": { "type": "string" } },
+    "enables": { "type": "array", "items": { "type": "string" } },
+    "conflicts": { "type": "array", "items": { "type": "string" } },
+    "exceptions": { "type": "array", "items": { "type": "string" } }
+  }
+}
+

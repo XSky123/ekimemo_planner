@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "updated_at": "2026-06-06T00:00:00+09:00",
+  "parser_version": "project_rules.v1",
+  "handoff_contract": {
+    "design_goal": "Make every stage resumable by another AI/agent without relying on conversation history.",
+    "must_record": [
+      "source_url",
+      "source_authority",
+      "content_hash",
+      "parser_version",
+      "confidence",
+      "needs_review",
+      "review_reasons"
+    ],
+    "read_order": [
+      "cache/project_rules.json",
+      "cache/cache_manifest.json",
+      "relevant index files",
+      "single denko/profile/skill cache rows",
+      "web only when cache is missing, stale, low confidence, or explicitly refreshed"
+    ]
+  },
+  "language_policy": {
+    "display_language": "zh",
+    "display_rule": "User-facing explanations, plans, review notes, and recommendations must be written in Chinese while preserving important Japanese game terms.",
+    "source_content_language": "ja",
+    "source_content_rule": "Store wiki/game source content in Japanese. Do not translate raw facts before storage.",
+    "key_language": "en",
+    "key_rule": "Use English keys for schemas, indexes, cache manifests, solver fields, and structured records.",
+    "optional_display_fields": [
+      "summary_zh",
+      "review_note_zh"
+    ]
+  },
+  "token_policy": {
+    "default_lookup": "Read manifest/index first, then only the needed single record.",
+    "avoid": [
+      "loading complete wiki pages into LLM context",
+      "loading the whole DB for a targeted query",
+      "re-parsing unchanged pages",
+      "letting LLM process text that deterministic parsing already handled"
+    ],
+    "llm_scope": "Only send the smallest failed or ambiguous source snippet needed for semantic parsing.",
+    "reuse_rule": "If content_hash is unchanged and confidence is sufficient, reuse cache."
+  },
+  "dimension_policy": {
+    "agent_may_refine_keys": true,
+    "rule": "During data reading, the agent/parser may judge whether captured keys are sufficient and add or refine optional fields when the source page proves the current schema is incomplete.",
+    "requirements": [
+      "Keep existing stable keys when possible.",
+      "Record why a key was added or changed.",
+      "Attach source_url, source section, and evidence snippet or screenshot path.",
+      "If the change affects required fields or solver semantics, add a review_queue item.",
+      "Do not silently overwrite Japanese source facts."
+    ]
+  },
+  "report_policy": {
+    "default_format": "html",
+    "language": "zh",
+    "rule": "Human-readable run reports should be exported as HTML by default. Markdown summaries may exist only as lightweight intermediate notes."
+  },
+  "source_authority": {
+    "denko_list": {
+      "rank": 1,
+      "role": "Canonical first-pass source for denko ids, list names, detail URLs, type, attribute, color, skill name, VU marker, and remarks."
+    },
+    "detail_page": {
+      "rank": 1,
+      "role": "Fact authority for skill targets, triggers, constraints, values, VU differences, and exceptions."
+    },
+    "manual_override": {
+      "rank": 2,
+      "role": "Correction for parser errors. Must include reason and source; unresolved conflicts stay needs_review."
+    },
+    "skill_list_or_reverse_index": {
+      "rank": 3,
+      "role": "Candidate discovery and rough classification only."
+    },
+    "recommendation_prior": {
+      "rank": 4,
+      "role": "Reference rating or prior. Never overwrites detail_page facts."
+    },
+    "observed_team_case": {
+      "rank": 5,
+      "role": "Expert/team screenshot case data for calibration and examples. Never becomes a skill fact by itself."
+    }
+  },
+  "record_meta_template": {
+    "source_url": null,
+    "source_authority": "denko_list | detail_page | recommendation_prior | observed_team_case | manual_override | cache | inferred",
+    "content_hash": null,
+    "parser_version": null,
+    "parsed_at": null,
+    "confidence": "high | medium | low",
+    "needs_review": true,
+    "review_reasons": []
+  }
+}

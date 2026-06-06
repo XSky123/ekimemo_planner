@@ -1,0 +1,63 @@
+{
+  "candidate_support": {
+    "denko_name": "レーノ",
+    "number": "No.30",
+    "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E5%85%AB%E9%9B%B2%E3%83%AC%E3%83%BC%E3%83%8E",
+    "pool": "original",
+    "type": "アタッカー",
+    "attribute": "eco",
+    "color": "桃",
+    "skill_name": "ナイトレイダー / ナイトメア",
+    "effect_kind": [
+      "ATK増加",
+      "固定値ダメージ",
+      "軽減不能ダメージ",
+      "DEF減少"
+    ],
+    "trigger_phase": [
+      "常時",
+      "アクセス時",
+      "リンク中"
+    ],
+    "side": "offense",
+    "target": "自身",
+    "team_attribute_condition": "none",
+    "team_type_condition": "none",
+    "color_condition": "none",
+    "position_condition": "front",
+    "link_condition": "fixed_damage_needs_link_start_within_12_minutes_after_vu",
+    "weather_condition": "none",
+    "time_condition": "nighttime_18_to_6_for_atk_daytime_6_to_18_def_down",
+    "station_condition": "none",
+    "activation": "conditional_permanent",
+    "probability": "100%",
+    "duration": "night_atk_always_during_18_to_6; fixed_damage_12_minutes_after_link",
+    "cooldown": "none",
+    "uptime_raw": "night_atk_12h_per_day; fixed_damage_depends_on_link_refresh",
+    "uptime_adjusted": "high_at_night_low_daytime",
+    "values": {
+      "first_hit_value": "high_at_night; low_daytime",
+      "burst_value": "high_at_night_with_supports",
+      "stable_value": "medium_if_playing_at_night",
+      "chain_run_value": "high_after_vu_if_links_are_started_often",
+      "def_debuff_value": "self_penalty_daytime",
+      "fixed_damage_value": "needs_level_specific_confirmation",
+      "expected_value": "depends_on_time_and_vu_level"
+    },
+    "costs": {
+      "condition_cost": "time_of_day",
+      "operation_cost": "low",
+      "opportunity_cost": "front_slot_main",
+      "dead_slot_risk": "high_daytime",
+      "limited_dependency_level": "none"
+    },
+    "compatibility_with_main": {
+      "compatible": true,
+      "reason": "This is the main denko's own offensive skill."
+    },
+    "evidence": "夜ATK増加、昼DEF減少。Lv92以降のナイトメアはリンクしてから12分間、軽減不能固定ダメージ追加。",
+    "source_url": "https://newekimemo.wiki.fc2.com/wiki/%E5%85%AB%E9%9B%B2%E3%83%AC%E3%83%BC%E3%83%8E",
+    "confidence": "medium",
+    "needs_review": true
+  }
+}

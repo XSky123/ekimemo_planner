@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-05-26T00:00:00+09:00",
+  "updated_at": "2026-06-06T00:00:00+09:00",
+  "default_mode": "fill",
+  "project_rules": {
+    "path": "cache/project_rules.json",
+    "parser_version": "project_rules.v1",
+    "purpose": "Low-token handoff, language policy, cache lookup order, and source authority rules.",
+    "confidence": "high",
+    "needs_review": false
+  },
+  "source_entrypoints": {
+    "denko_lists": [
+      {
+        "pool": "original",
+        "url": "https://newekimemo.wiki.fc2.com/wiki/%E9%A1%94%E7%94%BB%E5%83%8F%E3%83%BB%E3%82%BF%E3%82%A4%E3%83%97%E3%83%BB%E5%B1%9E%E6%80%A7%E3%83%BB%E8%89%B2%E3%83%BB%E3%82%B9%E3%82%AD%E3%83%AB%E5%90%8D%2F%E3%82%AA%E3%83%AA%E3%82%B8%E3%83%8A%E3%83%AB%E3%81%A7%E3%82%93%E3%81%93"
+      },
+      {
+        "pool": "extra",
+        "url": "https://newekimemo.wiki.fc2.com/wiki/%E9%A1%94%E7%94%BB%E5%83%8F%E3%83%BB%E3%82%BF%E3%82%A4%E3%83%97%E3%83%BB%E5%B1%9E%E6%80%A7%E3%83%BB%E8%89%B2%E3%83%BB%E3%82%B9%E3%82%AD%E3%83%AB%E5%90%8D%2F%E3%82%A8%E3%82%AF%E3%82%B9%E3%83%88%E3%83%A9%E3%81%A7%E3%82%93%E3%81%93"
+      },
+      {
+        "pool": "special",
+        "url": "https://newekimemo.wiki.fc2.com/wiki/%E9%A1%94%E7%94%BB%E5%83%8F%E3%83%BB%E3%82%BF%E3%82%A4%E3%83%97%E3%83%BB%E5%B1%9E%E6%80%A7%E3%83%BB%E8%89%B2%E3%83%BB%E3%82%B9%E3%82%AD%E3%83%AB%E5%90%8D%2F%E3%82%B9%E3%83%9A%E3%82%B7%E3%83%A3%E3%83%AB%E3%81%A7%E3%82%93%E3%81%935%20"
+      }
+    ],
+    "reverse_index": "https://newekimemo.wiki.fc2.com/wiki/%E3%81%A7%E3%82%93%E3%81%93%E3%82%B9%E3%82%AD%E3%83%AB%E9%80%86%E5%BC%95%E3%81%8D%E8%A1%A8",
+    "skill_lists": [
+      {
+        "pool": "original",
+        "url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%AA%E3%83%AA%E3%82%B8%E3%83%8A%E3%83%AB%E3%81%A7%E3%82%93%E3%81%93%E3%82%B9%E3%82%AD%E3%83%AB%E4%B8%80%E8%A6%A7%E3%83%BB%E5%8A%B9%E6%9E%9C"
+      },
+      {
+        "pool": "extra",
+        "url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%A8%E3%82%AF%E3%82%B9%E3%83%88%E3%83%A9%E3%81%A7%E3%82%93%E3%81%93%E3%82%B9%E3%82%AD%E3%83%AB%E4%B8%80%E8%A6%A7%E3%83%BB%E5%8A%B9%E6%9E%9C"
+      },
+      {
+        "pool": "special",
+        "url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%B9%E3%83%9A%E3%82%B7%E3%83%A3%E3%83%AB%E3%81%A7%E3%82%93%E3%81%93%E3%82%B9%E3%82%AD%E3%83%AB%E4%B8%80%E8%A6%A7%E3%83%BB%E5%8A%B9%E6%9E%9C"
+      }
+    ]
+  },
+  "profiles": {
+    "もみじ": {
+      "path": "cache/02_denko_profile/もみじ.json",
+      "confidence": "medium",
+      "needs_review": true
+    },
+    "レーノ": {
+      "path": "cache/02_denko_profile/レーノ.json",
+      "confidence": "medium",
+      "needs_review": true
+    },
+    "シャルロッテ": {
+      "path": "cache/02_denko_profile/シャルロッテ.json",
+      "confidence": "high",
+      "needs_review": false
+    }
+  },
+  "skill_parsed": {
+    "もみじ": {
+      "path": "cache/03_skill_parsed/もみじ.json",
+      "confidence": "medium",
+      "needs_review": true
+    },
+    "レーノ": {
+      "path": "cache/03_skill_parsed/レーノ.json",
+      "confidence": "medium",
+      "needs_review": true
+    },
+    "シャルロッテ": {
+      "path": "cache/03_skill_parsed/シャルロッテ.json",
+      "confidence": "high",
+      "needs_review": false
+    }
+  },
+  "solver_results": {
+    "af31d582fc06333b": {
+      "path": "cache/04_solver_results/af31d582fc06333b.json",
+      "main_denko": "もみじ",
+      "scene": "default",
+      "confidence": "low",
+      "needs_review": true
+    },
+    "e1b5cbbf487ecc75": {
+      "path": "cache/04_solver_results/e1b5cbbf487ecc75.json",
+      "main_denko": "レーノ",
+      "scene": "default",
+      "confidence": "medium",
+      "needs_review": true
+    },
+    "1b6daa49d6634fe1": {
+      "path": "cache/04_solver_results/1b6daa49d6634fe1.json",
+      "main_denko": "シャルロッテ",
+      "scene": "default",
+      "confidence": "medium",
+      "needs_review": true
+    }
+  },
+  "notes": [
+    "Initial cache was created after an interactive answer, not from full raw page snapshots.",
+    "raw_pages are intentionally missing and should be filled on the next refresh/fill pass.",
+    "2026-05-26 rule update: existing solver_results mentioning つむぎ must re-check cooldown_member_count against cooldown_profile; permanent/no-cooldown skills do not count.",
+    "2026-05-26 rule update: No.134 福分おとは should be considered as a non-eco enabler candidate for eco routes, but it breaks all_eco.",
+    "2026-06-06 project rule update: user-facing display must be Chinese; wiki/game facts stay Japanese; structured keys stay English; records must support low-token handoff via source_url, content_hash, parser_version, confidence, and needs_review."
+  ]
+}

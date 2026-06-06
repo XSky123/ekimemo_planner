@@ -1,0 +1,62 @@
+{
+  "candidate_support": {
+    "denko_name": "シャルロッテ",
+    "number": "No.6",
+    "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%B7%E3%83%A3%E3%83%AB%E3%83%AD%E3%83%83%E3%83%86%EF%BC%9D%E3%83%95%E3%82%A9%E3%83%B3%EF%BC%9D%E3%83%8F%E3%83%8E%E3%83%BC%E3%83%95%E3%82%A1%E3%83%BC",
+    "pool": "original",
+    "type": "トリックスター",
+    "attribute": "eco",
+    "color": "黄",
+    "skill_name": "きまぐれアクセス / 風の吹くまま気の向くまま",
+    "effect_kind": [
+      "スキルアクセス",
+      "追加アクセス",
+      "遠隔アクセス"
+    ],
+    "trigger_phase": [
+      "手動",
+      "一定時間経過後",
+      "アクセス時"
+    ],
+    "side": "offense",
+    "target": "自身",
+    "team_attribute_condition": "none",
+    "team_type_condition": "none",
+    "color_condition": "none",
+    "position_condition": "front_preferred_for_buffs",
+    "link_condition": "none",
+    "weather_condition": "none",
+    "time_condition": "none",
+    "station_condition": "past_accessed_station_random",
+    "activation": "manual_delayed",
+    "probability": "base access 100%; VU追加アクセスは発生することがある（確率未キャッシュ）",
+    "duration": "SLv7: 1時間30分後に着弾",
+    "cooldown": "SLv7: 1時間30分相当。うららでCTのみ短縮可",
+    "uptime_raw": "delayed_access",
+    "uptime_adjusted": "うらら成功時は複数予約可能。ただし着弾時刻そのものは前倒しされない。",
+    "values": {
+      "first_hit_value": "medium: 手動アクセス主攻ではない",
+      "burst_value": "medium_high: 複数予約・VU追加アクセスで駅数期待値が上がる",
+      "stable_value": "high: 低操作で遠隔アクセスを稼げる",
+      "chain_run_value": "high: 遠征・イベント駅数稼ぎ向き",
+      "def_debuff_value": "none",
+      "fixed_damage_value": "none",
+      "expected_value": "アクセス先ランダムのため奪取期待値は相手依存。駅数・経験値・称号進行価値が主。"
+    },
+    "costs": {
+      "condition_cost": "過去アクセス駅が必要",
+      "operation_cost": "low_to_medium",
+      "opportunity_cost": "シャルロッテを先頭に置くと高AP主攻枠を使えない",
+      "dead_slot_risk": "低いが、硬い駅への着弾時は火力不足になりやすい",
+      "limited_dependency_level": "うらら・EX eco攻撃補助を使う場合は依存度上昇"
+    },
+    "compatibility_with_main": {
+      "compatible": true,
+      "reason": "本体が遠隔アクセス主力。補助は着弾時に生きる常時・長時間・CT循環系を優先する。"
+    },
+    "evidence": "個別ページと公式FAQで、手動押下後の遅延アクセスおよびうらら適用時の挙動を確認。",
+    "source_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%B7%E3%83%A3%E3%83%AB%E3%83%AD%E3%83%83%E3%83%86%EF%BC%9D%E3%83%95%E3%82%A9%E3%83%B3%EF%BC%9D%E3%83%8F%E3%83%8E%E3%83%BC%E3%83%95%E3%82%A1%E3%83%BC",
+    "confidence": "high",
+    "needs_review": false
+  }
+}

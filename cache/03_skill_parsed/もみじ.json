@@ -1,0 +1,59 @@
+{
+  "candidate_support": {
+    "denko_name": "もみじ",
+    "number": "No.59",
+    "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E5%B5%AF%E5%B3%A8%E9%87%8E%E3%82%82%E3%81%BF%E3%81%98",
+    "pool": "original",
+    "type": "アタッカー",
+    "attribute": "heat",
+    "color": "黄",
+    "skill_name": "飛びつき型ディーゼル",
+    "effect_kind": [
+      "ATK増加"
+    ],
+    "trigger_phase": [
+      "アクセス時",
+      "常時"
+    ],
+    "side": "offense",
+    "target": "自身",
+    "team_attribute_condition": "none",
+    "team_type_condition": "none",
+    "color_condition": "none",
+    "position_condition": "front",
+    "link_condition": "none",
+    "weather_condition": "none",
+    "time_condition": "none",
+    "station_condition": "none",
+    "activation": "probability",
+    "probability": "needs_review",
+    "duration": "per_access",
+    "cooldown": "none",
+    "uptime_raw": "depends_on_probability",
+    "uptime_adjusted": "depends_on_probability",
+    "values": {
+      "first_hit_value": "high_when_opponent_has_multiple_types",
+      "burst_value": "medium_high",
+      "stable_value": "medium_due_to_probability",
+      "chain_run_value": "medium",
+      "def_debuff_value": "none",
+      "fixed_damage_value": "none",
+      "expected_value": "needs_skill_level_and_probability"
+    },
+    "costs": {
+      "condition_cost": "low",
+      "operation_cost": "low",
+      "opportunity_cost": "front_slot_main",
+      "dead_slot_risk": "low",
+      "limited_dependency_level": "none"
+    },
+    "compatibility_with_main": {
+      "compatible": true,
+      "reason": "This is the main denko's own active offensive skill."
+    },
+    "evidence": "相手編成内のでんこのタイプ数に応じて自身ATK上昇。数值、概率和VU差异待完整刷新确认。",
+    "source_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%AA%E3%83%AA%E3%82%B8%E3%83%8A%E3%83%AB%E3%81%A7%E3%82%93%E3%81%93%E3%82%B9%E3%82%AD%E3%83%AB%E4%B8%80%E8%A6%A7%E3%83%BB%E5%8A%B9%E6%9E%9C",
+    "confidence": "medium",
+    "needs_review": true
+  }
+}
