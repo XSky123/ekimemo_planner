@@ -22,7 +22,7 @@ REVIEW_DIR = ROOT / "data" / "review_queue"
 REPORT_DIR = ROOT / "data" / "reports"
 BASE_URL = "https://newekimemo.wiki.fc2.com"
 JST = timezone(timedelta(hours=9))
-PARSER_VERSION = "detail_html_table_matrix.v4"
+PARSER_VERSION = "detail_html_table_matrix.v5"
 KEY_DENKO_LEVELS = ("1", "15", "30", "50", "60", "70", "80", "92", "96", "100")
 DEFAULT_FOCUS_LEVELS = ("30", "50")
 VU_LEVELS = ("92", "96", "100")
@@ -711,6 +711,7 @@ def build_skill_components(
         component["values_by_denko_level"][parsed["denko_level"]] = parsed["value"]
     if components:
         out = sorted(components.values(), key=component_sort_key)
+        inherit_supplemental_targets(out)
         add_component_health_reviews(out, values_by_denko_level, condition_context)
         return out
 
@@ -741,6 +742,8 @@ def parse_level_components(common_text: str, row_fact: dict[str, Any]) -> list[d
     components: list[dict[str, Any]] = []
     for seasonal_component in parse_seasonal_components(row_fact):
         components.append(seasonal_component)
+    for weekday_component in parse_weekday_components(row_fact):
+        components.append(weekday_component)
 
     number = r"[+＋-]?\d+(?:\.\d+)?"
     label_pattern = r"[\(（](\d+)[\)）]"
@@ -878,7 +881,7 @@ def parse_level_components(common_text: str, row_fact: dict[str, Any]) -> list[d
             )
 
     duration_pattern = re.compile(
-        rf"(?:{label_pattern}\s*)?(?:スキル)?効果時間\s*((?:バッテリー1個につき)?\s*[+＋]\d+(?:時間|分|秒)(?:\d+秒)?)"
+        rf"(?:{label_pattern}\s*)?(?:(?:スキル)?効果時間\s*)?((?:バッテリー1個につき)?\s*[+＋]\d+(?:時間|分|秒)(?:\d+秒)?)"
     )
     for match in duration_pattern.finditer(effect_text):
         label = f"({match.group(1)})" if match.group(1) else None
@@ -981,6 +984,67 @@ def parse_seasonal_components(row_fact: dict[str, Any]) -> list[dict[str, Any]]:
 def seasonal_multiplier_raw(effect_text: str) -> str | None:
     match = re.search(r"効果量\s*([xｘX\d.]+倍)", effect_text)
     return match.group(1) if match else None
+
+
+def parse_weekday_components(row_fact: dict[str, Any]) -> list[dict[str, Any]]:
+    effect_text = row_fact.get("effect") or ""
+    source_text = row_fact.get("special_explanation") or ""
+    if "曜日に応じた" not in effect_text and "曜日に応じて" not in source_text:
+        return []
+    specs = [
+        ("weekday_atk_sunday", "atk_buff", "日曜日", "ATK増加", "sunday"),
+        ("weekday_def_monday", "def_buff", "月曜日", "DEF増加", "monday"),
+        ("weekday_atk_tuesday", "atk_buff", "火曜日", "ATK増加", "tuesday"),
+        ("weekday_def_tuesday", "def_buff", "火曜日", "DEF増加", "tuesday"),
+        ("weekday_fixed_damage_wednesday", "fixed_damage", "水曜日", "追加固定ダメージ", "wednesday"),
+        ("weekday_damage_reduction_thursday", "damage_reduction", "木曜日", "固定ダメージ軽減", "thursday"),
+        ("weekday_score_gain_friday", "score_gain", "金曜日", "スコア獲得", "friday"),
+        ("weekday_exp_gain_saturday", "exp_gain", "土曜日", "経験値獲得", "saturday"),
+    ]
+    out = []
+    for component_id, effect_kind, day_raw, raw_name, weekday in specs:
+        parsed = component_value(
+            effect_kind,
+            row_fact,
+            f"曜日変化: {day_raw} {raw_name}",
+            None,
+            "weekday_variable",
+        )
+        parsed["component_id"] = component_id
+        parsed["target_scope"] = ["team_all"]
+        parsed["target_filters"] = {"weekday": weekday, "weekday_raw": day_raw}
+        parsed["trigger_conditions"] = {"basis": "activation_weekday", "weekday_dependent": True}
+        parsed["value"]["weekday_raw"] = day_raw
+        parsed["value"]["weekday"] = weekday
+        parsed["value"]["needs_value_table_review"] = True
+        out.append(parsed)
+
+    daytime = weekday_vu_addition(row_fact.get("duration") or "", r"昼：\s*([^ ]+)")
+    if daytime:
+        parsed = component_value("duration_extension", row_fact, f"昼：{daytime}", None, "time")
+        parsed["component_id"] = "vu_daytime_duration_extension"
+        parsed["target_scope"] = ["team_all"]
+        parsed["target_filters"] = {"time_window": "daytime", "time_window_raw": "昼"}
+        parsed["trigger_conditions"] = {"time_window_raw": "6:00～18:00"}
+        parsed["availability"] = {"vu_only": True, "note": "VU生效"}
+        out.append(parsed)
+    nighttime = weekday_vu_addition(row_fact.get("effect") or "", r"夜：\s*([^ ]+)")
+    if nighttime:
+        parsed = component_value("effect_multiplier", row_fact, f"夜：{nighttime}", None, "multiplier")
+        parsed["component_id"] = "vu_night_effect_multiplier"
+        parsed["target_scope"] = ["team_all"]
+        parsed["target_filters"] = {"time_window": "nighttime", "time_window_raw": "夜"}
+        parsed["trigger_conditions"] = {"time_window_raw": "18:00～翌6:00"}
+        parsed["availability"] = {"vu_only": True, "note": "VU生效"}
+        out.append(parsed)
+    return out
+
+
+def weekday_vu_addition(text: str, pattern: str) -> str | None:
+    if not text:
+        return None
+    match = re.search(pattern, text)
+    return match.group(1).strip() if match else None
 
 
 def append_component_once(components: list[dict[str, Any]], parsed: dict[str, Any]) -> None:
@@ -1385,6 +1449,7 @@ def infer_condition_label_for_effect(text: str, effect_kind: str) -> str | None:
         "additional_fixed_damage": "追加固定ダメージ",
         "damage_reduction": "ダメージ軽減",
         "exp_gain": "経験値",
+        "duration_extension": "効果時間",
     }
     keyword = keyword_by_kind.get(effect_kind)
     if not keyword:
@@ -1414,6 +1479,7 @@ def add_component_health_reviews(
         reasons = component.setdefault("review_reasons", [])
         values = component.get("values_by_denko_level") or {}
         vu_only = component_has_only_vu_values(component)
+        annotate_component_availability(component, vu_only)
         if not vu_only and "30" in source_levels and "30" not in values and "key_level_component_missing" not in reasons:
             reasons.append("key_level_component_missing")
         if not vu_only and "50" in source_levels and "50" not in values and "key_level_component_missing" not in reasons:
@@ -1428,6 +1494,66 @@ def add_component_health_reviews(
             "duplicate_labeled_component_values_need_review" not in reasons
         ):
             reasons.append("duplicate_labeled_component_values_need_review")
+        if has_condition_effect_mismatch(component) and "condition_effect_mismatch_needs_review" not in reasons:
+            reasons.append("condition_effect_mismatch_needs_review")
+        if has_attribute_branch_condition(component) and "attribute_branch_effect_needs_review" not in reasons:
+            reasons.append("attribute_branch_effect_needs_review")
+
+
+def inherit_supplemental_targets(components: list[dict[str, Any]]) -> None:
+    last_by_kind: dict[str, dict[str, Any]] = {}
+    for component in components:
+        effect_kind = component.get("effect_kind") or ""
+        condition_raw = component.get("condition_raw") or ""
+        if component.get("effect_role") in {"supplemental_effect", "additional_effect"} and "追加" in condition_raw:
+            previous = last_by_kind.get(effect_kind)
+            if previous and not has_explicit_target_phrase(condition_raw):
+                component["target_scope"] = list(previous.get("target_scope") or [])
+                inherited_filters = dict(previous.get("target_filters") or {})
+                inherited_filters.update(component.get("target_filters") or {})
+                component["target_filters"] = inherited_filters
+        last_by_kind[effect_kind] = component
+
+
+def has_explicit_target_phrase(text: str) -> bool:
+    return any(
+        phrase in text
+        for phrase in [
+            "アクセスしたでんこに",
+            "自身以外",
+            "自身の1両前",
+            "先頭車両",
+            "編成内の全てのでんこ",
+            "編成内のでんこのATK",
+            "編成内のでんこのDEF",
+        ]
+    )
+
+
+def has_condition_effect_mismatch(component: dict[str, Any]) -> bool:
+    text = component.get("condition_raw") or ""
+    effect_kind = component.get("effect_kind") or ""
+    if ("経験値" in text or "スコア" in text) and effect_kind not in {"exp_gain", "score_gain", "additional_score_gain"}:
+        return True
+    if "リブート" in text and effect_kind != "reboot" and "しなかった" not in text:
+        return True
+    return False
+
+
+def has_attribute_branch_condition(component: dict[str, Any]) -> bool:
+    text = component.get("condition_raw") or ""
+    attrs = [attr for attr in ["heat", "cool", "eco", "flat"] if attr in text]
+    return "なら" in text and len(attrs) >= 2
+
+
+def annotate_component_availability(component: dict[str, Any], vu_only: bool | None = None) -> None:
+    values = component.get("values_by_denko_level") or {}
+    levels = sorted(values.keys(), key=lambda level: int(level) if str(level).isdigit() else 999)
+    availability = component.setdefault("availability", {})
+    availability["levels"] = levels
+    availability["vu_only"] = component_has_only_vu_values(component) if vu_only is None else vu_only
+    if availability["vu_only"]:
+        availability["note"] = "VU生效"
 
 
 def component_duplicate_signatures(components: list[dict[str, Any]]) -> set[str]:
@@ -1522,6 +1648,10 @@ def skill_disable_value_raw(text: str) -> str:
 
 
 def infer_target_scope(text: str, effect_kind: str) -> list[str]:
+    if "自身の1両前のでんこ" in text or "1両前のでんこ" in text:
+        return ["relative_car"]
+    if "自身以外" in text:
+        return ["team_all"]
     if "先頭車両" in text or "先頭から1両目" in text:
         return ["front_car"]
     if "アクセスしたでんこに" in text:
@@ -1530,7 +1660,11 @@ def infer_target_scope(text: str, effect_kind: str) -> list[str]:
         return ["opponent_team", "own_team"]
     if "編成内の全てのでんこ" in text or "編成内でんこ" in text or "編成内のでんこ" in text or "編成内" in text:
         return ["team_all"]
+    if effect_kind == "atk_debuff" and "相手" in text:
+        return ["opponent_denko"]
     if "メロ自身" in text or "自身" in text:
+        return ["self"]
+    if effect_kind in {"atk_buff", "def_buff", "fixed_damage", "score_gain", "exp_gain"}:
         return ["self"]
     if effect_kind in {"memory_access_station_count", "memory_access_time"}:
         return ["team_all"]
@@ -1540,19 +1674,57 @@ def infer_target_scope(text: str, effect_kind: str) -> list[str]:
 def infer_target_filters(text: str, effect_kind: str) -> dict[str, Any]:
     filters: dict[str, Any] = {}
     attrs = [attr for attr in ["heat", "cool", "eco", "flat"] if f"{attr}属性" in text or attr in text]
+    name_filter = infer_name_filter(text)
+    if name_filter:
+        filters["name_contains_any"] = name_filter
+        filters["script"] = "hiragana_or_katakana"
     if len(attrs) > 1:
         filters["attributes"] = attrs
         if "のみ編成" in text or "のみの編成" in text:
             filters["formation_only"] = True
     if "自身を除く" in text:
         filters["exclude_self"] = True
+    if "自身以外" in text:
+        filters["exclude_self"] = True
+    if "自身の1両前のでんこ" in text or "1両前のでんこ" in text:
+        filters["relative_position"] = "one_car_before_self"
     if "自身を除く先頭から1両目" in text:
         filters["position_exception_raw"] = "自身が先頭の場合は2両目"
     if "2両目" in text and ("先頭" in text or "先頭車両" in text):
         filters["position_exception_raw"] = "自身が先頭の場合は2両目"
     attr_match = re.search(r"(heat|cool|eco|flat)属性", text)
     if attr_match and "attributes" not in filters:
-        filters["attribute"] = attr_match.group(1)
+        if "相手のでんこ" in text or text.startswith("相手") or "相手編成" in text:
+            filters["opponent_attribute"] = attr_match.group(1)
+        else:
+            filters["attribute"] = attr_match.group(1)
+    opponent_count = re.search(r"相手編成に\s*(\d+)\s*体以上\s*(heat|cool|eco|flat)属性", text)
+    if opponent_count:
+        filters["opponent_team_attribute_min_count"] = {
+            "attribute": opponent_count.group(2),
+            "min_count": int(opponent_count.group(1)),
+        }
+    own_count = re.search(r"編成内に\s*(heat|cool|eco|flat)属性のでんこが\s*(\d+)\s*体以上", text)
+    if own_count:
+        filters["own_team_attribute_min_count"] = {
+            "attribute": own_count.group(1),
+            "min_count": int(own_count.group(2)),
+        }
+    opponent_all = re.search(r"相手の編成が全て\s*(heat|cool|eco|flat)", text)
+    if opponent_all:
+        filters["opponent_team_all_attribute"] = opponent_all.group(1)
+    own_all = re.search(r"全て\s*(heat|cool|eco|flat)属性編成", text)
+    if own_all:
+        filters["own_team_all_attribute"] = own_all.group(1)
+    formation_size = re.search(r"(\d+)両編成以上", text)
+    if formation_size:
+        filters["formation_size_min"] = int(formation_size.group(1))
+    active_skill_count = re.search(r"編成内の「いつでもアクティブ」.*?数が\s*(\d+)\s*体以上", text)
+    if active_skill_count:
+        filters["own_team_skill_activation_mode_min_count"] = {
+            "activation_type": "いつでもアクティブ",
+            "min_count": int(active_skill_count.group(1)),
+        }
     type_map = {
         "アタッカー": "attacker",
         "ディフェンダー": "defender",
@@ -1566,6 +1738,18 @@ def infer_target_filters(text: str, effect_kind: str) -> dict[str, Any]:
     if effect_kind == "skill_disable":
         filters["disabled_skill_target"] = skill_disable_value_raw(text)
     return filters
+
+
+def infer_name_filter(text: str) -> list[str]:
+    if "名前に" not in text:
+        return []
+    quoted = re.search(r"「([^」]+)」のいずれか", text)
+    if quoted:
+        return list(quoted.group(1))
+    quoted = re.search(r"「([^」]+)」", text)
+    if quoted:
+        return [quoted.group(1)]
+    return []
 
 
 def infer_trigger_conditions(text: str, effect_kind: str | None = None) -> dict[str, Any]:
@@ -1585,6 +1769,9 @@ def infer_trigger_conditions(text: str, effect_kind: str | None = None) -> dict[
         trigger["access_direction"] = "own_team_link"
     if "自身がリンクしている" in text:
         trigger["station_ownership"] = "self_linking"
+    if "バッテリー使用" in text or "バッテリー1個につき" in text:
+        trigger["event_hint"] = "battery_use"
+        trigger["per_battery_use"] = True
     if effect_kind == "activation_probability_boost" and "いつでもアクティブ" in text and "でんこ数" in text:
         trigger["active_skill_holder_count_based"] = True
     time_match = re.search(r"(\d{1,2}:\d{2}[～\-]\d{1,2}:\d{2})", text)

@@ -62,6 +62,8 @@ SUSPICIOUS_REASONS = {
     "labeled_component_count_mismatch",
     "compound_labeled_effect_needs_manual_review",
     "duplicate_labeled_component_values_need_review",
+    "condition_effect_mismatch_needs_review",
+    "attribute_branch_effect_needs_review",
 }
 SUSPICIOUS_REASON_ZH = {
     "key_level_component_missing": "关键等级缺值",
@@ -69,6 +71,8 @@ SUSPICIOUS_REASON_ZH = {
     "compound_labeled_effect_needs_manual_review": "复合编号标签，需人工或大模型片段复查",
     "condition_only_component_needs_review": "仅从条件说明推断出的组件，需复查",
     "duplicate_labeled_component_values_need_review": "多个编号组件数值完全相同，可能解析错位",
+    "condition_effect_mismatch_needs_review": "条件描述的效果类型与解析出的组件类型不一致，需复查",
+    "attribute_branch_effect_needs_review": "同一编号内存在属性分支效果，需人工或大模型片段复查",
     "blank_Lv30": "Lv30 空白但源表存在 Lv30",
     "blank_Lv50": "Lv50 空白但源表存在 Lv50",
 }
@@ -99,6 +103,7 @@ def component_condition_report(component: dict[str, Any]) -> str:
         ("filters", "target_filters"),
         ("trigger", "trigger_conditions"),
         ("scaling", "scaling_conditions"),
+        ("availability", "availability"),
         ("activation", "activation_type"),
         ("raw", "condition_raw"),
     ]:
@@ -112,6 +117,8 @@ def component_value_report(component: dict[str, Any], level: str) -> str:
     values = component.get("values_by_denko_level") or {}
     value = values.get(level)
     if not value:
+        if component.get("availability", {}).get("vu_only") and level in {"30", "50"}:
+            return "※VU生效"
         return ""
     return value.get("value_raw") or ""
 
