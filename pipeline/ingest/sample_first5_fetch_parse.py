@@ -612,6 +612,11 @@ def build_skill_components(
                     parsed["condition_label"] = inferred_label
                     parsed["component_id"] = f"{parsed['effect_kind']}_{inferred_label.strip('()')}"
                     parsed["effect_role"] = effect_role_from_label(inferred_label, common_text)
+                    parsed["value"]["probability"] = probability_for_label(
+                        parsed["value"].get("raw_row", {}).get("probability", {})
+                        or parsed["value"].get("probability", {}),
+                        inferred_label,
+                    )
             component_id = parsed["component_id"]
             component_condition = component_condition_text(condition_context, parsed)
             component = components.setdefault(
@@ -638,6 +643,7 @@ def build_skill_components(
             adjust_component_semantics(component, common_text)
             enrich_component_from_value_text(component, parsed["value"].get("source_text"))
             component["values_by_denko_level"][denko_level] = parsed["value"]
+    add_condition_only_components(components, condition_context, activation_type, values_by_denko_level)
     for parsed in parse_probability_boost_components(common_text, values_by_denko_level):
         component_id = parsed["component_id"]
         component = components.setdefault(
@@ -661,7 +667,7 @@ def build_skill_components(
         enrich_component_from_value_text(component, parsed["value"].get("source_text"))
         component["values_by_denko_level"][parsed["denko_level"]] = parsed["value"]
     if components:
-        out = sorted(components.values(), key=lambda item: item["component_id"])
+        out = sorted(components.values(), key=component_sort_key)
         add_component_health_reviews(out, values_by_denko_level, condition_context)
         return out
 
@@ -925,13 +931,33 @@ def effect_role_from_label(label: str | None, condition_text: str) -> str | None
     return None
 
 
+def labeled_condition_segments(text: str) -> list[tuple[str, str]]:
+    normalized = normalize_numeric_text(text)
+    starts = []
+    for match in re.finditer(r"\((\d+)\)", normalized):
+        index = match.start()
+        prev = normalized[:index].rstrip()
+        next_text = normalized[match.end() :]
+        next_char = next_text[:1]
+        if not prev or prev.endswith("/") or prev.endswith("効果") or prev.endswith("効果:") or prev.endswith("効果："):
+            starts.append((index, f"({match.group(1)})"))
+            continue
+        if normalized[index - 1].isspace() and next_char and next_char not in {"発"}:
+            starts.append((index, f"({match.group(1)})"))
+    out = []
+    for pos, (start, label) in enumerate(starts):
+        end = starts[pos + 1][0] if pos + 1 < len(starts) else len(normalized)
+        segment = normalized[start:end].strip(" /")
+        segment = re.sub(r"\s*効果\s*$", "", segment).strip()
+        out.append((label, segment))
+    return out
+
+
 def extract_labeled_condition_text(text: str, label: str | None) -> str:
     if not label:
         return ""
-    normalized = normalize_numeric_text(text)
-    for match in LABEL_SEGMENT_PATTERN.finditer(normalized):
-        segment = match.group(1).strip(" /")
-        if segment.startswith(label):
+    for segment_label, segment in labeled_condition_segments(text):
+        if segment_label == label:
             return segment
     return ""
 
@@ -944,15 +970,79 @@ def component_condition_text(common_text: str, parsed: dict[str, Any]) -> str:
     return labeled or common_text
 
 
-LABEL_SEGMENT_PATTERN = re.compile(r"(\(\d+\).*?)(?=\s*/\s*\(\d+\)|\s+\(\d+\)(?=\s|[+＋-]?\d)|$)")
+def component_sort_key(component: dict[str, Any]) -> tuple[int, str]:
+    label = component.get("condition_label")
+    if label:
+        match = re.search(r"\d+", label)
+        if match:
+            return (int(match.group(0)), component.get("component_id") or "")
+    return (999, component.get("component_id") or "")
+
+
+def add_condition_only_components(
+    components: dict[str, dict[str, Any]],
+    condition_text: str,
+    activation_type: str | None,
+    values_by_denko_level: dict[str, dict[str, Any]],
+) -> None:
+    for label, segment in labeled_condition_segments(condition_text):
+        label_number = label.strip("()")
+        if any(component.get("condition_label") == label for component in components.values()):
+            continue
+        effect_kind = condition_only_effect_kind(segment)
+        if not effect_kind:
+            continue
+        component_id = f"{effect_kind}_{label_number}"
+        component = {
+            "component_id": component_id,
+            "effect_kind": effect_kind,
+            "effect_role": effect_role_from_label(label, condition_text),
+            "condition_label": label,
+            "target_scope": infer_target_scope(segment, effect_kind),
+            "target_filters": infer_target_filters(segment, effect_kind),
+            "trigger_conditions": infer_trigger_conditions(segment, effect_kind),
+            "scaling_conditions": infer_scaling_conditions(segment),
+            "activation_type": activation_type,
+            "condition_raw": component_condition_text(condition_text, {"condition_label": label}),
+            "remarks_raw": None,
+            "values_by_denko_level": {},
+            "confidence": "low",
+            "needs_review": True,
+            "review_reasons": ["condition_only_component_needs_review"],
+        }
+        for denko_level, row_fact in values_by_denko_level.items():
+            component["values_by_denko_level"][denko_level] = {
+                "value_raw": effect_kind,
+                "value_numeric": None,
+                "unit": "condition_only",
+                "probability": probability_for_label(row_fact.get("probability") or {}, label),
+                "duration": row_fact.get("duration"),
+                "cooldown": row_fact.get("cooldown"),
+                "skill_level": row_fact.get("skill_level"),
+                "source_text": row_fact.get("special_explanation"),
+                "raw_row": row_fact.get("raw_row"),
+            }
+        components[component_id] = component
+
+
+def condition_only_effect_kind(segment: str) -> str | None:
+    if "効果時間延長" in segment or ("効果時間" in segment and "延長" in segment):
+        return "duration_extension"
+    if "リブート" in segment:
+        return "reboot"
+    if "バッテリー使用不可" in segment:
+        return "battery_disable"
+    return None
 
 
 def condition_prefix_before_labels(text: str) -> str:
     normalized = normalize_numeric_text(text)
-    match = re.search(r"\(\d+\)", normalized)
-    if not match:
+    segments = labeled_condition_segments(normalized)
+    if not segments:
         return ""
-    return normalized[: match.start()].strip(" /")
+    first = normalized.find(segments[0][1])
+    prefix = normalized[:first].strip(" /")
+    return re.sub(r"(?:効果|効果[:：])\s*$", "", prefix).strip()
 
 
 def infer_condition_label_for_effect(text: str, effect_kind: str) -> str | None:
@@ -982,13 +1072,14 @@ def add_component_health_reviews(
     condition_text: str,
 ) -> None:
     source_levels = set(values_by_denko_level.keys())
-    expected_labels = set(re.findall(r"[\(（](\d+)[\)）]", condition_text))
+    expected_labels = {label.strip("()") for label, _segment in labeled_condition_segments(condition_text)}
     emitted_labels = {
         str(component.get("condition_label")).strip("()")
         for component in components
         if component.get("condition_label")
     }
     label_mismatch = expected_labels and not expected_labels.issubset(emitted_labels)
+    duplicate_signatures = component_duplicate_signatures(components)
     for component in components:
         reasons = component.setdefault("review_reasons", [])
         values = component.get("values_by_denko_level") or {}
@@ -1002,6 +1093,35 @@ def add_component_health_reviews(
             "compound_labeled_effect_needs_manual_review" not in reasons
         ):
             reasons.append("compound_labeled_effect_needs_manual_review")
+        if component.get("component_id") in duplicate_signatures and (
+            "duplicate_labeled_component_values_need_review" not in reasons
+        ):
+            reasons.append("duplicate_labeled_component_values_need_review")
+
+
+def component_duplicate_signatures(components: list[dict[str, Any]]) -> set[str]:
+    by_signature: dict[tuple[Any, ...], list[str]] = {}
+    for component in components:
+        values = component.get("values_by_denko_level") or {}
+        signature = (
+            component.get("effect_kind"),
+            tuple(
+                sorted(
+                    (
+                        level,
+                        value.get("value_raw"),
+                        json.dumps(value.get("probability") or {}, ensure_ascii=False, sort_keys=True),
+                    )
+                    for level, value in values.items()
+                )
+            ),
+        )
+        by_signature.setdefault(signature, []).append(component.get("component_id") or "")
+    out = set()
+    for ids in by_signature.values():
+        if len(ids) > 1:
+            out.update(ids)
+    return out
 
 
 def join_unique_text(values: list[str | None]) -> str:

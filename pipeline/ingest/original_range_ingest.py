@@ -56,7 +56,14 @@ def component_kind_counts(skill_rows: list[dict[str, Any]]) -> Counter[str]:
 
 
 COMPONENT_SLOT_COUNT = 5
-REPORT_LEVEL_ORDER = ("30", "50", "60", "70", "80", "92", "96", "100", "base", "15", "5", "1")
+REPORT_LEVEL_ORDER = ("1", "5", "15", "30", "50", "60", "70", "80", "92", "96", "100", "base")
+SUSPICIOUS_REASONS = {
+    "key_level_component_missing",
+    "labeled_component_count_mismatch",
+    "compound_labeled_effect_needs_manual_review",
+    "condition_only_component_needs_review",
+    "duplicate_labeled_component_values_need_review",
+}
 
 
 def compact_report_json(value: Any) -> str:
@@ -133,6 +140,39 @@ def component_slot_cells(component: dict[str, Any] | None) -> list[str]:
     ]
 
 
+def suspicious_rows(skill_rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    rows = []
+    for skill in skill_rows:
+        points = []
+        labels = [component.get("condition_label") for component in skill.get("skill_components") or []]
+        first_label = next((label for label in labels if label), None)
+        if first_label and first_label != "(1)":
+            points.append(f"first_label_is_{first_label}")
+        for component in skill.get("skill_components") or []:
+            reasons = [
+                reason
+                for reason in component.get("review_reasons") or []
+                if reason in SUSPICIOUS_REASONS
+            ]
+            values = component.get("values_by_denko_level") or {}
+            if values.get("30") is None and (skill.get("values_by_denko_level") or {}).get("30"):
+                reasons.append("blank_Lv30")
+            if values.get("50") is None and (skill.get("values_by_denko_level") or {}).get("50"):
+                reasons.append("blank_Lv50")
+            if reasons:
+                points.append(f"{component.get('component_id')}: {', '.join(sorted(set(reasons)))}")
+        if points:
+            rows.append(
+                {
+                    "denko_id": skill.get("denko_id"),
+                    "name": skill.get("name"),
+                    "skill_name": skill.get("skill_name"),
+                    "points": points,
+                }
+            )
+    return rows
+
+
 def write_html_report(
     start: int,
     end: int,
@@ -150,6 +190,7 @@ def write_html_report(
     for row in skill_rows:
         reason_counts.update(row.get("record_meta", {}).get("review_reasons") or [])
     component_counts = component_kind_counts(skill_rows)
+    suspicious = suspicious_rows(skill_rows)
 
     lines = [
         "<!doctype html>",
@@ -167,11 +208,28 @@ def write_html_report(
         f"<tr><th>record_count</th><td>{len(denko_rows)}</td></tr>",
         f"<tr><th>batch_size</th><td>{batch_size}</td></tr>",
         f"<tr><th>review_queue</th><td>{len(reviews)}</td></tr>",
+        f"<tr><th>suspicious_items</th><td>{len(suspicious)}</td></tr>",
         f"<tr><th>classification</th><td>{esc(dict(classification))}</td></tr>",
         f"<tr><th>review_reasons</th><td>{esc(dict(reason_counts))}</td></tr>",
         f"<tr><th>component_kinds</th><td>{esc(dict(component_counts))}</td></tr>",
         "</tbody></table>",
     ]
+
+    lines.append("<h2>可疑项优先</h2>")
+    if suspicious:
+        lines.append("<table><thead><tr><th>denko_id</th><th>name</th><th>skill</th><th>可疑点</th></tr></thead><tbody>")
+        for row in suspicious:
+            lines.append(
+                "<tr>"
+                f"<td>{esc(row['denko_id'])}</td>"
+                f"<td>{esc(row['name'])}</td>"
+                f"<td>{esc(row['skill_name'])}</td>"
+                f"<td>{esc(' / '.join(row['points']))}</td>"
+                "</tr>"
+            )
+        lines.append("</tbody></table>")
+    else:
+        lines.append("<p>本批未检测到高优先级可疑项。</p>")
 
     lines.append("<h2>分批复盘</h2>")
     for batch in batch_slices(denko_rows, batch_size):
