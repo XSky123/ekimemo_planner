@@ -61,7 +61,6 @@ SUSPICIOUS_REASONS = {
     "key_level_component_missing",
     "labeled_component_count_mismatch",
     "compound_labeled_effect_needs_manual_review",
-    "condition_only_component_needs_review",
     "duplicate_labeled_component_values_need_review",
 }
 SUSPICIOUS_REASON_ZH = {

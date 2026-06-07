@@ -22,7 +22,7 @@ REVIEW_DIR = ROOT / "data" / "review_queue"
 REPORT_DIR = ROOT / "data" / "reports"
 BASE_URL = "https://newekimemo.wiki.fc2.com"
 JST = timezone(timedelta(hours=9))
-PARSER_VERSION = "sample_first5_html_table_matrix.v1"
+PARSER_VERSION = "sample_first5_html_table_matrix.v2"
 KEY_DENKO_LEVELS = ("1", "15", "30", "50", "60", "70", "80", "92", "96", "100")
 DEFAULT_FOCUS_LEVELS = ("30", "50")
 VU_LEVELS = ("92", "96", "100")
@@ -723,9 +723,32 @@ def parse_level_components(common_text: str, row_fact: dict[str, Any]) -> list[d
             )
         )
 
-    hp_match = re.search(r"HPの\s*(\d+)\s*[％%]", effect_text)
-    if hp_match:
-        components.append(component_value("hp_recovery", row_fact, hp_match.group(0), int(hp_match.group(1)), "percent_hp"))
+    for hp_match in re.finditer(rf"(?:{label_pattern}\s*)?HPの\s*(\d+)\s*[％%]", effect_text):
+        label = f"({hp_match.group(1)})" if hp_match.group(1) else None
+        components.append(
+            component_value(
+                "hp_recovery",
+                row_fact,
+                f"HPの{hp_match.group(2)}%",
+                int(hp_match.group(2)),
+                "percent_hp",
+                condition_label=label,
+                effect_role=effect_role_from_label(label, common_text),
+            )
+        )
+    for hp_match in re.finditer(rf"(?:{label_pattern}\s*)?HP回復\s*({number})", effect_text):
+        label = f"({hp_match.group(1)})" if hp_match.group(1) else None
+        components.append(
+            component_value(
+                "hp_recovery",
+                row_fact,
+                normalize_numeric_text(f"HP回復 {hp_match.group(2)}"),
+                parse_signed_number(hp_match.group(2)),
+                "flat_hp",
+                condition_label=label,
+                effect_role=effect_role_from_label(label, common_text),
+            )
+        )
 
     for kind, pattern, unit in [
         ("exp_gain", rf"(?:{label_pattern}\s*)?(経験値付与)\s*({number}(?:\s*[～〜~\-]\s*{number})?)", "flat_exp"),
@@ -734,8 +757,7 @@ def parse_level_components(common_text: str, row_fact: dict[str, Any]) -> list[d
         ("damage_reduction", rf"(?:{label_pattern}\s*)?(ダメージ軽減)\s*({number}(?:\s*[～〜~\-]\s*{number})?)", "flat_damage"),
         ("film_series_effect_boost", rf"(?:{label_pattern}\s*)?(フィルムシリーズ効果の着用数)\s*([+＋]\d+)", "count"),
     ]:
-        match = re.search(pattern, effect_text)
-        if match:
+        for match in re.finditer(pattern, effect_text):
             label = f"({match.group(1)})" if match.group(1) else None
             value_raw = normalize_numeric_text(f"{match.group(2)} {match.group(3)}")
             components.append(
@@ -750,11 +772,45 @@ def parse_level_components(common_text: str, row_fact: dict[str, Any]) -> list[d
                 )
             )
 
-    score_matches = list(re.finditer(r"スコア獲得\s*([+＋]?\d+)(?:/駅)?", effect_text))
+    duration_pattern = re.compile(
+        rf"(?:{label_pattern}\s*)?(?:スキル)?効果時間\s*((?:バッテリー1個につき)?\s*[+＋]\d+(?:時間|分|秒)(?:\d+秒)?)"
+    )
+    for match in duration_pattern.finditer(effect_text):
+        label = f"({match.group(1)})" if match.group(1) else None
+        duration_raw = normalize_numeric_text(f"効果時間 {match.group(2).strip()}")
+        components.append(
+            component_value(
+                "duration_extension",
+                row_fact,
+                duration_raw,
+                parse_signed_number(duration_raw),
+                "duration_delta",
+                condition_label=label,
+                effect_role=effect_role_from_label(label, common_text),
+            )
+        )
+
+    score_pattern = re.compile(
+        rf"(?:{label_pattern}\s*)?(?:合計ダメージが\s*(\d+)\s*→\s*)?スコア獲得\s*([+＋]?\d+)(?:/駅)?"
+    )
+    score_matches = list(score_pattern.finditer(effect_text))
     for index, match in enumerate(score_matches):
-        kind = "score_gain" if index == 0 else "additional_score_gain"
+        label = f"({match.group(1)})" if match.group(1) else None
+        kind = "score_gain" if (label == "(1)" or (not label and index == 0)) else "additional_score_gain"
         unit = "score_per_station" if "/駅" in match.group(0) else "score"
-        components.append(component_value(kind, row_fact, match.group(0), parse_signed_number(match.group(1)), unit))
+        parsed = component_value(
+            kind,
+            row_fact,
+            normalize_numeric_text(f"スコア獲得 {match.group(3)}"),
+            parse_signed_number(match.group(3)),
+            unit,
+            condition_label=label,
+            effect_role=effect_role_from_label(label, common_text),
+        )
+        if match.group(2):
+            parsed["value"]["score_trigger_threshold_raw"] = f"合計ダメージが{match.group(2)}"
+            parsed["value"]["score_trigger_threshold_damage"] = int(match.group(2))
+        components.append(parsed)
 
     access_match = re.search(r"追加アクセス\s*\+?\s*(\d+)回", text)
     if access_match:
@@ -1079,7 +1135,7 @@ def add_component_health_reviews(
         if component.get("condition_label")
     }
     label_mismatch = expected_labels and not expected_labels.issubset(emitted_labels)
-    duplicate_signatures = component_duplicate_signatures(components)
+    duplicate_signatures = set() if "重複発動可" in condition_text else component_duplicate_signatures(components)
     for component in components:
         reasons = component.setdefault("review_reasons", [])
         values = component.get("values_by_denko_level") or {}
@@ -1089,7 +1145,7 @@ def add_component_health_reviews(
             reasons.append("key_level_component_missing")
         if label_mismatch and "labeled_component_count_mismatch" not in reasons:
             reasons.append("labeled_component_count_mismatch")
-        if re.search(r"[\(（]\d+[\)）][\(（]\d+[\)）]", condition_text) and (
+        if label_mismatch and re.search(r"[\(（]\d+[\)）][\(（]\d+[\)）]", condition_text) and (
             "compound_labeled_effect_needs_manual_review" not in reasons
         ):
             reasons.append("compound_labeled_effect_needs_manual_review")

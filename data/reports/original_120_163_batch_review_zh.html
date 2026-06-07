@@ -13,27 +13,16 @@
 <tr><th>record_count</th><td>44</td></tr>
 <tr><th>batch_size</th><td>30</td></tr>
 <tr><th>review_queue</th><td>44</td></tr>
-<tr><th>suspicious_items</th><td>10</td></tr>
-<tr><th>classification</th><td>{&#x27;needs_manual_review&#x27;: 39, &#x27;needs_llm_snippet&#x27;: 5}</td></tr>
+<tr><th>suspicious_items</th><td>0</td></tr>
+<tr><th>classification</th><td>{&#x27;needs_manual_review&#x27;: 41, &#x27;needs_llm_snippet&#x27;: 3}</td></tr>
 <tr><th>review_reasons</th><td>{&#x27;sample_parse_needs_human_review&#x27;: 44}</td></tr>
-<tr><th>component_kinds</th><td>{&#x27;def_buff&#x27;: 27, &#x27;exp_gain&#x27;: 5, &#x27;atk_buff&#x27;: 17, &#x27;atk_debuff&#x27;: 3, &#x27;fixed_damage&#x27;: 4, &#x27;damage_reduction&#x27;: 4, &#x27;duration_extension&#x27;: 2, &#x27;reboot&#x27;: 2, &#x27;additional_fixed_damage&#x27;: 1, &#x27;battery_disable&#x27;: 1, &#x27;extra_access&#x27;: 1, &#x27;score_gain&#x27;: 2, &#x27;def_debuff&#x27;: 2, &#x27;film_series_effect_boost&#x27;: 1, &#x27;additional_score_gain&#x27;: 1}</td></tr>
+<tr><th>component_kinds</th><td>{&#x27;def_buff&#x27;: 27, &#x27;exp_gain&#x27;: 7, &#x27;atk_buff&#x27;: 17, &#x27;atk_debuff&#x27;: 3, &#x27;fixed_damage&#x27;: 5, &#x27;damage_reduction&#x27;: 4, &#x27;duration_extension&#x27;: 2, &#x27;reboot&#x27;: 2, &#x27;additional_fixed_damage&#x27;: 1, &#x27;hp_recovery&#x27;: 1, &#x27;battery_disable&#x27;: 1, &#x27;extra_access&#x27;: 1, &#x27;score_gain&#x27;: 2, &#x27;def_debuff&#x27;: 2, &#x27;film_series_effect_boost&#x27;: 1, &#x27;additional_score_gain&#x27;: 1}</td></tr>
 </tbody></table>
 <h2>可疑项优先</h2>
-<table><thead><tr><th>denko_id</th><th>name</th><th>skill</th><th>可疑点</th></tr></thead><tbody>
-<tr><td>original:134</td><td>福分おとは</td><td>普通へのあこがれ</td><td>duration_extension_2: 仅从条件说明推断出的组件，需复查</td></tr>
-<tr><td>original:135</td><td>寿むつみ</td><td>スリルを求めて……</td><td>reboot_3: 仅从条件说明推断出的组件，需复查</td></tr>
-<tr><td>original:139</td><td>荒井まやか</td><td>このご恩は必ずや……！</td><td>def_buff_1: 复合编号标签，需人工或大模型片段复查、检测到编号标签但组件数量/编号不匹配，需复查原文 / battery_disable_3: 复合编号标签，需人工或大模型片段复查、仅从条件说明推断出的组件，需复查、检测到编号标签但组件数量/编号不匹配，需复查原文</td></tr>
-<tr><td>original:147</td><td>加太こなた</td><td>はじまりは此方より</td><td>exp_gain_1: 检测到编号标签但组件数量/编号不匹配，需复查原文</td></tr>
-<tr><td>original:149</td><td>日暮里ハルカゼ</td><td>不器用オーバーワーク</td><td>reboot_2: 仅从条件说明推断出的组件，需复查</td></tr>
-<tr><td>original:153</td><td>土合もくり</td><td>たまこは大親友</td><td>exp_gain_1: 检测到编号标签但组件数量/编号不匹配，需复查原文</td></tr>
-<tr><td>original:154</td><td>東田坂上ほなみ</td><td>満足度100%を目指して</td><td>def_buff_1: 多个编号组件数值完全相同，可能解析错位 / def_buff_2: 多个编号组件数值完全相同，可能解析错位</td></tr>
-<tr><td>original:157</td><td>阿仁合にあ</td><td>お姉ちゃんにお任せ☆</td><td>fixed_damage_1: 检测到编号标签但组件数量/编号不匹配，需复查原文</td></tr>
-<tr><td>original:158</td><td>会津あやか</td><td>I ♡ バッテリー</td><td>duration_extension_3: 仅从条件说明推断出的组件，需复查</td></tr>
-<tr><td>original:163</td><td>豊橋ちわ</td><td>ちくわの穴を覗いてみれば</td><td>additional_score_gain: 复合编号标签，需人工或大模型片段复查、检测到编号标签但组件数量/编号不匹配，需复查原文 / score_gain: 复合编号标签，需人工或大模型片段复查、检测到编号标签但组件数量/编号不匹配，需复查原文</td></tr>
-</tbody></table>
+<p>本批未检测到高优先级可疑项。</p>
 <h2>分批复盘</h2>
-<p><strong>original:120 - original:149</strong>: 30 records, {&#x27;needs_manual_review&#x27;: 26, &#x27;needs_llm_snippet&#x27;: 4}</p>
-<p><strong>original:150 - original:163</strong>: 14 records, {&#x27;needs_manual_review&#x27;: 13, &#x27;needs_llm_snippet&#x27;: 1}</p>
+<p><strong>original:120 - original:149</strong>: 30 records, {&#x27;needs_manual_review&#x27;: 27, &#x27;needs_llm_snippet&#x27;: 3}</p>
+<p><strong>original:150 - original:163</strong>: 14 records, {&#x27;needs_manual_review&#x27;: 14}</p>
 <h2>技能分量矩阵</h2>
 <p>每个でんこ固定预留 5 个技能分量槽。一般技能只有 1-2 个分量，空槽表示当前 parser 没有识别到更多独立效果。</p>
 <div class="table-scroll">
@@ -225,7 +214,7 @@ raw: (1)残り効果時間(上限20分)に応じて編成内ATK増加</td><td>AT
 role: supplemental_effect
 target: [&quot;team_all&quot;]
 activation: マスターにおまかせ
-raw: (2)編成内でんこがリンクする度に効果時間延長(上限40分)</td><td>duration_extension</td><td>duration_extension</td><td>60%</td><td>30分</td><td>1時間30分</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+raw: (2)編成内でんこがリンクする度に効果時間延長(上限40分)</td><td>効果時間 +4分</td><td>効果時間 +4分15秒</td><td>60%</td><td>30分</td><td>1時間30分</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
 <tr><td>original:135</td><td>寿むつみ</td><td>トリックスター</td><td>cool</td><td>青</td><td>スリルを求めて……</td><td>atk_buff_1 (atk_buff)</td><td>label: (1)
 role: default_effect
 target: [&quot;team_all&quot;]
@@ -281,11 +270,16 @@ Lv80: 2時間15分</td><td></td><td></td><td></td><td></td><td></td><td></td><td
 role: default_effect
 target: [&quot;team_all&quot;]
 activation: いつでもアクティブ
-raw: (1)編成内すべてのでんこが のとき、自身のDEF増加</td><td>DEF +24%</td><td>DEF +28%</td><td>100%</td><td></td><td></td><td>battery_disable_3 (battery_disable)</td><td>label: (3)
+raw: (1)編成内すべてのでんこが のとき、自身のDEF増加</td><td>DEF +24%</td><td>DEF +28%</td><td>100%</td><td></td><td></td><td>hp_recovery_2 (hp_recovery)</td><td>label: (2)
+role: supplemental_effect
+target: [&quot;team_all&quot;]
+trigger: {&quot;access_direction&quot;: &quot;active&quot;, &quot;event_hint&quot;: &quot;access&quot;}
+activation: いつでもアクティブ
+raw: (2)前回アクセスされてから12分以内にアクセスされてダメージを受けた時、回復</td><td>HP回復 54</td><td>HP回復 63</td><td>100%</td><td></td><td></td><td>battery_disable_3 (battery_disable)</td><td>label: (3)
 role: supplemental_effect
 filters: {&quot;attribute&quot;: &quot;cool&quot;}
 activation: いつでもアクティブ
-raw: (3)バッテリー使用不可 cool属性</td><td>battery_disable</td><td>battery_disable</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+raw: (3)バッテリー使用不可 cool属性</td><td>battery_disable</td><td>battery_disable</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
 <tr><td>original:140</td><td>山口ゆづる</td><td>サポーター</td><td>eco</td><td>黄</td><td>数多の伝説を持つでんこ</td><td>def_buff</td><td>target: [&quot;team_all&quot;]
 filters: {&quot;attribute&quot;: &quot;eco&quot;}
 activation: いつでもアクティブ
@@ -357,7 +351,15 @@ activation: マスターにおまかせ
 raw: (1)スキルを発動してから1時間後に自編成内でんこに経験値付与</td><td>経験値付与 200</td><td>経験値付与 250</td><td>100%</td><td></td><td>Lv5/Lv15/Lv30/Lv50: 3時間15分
 Lv60: 3時間10分
 Lv70: 3時間5分
-Lv80: 3時間</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+Lv80: 3時間</td><td>exp_gain_2 (exp_gain)</td><td>label: (2)
+role: additional_effect
+target: [&quot;team_all&quot;]
+trigger: {&quot;access_direction&quot;: &quot;active&quot;, &quot;event_hint&quot;: &quot;access&quot;}
+activation: マスターにおまかせ
+raw: (2)スキルをアクティブにしてから発動までに3回以上アクセスしていた駅属性の数に応じて、追加で経験値付与 スキル発動時にこなたが編成されていなくても発動</td><td>経験値付与 400～1200</td><td>経験値付与 500～1500</td><td>100%</td><td></td><td>Lv5/Lv15/Lv30/Lv50: 3時間15分
+Lv60: 3時間10分
+Lv70: 3時間5分
+Lv80: 3時間</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
 <tr><td>original:148</td><td>倉敷れお</td><td>サポーター</td><td>heat</td><td>桃</td><td>きびだんごでお友達☆</td><td>atk_buff</td><td>target: [&quot;team_all&quot;]
 filters: {&quot;attribute&quot;: &quot;heat&quot;, &quot;exclude_self&quot;: true}
 trigger: {&quot;access_direction&quot;: &quot;active&quot;, &quot;event_hint&quot;: &quot;access&quot;}
@@ -399,7 +401,7 @@ Lv80: 2時間</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td
 trigger: {&quot;access_direction&quot;: &quot;active&quot;, &quot;event_hint&quot;: &quot;access&quot;}
 scaling: {&quot;basis&quot;: &quot;linked_station_count&quot;}
 activation: マスターにおまかせ
-raw: 一定時間、先頭車両のでんこがアクセスされてリブートしなかった時、 受けたダメージが奇数なら先頭車両のでんこのリンク駅数に応じてスコア獲得 受けたダメージが偶数なら先頭車両のでんこをリブートさせ、リブート時に獲得するスコアを0にする 1回発動でクールタイム のスキルは対象外 うらら</td><td>スコア獲得 1200/駅</td><td>スコア獲得 1650/駅</td><td>100%</td><td>15分</td><td>12時間</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+raw: 一定時間、先頭車両のでんこがアクセスされてリブートしなかった時、 受けたダメージが奇数なら先頭車両のでんこのリンク駅数に応じてスコア獲得 受けたダメージが偶数なら先頭車両のでんこをリブートさせ、リブート時に獲得するスコアを0にする 1回発動でクールタイム のスキルは対象外 うらら</td><td>スコア獲得 1200</td><td>スコア獲得 1650</td><td>100%</td><td>15分</td><td>12時間</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
 <tr><td>original:151</td><td>福神あおね</td><td>サポーター</td><td>cool</td><td>青</td><td>淑女を目指して</td><td>atk_buff_1 (atk_buff)</td><td>label: (1)
 role: default_effect
 target: [&quot;team_all&quot;]
@@ -476,7 +478,12 @@ role: default_effect
 target: [&quot;team_all&quot;]
 trigger: {&quot;access_direction&quot;: &quot;active&quot;, &quot;event_hint&quot;: &quot;access&quot;}
 activation: いつでもアクティブ
-raw: (1)今日のアクセス駅数(上限20駅)に応じて経験値付与</td><td>経験値付与 0～120</td><td>経験値付与 0～140</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+raw: (1)今日のアクセス駅数(上限20駅)に応じて経験値付与</td><td>経験値付与 0～120</td><td>経験値付与 0～140</td><td>100%</td><td></td><td></td><td>exp_gain_2 (exp_gain)</td><td>label: (2)
+role: supplemental_effect
+target: [&quot;team_all&quot;]
+trigger: {&quot;access_direction&quot;: &quot;active&quot;, &quot;event_hint&quot;: &quot;access&quot;}
+activation: いつでもアクティブ
+raw: (2)アクセスした駅の天気が曇りの場合、編成内のでんこに経験値付与</td><td>経験値付与 120</td><td>経験値付与 140</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
 <tr><td>original:154</td><td>東田坂上ほなみ</td><td>サポーター</td><td>cool</td><td>青</td><td>満足度100%を目指して</td><td>def_buff_1 (def_buff)</td><td>label: (1)
 role: default_effect
 target: [&quot;team_all&quot;]
@@ -515,7 +522,10 @@ raw: 発動条件：編成内の が3体以上 ディフェンダー / (2)：自
 role: default_effect
 trigger: {&quot;access_direction&quot;: &quot;active&quot;, &quot;event_hint&quot;: &quot;access&quot;}
 activation: いつでもアクティブ
-raw: (1)先頭のアクセス時相手に固定ダメージ</td><td>固定ダメージ 7</td><td>固定ダメージ 9</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+raw: (1)先頭のアクセス時相手に固定ダメージ</td><td>固定ダメージ 7</td><td>固定ダメージ 9</td><td>100%</td><td></td><td></td><td>fixed_damage_2 (fixed_damage)</td><td>label: (2)
+role: supplemental_effect
+activation: いつでもアクティブ
+raw: (2)先頭がAP&lt;最大HPの場合、その差に応じて固定ダメージ量増加</td><td>固定ダメージ 0～13</td><td>固定ダメージ 0～16</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
 <tr><td>original:158</td><td>会津あやか</td><td>ディフェンダー</td><td>cool</td><td>青</td><td>I ♡ バッテリー</td><td>def_buff_1 (def_buff)</td><td>label: (1)
 role: default_effect
 target: [&quot;self&quot;]
@@ -541,8 +551,9 @@ Lv70: 3時間5分
 Lv80: 3時間</td><td>duration_extension_3 (duration_extension)</td><td>label: (3)
 role: supplemental_effect
 target: [&quot;self&quot;]
+filters: {&quot;attributes&quot;: [&quot;cool&quot;, &quot;eco&quot;], &quot;formation_only&quot;: true}
 activation: マスターにおまかせ
-raw: 発動条件： と のみ編成 cool eco (3)自身にバッテリー使用の度に効果時間延長(最大1時間まで)</td><td>duration_extension</td><td>duration_extension</td><td>100%</td><td>20分</td><td>Lv5: 3時間30分
+raw: 発動条件： と のみ編成 cool eco (3)自身にバッテリー使用の度に効果時間延長(最大1時間まで)</td><td>効果時間 バッテリー1個につき+4分</td><td>効果時間 バッテリー1個につき+5分</td><td>100%</td><td>20分</td><td>Lv5: 3時間30分
 Lv15: 3時間25分
 Lv30: 3時間20分
 Lv50: 3時間15分
@@ -652,11 +663,13 @@ Lv50: 2時間30分
 Lv60: 2時間25分
 Lv70: 2時間20分
 Lv80: 2時間15分</td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:163</td><td>豊橋ちわ</td><td>トリックスター</td><td>heat</td><td>橙</td><td>ちくわの穴を覗いてみれば</td><td>additional_score_gain</td><td>target: [&quot;team_all&quot;]
+<tr><td>original:163</td><td>豊橋ちわ</td><td>トリックスター</td><td>heat</td><td>橙</td><td>ちくわの穴を覗いてみれば</td><td>score_gain_1 (score_gain)</td><td>label: (1)
+role: default_effect
+target: [&quot;team_all&quot;]
 filters: {&quot;attribute&quot;: &quot;heat&quot;}
 trigger: {&quot;access_direction&quot;: &quot;active&quot;, &quot;event_hint&quot;: &quot;access&quot;}
 activation: マスターにおまかせ
-raw: 発動条件：編成内のheat属性でんこがアクセスした / (1)効果時間内に与えた合計ダメージが一定値に到達するとスコア獲得(1回のみ) / (2)(1)発動後、1000ダメージごとに追加でスコア獲得 発動条件を満たすアクセスのみ集計される</td><td>スコア獲得 1200</td><td>スコア獲得 1400</td><td>100%</td><td>Lv5: 30分
+raw: 発動条件：編成内のheat属性でんこがアクセスした (1)効果時間内に与えた合計ダメージが一定値に到達するとスコア獲得(1回のみ)</td><td>スコア獲得 7000</td><td>スコア獲得 9000</td><td>100%</td><td>Lv5: 30分
 Lv15: 35分
 Lv30: 40分
 Lv50: 45分
@@ -668,11 +681,13 @@ Lv30: 5時間20分
 Lv50: 5時間15分
 Lv60: 5時間10分
 Lv70: 5時間5分
-Lv80: 5時間</td><td>score_gain</td><td>target: [&quot;team_all&quot;]
+Lv80: 5時間</td><td>additional_score_gain_2 (additional_score_gain)</td><td>label: (2)
+role: additional_effect
+target: [&quot;team_all&quot;]
 filters: {&quot;attribute&quot;: &quot;heat&quot;}
 trigger: {&quot;access_direction&quot;: &quot;active&quot;, &quot;event_hint&quot;: &quot;access&quot;}
 activation: マスターにおまかせ
-raw: 発動条件：編成内のheat属性でんこがアクセスした / (1)効果時間内に与えた合計ダメージが一定値に到達するとスコア獲得(1回のみ) / (2)(1)発動後、1000ダメージごとに追加でスコア獲得 発動条件を満たすアクセスのみ集計される</td><td>スコア獲得 7000</td><td>スコア獲得 9000</td><td>100%</td><td>Lv5: 30分
+raw: 発動条件：編成内のheat属性でんこがアクセスした (2)(1)発動後、1000ダメージごとに追加でスコア獲得 発動条件を満たすアクセスのみ集計される</td><td>スコア獲得 1200</td><td>スコア獲得 1400</td><td>100%</td><td>Lv5: 30分
 Lv15: 35分
 Lv30: 40分
 Lv50: 45分
@@ -692,5 +707,5 @@ Lv80: 5時間</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td
 <li>若同类 review reason 在后续批次重复出现，应优先调整 parser 规则，再考虑 LLM snippet。</li>
 <li>本批次输出用于 Step1 数据读取，不启动 solver。</li>
 </ul>
-<p>generated_at: 2026-06-07T13:20:39.895794+09:00</p>
+<p>generated_at: 2026-06-07T13:29:40.238850+09:00</p>
 </body></html>
