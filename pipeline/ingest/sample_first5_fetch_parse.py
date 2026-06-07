@@ -606,6 +606,12 @@ def build_skill_components(
     components: dict[str, dict[str, Any]] = {}
     for denko_level, row_fact in values_by_denko_level.items():
         for parsed in parse_level_components(common_text, row_fact):
+            if not parsed.get("condition_label"):
+                inferred_label = infer_condition_label_for_effect(common_text, parsed["effect_kind"])
+                if inferred_label:
+                    parsed["condition_label"] = inferred_label
+                    parsed["component_id"] = f"{parsed['effect_kind']}_{inferred_label.strip('()')}"
+                    parsed["effect_role"] = effect_role_from_label(inferred_label, common_text)
             component_id = parsed["component_id"]
             component_condition = component_condition_text(condition_context, parsed)
             component = components.setdefault(
@@ -655,7 +661,9 @@ def build_skill_components(
         enrich_component_from_value_text(component, parsed["value"].get("source_text"))
         component["values_by_denko_level"][parsed["denko_level"]] = parsed["value"]
     if components:
-        return sorted(components.values(), key=lambda item: item["component_id"])
+        out = sorted(components.values(), key=lambda item: item["component_id"])
+        add_component_health_reviews(out, values_by_denko_level, condition_context)
+        return out
 
     fallback = normalize_skill_semantics(trigger_condition, effect_summary, activation_type, values_by_denko_level)
     return [
@@ -683,20 +691,26 @@ def parse_level_components(common_text: str, row_fact: dict[str, Any]) -> list[d
     text = " ".join(value for value in [common_text, row_fact.get("special_explanation"), effect_text] if value)
     components: list[dict[str, Any]] = []
 
+    number = r"[+＋-]?\d+(?:\.\d+)?"
+    label_pattern = r"[\(（](\d+)[\)）]"
     for match in re.finditer(
-        r"(?:(\(\d+\))\s*)?(ATK|DEF)\s*([+-]?\d+\s*[％%](?:\s*[～〜~\-]\s*[+-]?\d+\s*[％%]?)?)",
+        rf"(?:{label_pattern}\s*)?(ATK|DEF)\s*({number}\s*[％%]?(?:\s*[～〜~\-]\s*{number}\s*[％%]?)?)",
         effect_text,
     ):
-        label = match.group(1)
+        label = f"({match.group(1)})" if match.group(1) else None
         stat = match.group(2)
-        value_text = f"{stat} {match.group(3)}"
-        kind = "atk_buff" if stat == "ATK" else "def_buff"
+        value_text = normalize_numeric_text(f"{stat} {match.group(3)}")
+        signed_value = parse_signed_number(value_text)
+        if stat == "ATK":
+            kind = "atk_debuff" if signed_value is not None and signed_value < 0 else "atk_buff"
+        else:
+            kind = "def_debuff" if signed_value is not None and signed_value < 0 else "def_buff"
         components.append(
             component_value(
                 kind,
                 row_fact,
                 value_text,
-                parse_signed_number(value_text),
+                signed_value,
                 "percent_range" if is_range_text(value_text) else "percent",
                 condition_label=label,
                 effect_role=effect_role_from_label(label, common_text),
@@ -708,21 +722,25 @@ def parse_level_components(common_text: str, row_fact: dict[str, Any]) -> list[d
         components.append(component_value("hp_recovery", row_fact, hp_match.group(0), int(hp_match.group(1)), "percent_hp"))
 
     for kind, pattern, unit in [
-        ("exp_gain", r"経験値付与\s*([+＋]?\d+(?:\s*[～〜~\-]\s*[+＋]?\d+)?)", "flat_exp"),
-        ("additional_fixed_damage", r"追加固定ダメージ\s*([+＋]?\d+(?:\s*[～〜~\-]\s*[+＋]?\d+)?)", "flat_damage"),
-        ("fixed_damage", r"(?<!追加)固定ダメージ\s*([+＋]?\d+(?:\s*[～〜~\-]\s*[+＋]?\d+)?)", "flat_damage"),
-        ("damage_reduction", r"ダメージ軽減\s*([+＋]?\d+(?:\s*[～〜~\-]\s*[+＋]?\d+)?)", "flat_damage"),
-        ("film_series_effect_boost", r"フィルムシリーズ効果の着用数\s*([+＋]\d+)", "count"),
+        ("exp_gain", rf"(?:{label_pattern}\s*)?(経験値付与)\s*({number}(?:\s*[～〜~\-]\s*{number})?)", "flat_exp"),
+        ("additional_fixed_damage", rf"(?:{label_pattern}\s*)?(追加固定ダメージ)\s*({number}(?:\s*[～〜~\-]\s*{number})?)", "flat_damage"),
+        ("fixed_damage", rf"(?:{label_pattern}\s*)?(?<!追加)(固定ダメージ)\s*({number}(?:\s*[～〜~\-]\s*{number})?)", "flat_damage"),
+        ("damage_reduction", rf"(?:{label_pattern}\s*)?(ダメージ軽減)\s*({number}(?:\s*[～〜~\-]\s*{number})?)", "flat_damage"),
+        ("film_series_effect_boost", rf"(?:{label_pattern}\s*)?(フィルムシリーズ効果の着用数)\s*([+＋]\d+)", "count"),
     ]:
         match = re.search(pattern, effect_text)
         if match:
+            label = f"({match.group(1)})" if match.group(1) else None
+            value_raw = normalize_numeric_text(f"{match.group(2)} {match.group(3)}")
             components.append(
                 component_value(
                     kind,
                     row_fact,
-                    match.group(0),
-                    parse_signed_number(match.group(1)),
-                    f"{unit}_range" if is_range_text(match.group(1)) else unit,
+                    value_raw,
+                    parse_signed_number(match.group(3)),
+                    f"{unit}_range" if is_range_text(match.group(3)) else unit,
+                    condition_label=label,
+                    effect_role=effect_role_from_label(label, common_text),
                 )
             )
 
@@ -759,6 +777,8 @@ def parse_probability_boost_components(
     values_by_denko_level: dict[str, dict[str, Any]],
 ) -> list[dict[str, Any]]:
     if "(2)" not in common_text:
+        return []
+    if not re.search(r"発動率(?:UP|アップ|増加|上昇)|発動率.*(?:UP|アップ|増加|上昇)", common_text):
         return []
     out = []
     for denko_level, row_fact in values_by_denko_level.items():
@@ -825,7 +845,7 @@ def component_value(
         "value_raw": value_raw,
         "value_numeric": value_numeric,
         "unit": unit,
-        "probability": row_fact.get("probability") or {},
+        "probability": probability_for_label(row_fact.get("probability") or {}, condition_label),
         "duration": row_fact.get("duration"),
         "cooldown": row_fact.get("cooldown"),
         "skill_level": row_fact.get("skill_level"),
@@ -843,21 +863,57 @@ def component_value(
 
 
 def parse_signed_number(value: str) -> int | None:
-    match = re.search(r"([+-]?\d+)", value)
-    return int(match.group(1)) if match else None
+    match = re.search(r"([+＋-]?\d+(?:\.\d+)?)", value)
+    if not match:
+        return None
+    text = match.group(1).replace("＋", "+")
+    number = float(text)
+    return int(number) if number.is_integer() else number
+
+
+def normalize_numeric_text(value: str) -> str:
+    return value.replace("＋", "+").replace("（", "(").replace("）", ")").strip()
 
 
 def is_range_text(value: str) -> bool:
-    return bool(re.search(r"[～〜~\-]\s*[+＋-]?\d+", value))
+    return bool(re.search(r"[～〜~\-]\s*[+＋-]?\d+(?:\.\d+)?", value))
 
 
 def range_value_fields(value: str) -> dict[str, Any]:
     if not is_range_text(value):
         return {}
-    numbers = [int(match.group(0).replace("＋", "+")) for match in re.finditer(r"[+＋-]?\d+", value)]
+    numbers = [float(match.group(0).replace("＋", "+")) for match in re.finditer(r"[+＋-]?\d+(?:\.\d+)?", value)]
     if len(numbers) < 2:
         return {}
-    return {"value_min": numbers[0], "value_max": numbers[1]}
+    def clean(number: float) -> int | float:
+        return int(number) if number.is_integer() else number
+    return {"value_min": clean(numbers[0]), "value_max": clean(numbers[1])}
+
+
+def probability_for_label(probability: dict[str, str], label: str | None) -> dict[str, str]:
+    if not label or not probability:
+        return probability
+    out: dict[str, str] = {}
+    label_number = label.strip("()")
+    for key, value in probability.items():
+        extracted = extract_labeled_probability(value, label_number)
+        out[key] = extracted or value
+    return out
+
+
+def extract_labeled_probability(value: str, label_number: str) -> str | None:
+    text = normalize_numeric_text(value)
+    # Handles both "(1)75%" and combined labels like "(1)(2)100%".
+    pattern = re.compile(r"((?:\(\d+\))+)\s*([+＋-]?\d+(?:\.\d+)?(?:\s*[～〜~\-]\s*[+＋-]?\d+(?:\.\d+)?)?\s*[％%])")
+    for match in pattern.finditer(text):
+        labels = re.findall(r"\((\d+)\)", match.group(1))
+        if label_number in labels:
+            return normalize_numeric_text(match.group(2))
+    segment = extract_labeled_condition_text(text, f"({label_number})")
+    percent_match = re.search(r"([+＋-]?\d+(?:\.\d+)?(?:\s*[～〜~\-]\s*[+＋-]?\d+(?:\.\d+)?)?\s*[％%])", segment)
+    if percent_match:
+        return normalize_numeric_text(percent_match.group(1))
+    return None
 
 
 def effect_role_from_label(label: str | None, condition_text: str) -> str | None:
@@ -872,8 +928,8 @@ def effect_role_from_label(label: str | None, condition_text: str) -> str | None
 def extract_labeled_condition_text(text: str, label: str | None) -> str:
     if not label:
         return ""
-    pattern = re.compile(r"(\(\d+\).*?)(?=\s*/\s*\(\d+\)|$)")
-    for match in pattern.finditer(text):
+    normalized = normalize_numeric_text(text)
+    for match in LABEL_SEGMENT_PATTERN.finditer(normalized):
         segment = match.group(1).strip(" /")
         if segment.startswith(label):
             return segment
@@ -882,7 +938,70 @@ def extract_labeled_condition_text(text: str, label: str | None) -> str:
 
 def component_condition_text(common_text: str, parsed: dict[str, Any]) -> str:
     labeled = extract_labeled_condition_text(common_text, parsed.get("condition_label"))
+    prefix = condition_prefix_before_labels(common_text)
+    if labeled and prefix:
+        return f"{prefix} {labeled}"
     return labeled or common_text
+
+
+LABEL_SEGMENT_PATTERN = re.compile(r"(\(\d+\).*?)(?=\s*/\s*\(\d+\)|\s+\(\d+\)(?=\s|[+＋-]?\d)|$)")
+
+
+def condition_prefix_before_labels(text: str) -> str:
+    normalized = normalize_numeric_text(text)
+    match = re.search(r"\(\d+\)", normalized)
+    if not match:
+        return ""
+    return normalized[: match.start()].strip(" /")
+
+
+def infer_condition_label_for_effect(text: str, effect_kind: str) -> str | None:
+    keyword_by_kind = {
+        "atk_buff": "ATK",
+        "atk_debuff": "ATK",
+        "def_buff": "DEF",
+        "def_debuff": "DEF",
+        "fixed_damage": "固定ダメージ",
+        "additional_fixed_damage": "追加固定ダメージ",
+        "damage_reduction": "ダメージ軽減",
+        "exp_gain": "経験値",
+    }
+    keyword = keyword_by_kind.get(effect_kind)
+    if not keyword:
+        return None
+    for label in re.findall(r"[\(（](\d+)[\)）]", text):
+        segment = extract_labeled_condition_text(text, f"({label})")
+        if keyword in segment:
+            return f"({label})"
+    return None
+
+
+def add_component_health_reviews(
+    components: list[dict[str, Any]],
+    values_by_denko_level: dict[str, dict[str, Any]],
+    condition_text: str,
+) -> None:
+    source_levels = set(values_by_denko_level.keys())
+    expected_labels = set(re.findall(r"[\(（](\d+)[\)）]", condition_text))
+    emitted_labels = {
+        str(component.get("condition_label")).strip("()")
+        for component in components
+        if component.get("condition_label")
+    }
+    label_mismatch = expected_labels and not expected_labels.issubset(emitted_labels)
+    for component in components:
+        reasons = component.setdefault("review_reasons", [])
+        values = component.get("values_by_denko_level") or {}
+        if "30" in source_levels and "30" not in values and "key_level_component_missing" not in reasons:
+            reasons.append("key_level_component_missing")
+        if "50" in source_levels and "50" not in values and "key_level_component_missing" not in reasons:
+            reasons.append("key_level_component_missing")
+        if label_mismatch and "labeled_component_count_mismatch" not in reasons:
+            reasons.append("labeled_component_count_mismatch")
+        if re.search(r"[\(（]\d+[\)）][\(（]\d+[\)）]", condition_text) and (
+            "compound_labeled_effect_needs_manual_review" not in reasons
+        ):
+            reasons.append("compound_labeled_effect_needs_manual_review")
 
 
 def join_unique_text(values: list[str | None]) -> str:
@@ -901,6 +1020,12 @@ def infer_scaling_conditions(text: str) -> dict[str, Any]:
         scaling["basis"] = "same_theme_film_wearer_count"
     if "最大与ダメージ" in text:
         scaling["basis"] = "max_damage_dealt_during_skill"
+    if "発動回数" in text:
+        scaling["basis"] = "activation_count"
+    if "リンク駅数" in text:
+        scaling["basis"] = "linked_station_count"
+    if "リンクしているでんこ" in text:
+        scaling["basis"] = "linked_denko_count"
     cap_match = re.search(r"上限\s*(\d+)\s*体", text)
     if cap_match:
         scaling["max_count"] = int(cap_match.group(1))
@@ -932,6 +1057,11 @@ def infer_target_scope(text: str, effect_kind: str) -> list[str]:
 
 def infer_target_filters(text: str, effect_kind: str) -> dict[str, Any]:
     filters: dict[str, Any] = {}
+    attrs = [attr for attr in ["heat", "cool", "eco", "flat"] if f"{attr}属性" in text or attr in text]
+    if len(attrs) > 1:
+        filters["attributes"] = attrs
+        if "のみ編成" in text or "のみの編成" in text:
+            filters["formation_only"] = True
     if "自身を除く" in text:
         filters["exclude_self"] = True
     if "自身を除く先頭から1両目" in text:
@@ -939,7 +1069,7 @@ def infer_target_filters(text: str, effect_kind: str) -> dict[str, Any]:
     if "2両目" in text and ("先頭" in text or "先頭車両" in text):
         filters["position_exception_raw"] = "自身が先頭の場合は2両目"
     attr_match = re.search(r"(heat|cool|eco|flat)属性", text)
-    if attr_match:
+    if attr_match and "attributes" not in filters:
         filters["attribute"] = attr_match.group(1)
     type_map = {
         "アタッカー": "attacker",
@@ -962,10 +1092,17 @@ def infer_trigger_conditions(text: str, effect_kind: str | None = None) -> dict[
     if hp_threshold:
         trigger["hp_threshold_percent"] = int(hp_threshold.group(1))
         trigger["operator"] = "lte"
-    if "アクセス" in text:
-        trigger["event_hint"] = "access"
-    if "被アクセス" in text:
+    if "被アクセス" in text or "アクセスされた" in text:
         trigger["event_hint"] = "accessed"
+        trigger["access_direction"] = "received"
+    elif "アクセス" in text:
+        trigger["event_hint"] = "access"
+        trigger["access_direction"] = "active"
+    if "リンクした" in text:
+        trigger["event_hint"] = "link"
+        trigger["access_direction"] = "own_team_link"
+    if "自身がリンクしている" in text:
+        trigger["station_ownership"] = "self_linking"
     if effect_kind == "activation_probability_boost" and "いつでもアクティブ" in text and "でんこ数" in text:
         trigger["active_skill_holder_count_based"] = True
     time_match = re.search(r"(\d{1,2}:\d{2}[～\-]\d{1,2}:\d{2})", text)
