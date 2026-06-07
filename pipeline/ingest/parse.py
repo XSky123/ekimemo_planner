@@ -22,7 +22,7 @@ REVIEW_DIR = ROOT / "data" / "review_queue"
 REPORT_DIR = ROOT / "data" / "reports"
 BASE_URL = "https://newekimemo.wiki.fc2.com"
 JST = timezone(timedelta(hours=9))
-PARSER_VERSION = "detail_html_table_matrix.v3"
+PARSER_VERSION = "detail_html_table_matrix.v4"
 KEY_DENKO_LEVELS = ("1", "15", "30", "50", "60", "70", "80", "92", "96", "100")
 DEFAULT_FOCUS_LEVELS = ("30", "50")
 VU_LEVELS = ("92", "96", "100")
@@ -528,6 +528,7 @@ def extract_skill_detail(record: dict[str, Any]) -> dict[str, Any]:
         flat_values = extract_flat_skill_values(tables)
         if flat_values:
             values_by_denko_level.update(flat_values)
+    merge_seasonal_skill_values(values_by_denko_level, tables)
 
     skill_components = build_skill_components(
         trigger_condition,
@@ -594,6 +595,45 @@ def extract_flat_skill_values(tables: list[tuple[int, list[str], list[dict[str, 
     return {}
 
 
+def merge_seasonal_skill_values(
+    values_by_denko_level: dict[str, dict[str, Any]],
+    tables: list[tuple[int, list[str], list[dict[str, str]]]],
+) -> None:
+    seasonal = extract_seasonal_skill_values(tables)
+    if not seasonal:
+        return
+    for level, seasonal_values in seasonal.items():
+        if level in values_by_denko_level:
+            values_by_denko_level[level]["seasonal_values"] = seasonal_values
+    if "80" in seasonal:
+        for level, row_fact in values_by_denko_level.items():
+            if level in VU_LEVELS and "seasonal_values" not in row_fact:
+                row_fact["seasonal_values"] = seasonal["80"]
+
+
+def extract_seasonal_skill_values(
+    tables: list[tuple[int, list[str], list[dict[str, str]]]]
+) -> dict[str, dict[str, str]]:
+    out: dict[str, dict[str, str]] = {}
+    required = ["経験値付与", "固定ダメージ", "スコア獲得", "ダメージ軽減"]
+    for _table_index, headers, rows in tables:
+        if "スキルLv" not in headers:
+            continue
+        if not all(any(required_name in header for header in headers) for required_name in required):
+            continue
+        for row in rows:
+            level = parse_denko_level(row.get("スキルLv", ""))
+            if not level:
+                continue
+            out[level] = {
+                "exp_gain": first_matching_value(row, ["経験値付与"]) or "",
+                "fixed_damage": first_matching_value(row, ["固定ダメージ"]) or "",
+                "score_gain": first_matching_value(row, ["スコア獲得"]) or "",
+                "damage_reduction": first_matching_value(row, ["ダメージ軽減"]) or "",
+            }
+    return out
+
+
 def build_skill_components(
     trigger_condition: str | None,
     effect_summary: str | None,
@@ -626,10 +666,13 @@ def build_skill_components(
                     "effect_kind": parsed["effect_kind"],
                     "effect_role": parsed.get("effect_role"),
                     "condition_label": parsed.get("condition_label"),
-                    "target_scope": infer_target_scope(component_condition, parsed["effect_kind"])
+                    "target_scope": parsed.get("target_scope")
+                    or infer_target_scope(component_condition, parsed["effect_kind"])
                     or infer_target_scope(common_text, parsed["effect_kind"]),
-                    "target_filters": infer_target_filters(component_condition, parsed["effect_kind"]),
-                    "trigger_conditions": infer_trigger_conditions(component_condition, parsed["effect_kind"]),
+                    "target_filters": parsed.get("target_filters")
+                    or infer_target_filters(component_condition, parsed["effect_kind"]),
+                    "trigger_conditions": parsed.get("trigger_conditions")
+                    or infer_trigger_conditions(component_condition, parsed["effect_kind"]),
                     "scaling_conditions": infer_scaling_conditions(component_condition),
                     "activation_type": activation_type,
                     "condition_raw": component_condition or trigger_condition or effect_summary,
@@ -696,22 +739,59 @@ def parse_level_components(common_text: str, row_fact: dict[str, Any]) -> list[d
     effect_text = row_fact.get("effect") or ""
     text = " ".join(value for value in [common_text, row_fact.get("special_explanation"), effect_text] if value)
     components: list[dict[str, Any]] = []
+    for seasonal_component in parse_seasonal_components(row_fact):
+        components.append(seasonal_component)
 
     number = r"[+＋-]?\d+(?:\.\d+)?"
     label_pattern = r"[\(（](\d+)[\)）]"
-    for match in re.finditer(
-        rf"(?:{label_pattern}\s*)?(ATK|DEF)\s*({number}\s*[％%]?(?:\s*[～〜~\-]\s*{number}\s*[％%]?)?)",
-        effect_text,
-    ):
-        label = f"({match.group(1)})" if match.group(1) else None
+    stat_value_pattern = rf"{number}\s*[％%]?(?:\s*[～〜~\-]\s*(?:{number}|x)\s*[％%]?)?"
+    for shared_match in re.finditer(rf"(?:{label_pattern}\s*)?ATK\s*(?:&|＆|/|・)\s*DEF\s*({stat_value_pattern})", effect_text):
+        label = f"({shared_match.group(1)})" if shared_match.group(1) else None
+        for stat, kind in [("ATK", "atk_buff"), ("DEF", "def_buff")]:
+            value_text = normalize_numeric_text(f"{stat} {shared_match.group(2)}")
+            append_component_once(
+                components,
+                component_value(
+                    kind,
+                    row_fact,
+                    value_text,
+                    parse_signed_number(value_text),
+                    "percent_range" if is_range_text(value_text) else "percent",
+                    condition_label=label,
+                    effect_role=effect_role_from_label(label, common_text),
+                ),
+            )
+
+    stat_matches = list(
+        re.finditer(
+            rf"(?:{label_pattern}\s*)?(ATK|DEF)\s*({stat_value_pattern})",
+            effect_text,
+        )
+    )
+    labels_for_order = labels_for_ordered_stat_values(effect_text, common_text)
+    stat_seen: dict[str, int] = {}
+    kind_seen: dict[str, int] = {}
+    for match in stat_matches:
         stat = match.group(2)
+        stat_seen[stat] = stat_seen.get(stat, 0) + 1
         value_text = normalize_numeric_text(f"{stat} {match.group(3)}")
         signed_value = parse_signed_number(value_text)
         if stat == "ATK":
             kind = "atk_debuff" if signed_value is not None and signed_value < 0 else "atk_buff"
         else:
             kind = "def_debuff" if signed_value is not None and signed_value < 0 else "def_buff"
-        components.append(
+        kind_seen[kind] = kind_seen.get(kind, 0) + 1
+        label = f"({match.group(1)})" if match.group(1) else inferred_or_ordered_label(
+            common_text,
+            kind,
+            kind_seen[kind],
+            labels_for_order,
+            stat_seen[stat],
+            stat_matches,
+            stat,
+        )
+        append_component_once(
+            components,
             component_value(
                 kind,
                 row_fact,
@@ -720,7 +800,7 @@ def parse_level_components(common_text: str, row_fact: dict[str, Any]) -> list[d
                 "percent_range" if is_range_text(value_text) else "percent",
                 condition_label=label,
                 effect_role=effect_role_from_label(label, common_text),
-            )
+            ),
         )
 
     for hp_match in re.finditer(rf"(?:{label_pattern}\s*)?HPの\s*(\d+)\s*[％%]", effect_text):
@@ -750,23 +830,48 @@ def parse_level_components(common_text: str, row_fact: dict[str, Any]) -> list[d
             )
         )
 
-    for kind, pattern, unit in [
-        ("exp_gain", rf"(?:{label_pattern}\s*)?(経験値付与)\s*({number}(?:\s*[～〜~\-]\s*{number})?)", "flat_exp"),
-        ("additional_fixed_damage", rf"(?:{label_pattern}\s*)?(追加固定ダメージ)\s*({number}(?:\s*[～〜~\-]\s*{number})?)", "flat_damage"),
-        ("fixed_damage", rf"(?:{label_pattern}\s*)?(?<!追加)(固定ダメージ)\s*({number}(?:\s*[～〜~\-]\s*{number})?)", "flat_damage"),
-        ("damage_reduction", rf"(?:{label_pattern}\s*)?(ダメージ軽減)\s*({number}(?:\s*[～〜~\-]\s*{number})?)", "flat_damage"),
-        ("film_series_effect_boost", rf"(?:{label_pattern}\s*)?(フィルムシリーズ効果の着用数)\s*([+＋]\d+)", "count"),
+    label_before_or_after = rf"(?:(?:{label_pattern}\s*)?(?P<name>{{name}})\s*(?:{label_pattern}\s*)?)"
+    for kind, effect_name, unit in [
+        ("exp_gain", "経験値付与", "flat_exp"),
+        ("additional_fixed_damage", "追加固定ダメージ", "flat_damage"),
+        ("fixed_damage", "(?<!追加)固定ダメージ", "flat_damage"),
+        ("damage_reduction", "ダメージ軽減", "flat_damage"),
+        ("film_series_effect_boost", "フィルムシリーズ効果の着用数", "count"),
     ]:
+        value_token = rf"(?:{number}|x)(?:\s*[～〜~\-]\s*(?:{number}|x))?"
+        effect_raw = effect_name.replace("(?<!追加)", "")
+        grouped_pattern = re.compile(rf"{effect_name}\s*((?:{label_pattern}\s*{value_token}\s*)+)")
+        for grouped in grouped_pattern.finditer(effect_text):
+            for label_value in re.finditer(rf"{label_pattern}\s*({value_token})", grouped.group(1)):
+                label = f"({label_value.group(1)})"
+                value_number = label_value.group(2)
+                value_raw = normalize_numeric_text(f"{effect_raw} {value_number}")
+                append_component_once(
+                    components,
+                    component_value(
+                        kind,
+                        row_fact,
+                        value_raw,
+                        parse_signed_number(value_number),
+                        f"{unit}_range" if is_range_text(value_number) else unit,
+                        condition_label=label,
+                        effect_role=effect_role_from_label(label, common_text),
+                    ),
+                )
+        pattern = label_before_or_after.format(name=effect_name) + rf"\s*({value_token})"
         for match in re.finditer(pattern, effect_text):
-            label = f"({match.group(1)})" if match.group(1) else None
-            value_raw = normalize_numeric_text(f"{match.group(2)} {match.group(3)}")
-            components.append(
+            label_number = match.group(1) or match.group(3)
+            label = f"({label_number})" if label_number else None
+            value_number = match.group(4)
+            value_raw = normalize_numeric_text(f"{effect_raw} {value_number}")
+            append_component_once(
+                components,
                 component_value(
                     kind,
                     row_fact,
                     value_raw,
-                    parse_signed_number(match.group(3)),
-                    f"{unit}_range" if is_range_text(match.group(3)) else unit,
+                    parse_signed_number(value_number),
+                    f"{unit}_range" if is_range_text(value_number) else unit,
                     condition_label=label,
                     effect_role=effect_role_from_label(label, common_text),
                 )
@@ -790,9 +895,8 @@ def parse_level_components(common_text: str, row_fact: dict[str, Any]) -> list[d
             )
         )
 
-    score_pattern = re.compile(
-        rf"(?:{label_pattern}\s*)?(?:合計ダメージが\s*(\d+)\s*→\s*)?スコア獲得\s*([+＋]?\d+)(?:/駅)?"
-    )
+    score_value = rf"(?:[+＋]?\d+|x)(?:\s*[～〜~\-]\s*(?:[+＋]?\d+|x))?"
+    score_pattern = re.compile(rf"(?:{label_pattern}\s*)?(?:合計ダメージが\s*(\d+)\s*→\s*)?スコア獲得\s*({score_value})(?:/駅)?")
     score_matches = list(score_pattern.finditer(effect_text))
     for index, match in enumerate(score_matches):
         label = f"({match.group(1)})" if match.group(1) else None
@@ -803,7 +907,7 @@ def parse_level_components(common_text: str, row_fact: dict[str, Any]) -> list[d
             row_fact,
             normalize_numeric_text(f"スコア獲得 {match.group(3)}"),
             parse_signed_number(match.group(3)),
-            unit,
+            "score_range" if is_range_text(match.group(3)) else unit,
             condition_label=label,
             effect_role=effect_role_from_label(label, common_text),
         )
@@ -818,7 +922,7 @@ def parse_level_components(common_text: str, row_fact: dict[str, Any]) -> list[d
     elif "もう1度だけアクセス" in text:
         components.append(component_value("extra_access", row_fact, "もう1度だけアクセス", 1, "count"))
 
-    if "フットバー" in text:
+    if "フットバーすことがある" in text or "フットバーします" in text:
         components.append(component_value("footbar", row_fact, "相手をフットバーすことがある", None, "boolean"))
 
     if "スキル無効化" in text or "スキルを無効化" in text:
@@ -832,6 +936,116 @@ def parse_level_components(common_text: str, row_fact: dict[str, Any]) -> list[d
         components.append(component_value("memory_access_time", row_fact, memory_time, None, "duration"))
 
     return components
+
+
+def parse_seasonal_components(row_fact: dict[str, Any]) -> list[dict[str, Any]]:
+    seasonal_values = row_fact.get("seasonal_values") or {}
+    if not seasonal_values:
+        return []
+    specs = [
+        ("seasonal_exp_gain_spring", "exp_gain", "経験値付与", "flat_exp", "3～5月", [3, 4, 5], ["accessing_denko"]),
+        ("seasonal_fixed_damage_summer", "fixed_damage", "固定ダメージ", "flat_damage", "6～8月", [6, 7, 8], ["team_all"]),
+        ("seasonal_score_gain_autumn", "score_gain", "スコア獲得", "score", "9～11月", [9, 10, 11], ["team_all"]),
+        ("seasonal_damage_reduction_winter", "damage_reduction", "ダメージ軽減", "flat_damage", "12～2月", [12, 1, 2], ["team_all"]),
+    ]
+    out = []
+    multiplier = seasonal_multiplier_raw(row_fact.get("effect") or "")
+    for component_id, effect_kind, raw_name, unit, months_raw, months, target_scope in specs:
+        value_number = seasonal_values.get(effect_kind)
+        if not value_number:
+            continue
+        value_raw = f"{raw_name} {value_number}"
+        if multiplier:
+            value_raw = f"{value_raw} ※効果量 {multiplier}"
+        parsed = component_value(
+            effect_kind,
+            row_fact,
+            value_raw,
+            parse_signed_number(value_number),
+            unit,
+        )
+        parsed["component_id"] = component_id
+        parsed["value"]["season_months_raw"] = months_raw
+        parsed["value"]["season_months"] = months
+        if multiplier:
+            parsed["value"]["seasonal_multiplier_raw"] = multiplier
+        parsed["target_scope"] = target_scope
+        parsed["target_filters"] = {"season_months": months, "season_months_raw": months_raw}
+        return_value_text = row_fact.get("special_explanation") or ""
+        if effect_kind == "damage_reduction" and "アクセスされた" in return_value_text:
+            parsed["trigger_conditions"] = {"event_hint": "accessed", "access_direction": "received"}
+        out.append(parsed)
+    return out
+
+
+def seasonal_multiplier_raw(effect_text: str) -> str | None:
+    match = re.search(r"効果量\s*([xｘX\d.]+倍)", effect_text)
+    return match.group(1) if match else None
+
+
+def append_component_once(components: list[dict[str, Any]], parsed: dict[str, Any]) -> None:
+    value = parsed.get("value") or {}
+    signature = (parsed.get("component_id"), value.get("value_raw"))
+    for existing in components:
+        existing_value = existing.get("value") or {}
+        if (existing.get("component_id"), existing_value.get("value_raw")) == signature:
+            return
+    components.append(parsed)
+
+
+def ordered_effect_labels(text: str) -> list[str]:
+    return [f"({match.group(1)})" for match in re.finditer(r"[\(（](\d+)[\)）]", normalize_numeric_text(text))]
+
+
+def labels_for_ordered_stat_values(effect_text: str, common_text: str) -> list[str]:
+    effect_labels = ordered_effect_labels(effect_text)
+    if effect_labels and effect_labels[0] == "(1)":
+        return effect_labels
+    return [label for label, _segment in labeled_condition_segments(common_text)]
+
+
+def inferred_or_ordered_label(
+    common_text: str,
+    effect_kind: str,
+    kind_index: int,
+    labels_for_order: list[str],
+    stat_index: int,
+    stat_matches: list[Any],
+    stat: str,
+) -> str | None:
+    kind_labels = labels_for_effect_kind_from_conditions(common_text, effect_kind)
+    if kind_labels and kind_index <= len(kind_labels):
+        return kind_labels[kind_index - 1]
+    return ordered_label_for_stat(labels_for_order, stat_index, stat_matches, stat)
+
+
+def labels_for_effect_kind_from_conditions(text: str, effect_kind: str) -> list[str]:
+    out: list[str] = []
+    for label, segment in labeled_condition_segments(text):
+        if effect_kind_matches_segment(effect_kind, segment):
+            out.append(label)
+    return out
+
+
+def effect_kind_matches_segment(effect_kind: str, segment: str) -> bool:
+    if effect_kind == "atk_buff":
+        return "ATK" in segment and ("増加" in segment or "上昇" in segment)
+    if effect_kind == "def_buff":
+        return "DEF" in segment and ("増加" in segment or "上昇" in segment)
+    if effect_kind == "atk_debuff":
+        return "ATK" in segment and ("減少" in segment or "低下" in segment)
+    if effect_kind == "def_debuff":
+        return "DEF" in segment and ("減少" in segment or "低下" in segment)
+    return False
+
+
+def ordered_label_for_stat(labels: list[str], stat_index: int, stat_matches: list[Any], stat: str) -> str | None:
+    same_stat_count = sum(1 for match in stat_matches if match.group(2) == stat)
+    if same_stat_count <= 1 and labels:
+        return labels[0]
+    if labels and stat_index <= len(labels):
+        return labels[stat_index - 1]
+    return None
 
 
 def parse_probability_boost_components(
@@ -879,7 +1093,7 @@ def enrich_component_from_value_text(component: dict[str, Any], source_text: str
         return
     source_segment = relevant_source_segment(source_text, component.get("condition_raw") or "")
     source_target = infer_target_scope_from_source_text(source_segment, component.get("effect_kind") or "")
-    if source_target:
+    if source_target and not component.get("target_scope"):
         component["target_scope"] = source_target
     target_scope = component.setdefault("target_scope", [])
     if "編成内" in source_text and not target_scope:
@@ -1142,6 +1356,8 @@ def add_condition_only_components(
 def condition_only_effect_kind(segment: str) -> str | None:
     if "効果時間延長" in segment or ("効果時間" in segment and "延長" in segment):
         return "duration_extension"
+    if "クールタイムに入らず" in segment or "スキルを継続" in segment or "スキル継続率" in segment:
+        return "skill_continue"
     if "リブート" in segment:
         return "reboot"
     if "バッテリー使用不可" in segment:
@@ -1193,13 +1409,14 @@ def add_component_health_reviews(
         if component.get("condition_label")
     }
     label_mismatch = expected_labels and not expected_labels.issubset(emitted_labels)
-    duplicate_signatures = set() if "重複発動可" in condition_text else component_duplicate_signatures(components)
+    duplicate_signatures = set() if "重複" in condition_text else component_duplicate_signatures(components)
     for component in components:
         reasons = component.setdefault("review_reasons", [])
         values = component.get("values_by_denko_level") or {}
-        if "30" in source_levels and "30" not in values and "key_level_component_missing" not in reasons:
+        vu_only = component_has_only_vu_values(component)
+        if not vu_only and "30" in source_levels and "30" not in values and "key_level_component_missing" not in reasons:
             reasons.append("key_level_component_missing")
-        if "50" in source_levels and "50" not in values and "key_level_component_missing" not in reasons:
+        if not vu_only and "50" in source_levels and "50" not in values and "key_level_component_missing" not in reasons:
             reasons.append("key_level_component_missing")
         if label_mismatch and "labeled_component_count_mismatch" not in reasons:
             reasons.append("labeled_component_count_mismatch")
@@ -1236,6 +1453,11 @@ def component_duplicate_signatures(components: list[dict[str, Any]]) -> set[str]
         if len(ids) > 1:
             out.update(ids)
     return out
+
+
+def component_has_only_vu_values(component: dict[str, Any]) -> bool:
+    levels = set((component.get("values_by_denko_level") or {}).keys())
+    return bool(levels) and levels.issubset(set(VU_LEVELS))
 
 
 def join_unique_text(values: list[str | None]) -> str:
@@ -1302,6 +1524,8 @@ def skill_disable_value_raw(text: str) -> str:
 def infer_target_scope(text: str, effect_kind: str) -> list[str]:
     if "先頭車両" in text or "先頭から1両目" in text:
         return ["front_car"]
+    if "アクセスしたでんこに" in text:
+        return ["accessing_denko"]
     if "相手と自身の編成内" in text:
         return ["opponent_team", "own_team"]
     if "編成内の全てのでんこ" in text or "編成内でんこ" in text or "編成内のでんこ" in text or "編成内" in text:

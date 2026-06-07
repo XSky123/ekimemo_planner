@@ -163,9 +163,10 @@ def suspicious_rows(skill_rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
                 if reason in SUSPICIOUS_REASONS
             ]
             values = component.get("values_by_denko_level") or {}
-            if values.get("30") is None and (skill.get("values_by_denko_level") or {}).get("30"):
+            vu_only = component_has_only_vu_values(component)
+            if not vu_only and values.get("30") is None and (skill.get("values_by_denko_level") or {}).get("30"):
                 reasons.append("blank_Lv30")
-            if values.get("50") is None and (skill.get("values_by_denko_level") or {}).get("50"):
+            if not vu_only and values.get("50") is None and (skill.get("values_by_denko_level") or {}).get("50"):
                 reasons.append("blank_Lv50")
             if reasons:
                 reason_text = "、".join(
@@ -182,6 +183,11 @@ def suspicious_rows(skill_rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
                 }
             )
     return rows
+
+
+def component_has_only_vu_values(component: dict[str, Any]) -> bool:
+    values = component.get("values_by_denko_level") or {}
+    return bool(values) and set(values).issubset({"92", "96", "100"})
 
 
 def write_html_report(
