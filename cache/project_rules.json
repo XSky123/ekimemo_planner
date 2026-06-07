@@ -122,7 +122,22 @@
   "report_policy": {
     "default_format": "html",
     "language": "zh",
-    "rule": "Human-readable run reports should be exported as HTML by default. Markdown summaries may exist only as lightweight intermediate notes."
+    "rule": "Human-readable run reports should be exported as HTML by default. Markdown summaries may exist only as lightweight intermediate notes.",
+    "review_display_rule": "Reports are for the user. Suspicious item explanations and review reasons must be shown in Chinese, preserving necessary Japanese source terms only where useful.",
+    "matrix_rule": "Do not include low-signal columns such as a constant class=needs_manual_review in the human skill matrix."
+  },
+  "environment_policy": {
+    "windows_console_encoding_rule": "PowerShell console output may mojibake Japanese text. Do not trust garbled terminal rendering for Japanese source content. Use Python with UTF-8 stdout or direct UTF-8 file reads/patches for inspection and edits."
+  },
+  "llm_review_policy": {
+    "trigger_rule": "When suspicious parser items are detected, review the smallest corresponding Japanese snippet with the model instead of trusting the parsed row.",
+    "must_trigger_for": [
+      "source text contains numbered labels such as (1)/(2)/(3), but emitted components are fewer than the labels",
+      "the first emitted labeled component is not (1)",
+      "a component label number does not match the skill value/effect label number",
+      "compound labels such as (2)(3) or (2)(1) appear and deterministic parsing cannot safely map values"
+    ],
+    "example": "original:139: labels are detected but only part of the labeled effects are emitted; send only the relevant skill condition/effect snippet for model review."
   },
   "source_authority": {
     "denko_list": {

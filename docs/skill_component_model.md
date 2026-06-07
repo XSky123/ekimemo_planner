@@ -90,5 +90,13 @@ Use these checks during batch ingestion before trusting the component matrix:
 - If labels are combined as `(1)(2)` or otherwise cannot be separated deterministically, add `review_reason = compound_labeled_effect_needs_manual_review` instead of guessing.
 - If a source skill table has key rows for Lv30 or Lv50 but a parsed component has a blank value at either level, add `review_reason = key_level_component_missing`.
 - If the source condition/effect rows contain multiple labels but emitted components are fewer than the label count, add `review_reason = labeled_component_count_mismatch`.
+- If numbered labels are detected but the first emitted labeled component is not `(1)`, or if a component label number does not match the effect/value label number, treat the row as suspicious. Send only that denko's relevant Japanese skill snippet to model review instead of trusting the parsed result.
+- If labeled effects are detected but only one component is emitted, treat this as a parser failure. `original:139` is the current example pattern.
 - Multi-attribute requirements such as `coolとecoのみ編成` should be represented as an array, for example `{ "attributes": ["cool", "eco"], "formation_only": true }`.
 - Access direction is a real trigger dimension. Distinguish own active access, being accessed, and being accessed while holding a station when the source text does so.
+
+## Windows Encoding Rule
+
+PowerShell console rendering can garble Japanese text. Do not make parser or
+data decisions from mojibake terminal output. Inspect Japanese source facts with
+Python UTF-8 output or direct UTF-8 file reads/patches.

@@ -64,6 +64,15 @@ SUSPICIOUS_REASONS = {
     "condition_only_component_needs_review",
     "duplicate_labeled_component_values_need_review",
 }
+SUSPICIOUS_REASON_ZH = {
+    "key_level_component_missing": "关键等级缺值",
+    "labeled_component_count_mismatch": "检测到编号标签但组件数量/编号不匹配，需复查原文",
+    "compound_labeled_effect_needs_manual_review": "复合编号标签，需人工或大模型片段复查",
+    "condition_only_component_needs_review": "仅从条件说明推断出的组件，需复查",
+    "duplicate_labeled_component_values_need_review": "多个编号组件数值完全相同，可能解析错位",
+    "blank_Lv30": "Lv30 空白但源表存在 Lv30",
+    "blank_Lv50": "Lv50 空白但源表存在 Lv50",
+}
 
 
 def compact_report_json(value: Any) -> str:
@@ -147,7 +156,7 @@ def suspicious_rows(skill_rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
         labels = [component.get("condition_label") for component in skill.get("skill_components") or []]
         first_label = next((label for label in labels if label), None)
         if first_label and first_label != "(1)":
-            points.append(f"first_label_is_{first_label}")
+            points.append(f"首个组件编号是 {first_label}，不是 (1)，疑似排序或漏拆")
         for component in skill.get("skill_components") or []:
             reasons = [
                 reason
@@ -160,7 +169,10 @@ def suspicious_rows(skill_rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
             if values.get("50") is None and (skill.get("values_by_denko_level") or {}).get("50"):
                 reasons.append("blank_Lv50")
             if reasons:
-                points.append(f"{component.get('component_id')}: {', '.join(sorted(set(reasons)))}")
+                reason_text = "、".join(
+                    SUSPICIOUS_REASON_ZH.get(reason, reason) for reason in sorted(set(reasons))
+                )
+                points.append(f"{component.get('component_id')}: {reason_text}")
         if points:
             rows.append(
                 {
@@ -243,7 +255,7 @@ def write_html_report(
 
     lines.append("<h2>技能分量矩阵</h2>")
     lines.append("<p>每个でんこ固定预留 5 个技能分量槽。一般技能只有 1-2 个分量，空槽表示当前 parser 没有识别到更多独立效果。</p>")
-    base_headers = ["denko_id", "name", "type", "attribute", "color", "skill", "class"]
+    base_headers = ["denko_id", "name", "type", "attribute", "color", "skill"]
     slot_fields = ["kind", "condition", "Lv30内容", "Lv50内容", "probability", "duration", "CD"]
     header_cells = [f'<th class="base-col">{esc(header)}</th>' for header in base_headers]
     for slot in range(1, COMPONENT_SLOT_COUNT + 1):
@@ -269,7 +281,6 @@ def write_html_report(
             f"<td>{esc(ident.get('attribute'))}</td>"
             f"<td>{esc(ident.get('color'))}</td>"
             f"<td>{esc(skill.get('skill_name'))}</td>"
-            f"<td>{esc(classify_skill_row(skill) if skill else 'missing')}</td>"
             f"{''.join(component_cells)}"
             f"<td>{esc(skill.get('record_meta', {}).get('review_reasons'))}</td>"
             "</tr>"
