@@ -1,0 +1,712 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>Original 40-80 Ingestion Review</title>
+<style>body{font-family:system-ui,sans-serif;line-height:1.5;margin:24px}table{border-collapse:collapse;width:100%;margin:12px 0 24px}th,td{border:1px solid #ccc;padding:6px 8px;vertical-align:top}th{background:#f5f5f5}code{background:#f6f8fa;padding:1px 4px}.table-scroll{overflow-x:auto}.component-matrix{font-size:12px;min-width:3600px}.component-matrix th,.component-matrix td{white-space:pre-wrap;min-width:120px;max-width:260px}.component-matrix .base-col{min-width:90px}.component-matrix .condition-col{min-width:260px;max-width:340px}</style>
+</head><body>
+<h1>Original 40-80 数据读取报告</h1>
+<p>controller-first 执行：本批只使用脚本、缓存与确定性 parser；未调用 LLM。</p>
+<h2>批次指标</h2>
+<table><tbody>
+<tr><th>范围</th><td>original:040 - original:080</td></tr>
+<tr><th>record_count</th><td>41</td></tr>
+<tr><th>batch_size</th><td>30</td></tr>
+<tr><th>review_queue</th><td>41</td></tr>
+<tr><th>suspicious_items</th><td>10</td></tr>
+<tr><th>classification</th><td>{&#x27;needs_manual_review&#x27;: 36, &#x27;needs_llm_snippet&#x27;: 5}</td></tr>
+<tr><th>review_reasons</th><td>{&#x27;sample_parse_needs_human_review&#x27;: 41}</td></tr>
+<tr><th>component_kinds</th><td>{&#x27;skill_disable&#x27;: 3, &#x27;def_buff&#x27;: 19, &#x27;atk_buff&#x27;: 28, &#x27;activation_probability_boost&#x27;: 3, &#x27;duration_extension&#x27;: 3, &#x27;radar_detection_range&#x27;: 1, &#x27;damage_reduction&#x27;: 6, &#x27;battery_disable&#x27;: 1, &#x27;exp_gain&#x27;: 6, &#x27;reboot&#x27;: 1, &#x27;def_debuff&#x27;: 4, &#x27;fixed_damage&#x27;: 4, &#x27;hp_recovery&#x27;: 2, &#x27;additional_fixed_damage&#x27;: 1, &#x27;random_previous_station_access&#x27;: 1, &#x27;skill_continue&#x27;: 1, &#x27;additional_score_gain&#x27;: 2}</td></tr>
+</tbody></table>
+<h2>可疑项优先</h2>
+<table><thead><tr><th>denko_id</th><th>name</th><th>skill</th><th>可疑点</th></tr></thead><tbody>
+<tr><td>original:040</td><td>白鳥ハル</td><td>ウィルパワー</td><td>skill_disable: 检测到编号标签但组件数量/编号不匹配，需复查原文</td></tr>
+<tr><td>original:041</td><td>南郷にちな</td><td>にちなの祈り</td><td>def_buff: 条件描述的效果类型与解析出的组件类型不一致，需复查</td></tr>
+<tr><td>original:044</td><td>木古内さいか</td><td>エナジーロード</td><td>atk_buff_1: 检测到编号标签但组件数量/编号不匹配，需复查原文</td></tr>
+<tr><td>original:053</td><td>白浜マリン</td><td>唯我独尊</td><td>atk_buff_1: 检测到编号标签但组件数量/编号不匹配，需复查原文 / def_buff_1: 检测到编号标签但组件数量/编号不匹配，需复查原文</td></tr>
+<tr><td>original:054</td><td>友荷なより</td><td>お便りなの♪</td><td>exp_gain_1: 检测到编号标签但组件数量/编号不匹配，需复查原文</td></tr>
+<tr><td>original:061</td><td>深遊ちとせ</td><td>うつろうひととせ</td><td>首个组件编号是 (2)，不是 (1)，疑似排序或漏拆 / duration_extension_2: 复合编号标签，需人工或大模型片段复查、检测到编号标签但组件数量/编号不匹配，需复查原文 / skill_disable: 复合编号标签，需人工或大模型片段复查、检测到编号标签但组件数量/编号不匹配，需复查原文</td></tr>
+<tr><td>original:067</td><td>窪川まぜ</td><td>ロング・ジャーニー</td><td>component_01_damage_reduction: Lv30 空白但源表存在 Lv30、Lv50 空白但源表存在 Lv50</td></tr>
+<tr><td>original:072</td><td>蓮台寺ナギサ</td><td>クールダイブ</td><td>fixed_damage_1: 检测到编号标签但组件数量/编号不匹配，需复查原文</td></tr>
+<tr><td>original:076</td><td>上ノ山ゆのか</td><td>ほっと・バスタイム</td><td>def_debuff_2: 条件描述的效果类型与解析出的组件类型不一致，需复查</td></tr>
+<tr><td>original:078</td><td>海部なる</td><td>恋心ばーさーく！</td><td>首个组件编号是 (2)，不是 (1)，疑似排序或漏拆 / atk_buff_2: 复合编号标签，需人工或大模型片段复查、条件描述的效果类型与解析出的组件类型不一致，需复查、检测到编号标签但组件数量/编号不匹配，需复查原文</td></tr>
+</tbody></table>
+<h2>分批复盘</h2>
+<p><strong>original:040 - original:069</strong>: 30 records, {&#x27;needs_manual_review&#x27;: 26, &#x27;needs_llm_snippet&#x27;: 4}</p>
+<p><strong>original:070 - original:080</strong>: 11 records, {&#x27;needs_manual_review&#x27;: 10, &#x27;needs_llm_snippet&#x27;: 1}</p>
+<h2>技能分量矩阵</h2>
+<p>每个でんこ固定预留 5 个技能分量槽。一般技能只有 1-2 个分量，空槽表示当前 parser 没有识别到更多独立效果。</p>
+<div class="table-scroll">
+<table class="component-matrix"><thead><tr><th class="base-col">denko_id</th><th class="base-col">name</th><th class="base-col">type</th><th class="base-col">attribute</th><th class="base-col">color</th><th class="base-col">skill</th><th>skill1_kind</th><th class="condition-col">skill1_condition</th><th>skill1_Lv30内容</th><th>skill1_Lv50内容</th><th>skill1_probability</th><th>skill1_duration</th><th>skill1_CD</th><th>skill2_kind</th><th class="condition-col">skill2_condition</th><th>skill2_Lv30内容</th><th>skill2_Lv50内容</th><th>skill2_probability</th><th>skill2_duration</th><th>skill2_CD</th><th>skill3_kind</th><th class="condition-col">skill3_condition</th><th>skill3_Lv30内容</th><th>skill3_Lv50内容</th><th>skill3_probability</th><th>skill3_duration</th><th>skill3_CD</th><th>skill4_kind</th><th class="condition-col">skill4_condition</th><th>skill4_Lv30内容</th><th>skill4_Lv50内容</th><th>skill4_probability</th><th>skill4_duration</th><th>skill4_CD</th><th>skill5_kind</th><th class="condition-col">skill5_condition</th><th>skill5_Lv30内容</th><th>skill5_Lv50内容</th><th>skill5_probability</th><th>skill5_duration</th><th>skill5_CD</th><th class="base-col">review_reasons</th></tr></thead><tbody>
+<tr><td>original:040</td><td>白鳥ハル</td><td>アタッカー</td><td>heat</td><td>青</td><td>ウィルパワー</td><td>skill_disable</td><td>target: [&quot;team_all&quot;]
+filters: {&quot;disabled_skill_target&quot;: &quot;スキル無効化&quot;, &quot;exclude_self&quot;: true, &quot;type&quot;: &quot;supporter&quot;}
+trigger: {&quot;access_direction&quot;: &quot;active&quot;, &quot;event_hint&quot;: &quot;access&quot;}
+availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;, &quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;vu_only&quot;: false}
+activation: いつでもアクティブ
+raw: （1）アクセスしたとき、相手及び自編成のサポーターのスキル無効化 / （2）自身を除く編成内の誰かがリンクしている場合、発動率が追加で増加 サポーター は無効化されない 以外 / （2）はLv.92以降で確定発動</td><td>スキル無効化</td><td>スキル無効化</td><td>Lv5: (1)10%
+Lv15: (1)15%
+Lv30: (1)20%
+Lv50: (1)25%
+Lv60: (1)30%
+Lv70: (1)35%
+Lv80: (1)40%
+Lv92/Lv96: (1)40% (2)x%
+Lv100: (1)40% (2)25%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:041</td><td>南郷にちな</td><td>ディフェンダー</td><td>heat</td><td>緑</td><td>にちなの祈り</td><td>def_buff</td><td>target: [&quot;self&quot;]
+availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU生效&quot;, &quot;vu_only&quot;: true}
+activation: マスターにおまかせ
+raw: リブート時に1駅だけ他のでんこに渡してリンク継続 / ※自身の最も長いリンク時間が1時間以内の場合、追加で自身のDEF増加 スキル発動時、駅数ボーナスは一駅分減少する （※はLv.92以降で発動）</td><td>※VU生效</td><td>※VU生效</td><td>100%</td><td>3時間30分</td><td>1時間30分</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:042</td><td>青砥そら</td><td>アタッカー</td><td>cool</td><td>橙</td><td>タイムフォーワーク</td><td>atk_buff_1 (atk_buff)</td><td>label: (1)
+role: default_effect
+target: [&quot;self&quot;]
+trigger: {&quot;time_window_raw&quot;: &quot;10:00～17:00&quot;}
+availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;, &quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;vu_only&quot;: false}
+activation: いつでもアクティブ
+raw: (1)平日の10:00～17:00に自身のATK上昇</td><td>ATK +35%</td><td>ATK +40%</td><td>70%</td><td></td><td></td><td>activation_probability_boost</td><td>label: (2)
+role: supplemental_effect
+target: [&quot;self&quot;]
+trigger: {&quot;time_window_raw&quot;: &quot;10:00～17:00&quot;}
+availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU生效&quot;, &quot;vu_only&quot;: true}
+activation: いつでもアクティブ
+raw: (1)平日の10:00～17:00に自身のATK上昇 / (2)スキル発動ごとに発動率上昇(上限10回)</td><td>※VU生效</td><td>※VU生效</td><td>Lv92/Lv96: (1)70% (2)+0%～+?%
+Lv100: (1)70% (2)+0%～+30%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:043</td><td>坂出アサ</td><td>サポーター</td><td>eco</td><td>赤</td><td>一心精進</td><td>duration_extension</td><td>filters: {&quot;type&quot;: &quot;supporter&quot;}
+availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;], &quot;vu_only&quot;: false}
+activation: マスターにおまかせ
+raw: 編成中のサポーターのスキル発動時間を延長 スキル終了後のクールタイムを効果時間の延長分短縮</td><td>+15%</td><td>+20%</td><td>100%</td><td></td><td>2時間30分</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:044</td><td>木古内さいか</td><td>アタッカー</td><td>eco</td><td>紫</td><td>エナジーロード</td><td>atk_buff_1 (atk_buff)</td><td>label: (1)
+role: default_effect
+target: [&quot;self&quot;]
+availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;, &quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;vu_only&quot;: false}
+activation: いつでもアクティブ
+raw: (1)その日の移動距離に応じてATKが増加する(上限100km)</td><td>ATK +0.1×(移動距離(km)-100)%</td><td>ATK +0.1×(移動距離(km)-100)%</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:045</td><td>阿佐ヶ谷カノン</td><td>サポーター</td><td>cool</td><td>黄</td><td>歌声に秘めたパワー</td><td>atk_buff_1 (atk_buff)</td><td>label: (1)
+role: default_effect
+target: [&quot;front_car&quot;]
+filters: {&quot;exclude_self&quot;: true, &quot;position_exception_raw&quot;: &quot;自身が先頭の場合は2両目&quot;}
+availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;, &quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;vu_only&quot;: false}
+activation: マスターにおまかせ
+raw: (1)自身を除く先頭から1両目のATK増加</td><td>ATK +15%</td><td>ATK +15%</td><td>100%</td><td>Lv5: 30分
+Lv15: 40分
+Lv30: 50分
+Lv50: 1時間
+Lv60: 1時間10分
+Lv70: 1時間20分
+Lv80/Lv92/Lv96/Lv100: 1時間30分</td><td>2時間</td><td>atk_buff_2 (atk_buff)</td><td>label: (2)
+role: additional_effect
+target: [&quot;front_car&quot;]
+filters: {&quot;exclude_self&quot;: true, &quot;position_exception_raw&quot;: &quot;自身が先頭の場合は2両目&quot;}
+availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU生效&quot;, &quot;vu_only&quot;: true}
+activation: マスターにおまかせ
+raw: (2)編成内の『マスターにおまかせ』のスキルを覚えているでんこの数が4体以上の時に追加でATK増加</td><td>※VU生效</td><td>※VU生效</td><td>100%</td><td>1時間30分</td><td>2時間</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:046</td><td>黒崎あたる</td><td>トリックスター</td><td>cool</td><td>青</td><td>ゆずれないプライド</td><td>atk_buff_1 (atk_buff)</td><td>label: (1)
+role: default_effect
+target: [&quot;self&quot;]
+availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;, &quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;vu_only&quot;: false}
+activation: マスターにおまかせ
+raw: (1)攻撃を受ければ受けるほどATKが上昇する</td><td>ATK +n×2.5%</td><td>ATK +n×3.0%</td><td>100%</td><td>Lv5: 2時間
+Lv15: 2時間20分
+Lv30: 2時間40分
+Lv50: 3時間
+Lv60: 3時間20分
+Lv70: 3時間40分
+Lv80/Lv92/Lv96/Lv100: 4時間</td><td>1時間</td><td>def_buff_2 (def_buff)</td><td>label: (2)
+role: supplemental_effect
+target: [&quot;self&quot;]
+availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU生效&quot;, &quot;vu_only&quot;: true}
+activation: マスターにおまかせ
+raw: (2)DEF上昇(ダメージを受けるたびに効果量減少)</td><td>※VU生效</td><td>※VU生效</td><td>100%</td><td>4時間</td><td>1時間</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:047</td><td>三条なつめ</td><td>トリックスター</td><td>eco</td><td>橙</td><td>パワーエクステンション</td><td>radar_detection_range</td><td>target: [&quot;self&quot;]
+trigger: {&quot;event_hint&quot;: &quot;item_use&quot;, &quot;item&quot;: &quot;radar&quot;}
+availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;], &quot;vu_only&quot;: false}
+activation: マスターにおまかせ
+raw: レーダー最大検知数+2</td><td>レーダー最大検知数 +2</td><td>レーダー最大検知数 +2</td><td>100%</td><td>Lv5: 30分
+Lv15: 35分
+Lv30: 40分
+Lv50: 45分
+Lv60: 50分
+Lv70: 55分
+Lv80: 1時間</td><td>3時間</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:048</td><td>小鳥谷スピカ</td><td>サポーター</td><td>heat</td><td>桃</td><td>ウィッシュ☆スター</td><td>def_buff_1 (def_buff)</td><td>label: (1)
+role: default_effect
+target: [&quot;front_car&quot;]
+filters: {&quot;exclude_self&quot;: true, &quot;position_exception_raw&quot;: &quot;自身が先頭の場合は2両目&quot;}
+availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;, &quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;vu_only&quot;: false}
+activation: いつでもアクティブ
+raw: (1)自身を除く先頭から1両目のでんこのDEF増加</td><td>DEF +16%</td><td>DEF +17%</td><td>Lv5: 13%
+Lv15: 15%
+Lv30: 17%
+Lv50: 19%
+Lv60: 21%
+Lv70: 23%
+Lv80/Lv92/Lv96/Lv100: 25%</td><td></td><td></td><td>activation_probability_boost</td><td>label: (2)
+role: supplemental_effect
+target: [&quot;front_car&quot;]
+filters: {&quot;exclude_self&quot;: true, &quot;position_exception_raw&quot;: &quot;自身が先頭の場合は2両目&quot;}
+trigger: {&quot;active_skill_holder_count_based&quot;: true}
+availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU生效&quot;, &quot;vu_only&quot;: true}
+activation: いつでもアクティブ
+raw: (1)自身を除く先頭から1両目のでんこのDEF増加 / (2)編成内の「いつでもアクティブ」スキルを持つでんこ数に応じて発動率増加</td><td>※VU生效</td><td>※VU生效</td><td>Lv92: (1)25% (2)+1%～+7%
+Lv96: (1)25% (2)+3%～+21%
+Lv100: (1)25% (2)+5%～+35%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:049</td><td>勿来メイ</td><td>ディフェンダー</td><td>eco</td><td>赤</td><td>スモールレジスト</td><td>def_buff_1 (def_buff)</td><td>label: (1)
+role: default_effect
+target: [&quot;self&quot;]
+availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;, &quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;vu_only&quot;: false}
+activation: マスターにおまかせ
+raw: (1)自身のHPが相手より高いほどDEFが増加</td><td>DEF 0%～+68%</td><td>DEF 0%～+71%</td><td>100%</td><td>Lv5: 30分
+Lv15: 45分
+Lv30: 1時間
+Lv50: 1時間15分
+Lv60: 1時間30分
+Lv70: 1時間45分
+Lv80/Lv92/Lv96/Lv100: 2時間</td><td>Lv5: 3時間
+Lv15: 2時間50分
+Lv30: 2時間40分
+Lv50: 2時間30分
+Lv60: 2時間20分
+Lv70: 2時間10分
+Lv80/Lv92/Lv96/Lv100: 2時間</td><td>damage_reduction_2 (damage_reduction)</td><td>label: (2)
+role: supplemental_effect
+target: [&quot;self&quot;]
+availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU生效&quot;, &quot;vu_only&quot;: true}
+activation: マスターにおまかせ
+raw: (2)自身のHPが85%以上ならダメージを固定値で軽減</td><td>※VU生效</td><td>※VU生效</td><td>100%</td><td>2時間</td><td>2時間</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:050</td><td>豊栄なほ</td><td>ディフェンダー</td><td>cool</td><td>橙</td><td>スケッチタイム</td><td>def_buff_1 (def_buff)</td><td>label: (1)
+role: default_effect
+target: [&quot;self&quot;]
+availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;, &quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;vu_only&quot;: false}
+activation: マスターにおまかせ
+raw: (1)自身のDEF増加</td><td>DEF +61%</td><td>DEF +67%</td><td>100%</td><td>30分</td><td>3時間</td><td>battery_disable_2 (battery_disable)</td><td>label: (2)
+role: supplemental_effect
+trigger: {&quot;event_hint&quot;: &quot;battery_use&quot;, &quot;per_battery_use&quot;: true}
+availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;, &quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;vu_only&quot;: false}
+activation: マスターにおまかせ
+raw: (2)被ダメージが一定値以下のときにダメージ無効化 効果時間内バッテリー使用不可</td><td>battery_disable</td><td>battery_disable</td><td>100%</td><td>30分</td><td>3時間</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:051</td><td>敷島ヒメギ</td><td>サポーター</td><td>heat</td><td>緑</td><td>姉御のホンキ</td><td>atk_buff_1 (atk_buff)</td><td>label: (1)
+role: default_effect
+target: [&quot;self&quot;]
+filters: {&quot;type&quot;: &quot;attacker&quot;}
+availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;, &quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;vu_only&quot;: false}
+activation: マスターにおまかせ
+raw: (1)編成のアタッカーとディフェンダーの数に応じ、自分以外のATK、DEF増加</td><td>ATK +2.5×n%</td><td>ATK +3.0×n%</td><td>100%</td><td>30分</td><td>Lv5: 6時間
+Lv15: 5時間20分
+Lv30: 4時間40分
+Lv50: 4時間
+Lv60: 3時間20分
+Lv70: 2時間40分
+Lv80/Lv92/Lv96/Lv100: 2時間</td><td>def_buff_1 (def_buff)</td><td>label: (1)
+role: default_effect
+target: [&quot;self&quot;]
+filters: {&quot;type&quot;: &quot;attacker&quot;}
+availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;, &quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;vu_only&quot;: false}
+activation: マスターにおまかせ
+raw: (1)編成のアタッカーとディフェンダーの数に応じ、自分以外のATK、DEF増加</td><td>DEF +2.5×n%</td><td>DEF +3.0×n%</td><td>100%</td><td>30分</td><td>Lv5: 6時間
+Lv15: 5時間20分
+Lv30: 4時間40分
+Lv50: 4時間
+Lv60: 3時間20分
+Lv70: 2時間40分
+Lv80/Lv92/Lv96/Lv100: 2時間</td><td>atk_buff_2 (atk_buff)</td><td>label: (2)
+role: supplemental_effect
+target: [&quot;team_all&quot;]
+filters: {&quot;exclude_self&quot;: true, &quot;type&quot;: &quot;attacker&quot;}
+availability: {&quot;levels&quot;: [&quot;100&quot;], &quot;note&quot;: &quot;VU生效&quot;, &quot;vu_only&quot;: true}
+activation: マスターにおまかせ
+raw: (2)編成内のアタッカーが3体以上で自身以外のATK増加</td><td>※VU生效</td><td>※VU生效</td><td>100%</td><td>30分</td><td>2時間</td><td>def_buff_3 (def_buff)</td><td>label: (3)
+role: supplemental_effect
+target: [&quot;team_all&quot;]
+filters: {&quot;exclude_self&quot;: true, &quot;type&quot;: &quot;defender&quot;}
+availability: {&quot;levels&quot;: [&quot;100&quot;], &quot;note&quot;: &quot;VU生效&quot;, &quot;vu_only&quot;: true}
+activation: マスターにおまかせ
+raw: (3)編成内のディフェンダーが3体以上で自身以外のDEF増加</td><td>※VU生效</td><td>※VU生效</td><td>100%</td><td>30分</td><td>2時間</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:052</td><td>浦佐ノア</td><td>アタッカー</td><td>heat</td><td>紫</td><td>カラーオブトレイン</td><td>atk_buff_1 (atk_buff)</td><td>label: (1)
+role: default_effect
+target: [&quot;self&quot;]
+filters: {&quot;exclude_self&quot;: true}
+availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;, &quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;vu_only&quot;: false}
+activation: いつでもアクティブ
+raw: (1)編成内の自身を除くでんこのタイプの数に応じ自身のATK増加</td><td>ATK +n×10%</td><td>ATK +n×10%</td><td>Lv5: 22%
+Lv15: 30%
+Lv30: 38%
+Lv50: 46%
+Lv60: 54%
+Lv70: 62%
+Lv80/Lv92/Lv96/Lv100: 70%</td><td></td><td></td><td>atk_buff_2 (atk_buff)</td><td>label: (2)
+role: additional_effect
+target: [&quot;self&quot;]
+filters: {&quot;exclude_self&quot;: true}
+availability: {&quot;levels&quot;: [&quot;100&quot;], &quot;note&quot;: &quot;VU生效&quot;, &quot;vu_only&quot;: true}
+activation: いつでもアクティブ
+raw: (2)編成内の自身を除くでんこのタイプ数が3つ以上なら追加でATK増加</td><td>※VU生效</td><td>※VU生效</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:053</td><td>白浜マリン</td><td>トリックスター</td><td>heat</td><td>黄</td><td>唯我独尊</td><td>atk_buff_1 (atk_buff)</td><td>label: (1)
+role: default_effect
+target: [&quot;self&quot;]
+filters: {&quot;type&quot;: &quot;attacker&quot;}
+availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;, &quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;vu_only&quot;: false}
+activation: いつでもアクティブ
+raw: (1)編成のアタッカーとディフェンダーの数に応じ、自分のATK・DEF増加</td><td>ATK +n×10%</td><td>ATK +n×10%</td><td>Lv5: 17%
+Lv15: 20%
+Lv30: 23%
+Lv50: 25%
+Lv60: 29%
+Lv70: 32%
+Lv80: 35%
+Lv92/Lv96: 35% (2)+x%
+Lv100: 35% (2)+45%</td><td></td><td></td><td>def_buff_1 (def_buff)</td><td>label: (1)
+role: default_effect
+target: [&quot;self&quot;]
+filters: {&quot;type&quot;: &quot;attacker&quot;}
+availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;, &quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;vu_only&quot;: false}
+activation: いつでもアクティブ
+raw: (1)編成のアタッカーとディフェンダーの数に応じ、自分のATK・DEF増加</td><td>DEF +n×10%</td><td>DEF +n×10%</td><td>Lv5: 17%
+Lv15: 20%
+Lv30: 23%
+Lv50: 25%
+Lv60: 29%
+Lv70: 32%
+Lv80: 35%
+Lv92/Lv96: 35% (2)+x%
+Lv100: 35% (2)+45%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:054</td><td>友荷なより</td><td>トリックスター</td><td>eco</td><td>橙</td><td>お便りなの♪</td><td>exp_gain_1 (exp_gain)</td><td>label: (1)
+role: default_effect
+target: [&quot;self&quot;]
+availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;], &quot;vu_only&quot;: false}
+activation: いつでもアクティブ
+raw: (1)なよりが獲得した経験値をほかのでんこに分配</td><td>8%</td><td>8%</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:055</td><td>本宿ひまり</td><td>サポーター</td><td>cool</td><td>赤</td><td>一体感が大事です！</td><td>def_buff_1 (def_buff)</td><td>label: (1)
+role: default_effect
+target: [&quot;team_all&quot;]
+filters: {&quot;exclude_self&quot;: true}
+scaling: {&quot;basis&quot;: &quot;same_theme_film_wearer_count&quot;}
+availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;, &quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;vu_only&quot;: false}
+activation: マスターにおまかせ
+raw: (1)自分の編成内の同じテーマのフィルムを着たでんこの数に応じて、自身以外のDEF増加</td><td>DEF +4.0×n%</td><td>DEF +4.5%</td><td>100%</td><td>45分</td><td>4時間</td><td>def_buff_2 (def_buff)</td><td>label: (2)
+role: additional_effect
+target: [&quot;team_all&quot;]
+filters: {&quot;exclude_self&quot;: true}
+scaling: {&quot;basis&quot;: &quot;same_theme_film_wearer_count&quot;}
+availability: {&quot;levels&quot;: [&quot;100&quot;], &quot;note&quot;: &quot;VU生效&quot;, &quot;vu_only&quot;: true}
+activation: マスターにおまかせ
+raw: (2)同じテーマのフィルムを着たでんこが4体以上の場合、追加で自身以外のDEF増加 (同種のラッピングをつけたでんこの最大数 - 1)に比例して軽減</td><td>※VU生效</td><td>※VU生效</td><td>100%</td><td>45分</td><td>4時間</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:056</td><td>橿原らら</td><td>ディフェンダー</td><td>heat</td><td>橙</td><td>やる気タイム</td><td>def_buff_1 (def_buff)</td><td>label: (1)
+role: default_effect
+target: [&quot;self&quot;]
+availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;, &quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;vu_only&quot;: false}
+activation: いつでもアクティブ
+raw: (1)昼間はDEFが増加、夜間はDEFが減少</td><td>DEF +15%</td><td>DEF +25%</td><td>100%</td><td></td><td></td><td>damage_reduction_2 (damage_reduction)</td><td>label: (2)
+role: supplemental_effect
+trigger: {&quot;time_window_raw&quot;: &quot;6:00～18:00&quot;}
+availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU生效&quot;, &quot;vu_only&quot;: true}
+activation: いつでもアクティブ
+raw: (2)昼間は更に一定確率でダメージ軽減 昼間は6:00～18:00 夜間18:00～翌朝6:00は常時DEF-30%</td><td>※VU生效</td><td>※VU生效</td><td>Lv92: 30%
+Lv96: 50%
+Lv100: 70%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:057</td><td>岩国みづほ</td><td>サポーター</td><td>eco</td><td>緑</td><td>風のように水のように</td><td>atk_buff_1 (atk_buff)</td><td>label: (1)
+role: default_effect
+target: [&quot;team_all&quot;]
+availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;, &quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;vu_only&quot;: false}
+activation: マスターにおまかせ
+raw: (1)自身を含む編成内のでんこのATKとDEF増加</td><td>ATK +10%</td><td>ATK +12.5%</td><td>100%</td><td>Lv5/Lv15/Lv30/Lv50: 30分
+Lv60/Lv70/Lv80/Lv92/Lv96/Lv100: 45分</td><td>3時間</td><td>def_buff_1 (def_buff)</td><td>label: (1)
+role: default_effect
+target: [&quot;team_all&quot;]
+availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;, &quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;vu_only&quot;: false}
+activation: マスターにおまかせ
+raw: (1)自身を含む編成内のでんこのATKとDEF増加</td><td>DEF +10%</td><td>DEF +12.5%</td><td>100%</td><td>Lv5/Lv15/Lv30/Lv50: 30分
+Lv60/Lv70/Lv80/Lv92/Lv96/Lv100: 45分</td><td>3時間</td><td>atk_buff_2 (atk_buff)</td><td>label: (2)
+role: additional_effect
+target: [&quot;team_all&quot;]
+filters: {&quot;exclude_self&quot;: true}
+availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU生效&quot;, &quot;vu_only&quot;: true}
+activation: マスターにおまかせ
+raw: (2)自身と同じテーマのラッピングを着ているでんこが自身以外で2体以上の時(1)に追加でATKとDEF増加 同じテーマのラッピングのでんこにのみ有効 (ラッピング無し時はラッピング無しのでんこに有効)</td><td>※VU生效</td><td>※VU生效</td><td>100%</td><td>45分</td><td>3時間</td><td>def_buff_2 (def_buff)</td><td>label: (2)
+role: additional_effect
+target: [&quot;team_all&quot;]
+filters: {&quot;exclude_self&quot;: true}
+availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU生效&quot;, &quot;vu_only&quot;: true}
+activation: マスターにおまかせ
+raw: (2)自身と同じテーマのラッピングを着ているでんこが自身以外で2体以上の時(1)に追加でATKとDEF増加 同じテーマのラッピングのでんこにのみ有効 (ラッピング無し時はラッピング無しのでんこに有効)</td><td>※VU生效</td><td>※VU生效</td><td>100%</td><td>45分</td><td>3時間</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:058</td><td>妹尾まりか</td><td>トリックスター</td><td>cool</td><td>紫</td><td>ファム・ファタール</td><td>reboot_1 (reboot)</td><td>label: (1)
+role: default_effect
+availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;, &quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;vu_only&quot;: false}
+activation: マスターにおまかせ
+raw: (1)リブート時に自分が受けたダメージを跳ね返す</td><td>reboot</td><td>reboot</td><td>100%</td><td>Lv5: 30分
+Lv15: 45分
+Lv30: 1時間
+Lv50: 1時間30分
+Lv60: 2時間
+Lv70: 3時間
+Lv80/Lv92/Lv96/Lv100: 4時間</td><td>2時間</td><td>atk_buff_2 (atk_buff)</td><td>label: (2)
+role: supplemental_effect
+target: [&quot;self&quot;]
+availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU生效&quot;, &quot;vu_only&quot;: true}
+activation: マスターにおまかせ
+raw: (2)自身のATK増加・DEF減少</td><td>※VU生效</td><td>※VU生效</td><td>100%</td><td>4時間</td><td>2時間</td><td>def_debuff_2 (def_debuff)</td><td>label: (2)
+role: supplemental_effect
+target: [&quot;self&quot;]
+availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU生效&quot;, &quot;vu_only&quot;: true}
+activation: マスターにおまかせ
+raw: (2)自身のATK増加・DEF減少</td><td>※VU生效</td><td>※VU生效</td><td>100%</td><td>4時間</td><td>2時間</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:059</td><td>嵯峨野もみじ</td><td>アタッカー</td><td>heat</td><td>黄</td><td>飛びつき型ディーゼル</td><td>atk_buff</td><td>target: [&quot;self&quot;]
+availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;], &quot;vu_only&quot;: false}
+activation: いつでもアクティブ
+raw: 相手の編成内のでんこのタイプの数に応じ自身のATK上昇</td><td>ATK +15%</td><td>ATK +15%</td><td>Lv5: 30%
+Lv15: 40%
+Lv30: 50%
+Lv50: 55%
+Lv60: 60%
+Lv70: 65%
+Lv80: 70%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:060</td><td>倶利伽羅しおり</td><td>トリックスター</td><td>cool</td><td>黄</td><td>たぶん完璧なアドバイス！</td><td>exp_gain_1 (exp_gain)</td><td>label: (1)
+role: default_effect
+target: [&quot;self&quot;]
+availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;, &quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;vu_only&quot;: false}
+activation: いつでもアクティブ
+raw: (1)でんこがリンク解除時に、確率で経験値付与</td><td>経験値付与 300</td><td>経験値付与 350</td><td>Lv5: 20%
+Lv15: 25%
+Lv30: 30%
+Lv50: 35%
+Lv60: 40%
+Lv70: 45%
+Lv80/Lv92/Lv96/Lv100: 50%</td><td></td><td></td><td>activation_probability_boost</td><td>label: (2)
+role: supplemental_effect
+availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU生效&quot;, &quot;vu_only&quot;: true}
+activation: いつでもアクティブ
+raw: (1)でんこがリンク解除時に、確率で経験値付与 / (2)リンク解除した駅数に応じてスキル発動率上昇(上限10駅)</td><td>※VU生效</td><td>※VU生效</td><td>Lv92: (1)50% (2)+0.2～+20%
+Lv96: (1)50% (2)+0.35～+35%
+Lv100: (1)50% (2)+0.5～+50%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:061</td><td>深遊ちとせ</td><td>トリックスター</td><td>eco</td><td>黄</td><td>うつろうひととせ</td><td>duration_extension_2 (duration_extension)</td><td>label: (2)
+role: supplemental_effect
+target: [&quot;team_all&quot;]
+filters: {&quot;type&quot;: &quot;supporter&quot;}
+availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;], &quot;vu_only&quot;: false}
+activation: マスターにおまかせ
+raw: (2)(1)発動時、相手編成内サポーターが4体以上の場合、効果時間延長(最大3回)</td><td>duration_extension</td><td>duration_extension</td><td></td><td></td><td></td><td>skill_disable</td><td>target: [&quot;opponent_team&quot;, &quot;own_team&quot;]
+filters: {&quot;disabled_skill_target&quot;: &quot;スキル無効化&quot;, &quot;type&quot;: &quot;supporter&quot;}
+availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;], &quot;vu_only&quot;: false}
+activation: マスターにおまかせ
+raw: （1）一定時間、相手と自身の編成内にいる のスキルを無効化 サポーター / （2）（1）発動時、相手編成内サポーターが4体以上の場合、効果時間延長（最大3回） （2）はLv.92以降で発動</td><td>スキル無効化</td><td>スキル無効化</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:062</td><td>作草部マコ</td><td>トリックスター</td><td>cool</td><td>青</td><td>ご迷惑をおかけします！</td><td>exp_gain</td><td>target: [&quot;opponent_denko&quot;]
+trigger: {&quot;access_direction&quot;: &quot;active&quot;, &quot;event_hint&quot;: &quot;access&quot;}
+availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;, &quot;100&quot;], &quot;vu_only&quot;: false}
+activation: マスターにおまかせ
+raw: 相手に軽減不能なダメージと経験値を与える 自分以外のアクセスしたでんこの属性と駅の属性が同じ場合にのみ発動</td><td>経験値 100</td><td>経験値 100</td><td>100%</td><td>Lv5/Lv15/Lv30/Lv50: 20分
+Lv60/Lv70/Lv80/Lv100: 30分</td><td>3時間</td><td>fixed_damage</td><td>target: [&quot;opponent_denko&quot;]
+trigger: {&quot;access_direction&quot;: &quot;active&quot;, &quot;event_hint&quot;: &quot;access&quot;}
+availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;, &quot;100&quot;], &quot;vu_only&quot;: false}
+activation: マスターにおまかせ
+raw: 相手に軽減不能なダメージと経験値を与える 自分以外のアクセスしたでんこの属性と駅の属性が同じ場合にのみ発動</td><td>固定ダメージ +40</td><td>固定ダメージ +50</td><td>100%</td><td>Lv5/Lv15/Lv30/Lv50: 20分
+Lv60/Lv70/Lv80/Lv100: 30分</td><td>3時間</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:063</td><td>根雨つむぎ</td><td>サポーター</td><td>eco</td><td>赤</td><td>スピニング・レール</td><td>atk_buff_1 (atk_buff)</td><td>label: (1)
+role: default_effect
+target: [&quot;team_all&quot;]
+availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;, &quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;vu_only&quot;: false}
+activation: マスターにおまかせ
+raw: (1)クールダウン中のでんこの数に応じて編成内の全てのでんこのATKとDEFが増加</td><td>ATK +3.5×n%</td><td>ATK +4.0×n%</td><td>100%</td><td>Lv5: 30分
+Lv15: 35分
+Lv30: 40分
+Lv50: 45分
+Lv60: 50分
+Lv70: 55分
+Lv80/Lv92/Lv96/Lv100: 1時間</td><td>3時間</td><td>def_buff_1 (def_buff)</td><td>label: (1)
+role: default_effect
+target: [&quot;team_all&quot;]
+availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;, &quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;vu_only&quot;: false}
+activation: マスターにおまかせ
+raw: (1)クールダウン中のでんこの数に応じて編成内の全てのでんこのATKとDEFが増加</td><td>DEF +3.5×n%</td><td>DEF +4.0×n%</td><td>100%</td><td>Lv5: 30分
+Lv15: 35分
+Lv30: 40分
+Lv50: 45分
+Lv60: 50分
+Lv70: 55分
+Lv80/Lv92/Lv96/Lv100: 1時間</td><td>3時間</td><td>atk_buff_2 (atk_buff)</td><td>label: (2)
+role: additional_effect
+target: [&quot;team_all&quot;]
+trigger: {&quot;access_direction&quot;: &quot;active&quot;, &quot;event_hint&quot;: &quot;access&quot;}
+availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU生效&quot;, &quot;vu_only&quot;: true}
+activation: マスターにおまかせ
+raw: (2)編成内のでんこがアクセスしたときとされたとき、該当でんこがクールダウン状態の場合、追加でATKとDEFが増加</td><td>※VU生效</td><td>※VU生效</td><td>100%</td><td>1時間</td><td>3時間</td><td>def_buff_2 (def_buff)</td><td>label: (2)
+role: additional_effect
+target: [&quot;team_all&quot;]
+trigger: {&quot;access_direction&quot;: &quot;active&quot;, &quot;event_hint&quot;: &quot;access&quot;}
+availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU生效&quot;, &quot;vu_only&quot;: true}
+activation: マスターにおまかせ
+raw: (2)編成内のでんこがアクセスしたときとされたとき、該当でんこがクールダウン状態の場合、追加でATKとDEFが増加</td><td>※VU生效</td><td>※VU生效</td><td>100%</td><td>1時間</td><td>3時間</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:064</td><td>角館あけひ</td><td>アタッカー</td><td>heat</td><td>赤</td><td>フレンドシップロード</td><td>atk_buff_1 (atk_buff)</td><td>label: (1)
+role: default_effect
+target: [&quot;self&quot;]
+availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;, &quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;vu_only&quot;: false}
+activation: いつでもアクティブ
+raw: (1)今日の移動距離(上限100km)に応じて自身のATK増加</td><td>ATK +0.18×移動距離(km)%</td><td>ATK +0.21×移動距離(km)%</td><td>100%</td><td></td><td></td><td>atk_buff_2 (atk_buff)</td><td>label: (2)
+role: supplemental_effect
+target: [&quot;team_all&quot;]
+availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;, &quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;vu_only&quot;: false}
+activation: いつでもアクティブ
+raw: (2)今日の移動距離が100km以上のとき編成内でんこのATK増加</td><td>ATK +6%</td><td>ATK +7%</td><td>100%</td><td></td><td></td><td>atk_buff_3 (atk_buff)</td><td>label: (3)
+role: additional_effect
+target: [&quot;team_all&quot;]
+availability: {&quot;levels&quot;: [&quot;100&quot;], &quot;note&quot;: &quot;VU生效&quot;, &quot;vu_only&quot;: true}
+activation: いつでもアクティブ
+raw: (3)今日の移動距離が100km以上でリンク時間が10分未満の駅があるとき(2)に追加で編成内でんこのATK増加</td><td>※VU生效</td><td>※VU生效</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:065</td><td>湯前ひびき</td><td>ディフェンダー</td><td>eco</td><td>黄</td><td>シンフォニックレイル</td><td>hp_recovery</td><td>target: [&quot;team_all&quot;]
+filters: {&quot;type&quot;: &quot;supporter&quot;}
+trigger: {&quot;access_direction&quot;: &quot;received&quot;, &quot;event_hint&quot;: &quot;accessed&quot;}
+availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;, &quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;vu_only&quot;: false}
+activation: いつでもアクティブ
+raw: 被アクセス時に確率でHP回復 被アクセス時に自編成内のサポーターのスキルを無効化(100%) 自身に対するバッテリーの使用不可(100%) / ※自身が受けたダメージが180以下の場合、HP回復のスキル発動率が追加で上昇 サポーターはアクセス時にカウンターを受けたときには無効化されない / ※はLv.92以降で発動</td><td>HP回復 10</td><td>HP回復 15</td><td>Lv5: 20%
+Lv15: 25%
+Lv30: 30%
+Lv50: 35%
+Lv60: 40%
+Lv70: 45%
+Lv80: 50%
+Lv92/Lv96: 50% ※追加発動率+x%
+Lv100: 50% ※追加発動率+20%</td><td></td><td></td><td>skill_disable</td><td>target: [&quot;team_all&quot;]
+filters: {&quot;disabled_skill_target&quot;: &quot;スキル無効化&quot;, &quot;type&quot;: &quot;supporter&quot;}
+trigger: {&quot;access_direction&quot;: &quot;received&quot;, &quot;event_hint&quot;: &quot;accessed&quot;}
+availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;, &quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;vu_only&quot;: false}
+activation: いつでもアクティブ
+raw: 被アクセス時に確率でHP回復 被アクセス時に自編成内のサポーターのスキルを無効化(100%) 自身に対するバッテリーの使用不可(100%) / ※自身が受けたダメージが180以下の場合、HP回復のスキル発動率が追加で上昇 サポーターはアクセス時にカウンターを受けたときには無効化されない / ※はLv.92以降で発動</td><td>スキル無効化</td><td>スキル無効化</td><td>Lv5: 20%
+Lv15: 25%
+Lv30: 30%
+Lv50: 35%
+Lv60: 40%
+Lv70: 45%
+Lv80: 50%
+Lv92/Lv96: 50% ※追加発動率+x%
+Lv100: 50% ※追加発動率+20%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:066</td><td>蛍茶屋みなも</td><td>アタッカー</td><td>cool</td><td>緑</td><td>みんなでショウ・タイム</td><td>fixed_damage_1 (fixed_damage)</td><td>label: (1)
+role: default_effect
+target: [&quot;opponent_denko&quot;]
+trigger: {&quot;access_direction&quot;: &quot;active&quot;, &quot;event_hint&quot;: &quot;access&quot;}
+availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;, &quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;vu_only&quot;: false}
+activation: でんこにおまかせ
+raw: (1)自身のアクセス時相手に軽減不能なダメージを与える</td><td>固定ダメージ +60</td><td>固定ダメージ +75</td><td>100%</td><td>Lv5/Lv15/Lv30/Lv50/Lv60/Lv70/Lv80: 30分
+Lv92: 30分 (2)効果時間延長 +6分
+Lv96: 30分 (2)効果時間延長 +12分
+Lv100: 30分 (2)効果時間延長 +18分</td><td></td><td>additional_fixed_damage_2 (additional_fixed_damage)</td><td>label: (2)
+role: additional_effect
+target: [&quot;team_all&quot;]
+filters: {&quot;exclude_self&quot;: true}
+availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU生效&quot;, &quot;vu_only&quot;: true}
+activation: でんこにおまかせ
+raw: (2)自身を除く編成内でんこがリンクする度に最大1時間まで効果時間延長 延長効果が1回でも発動した時固定ダメージを追加 発動条件：自身以外の編成内でんこが2体リンクする</td><td>※VU生效</td><td>※VU生效</td><td>100%</td><td>Lv92: 30分 (2)効果時間延長 +6分
+Lv96: 30分 (2)効果時間延長 +12分
+Lv100: 30分 (2)効果時間延長 +18分</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:067</td><td>窪川まぜ</td><td>ディフェンダー</td><td>heat</td><td>青</td><td>ロング・ジャーニー</td><td>component_01_damage_reduction (damage_reduction)</td><td>target: [&quot;team_all&quot;]
+activation: いつでもアクティブ
+raw: (1)今日のアクセス駅数(上限70駅)によってダメージ軽減 / (2)今日のアクセス駅数が26駅以上のとき、編成内でんこのダメージ軽減 / (3)今日のアクセス駅数が40駅以上のとき、(2)に追加で編成内でんこのダメージ軽減</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:068</td><td>七耀みつる</td><td>アタッカー</td><td>heat</td><td>赤</td><td>ノヴァストライク</td><td>atk_buff_1 (atk_buff)</td><td>label: (1)
+role: default_effect
+target: [&quot;self&quot;]
+availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;, &quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;vu_only&quot;: false}
+activation: マスターにおまかせ
+raw: (3)はLv.92以上で発動</td><td>ATK +14%</td><td>ATK +16%</td><td>100%</td><td>30分</td><td>2時間</td><td>atk_buff_2 (atk_buff)</td><td>label: (2)
+role: supplemental_effect
+target: [&quot;self&quot;]
+availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;, &quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;vu_only&quot;: false}
+activation: マスターにおまかせ
+raw: (3)はLv.92以上で発動</td><td>ATK +27%</td><td>ATK +33%</td><td>100%</td><td>30分</td><td>2時間</td><td>atk_buff_3 (atk_buff)</td><td>label: (3)
+role: supplemental_effect
+target: [&quot;self&quot;]
+availability: {&quot;levels&quot;: [&quot;100&quot;], &quot;note&quot;: &quot;VU生效&quot;, &quot;vu_only&quot;: true}
+activation: マスターにおまかせ
+raw: (3)はLv.92以上で発動</td><td>※VU生效</td><td>※VU生效</td><td>100%</td><td>30分</td><td>2時間</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:069</td><td>羽貫ミユ</td><td>トリックスター</td><td>eco</td><td>桃</td><td>きらきらリスペクト</td><td>exp_gain</td><td>target: [&quot;team_all&quot;]
+availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;], &quot;vu_only&quot;: false}
+activation: いつでもアクティブ
+raw: 移動距離に応じて経験値増加、100km以上でさらに編成内全員に経験値付与</td><td>経験値 120</td><td>経験値 140</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:070</td><td>桂みやび</td><td>ディフェンダー</td><td>cool</td><td>赤</td><td>クールダウン・プリーズ</td><td>def_buff_1 (def_buff)</td><td>label: (1)
+role: default_effect
+target: [&quot;self&quot;]
+availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;, &quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;vu_only&quot;: false}
+activation: マスターにおまかせ
+raw: (1)相手のでんこが 属性の際、自身のDEF増加 heat</td><td>DEF +36%</td><td>DEF +42%</td><td>100%</td><td>Lv5/Lv15/Lv30: 1時間
+Lv50/Lv60/Lv70/Lv80/Lv92/Lv96/Lv100: 2時間</td><td>1時間</td><td>def_buff_2 (def_buff)</td><td>label: (2)
+role: supplemental_effect
+target: [&quot;self&quot;]
+filters: {&quot;opponent_attribute&quot;: &quot;heat&quot;, &quot;opponent_team_attribute_min_count&quot;: {&quot;attribute&quot;: &quot;heat&quot;, &quot;min_count&quot;: 3}}
+availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU生效&quot;, &quot;vu_only&quot;: true}
+activation: マスターにおまかせ
+raw: (2)相手編成内heat属性でんこ数が3体以上で自身のDEF増加</td><td>※VU生效</td><td>※VU生效</td><td>100%</td><td>2時間</td><td>1時間</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:071</td><td>大雄山るり</td><td>サポーター</td><td>cool</td><td>青</td><td>こつこつワーキング</td><td>atk_buff_1 (atk_buff)</td><td>label: (1)
+role: default_effect
+target: [&quot;team_all&quot;]
+trigger: {&quot;time_window_raw&quot;: &quot;07:00～10:00&quot;}
+availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;, &quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;vu_only&quot;: false}
+activation: いつでもアクティブ
+raw: (1)平日の07:00～10:00、17:00～20:00に編成内のすべてのでんこのATK上昇</td><td>ATK +12%</td><td>ATK +14%</td><td>Lv5: 60%
+Lv15: 65%
+Lv30: 70%
+Lv50: 75%
+Lv60: 80%
+Lv70: 85%
+Lv80/Lv92/Lv96/Lv100: 90%</td><td></td><td></td><td>atk_buff_2 (atk_buff)</td><td>label: (2)
+role: additional_effect
+target: [&quot;team_all&quot;]
+availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU生效&quot;, &quot;vu_only&quot;: true}
+activation: いつでもアクティブ
+raw: (2)(1)発動時、今日の新駅でない場合に追加でATK増加</td><td>※VU生效</td><td>※VU生效</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:072</td><td>蓮台寺ナギサ</td><td>アタッカー</td><td>cool</td><td>青</td><td>クールダイブ</td><td>fixed_damage_1 (fixed_damage)</td><td>label: (1)
+role: default_effect
+target: [&quot;opponent_denko&quot;]
+filters: {&quot;opponent_attribute&quot;: &quot;cool&quot;}
+scaling: {&quot;max_count&quot;: 14}
+availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;, &quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;vu_only&quot;: false}
+activation: いつでもアクティブ
+raw: 固定ダメージ[相手のでんこ] 効果量：(1)相手と自身の編成内の の数(上限14体)によって変動 cool属性のでんこ / (2)編成しているでんこがすべてcoolのとき(1)に追加で固定ダメージ (2)はLv.92以上で発動</td><td>固定ダメージ 1～180</td><td>固定ダメージ 1～210</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:073</td><td>高岡やまと</td><td>サポーター</td><td>eco</td><td>黄</td><td>フェイバリットカラーズ</td><td>damage_reduction_1 (damage_reduction)</td><td>label: (1)
+role: default_effect
+target: [&quot;team_all&quot;]
+trigger: {&quot;access_direction&quot;: &quot;received&quot;, &quot;event_hint&quot;: &quot;accessed&quot;}
+availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;, &quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;vu_only&quot;: false}
+activation: マスターにおまかせ
+raw: (1)編成内でんこが同属性でんこからアクセスされた</td><td>ダメージ軽減 65</td><td>ダメージ軽減 70</td><td>100%</td><td>1時間</td><td>2時間</td><td>damage_reduction_2 (damage_reduction)</td><td>label: (2)
+role: supplemental_effect
+target: [&quot;team_all&quot;]
+trigger: {&quot;access_direction&quot;: &quot;received&quot;, &quot;event_hint&quot;: &quot;accessed&quot;}
+availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU生效&quot;, &quot;vu_only&quot;: true}
+activation: マスターにおまかせ
+raw: (2)編成内でんこが属性相性が有効なでんこからアクセスされた ※(1)(2)ともに固定値でダメージ軽減</td><td>※VU生效</td><td>※VU生效</td><td>100%</td><td>1時間</td><td>2時間</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:074</td><td>中津コヨイ</td><td>ディフェンダー</td><td>eco</td><td>赤</td><td>なきむしシンパサイザー</td><td>def_buff_1 (def_buff)</td><td>label: (1)
+role: default_effect
+target: [&quot;team_all&quot;]
+filters: {&quot;attribute&quot;: &quot;eco&quot;, &quot;exclude_self&quot;: true}
+scaling: {&quot;max_count&quot;: 5}
+availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;, &quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;vu_only&quot;: false}
+activation: マスターにおまかせ
+raw: (1)編成内の の数(自身を除く・上限5体)によってDEF増加(自身) eco属性でんこ</td><td>DEF 0～+28%</td><td>DEF 0～+31%</td><td>100%</td><td>1時間30分</td><td>2時間</td><td>def_buff_2 (def_buff)</td><td>label: (2)
+role: supplemental_effect
+target: [&quot;team_all&quot;]
+filters: {&quot;attribute&quot;: &quot;eco&quot;, &quot;exclude_self&quot;: true}
+availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;, &quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;vu_only&quot;: false}
+activation: マスターにおまかせ
+raw: (2)編成内の の数(自身を除く)が4体以上でDEF増加(自身の編成) eco属性でんこ</td><td>DEF +10%</td><td>DEF +10%</td><td>100%</td><td>1時間30分</td><td>2時間</td><td>damage_reduction_3 (damage_reduction)</td><td>label: (3)
+role: supplemental_effect
+target: [&quot;team_all&quot;]
+filters: {&quot;attribute&quot;: &quot;eco&quot;, &quot;exclude_self&quot;: true}
+availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU生效&quot;, &quot;vu_only&quot;: true}
+activation: マスターにおまかせ
+raw: (3)編成内の の数(自身を除く)が4体以上で被ダメージを固定値で軽減(自身の編成) eco属性でんこ</td><td>※VU生效</td><td>※VU生效</td><td>100%</td><td>1時間30分</td><td>2時間</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:075</td><td>阿下喜ニナ</td><td>アタッカー</td><td>heat</td><td>緑</td><td>ねっけつレッスン</td><td>atk_buff_1 (atk_buff)</td><td>label: (1)
+role: default_effect
+target: [&quot;self&quot;]
+availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;, &quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;vu_only&quot;: false}
+activation: マスターにおまかせ
+raw: (1)自身のATK増加</td><td>ATK +25%</td><td>ATK +30%</td><td>100%</td><td>45分</td><td>2時間30分</td><td>exp_gain_2 (exp_gain)</td><td>label: (2)
+role: supplemental_effect
+target: [&quot;opponent_denko&quot;]
+availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;], &quot;vu_only&quot;: false}
+activation: マスターにおまかせ
+raw: (2)相手に経験値付与</td><td>経験値付与 330</td><td>経験値付与 360</td><td>100%</td><td>45分</td><td>2時間30分</td><td>exp_gain_3 (exp_gain)</td><td>label: (3)
+role: supplemental_effect
+target: [&quot;opponent_denko&quot;]
+trigger: {&quot;access_direction&quot;: &quot;own_team_link&quot;, &quot;event_hint&quot;: &quot;link&quot;}
+availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU生效&quot;, &quot;vu_only&quot;: true}
+activation: マスターにおまかせ
+raw: (3)リンクしたとき(2)経験値付与がもう1回発動</td><td>※VU生效</td><td>※VU生效</td><td>100%</td><td>45分</td><td>2時間30分</td><td>duration_extension_4 (duration_extension)</td><td>label: (4)
+role: supplemental_effect
+target: [&quot;self&quot;]
+availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU生效&quot;, &quot;vu_only&quot;: true}
+activation: マスターにおまかせ
+raw: (4)相手に経験値を7回与える度に効果時間延長(最大3回)</td><td>※VU生效</td><td>※VU生效</td><td>100%</td><td>45分</td><td>2時間30分</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:076</td><td>上ノ山ゆのか</td><td>アタッカー</td><td>heat</td><td>緑</td><td>ほっと・バスタイム</td><td>atk_buff_1 (atk_buff)</td><td>label: (1)
+role: default_effect
+target: [&quot;self&quot;]
+availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;, &quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;vu_only&quot;: false}
+activation: マスターにおまかせ
+raw: (1)自身のATK上昇</td><td>ATK +32%</td><td>ATK +39%</td><td>100%</td><td>15分</td><td>1時間30分</td><td>def_debuff_2 (def_debuff)</td><td>label: (2)
+role: supplemental_effect
+target: [&quot;opponent_denko&quot;]
+availability: {&quot;levels&quot;: [&quot;100&quot;], &quot;note&quot;: &quot;VU生效&quot;, &quot;vu_only&quot;: true}
+activation: マスターにおまかせ
+raw: (2)相手のHPを0にできなかった場合、相手のHPを回復</td><td>※VU生效</td><td>※VU生效</td><td>100%</td><td>15分</td><td>1時間30分</td><td>def_debuff_3 (def_debuff)</td><td>label: (3)
+role: supplemental_effect
+target: [&quot;opponent_denko&quot;]
+availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;96&quot;], &quot;note&quot;: &quot;VU生效&quot;, &quot;vu_only&quot;: true}
+activation: マスターにおまかせ
+raw: (3)相手のDEF減少</td><td>※VU生效</td><td>※VU生效</td><td>75%</td><td>15分</td><td>1時間30分</td><td>hp_recovery</td><td>target: [&quot;opponent_denko&quot;]
+availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;], &quot;vu_only&quot;: false}
+activation: マスターにおまかせ
+raw: (1)自身のATK上昇 / (2)相手のHPを0にできなかった場合、相手のHPを回復 / (3)相手のDEF減少 （3）はLv.92以上で発動</td><td>HP回復 14</td><td>HP回復 18</td><td>(1)(2)100%</td><td>15分</td><td>1時間30分</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:077</td><td>リト=フォン=シュトゥットガルト</td><td>トリックスター</td><td>eco</td><td>桃</td><td>ワンダーエスケープ</td><td>random_previous_station_access</td><td>target: [&quot;self&quot;]
+trigger: {&quot;access_direction&quot;: &quot;received&quot;, &quot;destination&quot;: &quot;previously_accessed_station&quot;, &quot;event_hint&quot;: &quot;accessed&quot;, &quot;hp_outcome&quot;: &quot;zero&quot;}
+availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;, &quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;vu_only&quot;: false}
+activation: いつでもアクティブ
+raw: アクセスされて、自身のHPが0になったときに、これまでアクセスしたことのある駅にアクセス ※Lv.92以降、スキル未発動で次回の発動率増加(上限80%、発動時に初期値にリセット） 確率発動</td><td>これまでアクセスしたことのある駅にアクセス</td><td>これまでアクセスしたことのある駅にアクセス</td><td>Lv5: 8%
+Lv15: 10%
+Lv30: 12%
+Lv50: 14%
+Lv60: 16%
+Lv70: 18%
+Lv80: 20%
+Lv92: 20% 追加発動率:+1% 追加発動率上限:80% 追加発動率リセット:100%
+Lv96: 20% 追加発動率:+2% 追加発動率上限:80% 追加発動率リセット:100%
+Lv100: 20% 追加発動率:+3% 追加発動率上限:80% 追加発動率リセット:100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:078</td><td>海部なる</td><td>アタッカー</td><td>cool</td><td>青</td><td>恋心ばーさーく！</td><td>atk_buff_2 (atk_buff)</td><td>label: (2)
+role: supplemental_effect
+target: [&quot;self&quot;]
+availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;], &quot;vu_only&quot;: false}
+activation: マスターにおまかせ
+raw: (2)(1)でスコア減少時、ATK増加</td><td>ATK +5%</td><td>ATK +5%</td><td>100%</td><td>1時間</td><td>3時間</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:079</td><td>唐津シズ</td><td>サポーター</td><td>heat</td><td>赤</td><td>カンペキテンサイおでかけプラン</td><td>atk_buff_1 (atk_buff)</td><td>label: (1)
+role: default_effect
+target: [&quot;team_all&quot;]
+filters: {&quot;attribute&quot;: &quot;heat&quot;}
+availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;], &quot;vu_only&quot;: false}
+activation: マスターにおまかせ
+raw: (1)自編成のでんこが全てheat属性のとき、編成内のheat属性でんこのATKが増加</td><td>ATK +12%</td><td>ATK +14%</td><td>100%</td><td>Lv5/Lv15/Lv30/Lv50: 30分
+Lv60: 40分
+Lv70: 50分
+Lv80: 1時間</td><td>Lv5/Lv15/Lv30/Lv50: 2時間30分
+Lv60: 2時間20分
+Lv70: 2時間10分
+Lv80: 2時間</td><td>def_debuff_2 (def_debuff)</td><td>label: (2)
+role: supplemental_effect
+target: [&quot;opponent_denko&quot;]
+filters: {&quot;opponent_team_attribute_count_basis&quot;: &quot;distinct_attribute_count&quot;}
+availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;], &quot;vu_only&quot;: false}
+activation: マスターにおまかせ
+raw: (2)相手編成内のでんこの属性の数に応じて相手でんこのDEFが減少(ATKと同時発動)</td><td>DEF -5～-20%</td><td>DEF -5.5～-22%</td><td>100%</td><td>Lv5/Lv15/Lv30/Lv50: 30分
+Lv60: 40分
+Lv70: 50分
+Lv80: 1時間</td><td>Lv5/Lv15/Lv30/Lv50: 2時間30分
+Lv60: 2時間20分
+Lv70: 2時間10分
+Lv80: 2時間</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:080</td><td>那珂湊ねも</td><td>アタッカー</td><td>eco</td><td>紫</td><td>蒼華一撃</td><td>fixed_damage_1 (fixed_damage)</td><td>label: (1)
+role: default_effect
+target: [&quot;opponent_denko&quot;]
+availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;, &quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;vu_only&quot;: false}
+activation: でんこにおまかせ
+raw: (1)相手に軽減不能なダメージを与える リンク時、クールタイムに入る</td><td>固定ダメージ +120</td><td>固定ダメージ +140</td><td>100%</td><td></td><td>3時間</td><td>skill_continue_2 (skill_continue)</td><td>label: (2)
+role: supplemental_effect
+availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;, &quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;vu_only&quot;: false}
+activation: でんこにおまかせ
+raw: (2)一定の確率でクールタイムに入らずスキルを継続する</td><td>skill_continue</td><td>skill_continue</td><td>Lv5: 50%
+Lv15: 55%
+Lv30: 60%
+Lv50: 65%
+Lv60: 70%
+Lv70: 75%
+Lv80/Lv92/Lv96/Lv100: 80%</td><td></td><td>3時間</td><td>additional_score_gain_3 (additional_score_gain)</td><td>label: (3)
+role: supplemental_effect
+target: [&quot;self&quot;]
+availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU生效&quot;, &quot;vu_only&quot;: true}
+activation: でんこにおまかせ
+raw: (3)自身のリンク時、スコアを獲得</td><td>※VU生效</td><td>※VU生效</td><td>100%</td><td></td><td>3時間</td><td>additional_score_gain_4 (additional_score_gain)</td><td>label: (4)
+role: supplemental_effect
+target: [&quot;self&quot;]
+availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU生效&quot;, &quot;vu_only&quot;: true}
+activation: でんこにおまかせ
+raw: (4)自身のリンク時、リンク回数に応じてスコアを獲得(上限5回、クールタイム入りでリセット)</td><td>※VU生效</td><td>※VU生效</td><td>100%</td><td></td><td>3時間</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+</tbody></table></div>
+<h2>Controller 判定</h2>
+<ul>
+<li>本报告中的 <code>needs_manual_review</code> 主要来自样本阶段默认复核标记，不代表全部解析失败。</li>
+<li>若同类 review reason 在后续批次重复出现，应优先调整 parser 规则，再考虑 LLM snippet。</li>
+<li>本批次输出用于 Step1 数据读取，不启动 solver。</li>
+</ul>
+<p>generated_at: 2026-06-07T23:45:46.775481+09:00</p>
+</body></html>
