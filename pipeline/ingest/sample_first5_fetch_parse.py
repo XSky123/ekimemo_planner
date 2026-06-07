@@ -22,7 +22,7 @@ REVIEW_DIR = ROOT / "data" / "review_queue"
 REPORT_DIR = ROOT / "data" / "reports"
 BASE_URL = "https://newekimemo.wiki.fc2.com"
 JST = timezone(timedelta(hours=9))
-PARSER_VERSION = "sample_first5_html_table_matrix.v2"
+PARSER_VERSION = "sample_first5_html_table_matrix.v3"
 KEY_DENKO_LEVELS = ("1", "15", "30", "50", "60", "70", "80", "92", "96", "100")
 DEFAULT_FOCUS_LEVELS = ("30", "50")
 VU_LEVELS = ("92", "96", "100")
@@ -877,12 +877,70 @@ def parse_probability_boost_components(
 def enrich_component_from_value_text(component: dict[str, Any], source_text: str | None) -> None:
     if not source_text:
         return
+    source_segment = relevant_source_segment(source_text, component.get("condition_raw") or "")
+    source_target = infer_target_scope_from_source_text(source_segment, component.get("effect_kind") or "")
+    if source_target:
+        component["target_scope"] = source_target
     target_scope = component.setdefault("target_scope", [])
     if "編成内" in source_text and not target_scope:
         target_scope.append("team_all")
     filters = component.setdefault("target_filters", {})
     if "先頭の場合は2両目" in source_text:
         filters["position_exception_raw"] = "自身が先頭の場合は2両目"
+
+
+def relevant_source_segment(source_text: str, condition_raw: str) -> str:
+    if not condition_raw:
+        return source_text
+    clauses = [
+        clause.strip()
+        for clause in re.split(r"(?<=。)|また、|ただし、", source_text)
+        if clause.strip()
+    ]
+    if not clauses:
+        return source_text
+    cue_words = [
+        "今日のアクセス駅数",
+        "アクセスした駅",
+        "天気",
+        "曇り",
+        "リンク駅数",
+        "最大HP",
+        "AP",
+        "バッテリー",
+        "効果時間",
+        "リブート",
+        "固定ダメージ",
+        "経験値",
+    ]
+    best_clause = clauses[0]
+    best_score = -1
+    for clause in clauses:
+        score = 0
+        for cue in cue_words:
+            if cue in condition_raw and cue in clause:
+                score += 2
+        if component_label_text(condition_raw) in clause:
+            score += 1
+        if score > best_score:
+            best_clause = clause
+            best_score = score
+    return best_clause if best_score > 0 else source_text
+
+
+def component_label_text(condition_raw: str) -> str:
+    match = re.search(r"[\(（](\d+)[\)）]", condition_raw)
+    return f"({match.group(1)})" if match else ""
+
+
+def infer_target_scope_from_source_text(text: str, effect_kind: str) -> list[str]:
+    if "アクセスしたでんこに" in text:
+        return ["accessing_denko"]
+    if "アクセスしたでんこ" in text and effect_kind in {"exp_gain", "score_gain"}:
+        return ["accessing_denko"]
+    if "編成内のでんこに" in text or "編成内のでんこへ" in text:
+        return ["team_all"]
+    return []
 
 
 def adjust_component_semantics(component: dict[str, Any], common_text: str) -> None:
@@ -1183,9 +1241,33 @@ def component_duplicate_signatures(components: list[dict[str, Any]]) -> set[str]
 def join_unique_text(values: list[str | None]) -> str:
     out: list[str] = []
     for value in values:
+        value = clean_condition_text(value)
         if value and value not in out:
             out.append(value)
     return " ".join(out)
+
+
+def clean_condition_text(value: str | None) -> str | None:
+    if not value:
+        return value
+    out = value
+    for first in ["heat", "cool", "eco", "flat"]:
+        for second in ["heat", "cool", "eco", "flat"]:
+            if first == second:
+                continue
+            out = out.replace(
+                f"と の両属性のでんこのみ編成 {first} {second}",
+                f"{first}と{second}の両属性のでんこのみ編成",
+            )
+            out = out.replace(
+                f"発動条件： と のみ編成 {first} {second}",
+                f"発動条件：{first}と{second}のみ編成",
+            )
+            out = out.replace(
+                f"と のみ編成 {first} {second}",
+                f"{first}と{second}のみ編成",
+            )
+    return out
 
 
 def infer_scaling_conditions(text: str) -> dict[str, Any]:
@@ -1385,6 +1467,7 @@ def build_summary_zh(
     target_labels = {
         "team_all": "编成内全员",
         "self": "自身",
+        "accessing_denko": "访问したでんこ",
     }
     parts = []
     effect_kind = normalized_skill.get("effect_kind") or []
@@ -1422,6 +1505,7 @@ def component_summary_zh(index: int, component: dict[str, Any]) -> str:
         "team_all": "编成内全员",
         "front_car": "先头车",
         "self": "自身",
+        "accessing_denko": "访问したでんこ",
         "own_team": "自己编成",
         "opponent_team": "对方编成",
     }
@@ -1488,7 +1572,7 @@ def join_unique_values(rows: list[dict[str, str]], keys: list[str]) -> str | Non
     values: list[str] = []
     for row in rows:
         for key in keys:
-            value = row.get(key)
+            value = clean_condition_text(row.get(key))
             if value and value not in values:
                 values.append(value)
     return " / ".join(values) if values else None

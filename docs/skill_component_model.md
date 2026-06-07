@@ -43,7 +43,7 @@ Each `skill_component` contains:
 
 - `component_id`: stable local id such as `atk_buff`, `exp_gain`, or `damage_reduction`.
 - `effect_kind`: normalized effect type.
-- `target_scope`: who receives the effect, for example `team_all`, `self`, `front_car`, `own_team`, `opponent_team`.
+- `target_scope`: who receives the effect, for example `team_all`, `self`, `front_car`, `accessing_denko`, `own_team`, `opponent_team`.
 - `target_filters`: attribute/type/position filters, for example `{ "attribute": "cool" }`.
 - `trigger_conditions`: structured trigger hints, for example HP threshold, access event, time window.
 - `activation_type`: raw Japanese activation type.
@@ -95,6 +95,7 @@ Use these checks during batch ingestion before trusting the component matrix:
 - Binary side effects such as `reboot` or `battery_disable` may have no numeric effect value. If their label, condition, probability, duration/CD context, and effect kind are all captured, keep the component-level review reason if useful, but do not promote it to the top suspicious table.
 - Multi-attribute requirements such as `coolとecoのみ編成` should be represented as an array, for example `{ "attributes": ["cool", "eco"], "formation_only": true }`.
 - Access direction is a real trigger dimension. Distinguish own active access, being accessed, and being accessed while holding a station when the source text does so.
+- If the compact condition row omits the receiver but the detail comment says `アクセスしたでんこに`, set `target_scope = ["accessing_denko"]`. Do not inherit `team_all` from a neighboring labeled effect such as `編成内のでんこに`.
 
 ## Windows Encoding Rule
 
