@@ -26,6 +26,8 @@ Good use cases:
 - Labeled components were split incorrectly.
 - A target is ambiguous between `self`, `team_all`, `accessing_denko`, `relative_car`, or opponent.
 - A condition belongs in `target_filters`, not `target_scope`.
+- Attribute words are displaced by a merged-cell table, for example appearing after the sentence instead of inside the blanks.
+- Parsed `effect_kind` contradicts the Japanese effect text, for example `condition_raw` says `経験値とスコア獲得` but the component is parsed as `def_debuff`.
 - Lv30/Lv50 values are present in raw rows but missing from a component.
 - VU-only effects need explicit `availability`.
 - Weather, weekday, time, battery, link, station ownership, opponent formation, or mileage conditions need structured hints.
@@ -88,6 +90,9 @@ Before writing a patch, check:
 - Is the receiver explicit? If source says `アクセスしたでんこに`, use `target_scope=["accessing_denko"]`.
 - Is `編成内` a target or only a team-count condition?
 - Is `相手` a target/condition for the opponent, not own team?
+- Are trailing attributes such as `cool属性 heat属性` filling blanks in the condition sentence?
+- Does `effect_kind` match Japanese effect words? `経験値` -> `exp_gain`; `スコア獲得` -> `score_gain`; `DEF-10%` -> `def_debuff`; `ATK+` -> `atk_buff`.
+- If the text says `リブートしなかったら`, represent that as a no-reboot trigger/outcome condition; do not reuse an unrelated numeric DEF/ATK component.
 - Are active access, being accessed, link, battery use, station ownership, time, weather, weekday, and VU conditions represented?
 - If unsure, keep `confidence=low`, add a review reason, and do not invent numeric values.
 

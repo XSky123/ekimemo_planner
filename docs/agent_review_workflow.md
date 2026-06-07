@@ -44,6 +44,8 @@ From the `original_120_163` and `original_080_119` review loops, the user cares 
 - separating target receiver from activation/formation/opponent conditions,
 - preserving probability, duration, cooldown, and level-specific values,
 - representing access direction, station ownership, link events, battery use, time, weather, weekday, mileage, and relative position,
+- catching merged-cell artifacts where attributes or other condition words are appended after the sentence and must be mapped back into blanks,
+- catching condition/effect contradictions, such as a component parsed as DEF decrease even though the Japanese condition says `経験値` and `スコア獲得`,
 - not force-filling weird cases when a manual or LLM snippet review is safer.
 
 ## When To Use Which Agent
