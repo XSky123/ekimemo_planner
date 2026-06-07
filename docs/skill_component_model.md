@@ -87,11 +87,10 @@ Use these checks during batch ingestion before trusting the component matrix:
 - Labeled effects such as `(1)`, `(2)`, `(3)` are independent components unless the page clearly says they are inseparable. Do not merge two labels into one component just because they share duration, cooldown, or probability.
 - Normalize fullwidth and halfwidth parentheses, percent signs, range marks, and line breaks before splitting components. Mixed notation should not change semantics.
 - A labeled probability such as `(1)75% (2)100%` belongs in the per-label probability field. It is not a skill content value and should not create an `activation_probability_boost` component unless probability change itself is the effect.
-- If labels are combined as `(1)(2)` or otherwise cannot be separated deterministically, add `review_reason = compound_labeled_effect_needs_manual_review` instead of guessing.
+- If compound label references such as `(2)(1)` cannot be distinguished from new effects, add `review_reason = compound_labeled_effect_needs_manual_review` instead of guessing.
 - If a source skill table has key rows for Lv30 or Lv50 but a parsed component has a blank value at either level, add `review_reason = key_level_component_missing`.
 - If the source condition/effect rows contain multiple labels but emitted components are fewer than the label count, add `review_reason = labeled_component_count_mismatch`.
-- If numbered labels are detected but the first emitted labeled component is not `(1)`, or if a component label number does not match the effect/value label number, treat the row as suspicious. Send only that denko's relevant Japanese skill snippet to model review instead of trusting the parsed result.
-- If labeled effects are detected but only one component is emitted, treat this as a parser failure. `original:139` is the current example pattern.
+- If numbered labels are detected but component count, ordering, or value mapping does not match, treat the row as suspicious and review only the relevant Japanese skill snippet.
 - Binary side effects such as `reboot` or `battery_disable` may have no numeric effect value. If their label, condition, probability, duration/CD context, and effect kind are all captured, keep the component-level review reason if useful, but do not promote it to the top suspicious table.
 - Multi-attribute requirements such as `coolとecoのみ編成` should be represented as an array, for example `{ "attributes": ["cool", "eco"], "formation_only": true }`.
 - Access direction is a real trigger dimension. Distinguish own active access, being accessed, and being accessed while holding a station when the source text does so.

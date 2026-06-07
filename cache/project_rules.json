@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-06-06T00:00:00+09:00",
-  "parser_version": "project_rules.v1",
+  "updated_at": "2026-06-07T00:00:00+09:00",
+  "parser_version": "project_rules.v2",
   "handoff_contract": {
     "design_goal": "Make every stage resumable by another AI/agent without relying on conversation history.",
     "must_record": [
@@ -78,15 +78,6 @@
   "dimension_policy": {
     "agent_may_refine_keys": true,
     "rule": "During data reading, the agent/parser may judge whether captured keys are sufficient and add or refine optional fields when the source page proves the current schema is incomplete.",
-    "review_cadence": {
-      "enabled": true,
-      "batch_size": 30,
-      "batch_size_range": [
-        20,
-        30
-      ],
-      "rule": "After every 20-30 denko records parsed, stop and review whether captured keys, schemas, review reasons, and evidence fields are still adequate before continuing. Default batch size is 30 unless a smaller batch is useful for template risk."
-    },
     "requirements": [
       "Keep existing stable keys when possible.",
       "Record why a key was added or changed.",
@@ -132,12 +123,10 @@
   "llm_review_policy": {
     "trigger_rule": "When suspicious parser items are detected, review the smallest corresponding Japanese snippet with the model instead of trusting the parsed row.",
     "must_trigger_for": [
-      "source text contains numbered labels such as (1)/(2)/(3), but emitted components are fewer than the labels",
-      "the first emitted labeled component is not (1)",
-      "a component label number does not match the skill value/effect label number",
-      "compound labels such as (2)(3) or (2)(1) appear and deterministic parsing cannot safely map values"
-    ],
-    "example": "original:139: labels are detected but only part of the labeled effects are emitted; send only the relevant skill condition/effect snippet for model review."
+      "numbered labels are detected but component count, ordering, or value mapping does not match",
+      "source text has multiple possible targets/triggers and deterministic parser cannot isolate the relevant clause",
+      "compound label references appear and deterministic parsing cannot distinguish references from new effects"
+    ]
   },
   "source_authority": {
     "denko_list": {

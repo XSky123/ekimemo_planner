@@ -22,7 +22,7 @@ REVIEW_DIR = ROOT / "data" / "review_queue"
 REPORT_DIR = ROOT / "data" / "reports"
 BASE_URL = "https://newekimemo.wiki.fc2.com"
 JST = timezone(timedelta(hours=9))
-PARSER_VERSION = "sample_first5_html_table_matrix.v3"
+PARSER_VERSION = "detail_html_table_matrix.v3"
 KEY_DENKO_LEVELS = ("1", "15", "30", "50", "60", "70", "80", "92", "96", "100")
 DEFAULT_FOCUS_LEVELS = ("30", "50")
 VU_LEVELS = ("92", "96", "100")
@@ -1651,7 +1651,7 @@ def write_report(records: list[dict[str, Any]], skill_rows: list[dict[str, Any]]
         '<html lang="zh-CN">',
         "<head>",
         '  <meta charset="utf-8">',
-        "  <title>Sample First 5 Denko Report</title>",
+        "  <title>Denko Ingestion Probe Report</title>",
         "  <style>",
         "    body { font-family: system-ui, sans-serif; line-height: 1.5; margin: 24px; }",
         "    table { border-collapse: collapse; width: 100%; margin: 12px 0 24px; }",
@@ -1661,7 +1661,7 @@ def write_report(records: list[dict[str, Any]], skill_rows: list[dict[str, Any]]
         "  </style>",
         "</head>",
         "<body>",
-        "  <h1>Sample First 5 Denko Report</h1>",
+        "  <h1>Denko Ingestion Probe Report</h1>",
         "  <p>本次测试抓取 Original 前 5 与 Extra 前 5。结构化事实保留日语原文，说明层使用中文。</p>",
         "  <h2>结构化结果摘要</h2>",
     ]
@@ -1787,18 +1787,18 @@ def write_report(records: list[dict[str, Any]], skill_rows: list[dict[str, Any]]
             "  </ul>",
             "  <h2>输出文件</h2>",
             "  <ul>",
-            "    <li><code>data/records/sample_first5_denko_facts.jsonl</code></li>",
-            "    <li><code>data/records/sample_first5_skill_facts.jsonl</code></li>",
-            "    <li><code>data/indexes/sample_first5_denko_index.json</code></li>",
-            "    <li><code>data/review_queue/sample_first5_review_queue.jsonl</code></li>",
-            "    <li><code>data/reports/sample_first5_report_zh.html</code></li>",
+            "    <li><code>data/records/probe_first5_denko_facts.jsonl</code></li>",
+            "    <li><code>data/records/probe_first5_skill_facts.jsonl</code></li>",
+            "    <li><code>data/indexes/probe_first5_denko_index.json</code></li>",
+            "    <li><code>data/review_queue/probe_first5_review_queue.jsonl</code></li>",
+            "    <li><code>data/reports/probe_first5_report_zh.html</code></li>",
             "  </ul>",
             "</body>",
             "</html>",
         ]
     )
     REPORT_DIR.mkdir(parents=True, exist_ok=True)
-    (REPORT_DIR / "sample_first5_report_zh.html").write_text("\n".join(lines), encoding="utf-8")
+    (REPORT_DIR / "probe_first5_report_zh.html").write_text("\n".join(lines), encoding="utf-8")
 
 
 def main() -> int:
@@ -1837,10 +1837,10 @@ def main() -> int:
             for r in all_records
         ],
     }
-    write_jsonl(RECORD_DIR / "sample_first5_denko_facts.jsonl", all_records)
-    write_jsonl(RECORD_DIR / "sample_first5_skill_facts.jsonl", skill_rows)
-    write_jsonl(REVIEW_DIR / "sample_first5_review_queue.jsonl", all_reviews)
-    (INDEX_DIR / "sample_first5_denko_index.json").write_text(
+    write_jsonl(RECORD_DIR / "probe_first5_denko_facts.jsonl", all_records)
+    write_jsonl(RECORD_DIR / "probe_first5_skill_facts.jsonl", skill_rows)
+    write_jsonl(REVIEW_DIR / "probe_first5_review_queue.jsonl", all_reviews)
+    (INDEX_DIR / "probe_first5_denko_index.json").write_text(
         json.dumps(index, ensure_ascii=False, indent=2, sort_keys=True),
         encoding="utf-8",
     )

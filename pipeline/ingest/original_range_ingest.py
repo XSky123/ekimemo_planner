@@ -8,7 +8,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
-import sample_first5_fetch_parse as base
+import parse as base
 
 
 def output_stem(start: int, end: int) -> str:

@@ -34,7 +34,7 @@ Important rules:
 - LLM only receives the smallest ambiguous Japanese snippet.
 - Stop after every 20-30 parsed denko records for periodic key/schema review.
 - Default human-facing reports are exported as HTML under `data/reports/`.
-- Every 20-30 parsed denko records, review whether the current keys still fit skill templates before continuing.
+- Current detail/list parser entrypoint: `pipeline/ingest/parse.py`.
 
 Outputs:
 
