@@ -78,3 +78,19 @@ Batch reports should include a fixed 5-slot skill component matrix per denko. Ea
 slot should expose `kind`, `condition`, `Lv30`, `Lv50`, `probability`, `duration`,
 and `CD` so team-building candidates can be compared without reopening several
 wiki tables.
+
+## Review Agents
+
+Reusable agent prompts live under `.agents/`.
+
+- Use `.agents/batch_review_expert.md` after a batch report is generated. It is
+  read-only and should inspect the HTML report plus matching JSONL rows to find
+  target/filter/trigger/label/value problems before the next batch.
+- Use `.agents/manual_semantic_fill_agent.md` for one ambiguous denko/component
+  at a time. It should write proposed semantic patches to
+  `data/manual_fills/<batch>_semantic_patches.jsonl` using
+  `schemas/manual_skill_semantic_patch.schema.json`. These patches are proposals,
+  not direct fact overrides.
+
+Agents should learn from `data/observed_cases/`, especially prior manual parser
+findings and parser resolution logs, before reviewing the next batch.
