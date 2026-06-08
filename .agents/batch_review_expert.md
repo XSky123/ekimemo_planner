@@ -33,6 +33,7 @@ The user repeatedly focuses on these failure modes:
 - If labels are detected but components are missing, reordered, or collapsed, it is suspicious.
 - Lv30 and Lv50 are key practical levels. A non-VU component missing either is suspicious.
 - VU-only effects are valid, but JSON must mark `availability.vu_only=true`; reports should show `※VU生效` instead of a blank Lv30/Lv50.
+- If `(1)` or a `_1` primary component is VU-only, treat it as suspicious by default. Usually the parser attached a VU addition to the base effect incorrectly.
 - Labeled probability belongs to per-label probability, not `value_raw`.
 - Do not create activation probability boost unless probability change itself is the effect.
 - Target and condition are different: `target_scope` is who receives the effect; `target_filters` and `trigger_conditions` describe restrictions.

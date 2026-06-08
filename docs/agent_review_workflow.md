@@ -20,6 +20,22 @@ Responsibilities:
 
 It is read-only.
 
+### Ingestion Cycle Controller
+
+Prompt file: `.agents/ingestion_cycle_controller.md`
+
+Use this when a batch needs repeated run -> review -> parser fix -> rerun cycles.
+
+Responsibilities:
+
+- Run `pipeline/ingest/review_cycle_controller.py`.
+- Start Batch Review Expert from the generated prompt.
+- Convert repeated findings into parser/rule fixes.
+- Start Manual Semantic Fill Agent only for bounded ambiguous snippets.
+- Stop only when remaining issues are ready for human final review.
+
+It may edit parser/rule files, but should not directly rewrite generated fact records.
+
 ### Manual Semantic Fill Agent
 
 Prompt file: `.agents/manual_semantic_fill_agent.md`
@@ -41,6 +57,7 @@ From the `original_120_163` and `original_080_119` review loops, the user cares 
 - component labels matching `(1)`, `(2)`, `(3)`,
 - Lv30/Lv50 completeness for non-VU effects,
 - explicit VU-only metadata,
+- `(1)` or `_1` primary components should not become VU-only unless the source explicitly says the main effect itself is VU-only; treat this as parser misalignment by default,
 - separating target receiver from activation/formation/opponent conditions,
 - preserving probability, duration, cooldown, and level-specific values,
 - representing access direction, station ownership, link events, battery use, time, weather, weekday, mileage, and relative position,
@@ -63,6 +80,12 @@ Use Manual Semantic Fill Agent when:
 - the parser has already extracted raw rows,
 - a source-backed patch is possible from a small Japanese snippet,
 - a one-off correction is needed before a general parser rule exists.
+
+Use Ingestion Cycle Controller when:
+
+- a batch needs more than one parser/review pass,
+- new high-priority review reasons appeared,
+- the next action should be written to `data/agent_runs/` for another AI to continue.
 
 ## Manual Patch Flow
 

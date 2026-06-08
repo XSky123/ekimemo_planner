@@ -64,6 +64,8 @@ SUSPICIOUS_REASONS = {
     "duplicate_labeled_component_values_need_review",
     "condition_effect_mismatch_needs_review",
     "attribute_branch_effect_needs_review",
+    "primary_labeled_effect_vu_only_needs_review",
+    "vu_label_level_mismatch_needs_review",
 }
 SUSPICIOUS_REASON_ZH = {
     "key_level_component_missing": "关键等级缺值",
@@ -73,6 +75,8 @@ SUSPICIOUS_REASON_ZH = {
     "duplicate_labeled_component_values_need_review": "多个编号组件数值完全相同，可能解析错位",
     "condition_effect_mismatch_needs_review": "条件描述的效果类型与解析出的组件类型不一致，需复查",
     "attribute_branch_effect_needs_review": "同一编号内存在属性分支效果，需人工或大模型片段复查",
+    "primary_labeled_effect_vu_only_needs_review": "(1) 主效果被解析成仅 VU 生效，通常是基础效果/VU追加错位",
+    "vu_label_level_mismatch_needs_review": "原文说明该编号 Lv92+ 生效，但组件等级覆盖不是 VU-only",
     "blank_Lv30": "Lv30 空白但源表存在 Lv30",
     "blank_Lv50": "Lv50 空白但源表存在 Lv50",
 }
