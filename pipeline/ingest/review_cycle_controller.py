@@ -186,7 +186,7 @@ def build_state(start: int, end: int, batch_size: int, run_result: dict[str, Any
             "blocking_item_count": len(blockers),
         },
         "blocking_items": blockers,
-        "next_action": "spawn_batch_review_expert" if blockers else "human_final_review",
+        "next_action": "spawn_batch_review_expert" if blockers else "complete",
     }
     return state
 

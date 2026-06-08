@@ -6,6 +6,12 @@ Patch file:
 
 - `data/manual_fills/original_040_080_semantic_patches.jsonl`
 
+Applied outputs:
+
+- `data/records/original_040_080_skill_facts.jsonl`
+- `data/reports/original_040_080_batch_review_zh.html`
+- `data/agent_runs/original_040_080_cycle_state.json`
+
 ## Summary
 
 本次只复查 controller 留下的 4 个 blocking denko：
@@ -15,7 +21,7 @@ Patch file:
 - `original:076` 上ノ山ゆのか
 - `original:078` 海部なる
 
-共写入 7 条 proposed manual patches。没有直接改 `data/records/`。
+共写入并接受 7 条 manual patches，已通过 `pipeline/ingest/apply_manual_semantic_patches.py` 应用到 skill facts。当前 controller state 为 `complete`，blocking item 为 0。
 
 ## Findings
 

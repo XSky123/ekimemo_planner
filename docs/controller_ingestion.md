@@ -91,6 +91,11 @@ Reusable agent prompts live under `.agents/`.
   `data/manual_fills/<batch>_semantic_patches.jsonl` using
   `schemas/manual_skill_semantic_patch.schema.json`. These patches are proposals,
   not direct fact overrides.
+- When the controller accepts a patch without further user intervention, run
+  `python pipeline/ingest/apply_manual_semantic_patches.py --batch <batch>`.
+  This marks patches as `accepted`, applies them to the matching
+  `data/records/<batch>_skill_facts.jsonl`, regenerates the HTML report, and
+  refreshes the cycle state.
 
 Agents should learn from `data/observed_cases/`, especially prior manual parser
 findings and parser resolution logs, before reviewing the next batch.
