@@ -2348,6 +2348,12 @@ def write_jsonl(path: Path, rows: list[dict[str, Any]]) -> None:
     )
 
 
+def write_html_entity_report(path: Path, lines: list[str]) -> None:
+    """Write ASCII-only HTML so local viewers cannot mis-detect UTF-8."""
+    text = "\n".join(lines).encode("ascii", "xmlcharrefreplace").decode("ascii")
+    path.write_text(text, encoding="ascii")
+
+
 def write_report(records: list[dict[str, Any]], skill_rows: list[dict[str, Any]], reviews: list[dict[str, Any]]) -> None:
     def esc(value: Any) -> str:
         return html.escape("" if value is None else str(value))
@@ -2504,7 +2510,7 @@ def write_report(records: list[dict[str, Any]], skill_rows: list[dict[str, Any]]
         ]
     )
     REPORT_DIR.mkdir(parents=True, exist_ok=True)
-    (REPORT_DIR / "probe_first5_report_zh.html").write_text("\n".join(lines), encoding="utf-8")
+    write_html_entity_report(REPORT_DIR / "probe_first5_report_zh.html", lines)
 
 
 def main() -> int:

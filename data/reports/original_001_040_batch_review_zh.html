@@ -5,11 +5,11 @@
 <title>Original 1-40 Ingestion Review</title>
 <style>body{font-family:system-ui,sans-serif;line-height:1.5;margin:24px}table{border-collapse:collapse;width:100%;margin:12px 0 24px}th,td{border:1px solid #ccc;padding:6px 8px;vertical-align:top}th{background:#f5f5f5}code{background:#f6f8fa;padding:1px 4px}.table-scroll{overflow-x:auto}.component-matrix{font-size:12px;min-width:3600px}.component-matrix th,.component-matrix td{white-space:pre-wrap;min-width:120px;max-width:260px}.component-matrix .base-col{min-width:90px}.component-matrix .condition-col{min-width:260px;max-width:340px}</style>
 </head><body>
-<h1>Original 1-40 数据读取报告</h1>
-<p>controller-first 执行：本批只使用脚本、缓存与确定性 parser；未调用 LLM。</p>
-<h2>批次指标</h2>
+<h1>Original 1-40 &#25968;&#25454;&#35835;&#21462;&#25253;&#21578;</h1>
+<p>controller-first &#25191;&#34892;&#65306;&#26412;&#25209;&#21482;&#20351;&#29992;&#33050;&#26412;&#12289;&#32531;&#23384;&#19982;&#30830;&#23450;&#24615; parser&#65307;&#26410;&#35843;&#29992; LLM&#12290;</p>
+<h2>&#25209;&#27425;&#25351;&#26631;</h2>
 <table><tbody>
-<tr><th>范围</th><td>original:001 - original:040</td></tr>
+<tr><th>&#33539;&#22260;</th><td>original:001 - original:040</td></tr>
 <tr><th>record_count</th><td>40</td></tr>
 <tr><th>batch_size</th><td>30</td></tr>
 <tr><th>review_queue</th><td>40</td></tr>
@@ -18,16 +18,16 @@
 <tr><th>review_reasons</th><td>{&#x27;sample_parse_needs_human_review&#x27;: 40, &#x27;lv50_skill_row_not_found&#x27;: 3}</td></tr>
 <tr><th>component_kinds</th><td>{&#x27;hp_recovery&#x27;: 4, &#x27;activation_probability_boost&#x27;: 3, &#x27;footbar&#x27;: 1, &#x27;def_buff&#x27;: 16, &#x27;extra_access&#x27;: 1, &#x27;atk_buff&#x27;: 16, &#x27;duration_extension&#x27;: 2, &#x27;random_previous_station_access&#x27;: 1, &#x27;counter_damage&#x27;: 1, &#x27;hp_recovery_bonus&#x27;: 1, &#x27;damage_reduction&#x27;: 3, &#x27;friend_slot_increase&#x27;: 1, &#x27;item_gain&#x27;: 1, &#x27;survive_hp1&#x27;: 1, &#x27;exp_distribution&#x27;: 1, &#x27;exp_distribution_bonus&#x27;: 1, &#x27;skill_disable&#x27;: 3, &#x27;def_debuff&#x27;: 1, &#x27;atk_debuff&#x27;: 2, &#x27;fixed_damage&#x27;: 3, &#x27;force_hp_zero&#x27;: 1}</td></tr>
 </tbody></table>
-<h2>可疑项优先</h2>
-<p>本批未检测到高优先级可疑项。</p>
-<h2>分批复盘</h2>
+<h2>&#21487;&#30097;&#39033;&#20248;&#20808;</h2>
+<p>&#26412;&#25209;&#26410;&#26816;&#27979;&#21040;&#39640;&#20248;&#20808;&#32423;&#21487;&#30097;&#39033;&#12290;</p>
+<h2>&#20998;&#25209;&#22797;&#30424;</h2>
 <p><strong>original:001 - original:030</strong>: 30 records, {&#x27;needs_manual_review&#x27;: 25, &#x27;needs_parser_rule&#x27;: 5}</p>
 <p><strong>original:031 - original:040</strong>: 10 records, {&#x27;needs_manual_review&#x27;: 7, &#x27;needs_parser_rule&#x27;: 3}</p>
-<h2>技能分量矩阵</h2>
-<p>每个でんこ固定预留 5 个技能分量槽。一般技能只有 1-2 个分量，空槽表示当前 parser 没有识别到更多独立效果。</p>
+<h2>&#25216;&#33021;&#20998;&#37327;&#30697;&#38453;</h2>
+<p>&#27599;&#20010;&#12391;&#12435;&#12371;&#22266;&#23450;&#39044;&#30041; 5 &#20010;&#25216;&#33021;&#20998;&#37327;&#27133;&#12290;&#19968;&#33324;&#25216;&#33021;&#21482;&#26377; 1-2 &#20010;&#20998;&#37327;&#65292;&#31354;&#27133;&#34920;&#31034;&#24403;&#21069; parser &#27809;&#26377;&#35782;&#21035;&#21040;&#26356;&#22810;&#29420;&#31435;&#25928;&#26524;&#12290;</p>
 <div class="table-scroll">
-<table class="component-matrix"><thead><tr><th class="base-col">denko_id</th><th class="base-col">name</th><th class="base-col">type</th><th class="base-col">attribute</th><th class="base-col">color</th><th class="base-col">skill</th><th>skill1_kind</th><th class="condition-col">skill1_condition</th><th>skill1_Lv30内容</th><th>skill1_Lv50内容</th><th>skill1_probability</th><th>skill1_duration</th><th>skill1_CD</th><th>skill2_kind</th><th class="condition-col">skill2_condition</th><th>skill2_Lv30内容</th><th>skill2_Lv50内容</th><th>skill2_probability</th><th>skill2_duration</th><th>skill2_CD</th><th>skill3_kind</th><th class="condition-col">skill3_condition</th><th>skill3_Lv30内容</th><th>skill3_Lv50内容</th><th>skill3_probability</th><th>skill3_duration</th><th>skill3_CD</th><th>skill4_kind</th><th class="condition-col">skill4_condition</th><th>skill4_Lv30内容</th><th>skill4_Lv50内容</th><th>skill4_probability</th><th>skill4_duration</th><th>skill4_CD</th><th>skill5_kind</th><th class="condition-col">skill5_condition</th><th>skill5_Lv30内容</th><th>skill5_Lv50内容</th><th>skill5_probability</th><th>skill5_duration</th><th>skill5_CD</th><th class="base-col">review_reasons</th></tr></thead><tbody>
-<tr><td>original:001</td><td>黄陽セリア</td><td>サポーター</td><td>eco</td><td>黄</td><td>検測開始しま～す?</td><td>hp_recovery_1 (hp_recovery)</td><td>label: (1)
+<table class="component-matrix"><thead><tr><th class="base-col">denko_id</th><th class="base-col">name</th><th class="base-col">type</th><th class="base-col">attribute</th><th class="base-col">color</th><th class="base-col">skill</th><th>skill1_kind</th><th class="condition-col">skill1_condition</th><th>skill1_Lv30&#20869;&#23481;</th><th>skill1_Lv50&#20869;&#23481;</th><th>skill1_probability</th><th>skill1_duration</th><th>skill1_CD</th><th>skill2_kind</th><th class="condition-col">skill2_condition</th><th>skill2_Lv30&#20869;&#23481;</th><th>skill2_Lv50&#20869;&#23481;</th><th>skill2_probability</th><th>skill2_duration</th><th>skill2_CD</th><th>skill3_kind</th><th class="condition-col">skill3_condition</th><th>skill3_Lv30&#20869;&#23481;</th><th>skill3_Lv50&#20869;&#23481;</th><th>skill3_probability</th><th>skill3_duration</th><th>skill3_CD</th><th>skill4_kind</th><th class="condition-col">skill4_condition</th><th>skill4_Lv30&#20869;&#23481;</th><th>skill4_Lv50&#20869;&#23481;</th><th>skill4_probability</th><th>skill4_duration</th><th>skill4_CD</th><th>skill5_kind</th><th class="condition-col">skill5_condition</th><th>skill5_Lv30&#20869;&#23481;</th><th>skill5_Lv50&#20869;&#23481;</th><th>skill5_probability</th><th>skill5_duration</th><th>skill5_CD</th><th class="base-col">review_reasons</th></tr></thead><tbody>
+<tr><td>original:001</td><td>&#40644;&#38525;&#12475;&#12522;&#12450;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>eco</td><td>&#40644;</td><td>&#26908;&#28204;&#38283;&#22987;&#12375;&#12414;&#65374;&#12377;?</td><td>hp_recovery_1 (hp_recovery)</td><td>label: (1)
 role: default_effect
 target: [&quot;team_all&quot;]
 trigger: {&quot;hp_threshold_percent&quot;: 30, &quot;operator&quot;: &quot;lte&quot;}
@@ -46,73 +46,73 @@ role: additional_effect
 target: [&quot;component:hp_recovery_1&quot;]
 trigger: {&quot;hp_threshold_percent&quot;: 15, &quot;operator&quot;: &quot;lte&quot;}
 availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU??&quot;, &quot;vu_only&quot;: true}
-raw: ????HP?15%??????????????(1)????UP</td><td>※VU生效</td><td>※VU生效</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:002</td><td>為栗メロ</td><td>アタッカー</td><td>eco</td><td>橙</td><td>きゃのんぱんち</td><td>footbar</td><td>target: [&quot;self&quot;]
+raw: ????HP?15%??????????????(1)????UP</td><td>&#8251;VU&#29983;&#25928;</td><td>&#8251;VU&#29983;&#25928;</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:002</td><td>&#28858;&#26647;&#12513;&#12525;</td><td>&#12450;&#12479;&#12483;&#12459;&#12540;</td><td>eco</td><td>&#27225;</td><td>&#12365;&#12419;&#12398;&#12435;&#12401;&#12435;&#12385;</td><td>footbar</td><td>target: [&quot;self&quot;]
 trigger: {&quot;access_direction&quot;: &quot;active&quot;, &quot;event_hint&quot;: &quot;access&quot;}
 availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;, &quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;vu_only&quot;: false}
-activation: いつでもアクティブ
-raw: 発動条件：メロ自身のルートビューンを除くアクセス 効果：相手をフットバーすことがある （Lv.92以降、相手のリンク時間に応じてスキル発動率上昇）</td><td>相手をフットバーすことがある</td><td>相手をフットバーすことがある</td><td>Lv5: 1%
+activation: &#12356;&#12388;&#12391;&#12418;&#12450;&#12463;&#12486;&#12451;&#12502;
+raw: &#30330;&#21205;&#26465;&#20214;&#65306;&#12513;&#12525;&#33258;&#36523;&#12398;&#12523;&#12540;&#12488;&#12499;&#12517;&#12540;&#12531;&#12434;&#38500;&#12367;&#12450;&#12463;&#12475;&#12473; &#21177;&#26524;&#65306;&#30456;&#25163;&#12434;&#12501;&#12483;&#12488;&#12496;&#12540;&#12377;&#12371;&#12392;&#12364;&#12354;&#12427; &#65288;Lv.92&#20197;&#38477;&#12289;&#30456;&#25163;&#12398;&#12522;&#12531;&#12463;&#26178;&#38291;&#12395;&#24540;&#12376;&#12390;&#12473;&#12461;&#12523;&#30330;&#21205;&#29575;&#19978;&#26119;&#65289;</td><td>&#30456;&#25163;&#12434;&#12501;&#12483;&#12488;&#12496;&#12540;&#12377;&#12371;&#12392;&#12364;&#12354;&#12427;</td><td>&#30456;&#25163;&#12434;&#12501;&#12483;&#12488;&#12496;&#12540;&#12377;&#12371;&#12392;&#12364;&#12354;&#12427;</td><td>Lv5: 1%
 Lv15: 1.2%
 Lv30: 1.4%
 Lv50: 1.6%
 Lv60: 1.8%
 Lv70: 2%
 Lv80: 2.5%
-Lv92: 2.5% (相手のリンク駅で最も長いリンク時間に応じて+0.25%～+2.5%発動率追加)
-Lv96: 2.5% (相手のリンク駅で最も長いリンク時間に応じて+0.5%～+5%発動率追加)
-Lv100: 2.5% (相手のリンク駅で最も長いリンク時間に応じて+0.75%～+7.5%発動率追加)</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:003</td><td>新阪ルナ</td><td>ディフェンダー</td><td>cool</td><td>紫</td><td>ナイトライダー</td><td>def_buff_1 (def_buff)</td><td>label: (1)
+Lv92: 2.5% (&#30456;&#25163;&#12398;&#12522;&#12531;&#12463;&#39365;&#12391;&#26368;&#12418;&#38263;&#12356;&#12522;&#12531;&#12463;&#26178;&#38291;&#12395;&#24540;&#12376;&#12390;+0.25%&#65374;+2.5%&#30330;&#21205;&#29575;&#36861;&#21152;)
+Lv96: 2.5% (&#30456;&#25163;&#12398;&#12522;&#12531;&#12463;&#39365;&#12391;&#26368;&#12418;&#38263;&#12356;&#12522;&#12531;&#12463;&#26178;&#38291;&#12395;&#24540;&#12376;&#12390;+0.5%&#65374;+5%&#30330;&#21205;&#29575;&#36861;&#21152;)
+Lv100: 2.5% (&#30456;&#25163;&#12398;&#12522;&#12531;&#12463;&#39365;&#12391;&#26368;&#12418;&#38263;&#12356;&#12522;&#12531;&#12463;&#26178;&#38291;&#12395;&#24540;&#12376;&#12390;+0.75%&#65374;+7.5%&#30330;&#21205;&#29575;&#36861;&#21152;)</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:003</td><td>&#26032;&#38442;&#12523;&#12490;</td><td>&#12487;&#12451;&#12501;&#12455;&#12531;&#12480;&#12540;</td><td>cool</td><td>&#32043;</td><td>&#12490;&#12452;&#12488;&#12521;&#12452;&#12480;&#12540;</td><td>def_buff_1 (def_buff)</td><td>label: (1)
 role: default_effect
 target: [&quot;self&quot;]
 availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;, &quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;vu_only&quot;: false}
-activation: いつでもアクティブ
-raw: (1)夜間はDEFが増加、昼間はDEFが減少</td><td>DEF +15%</td><td>DEF +25%</td><td>100%</td><td></td><td></td><td>def_buff_2 (def_buff)</td><td>label: (2)
+activation: &#12356;&#12388;&#12391;&#12418;&#12450;&#12463;&#12486;&#12451;&#12502;
+raw: (1)&#22812;&#38291;&#12399;DEF&#12364;&#22679;&#21152;&#12289;&#26172;&#38291;&#12399;DEF&#12364;&#28187;&#23569;</td><td>DEF +15%</td><td>DEF +25%</td><td>100%</td><td></td><td></td><td>def_buff_2 (def_buff)</td><td>label: (2)
 role: additional_effect
 target: [&quot;self&quot;]
-trigger: {&quot;time_window_raw&quot;: &quot;2:00～5:00&quot;}
-availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU生效&quot;, &quot;vu_only&quot;: true}
-activation: いつでもアクティブ
-raw: (2)午前2:00～5:00の間は追加でDEF増加 夜間は18:00～翌朝6:00 昼間6:00～18:00は常時DEF -30%</td><td>※VU生效</td><td>※VU生效</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:004</td><td>恋浜みろく</td><td>トリックスター</td><td>heat</td><td>赤</td><td>ダブルアクセス</td><td>extra_access</td><td>trigger: {&quot;access_direction&quot;: &quot;active&quot;, &quot;event_hint&quot;: &quot;access&quot;}
+trigger: {&quot;time_window_raw&quot;: &quot;2:00&#65374;5:00&quot;}
+availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU&#29983;&#25928;&quot;, &quot;vu_only&quot;: true}
+activation: &#12356;&#12388;&#12391;&#12418;&#12450;&#12463;&#12486;&#12451;&#12502;
+raw: (2)&#21320;&#21069;2:00&#65374;5:00&#12398;&#38291;&#12399;&#36861;&#21152;&#12391;DEF&#22679;&#21152; &#22812;&#38291;&#12399;18:00&#65374;&#32716;&#26397;6:00 &#26172;&#38291;6:00&#65374;18:00&#12399;&#24120;&#26178;DEF -30%</td><td>&#8251;VU&#29983;&#25928;</td><td>&#8251;VU&#29983;&#25928;</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:004</td><td>&#24651;&#27996;&#12415;&#12429;&#12367;</td><td>&#12488;&#12522;&#12483;&#12463;&#12473;&#12479;&#12540;</td><td>heat</td><td>&#36196;</td><td>&#12480;&#12502;&#12523;&#12450;&#12463;&#12475;&#12473;</td><td>extra_access</td><td>trigger: {&quot;access_direction&quot;: &quot;active&quot;, &quot;event_hint&quot;: &quot;access&quot;}
 availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;, &quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;vu_only&quot;: false}
-activation: いつでもアクティブ
-raw: 追加アクセス+1回 (Lv.92以降、その日のアクセス駅数に応じてスキル発動率上昇、上限15駅)</td><td>追加アクセス+1回</td><td>追加アクセス+1回</td><td>Lv5: 2%
+activation: &#12356;&#12388;&#12391;&#12418;&#12450;&#12463;&#12486;&#12451;&#12502;
+raw: &#36861;&#21152;&#12450;&#12463;&#12475;&#12473;+1&#22238; (Lv.92&#20197;&#38477;&#12289;&#12381;&#12398;&#26085;&#12398;&#12450;&#12463;&#12475;&#12473;&#39365;&#25968;&#12395;&#24540;&#12376;&#12390;&#12473;&#12461;&#12523;&#30330;&#21205;&#29575;&#19978;&#26119;&#12289;&#19978;&#38480;15&#39365;)</td><td>&#36861;&#21152;&#12450;&#12463;&#12475;&#12473;+1&#22238;</td><td>&#36861;&#21152;&#12450;&#12463;&#12475;&#12473;+1&#22238;</td><td>Lv5: 2%
 Lv15: 2.5%
 Lv30: 3%
 Lv50: 3.5%
 Lv60: 4%
 Lv70: 4.5%
 Lv80: 5%
-Lv92: 5～8%
-Lv96: 5～11%
-Lv100: 5～14%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:005</td><td>黄陽レイカ</td><td>サポーター</td><td>heat</td><td>桃</td><td>起動加速度向上</td><td>atk_buff_1 (atk_buff)</td><td>label: (1)
+Lv92: 5&#65374;8%
+Lv96: 5&#65374;11%
+Lv100: 5&#65374;14%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:005</td><td>&#40644;&#38525;&#12524;&#12452;&#12459;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>heat</td><td>&#26691;</td><td>&#36215;&#21205;&#21152;&#36895;&#24230;&#21521;&#19978;</td><td>atk_buff_1 (atk_buff)</td><td>label: (1)
 role: default_effect
 target: [&quot;team_all&quot;]
 availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;, &quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;vu_only&quot;: false}
-activation: マスターにおまかせ
-raw: (1)編成内のでんこ全員のATKが増加する</td><td>ATK +20%</td><td>ATK +25%</td><td>100%</td><td>15分</td><td>1時間30分</td><td>duration_extension_2 (duration_extension)</td><td>label: (2)
+activation: &#12510;&#12473;&#12479;&#12540;&#12395;&#12362;&#12414;&#12363;&#12379;
+raw: (1)&#32232;&#25104;&#20869;&#12398;&#12391;&#12435;&#12371;&#20840;&#21729;&#12398;ATK&#12364;&#22679;&#21152;&#12377;&#12427;</td><td>ATK +20%</td><td>ATK +25%</td><td>100%</td><td>15&#20998;</td><td>1&#26178;&#38291;30&#20998;</td><td>duration_extension_2 (duration_extension)</td><td>label: (2)
 role: supplemental_effect
 target: [&quot;team_all&quot;]
-availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU生效&quot;, &quot;vu_only&quot;: true}
-activation: マスターにおまかせ
-raw: (2)編成内でんこがリンクする度に効果時間延長(最大3回まで)</td><td>※VU生效</td><td>※VU生效</td><td>100%</td><td>15分</td><td>1時間30分</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:006</td><td>シャルロッテ＝フォン＝ハノーファー</td><td>トリックスター</td><td>eco</td><td>黄</td><td>きまぐれアクセス</td><td>random_previous_station_access</td><td>target: [&quot;self&quot;]
+availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU&#29983;&#25928;&quot;, &quot;vu_only&quot;: true}
+activation: &#12510;&#12473;&#12479;&#12540;&#12395;&#12362;&#12414;&#12363;&#12379;
+raw: (2)&#32232;&#25104;&#20869;&#12391;&#12435;&#12371;&#12364;&#12522;&#12531;&#12463;&#12377;&#12427;&#24230;&#12395;&#21177;&#26524;&#26178;&#38291;&#24310;&#38263;(&#26368;&#22823;3&#22238;&#12414;&#12391;)</td><td>&#8251;VU&#29983;&#25928;</td><td>&#8251;VU&#29983;&#25928;</td><td>100%</td><td>15&#20998;</td><td>1&#26178;&#38291;30&#20998;</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:006</td><td>&#12471;&#12515;&#12523;&#12525;&#12483;&#12486;&#65309;&#12501;&#12457;&#12531;&#65309;&#12495;&#12494;&#12540;&#12501;&#12449;&#12540;</td><td>&#12488;&#12522;&#12483;&#12463;&#12473;&#12479;&#12540;</td><td>eco</td><td>&#40644;</td><td>&#12365;&#12414;&#12368;&#12428;&#12450;&#12463;&#12475;&#12473;</td><td>random_previous_station_access</td><td>target: [&quot;self&quot;]
 trigger: {&quot;access_direction&quot;: &quot;received&quot;, &quot;destination&quot;: &quot;previously_accessed_station&quot;, &quot;event_hint&quot;: &quot;accessed&quot;, &quot;hp_outcome&quot;: &quot;zero&quot;}
 availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;], &quot;vu_only&quot;: false}
-activation: マスターにおまかせ
-raw: 取得したことのある駅にランダムでアクセス （Lv.92以降、確率で追加でもう一度だけアクセス） グリーンライセンス時、残りチェックイン数は減少しない</td><td>これまでアクセスしたことのある駅にアクセス</td><td>これまでアクセスしたことのある駅にアクセス</td><td>100%</td><td>Lv5: 6時間
-Lv15: 5時間30分
-Lv30: 4時間30分
-Lv50: 3時間
-Lv60: 2時間30分
-Lv70: 2時間</td><td>Lv5: 6時間
-Lv15: 5時間30分
-Lv30: 4時間30分
-Lv50: 3時間
-Lv60: 2時間30分
-Lv70: 2時間</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:007</td><td>大月シーナ</td><td>トリックスター</td><td>heat</td><td>青</td><td>ディファーレ</td><td>counter_damage_1 (counter_damage)</td><td>label: (1)
+activation: &#12510;&#12473;&#12479;&#12540;&#12395;&#12362;&#12414;&#12363;&#12379;
+raw: &#21462;&#24471;&#12375;&#12383;&#12371;&#12392;&#12398;&#12354;&#12427;&#39365;&#12395;&#12521;&#12531;&#12480;&#12512;&#12391;&#12450;&#12463;&#12475;&#12473; &#65288;Lv.92&#20197;&#38477;&#12289;&#30906;&#29575;&#12391;&#36861;&#21152;&#12391;&#12418;&#12358;&#19968;&#24230;&#12384;&#12369;&#12450;&#12463;&#12475;&#12473;&#65289; &#12464;&#12522;&#12540;&#12531;&#12521;&#12452;&#12475;&#12531;&#12473;&#26178;&#12289;&#27531;&#12426;&#12481;&#12455;&#12483;&#12463;&#12452;&#12531;&#25968;&#12399;&#28187;&#23569;&#12375;&#12394;&#12356;</td><td>&#12371;&#12428;&#12414;&#12391;&#12450;&#12463;&#12475;&#12473;&#12375;&#12383;&#12371;&#12392;&#12398;&#12354;&#12427;&#39365;&#12395;&#12450;&#12463;&#12475;&#12473;</td><td>&#12371;&#12428;&#12414;&#12391;&#12450;&#12463;&#12475;&#12473;&#12375;&#12383;&#12371;&#12392;&#12398;&#12354;&#12427;&#39365;&#12395;&#12450;&#12463;&#12475;&#12473;</td><td>100%</td><td>Lv5: 6&#26178;&#38291;
+Lv15: 5&#26178;&#38291;30&#20998;
+Lv30: 4&#26178;&#38291;30&#20998;
+Lv50: 3&#26178;&#38291;
+Lv60: 2&#26178;&#38291;30&#20998;
+Lv70: 2&#26178;&#38291;</td><td>Lv5: 6&#26178;&#38291;
+Lv15: 5&#26178;&#38291;30&#20998;
+Lv30: 4&#26178;&#38291;30&#20998;
+Lv50: 3&#26178;&#38291;
+Lv60: 2&#26178;&#38291;30&#20998;
+Lv70: 2&#26178;&#38291;</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:007</td><td>&#22823;&#26376;&#12471;&#12540;&#12490;</td><td>&#12488;&#12522;&#12483;&#12463;&#12473;&#12479;&#12540;</td><td>heat</td><td>&#38738;</td><td>&#12487;&#12451;&#12501;&#12449;&#12540;&#12524;</td><td>counter_damage_1 (counter_damage)</td><td>label: (1)
 role: default_effect
 target: [&quot;opponent_denko&quot;]
 trigger: {&quot;counter_damage_basis&quot;: &quot;self_AP_at_trigger&quot;, &quot;damage_received&quot;: true, &quot;event&quot;: &quot;accessed&quot;}
@@ -124,82 +124,82 @@ role: additional_effect
 target: [&quot;self&quot;]
 trigger: {&quot;after_counter&quot;: true, &quot;depends_on_component&quot;: &quot;counter_damage_1&quot;}
 availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU??&quot;, &quot;vu_only&quot;: true}
-activation: いつでもアクティブ
-raw: (2)カウンターをしてから10分間、自身のATKとDEFが増加</td><td>※VU生效</td><td>※VU生效</td><td>11%</td><td></td><td></td><td>def_buff_2 (def_buff)</td><td>label: (2)
+activation: &#12356;&#12388;&#12391;&#12418;&#12450;&#12463;&#12486;&#12451;&#12502;
+raw: (2)&#12459;&#12454;&#12531;&#12479;&#12540;&#12434;&#12375;&#12390;&#12363;&#12425;10&#20998;&#38291;&#12289;&#33258;&#36523;&#12398;ATK&#12392;DEF&#12364;&#22679;&#21152;</td><td>&#8251;VU&#29983;&#25928;</td><td>&#8251;VU&#29983;&#25928;</td><td>11%</td><td></td><td></td><td>def_buff_2 (def_buff)</td><td>label: (2)
 role: additional_effect
 target: [&quot;self&quot;]
 trigger: {&quot;after_counter&quot;: true, &quot;depends_on_component&quot;: &quot;counter_damage_1&quot;}
 availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU??&quot;, &quot;vu_only&quot;: true}
-activation: いつでもアクティブ
-raw: (2)カウンターをしてから10分間、自身のATKとDEFが増加</td><td>※VU生效</td><td>※VU生效</td><td>11%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:008</td><td>天下さや</td><td>アタッカー</td><td>cool</td><td>紫</td><td>スキルはありません</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;lv50_skill_row_not_found&#x27;, &#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:009</td><td>花畑もえ</td><td>サポーター</td><td>eco</td><td>黄</td><td>定時メンテナンス</td><td>hp_recovery_1 (hp_recovery)</td><td>label: (1)
+activation: &#12356;&#12388;&#12391;&#12418;&#12450;&#12463;&#12486;&#12451;&#12502;
+raw: (2)&#12459;&#12454;&#12531;&#12479;&#12540;&#12434;&#12375;&#12390;&#12363;&#12425;10&#20998;&#38291;&#12289;&#33258;&#36523;&#12398;ATK&#12392;DEF&#12364;&#22679;&#21152;</td><td>&#8251;VU&#29983;&#25928;</td><td>&#8251;VU&#29983;&#25928;</td><td>11%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:008</td><td>&#22825;&#19979;&#12373;&#12420;</td><td>&#12450;&#12479;&#12483;&#12459;&#12540;</td><td>cool</td><td>&#32043;</td><td>&#12473;&#12461;&#12523;&#12399;&#12354;&#12426;&#12414;&#12379;&#12435;</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;lv50_skill_row_not_found&#x27;, &#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:009</td><td>&#33457;&#30033;&#12418;&#12360;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>eco</td><td>&#40644;</td><td>&#23450;&#26178;&#12513;&#12531;&#12486;&#12490;&#12531;&#12473;</td><td>hp_recovery_1 (hp_recovery)</td><td>label: (1)
 role: default_effect
 target: [&quot;team_all&quot;]
 trigger: {&quot;event&quot;: &quot;manual_activation&quot;}
 availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;, &quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;vu_only&quot;: false}
-activation: いつでもアクティブ
-raw: (1)HP回復</td><td>HPの20%</td><td>HPの25%</td><td>100%</td><td></td><td></td><td>hp_recovery_bonus_2 (hp_recovery_bonus)</td><td>label: (2)
+activation: &#12356;&#12388;&#12391;&#12418;&#12450;&#12463;&#12486;&#12451;&#12502;
+raw: (1)HP&#22238;&#24489;</td><td>HP&#12398;20%</td><td>HP&#12398;25%</td><td>100%</td><td></td><td></td><td>hp_recovery_bonus_2 (hp_recovery_bonus)</td><td>label: (2)
 role: additional_effect
 target: [&quot;team_all&quot;]
 trigger: {&quot;operator&quot;: &quot;lte&quot;, &quot;target_hp_threshold_percent&quot;: 30}
 availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU??&quot;, &quot;vu_only&quot;: true}
-raw: HP?30%??????????(1)?????????</td><td>※VU生效</td><td>※VU生效</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:010</td><td>象潟いろは</td><td>トリックスター</td><td>eco</td><td>緑</td><td>リプレイスメント</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:011</td><td>粟生津しいら</td><td>ディフェンダー</td><td>eco</td><td>青</td><td>ペインガード</td><td>def_buff_1 (def_buff)</td><td>label: (1)
+raw: HP?30%??????????(1)?????????</td><td>&#8251;VU&#29983;&#25928;</td><td>&#8251;VU&#29983;&#25928;</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:010</td><td>&#35937;&#28511;&#12356;&#12429;&#12399;</td><td>&#12488;&#12522;&#12483;&#12463;&#12473;&#12479;&#12540;</td><td>eco</td><td>&#32209;</td><td>&#12522;&#12503;&#12524;&#12452;&#12473;&#12513;&#12531;&#12488;</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:011</td><td>&#31903;&#29983;&#27941;&#12375;&#12356;&#12425;</td><td>&#12487;&#12451;&#12501;&#12455;&#12531;&#12480;&#12540;</td><td>eco</td><td>&#38738;</td><td>&#12506;&#12452;&#12531;&#12460;&#12540;&#12489;</td><td>def_buff_1 (def_buff)</td><td>label: (1)
 role: default_effect
 target: [&quot;self&quot;]
 availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;, &quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;vu_only&quot;: false}
-activation: いつでもアクティブ
-raw: (1)被チェックイン時、自身のDEF増加</td><td>DEF +20%</td><td>DEF +25%</td><td>Lv5/Lv15: 20%
+activation: &#12356;&#12388;&#12391;&#12418;&#12450;&#12463;&#12486;&#12451;&#12502;
+raw: (1)&#34987;&#12481;&#12455;&#12483;&#12463;&#12452;&#12531;&#26178;&#12289;&#33258;&#36523;&#12398;DEF&#22679;&#21152;</td><td>DEF +20%</td><td>DEF +25%</td><td>Lv5/Lv15: 20%
 Lv30/Lv50: 25%
 Lv60/Lv70/Lv80/Lv92/Lv96/Lv100: 30%</td><td></td><td></td><td>damage_reduction_2 (damage_reduction)</td><td>label: (2)
 role: additional_effect
 target: [&quot;self&quot;]
-availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU生效&quot;, &quot;vu_only&quot;: true}
-activation: いつでもアクティブ
-raw: (2)スキル(1)発動時、追加で被ダメージ軽減</td><td>※VU生效</td><td>※VU生效</td><td>Lv92: (1)30% (2) (1)が発動した上で10%
-Lv96: (1)30% (2) (1)が発動した上で20%
-Lv100: (1)30% (2) (1)が発動した上で30%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:012</td><td>有栖川もぼ</td><td>ディフェンダー</td><td>cool</td><td>橙</td><td>スキルはありません</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;lv50_skill_row_not_found&#x27;, &#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:013</td><td>新居浜いずな</td><td>ディフェンダー</td><td>heat</td><td>青</td><td>重連壁</td><td>def_buff_1 (def_buff)</td><td>label: (1)
+availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU&#29983;&#25928;&quot;, &quot;vu_only&quot;: true}
+activation: &#12356;&#12388;&#12391;&#12418;&#12450;&#12463;&#12486;&#12451;&#12502;
+raw: (2)&#12473;&#12461;&#12523;(1)&#30330;&#21205;&#26178;&#12289;&#36861;&#21152;&#12391;&#34987;&#12480;&#12513;&#12540;&#12472;&#36605;&#28187;</td><td>&#8251;VU&#29983;&#25928;</td><td>&#8251;VU&#29983;&#25928;</td><td>Lv92: (1)30% (2) (1)&#12364;&#30330;&#21205;&#12375;&#12383;&#19978;&#12391;10%
+Lv96: (1)30% (2) (1)&#12364;&#30330;&#21205;&#12375;&#12383;&#19978;&#12391;20%
+Lv100: (1)30% (2) (1)&#12364;&#30330;&#21205;&#12375;&#12383;&#19978;&#12391;30%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:012</td><td>&#26377;&#26646;&#24029;&#12418;&#12412;</td><td>&#12487;&#12451;&#12501;&#12455;&#12531;&#12480;&#12540;</td><td>cool</td><td>&#27225;</td><td>&#12473;&#12461;&#12523;&#12399;&#12354;&#12426;&#12414;&#12379;&#12435;</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;lv50_skill_row_not_found&#x27;, &#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:013</td><td>&#26032;&#23621;&#27996;&#12356;&#12378;&#12394;</td><td>&#12487;&#12451;&#12501;&#12455;&#12531;&#12480;&#12540;</td><td>heat</td><td>&#38738;</td><td>&#37325;&#36899;&#22721;</td><td>def_buff_1 (def_buff)</td><td>label: (1)
 role: default_effect
 target: [&quot;team_all&quot;]
 filters: {&quot;type&quot;: &quot;defender&quot;}
 availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;, &quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;vu_only&quot;: false}
-activation: いつでもアクティブ
-raw: (1)被チェックイン時編成内のディフェンダー数に応じて DEF増加 自身の</td><td>DEF +3×n%</td><td>DEF +4×n%</td><td>100%</td><td></td><td></td><td>def_buff_2 (def_buff)</td><td>label: (2)
+activation: &#12356;&#12388;&#12391;&#12418;&#12450;&#12463;&#12486;&#12451;&#12502;
+raw: (1)&#34987;&#12481;&#12455;&#12483;&#12463;&#12452;&#12531;&#26178;&#32232;&#25104;&#20869;&#12398;&#12487;&#12451;&#12501;&#12455;&#12531;&#12480;&#12540;&#25968;&#12395;&#24540;&#12376;&#12390; DEF&#22679;&#21152; &#33258;&#36523;&#12398;</td><td>DEF +3&#215;n%</td><td>DEF +4&#215;n%</td><td>100%</td><td></td><td></td><td>def_buff_2 (def_buff)</td><td>label: (2)
 role: supplemental_effect
 target: [&quot;team_all&quot;]
 filters: {&quot;type&quot;: &quot;defender&quot;}
-availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU生效&quot;, &quot;vu_only&quot;: true}
-activation: いつでもアクティブ
-raw: (2)リンクしているディフェンダー数に応じて DEF増加 編成内の</td><td>※VU生效</td><td>※VU生效</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:014</td><td>美深ふぶ</td><td>サポーター</td><td>cool</td><td>紫</td><td>根性入れてやるかー</td><td>def_buff_1 (def_buff)</td><td>label: (1)
+availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU&#29983;&#25928;&quot;, &quot;vu_only&quot;: true}
+activation: &#12356;&#12388;&#12391;&#12418;&#12450;&#12463;&#12486;&#12451;&#12502;
+raw: (2)&#12522;&#12531;&#12463;&#12375;&#12390;&#12356;&#12427;&#12487;&#12451;&#12501;&#12455;&#12531;&#12480;&#12540;&#25968;&#12395;&#24540;&#12376;&#12390; DEF&#22679;&#21152; &#32232;&#25104;&#20869;&#12398;</td><td>&#8251;VU&#29983;&#25928;</td><td>&#8251;VU&#29983;&#25928;</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:014</td><td>&#32654;&#28145;&#12405;&#12406;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>cool</td><td>&#32043;</td><td>&#26681;&#24615;&#20837;&#12428;&#12390;&#12420;&#12427;&#12363;&#12540;</td><td>def_buff_1 (def_buff)</td><td>label: (1)
 role: default_effect
 target: [&quot;team_all&quot;]
 availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;, &quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;vu_only&quot;: false}
-activation: マスターにおまかせ
-raw: (1)編成内のでんこ全員(ふぶ自身含む)の被チェックイン時DEF増加</td><td>DEF +14%</td><td>DEF +19%</td><td>100%</td><td>30分</td><td>2時間</td><td>duration_extension_2 (duration_extension)</td><td>label: (2)
+activation: &#12510;&#12473;&#12479;&#12540;&#12395;&#12362;&#12414;&#12363;&#12379;
+raw: (1)&#32232;&#25104;&#20869;&#12398;&#12391;&#12435;&#12371;&#20840;&#21729;(&#12405;&#12406;&#33258;&#36523;&#21547;&#12416;)&#12398;&#34987;&#12481;&#12455;&#12483;&#12463;&#12452;&#12531;&#26178;DEF&#22679;&#21152;</td><td>DEF +14%</td><td>DEF +19%</td><td>100%</td><td>30&#20998;</td><td>2&#26178;&#38291;</td><td>duration_extension_2 (duration_extension)</td><td>label: (2)
 role: supplemental_effect
 target: [&quot;team_all&quot;]
 trigger: {&quot;access_direction&quot;: &quot;active&quot;, &quot;event_hint&quot;: &quot;access&quot;}
-availability: {&quot;levels&quot;: [&quot;100&quot;], &quot;note&quot;: &quot;VU生效&quot;, &quot;vu_only&quot;: true}
-activation: マスターにおまかせ
-raw: (2)編成内でんこがアクセスされてリブートしなかった時 スキルの効果時間延長(最大6回)</td><td>※VU生效</td><td>※VU生效</td><td>100%</td><td>30分</td><td>2時間</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:015</td><td>鹿沼りんご</td><td>アタッカー</td><td>heat</td><td>緑</td><td>夜更かしはお肌の敵</td><td>atk_buff_1 (atk_buff)</td><td>label: (1)
+availability: {&quot;levels&quot;: [&quot;100&quot;], &quot;note&quot;: &quot;VU&#29983;&#25928;&quot;, &quot;vu_only&quot;: true}
+activation: &#12510;&#12473;&#12479;&#12540;&#12395;&#12362;&#12414;&#12363;&#12379;
+raw: (2)&#32232;&#25104;&#20869;&#12391;&#12435;&#12371;&#12364;&#12450;&#12463;&#12475;&#12473;&#12373;&#12428;&#12390;&#12522;&#12502;&#12540;&#12488;&#12375;&#12394;&#12363;&#12387;&#12383;&#26178; &#12473;&#12461;&#12523;&#12398;&#21177;&#26524;&#26178;&#38291;&#24310;&#38263;(&#26368;&#22823;6&#22238;)</td><td>&#8251;VU&#29983;&#25928;</td><td>&#8251;VU&#29983;&#25928;</td><td>100%</td><td>30&#20998;</td><td>2&#26178;&#38291;</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:015</td><td>&#40575;&#27836;&#12426;&#12435;&#12372;</td><td>&#12450;&#12479;&#12483;&#12459;&#12540;</td><td>heat</td><td>&#32209;</td><td>&#22812;&#26356;&#12363;&#12375;&#12399;&#12362;&#32908;&#12398;&#25973;</td><td>atk_buff_1 (atk_buff)</td><td>label: (1)
 role: default_effect
 target: [&quot;self&quot;]
 availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;, &quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;vu_only&quot;: false}
-activation: いつでもアクティブ
-raw: (1)昼間はATKが増加、夜間はDEFが減少</td><td>ATK +18%</td><td>ATK +23%</td><td>100%</td><td></td><td></td><td>atk_buff_2 (atk_buff)</td><td>label: (2)
+activation: &#12356;&#12388;&#12391;&#12418;&#12450;&#12463;&#12486;&#12451;&#12502;
+raw: (1)&#26172;&#38291;&#12399;ATK&#12364;&#22679;&#21152;&#12289;&#22812;&#38291;&#12399;DEF&#12364;&#28187;&#23569;</td><td>ATK +18%</td><td>ATK +23%</td><td>100%</td><td></td><td></td><td>atk_buff_2 (atk_buff)</td><td>label: (2)
 role: additional_effect
 target: [&quot;self&quot;]
-trigger: {&quot;time_window_raw&quot;: &quot;6:00～18:00&quot;}
-availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU生效&quot;, &quot;vu_only&quot;: true}
-activation: いつでもアクティブ
-raw: (2)(1)に追加で編成内のいつでもアクティブスキルを持つでんこ数に応じATK増加 昼間は6:00～18:00 夜間18:00～翌朝6:00は常時DEF-30% /</td><td>※VU生效</td><td>※VU生效</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:016</td><td>ニャッシュ</td><td>トリックスター</td><td>eco</td><td>青</td><td>友だち一杯つくるのニャ</td><td>friend_slot_increase_1 (friend_slot_increase)</td><td>label: (1)
+trigger: {&quot;time_window_raw&quot;: &quot;6:00&#65374;18:00&quot;}
+availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU&#29983;&#25928;&quot;, &quot;vu_only&quot;: true}
+activation: &#12356;&#12388;&#12391;&#12418;&#12450;&#12463;&#12486;&#12451;&#12502;
+raw: (2)(1)&#12395;&#36861;&#21152;&#12391;&#32232;&#25104;&#20869;&#12398;&#12356;&#12388;&#12391;&#12418;&#12450;&#12463;&#12486;&#12451;&#12502;&#12473;&#12461;&#12523;&#12434;&#25345;&#12388;&#12391;&#12435;&#12371;&#25968;&#12395;&#24540;&#12376;ATK&#22679;&#21152; &#26172;&#38291;&#12399;6:00&#65374;18:00 &#22812;&#38291;18:00&#65374;&#32716;&#26397;6:00&#12399;&#24120;&#26178;DEF-30% /</td><td>&#8251;VU&#29983;&#25928;</td><td>&#8251;VU&#29983;&#25928;</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:016</td><td>&#12491;&#12515;&#12483;&#12471;&#12517;</td><td>&#12488;&#12522;&#12483;&#12463;&#12473;&#12479;&#12540;</td><td>eco</td><td>&#38738;</td><td>&#21451;&#12384;&#12385;&#19968;&#26479;&#12388;&#12367;&#12427;&#12398;&#12491;&#12515;</td><td>friend_slot_increase_1 (friend_slot_increase)</td><td>label: (1)
 role: default_effect
 target: [&quot;master_account&quot;]
 trigger: {&quot;formation_required&quot;: false}
@@ -209,15 +209,15 @@ role: additional_effect
 target: [&quot;self&quot;]
 scaling: {&quot;basis&quot;: &quot;friend_count&quot;, &quot;max_count_by_level&quot;: {&quot;100&quot;: 22, &quot;92&quot;: 7, &quot;96&quot;: 15}}
 availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU??&quot;, &quot;vu_only&quot;: true}
-activation: いつでもアクティブ
-raw: (2)電友の数に応じて自身のATKとDEFが増加</td><td>※VU生效</td><td>※VU生效</td><td></td><td></td><td></td><td>def_buff_2 (def_buff)</td><td>label: (2)
+activation: &#12356;&#12388;&#12391;&#12418;&#12450;&#12463;&#12486;&#12451;&#12502;
+raw: (2)&#38651;&#21451;&#12398;&#25968;&#12395;&#24540;&#12376;&#12390;&#33258;&#36523;&#12398;ATK&#12392;DEF&#12364;&#22679;&#21152;</td><td>&#8251;VU&#29983;&#25928;</td><td>&#8251;VU&#29983;&#25928;</td><td></td><td></td><td></td><td>def_buff_2 (def_buff)</td><td>label: (2)
 role: additional_effect
 target: [&quot;self&quot;]
 scaling: {&quot;basis&quot;: &quot;friend_count&quot;, &quot;max_count_by_level&quot;: {&quot;100&quot;: 22, &quot;92&quot;: 7, &quot;96&quot;: 15}}
 availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU??&quot;, &quot;vu_only&quot;: true}
-activation: いつでもアクティブ
-raw: (2)電友の数に応じて自身のATKとDEFが増加</td><td>※VU生效</td><td>※VU生效</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:017</td><td>ダッチュー</td><td>トリックスター</td><td>heat</td><td>桃</td><td>どいてもらうでチュー</td><td>item_gain_footbar_1 (item_gain)</td><td>label: (1)
+activation: &#12356;&#12388;&#12391;&#12418;&#12450;&#12463;&#12486;&#12451;&#12502;
+raw: (2)&#38651;&#21451;&#12398;&#25968;&#12395;&#24540;&#12376;&#12390;&#33258;&#36523;&#12398;ATK&#12392;DEF&#12364;&#22679;&#21152;</td><td>&#8251;VU&#29983;&#25928;</td><td>&#8251;VU&#29983;&#25928;</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:017</td><td>&#12480;&#12483;&#12481;&#12517;&#12540;</td><td>&#12488;&#12522;&#12483;&#12463;&#12473;&#12479;&#12540;</td><td>heat</td><td>&#26691;</td><td>&#12393;&#12356;&#12390;&#12418;&#12425;&#12358;&#12391;&#12481;&#12517;&#12540;</td><td>item_gain_footbar_1 (item_gain)</td><td>label: (1)
 role: default_effect
 target: [&quot;master_account&quot;]
 trigger: {&quot;event&quot;: &quot;daily_login&quot;, &quot;formation_required&quot;: false, &quot;frequency&quot;: &quot;once_per_day&quot;}
@@ -227,9 +227,9 @@ role: additional_effect
 target: [&quot;self&quot;]
 filters: {&quot;opponent_name&quot;: &quot;?????&quot;}
 availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU??&quot;, &quot;vu_only&quot;: true}
-activation: いつでもアクティブ
-raw: (2)相手がニャッシュの場合自身のATK増加 Lv10でスキル取得</td><td>※VU生效</td><td>※VU生效</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;lv50_skill_row_not_found&#x27;, &#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:018</td><td>汀良いちほ</td><td>トリックスター</td><td>eco</td><td>緑</td><td>根性だけが取り柄ですぅ</td><td>survive_hp1_1 (survive_hp1)</td><td>label: (1)
+activation: &#12356;&#12388;&#12391;&#12418;&#12450;&#12463;&#12486;&#12451;&#12502;
+raw: (2)&#30456;&#25163;&#12364;&#12491;&#12515;&#12483;&#12471;&#12517;&#12398;&#22580;&#21512;&#33258;&#36523;&#12398;ATK&#22679;&#21152; Lv10&#12391;&#12473;&#12461;&#12523;&#21462;&#24471;</td><td>&#8251;VU&#29983;&#25928;</td><td>&#8251;VU&#29983;&#25928;</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;lv50_skill_row_not_found&#x27;, &#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:018</td><td>&#27712;&#33391;&#12356;&#12385;&#12411;</td><td>&#12488;&#12522;&#12483;&#12463;&#12473;&#12479;&#12540;</td><td>eco</td><td>&#32209;</td><td>&#26681;&#24615;&#12384;&#12369;&#12364;&#21462;&#12426;&#26564;&#12391;&#12377;&#12357;</td><td>survive_hp1_1 (survive_hp1)</td><td>label: (1)
 role: default_effect
 target: [&quot;self&quot;]
 trigger: {&quot;damage_received&quot;: true, &quot;event&quot;: &quot;accessed&quot;, &quot;minimum_hp_before_damage&quot;: 2}
@@ -240,20 +240,20 @@ Lv80/Lv92/Lv96/Lv100: 40%</td><td></td><td></td><td>damage_reduction_2 (damage_r
 role: additional_effect
 target: [&quot;self&quot;]
 availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU??&quot;, &quot;vu_only&quot;: true}
-activation: いつでもアクティブ
-raw: (2)ダメージを固定値で軽減</td><td>※VU生效</td><td>※VU生效</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:019</td><td>美唄イムラ</td><td>アタッカー</td><td>eco</td><td>青</td><td>紫電一閃</td><td>atk_buff_1 (atk_buff)</td><td>label: (1)
+activation: &#12356;&#12388;&#12391;&#12418;&#12450;&#12463;&#12486;&#12451;&#12502;
+raw: (2)&#12480;&#12513;&#12540;&#12472;&#12434;&#22266;&#23450;&#20516;&#12391;&#36605;&#28187;</td><td>&#8251;VU&#29983;&#25928;</td><td>&#8251;VU&#29983;&#25928;</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:019</td><td>&#32654;&#21764;&#12452;&#12512;&#12521;</td><td>&#12450;&#12479;&#12483;&#12459;&#12540;</td><td>eco</td><td>&#38738;</td><td>&#32043;&#38651;&#19968;&#38275;</td><td>atk_buff_1 (atk_buff)</td><td>label: (1)
 role: default_effect
 target: [&quot;self&quot;]
 availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;, &quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;vu_only&quot;: false}
-activation: マスターにおまかせ
-raw: (1)HPが半減するがチェックイン時に自身のATK上昇</td><td>ATK +30%</td><td>ATK +35%</td><td>100%</td><td>15分</td><td>1時間</td><td>atk_buff_2 (atk_buff)</td><td>label: (2)
+activation: &#12510;&#12473;&#12479;&#12540;&#12395;&#12362;&#12414;&#12363;&#12379;
+raw: (1)HP&#12364;&#21322;&#28187;&#12377;&#12427;&#12364;&#12481;&#12455;&#12483;&#12463;&#12452;&#12531;&#26178;&#12395;&#33258;&#36523;&#12398;ATK&#19978;&#26119;</td><td>ATK +30%</td><td>ATK +35%</td><td>100%</td><td>15&#20998;</td><td>1&#26178;&#38291;</td><td>atk_buff_2 (atk_buff)</td><td>label: (2)
 role: additional_effect
 target: [&quot;self&quot;]
-availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU生效&quot;, &quot;vu_only&quot;: true}
-activation: マスターにおまかせ
-raw: (2)スキル発動中の消費HP(上限値500)に応じて追加でATK上昇</td><td>※VU生效</td><td>※VU生效</td><td>100%</td><td>15分</td><td>1時間</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:020</td><td>丸地にころ</td><td>トリックスター</td><td>cool</td><td>黄</td><td>デリバリーカーゴ</td><td>exp_distribution_1 (exp_distribution)</td><td>label: (1)
+availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU&#29983;&#25928;&quot;, &quot;vu_only&quot;: true}
+activation: &#12510;&#12473;&#12479;&#12540;&#12395;&#12362;&#12414;&#12363;&#12379;
+raw: (2)&#12473;&#12461;&#12523;&#30330;&#21205;&#20013;&#12398;&#28040;&#36027;HP(&#19978;&#38480;&#20516;500)&#12395;&#24540;&#12376;&#12390;&#36861;&#21152;&#12391;ATK&#19978;&#26119;</td><td>&#8251;VU&#29983;&#25928;</td><td>&#8251;VU&#29983;&#25928;</td><td>100%</td><td>15&#20998;</td><td>1&#26178;&#38291;</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:020</td><td>&#20024;&#22320;&#12395;&#12371;&#12429;</td><td>&#12488;&#12522;&#12483;&#12463;&#12473;&#12479;&#12540;</td><td>cool</td><td>&#40644;</td><td>&#12487;&#12522;&#12496;&#12522;&#12540;&#12459;&#12540;&#12468;</td><td>exp_distribution_1 (exp_distribution)</td><td>label: (1)
 role: default_effect
 target: [&quot;front_car&quot;]
 trigger: {&quot;exclude_self&quot;: true, &quot;source&quot;: &quot;self_gained_exp&quot;}
@@ -264,22 +264,22 @@ target: [&quot;front_car&quot;]
 trigger: {&quot;depends_on_component&quot;: &quot;exp_distribution_1&quot;, &quot;exclude_self&quot;: true}
 scaling: {&quot;basis&quot;: &quot;recipient_denko_level&quot;, &quot;direction&quot;: &quot;lower_level_gets_more&quot;}
 availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU??&quot;, &quot;vu_only&quot;: true}
-raw: ???????(??????????????????????)</td><td>※VU生效</td><td>※VU生效</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:021</td><td>王子しぐれ</td><td>サポーター</td><td>cool</td><td>紫</td><td>加圧式シールド</td><td>def_buff_1 (def_buff)</td><td>label: (1)
+raw: ???????(??????????????????????)</td><td>&#8251;VU&#29983;&#25928;</td><td>&#8251;VU&#29983;&#25928;</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:021</td><td>&#29579;&#23376;&#12375;&#12368;&#12428;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>cool</td><td>&#32043;</td><td>&#21152;&#22311;&#24335;&#12471;&#12540;&#12523;&#12489;</td><td>def_buff_1 (def_buff)</td><td>label: (1)
 role: default_effect
 target: [&quot;self&quot;]
 filters: {&quot;type&quot;: &quot;attacker&quot;}
 availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;, &quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;vu_only&quot;: false}
-activation: いつでもアクティブ
-raw: (1)アタッカーのDEF増加</td><td>DEF +13%</td><td>DEF +17%</td><td>55%</td><td></td><td></td><td>hp_recovery_2 (hp_recovery)</td><td>label: (2)
+activation: &#12356;&#12388;&#12391;&#12418;&#12450;&#12463;&#12486;&#12451;&#12502;
+raw: (1)&#12450;&#12479;&#12483;&#12459;&#12540;&#12398;DEF&#22679;&#21152;</td><td>DEF +13%</td><td>DEF +17%</td><td>55%</td><td></td><td></td><td>hp_recovery_2 (hp_recovery)</td><td>label: (2)
 role: supplemental_effect
 target: [&quot;team_all&quot;]
 filters: {&quot;type&quot;: &quot;attacker&quot;}
 trigger: {&quot;access_direction&quot;: &quot;active&quot;, &quot;event_hint&quot;: &quot;access&quot;, &quot;hp_threshold_percent&quot;: 99, &quot;operator&quot;: &quot;lte&quot;}
-availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU生效&quot;, &quot;vu_only&quot;: true}
-activation: いつでもアクティブ
-raw: (2)編成内のアタッカーがアクセスされてHPが99%以下になった時、確率でHP回復</td><td>※VU生效</td><td>※VU生效</td><td>30%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:022</td><td>巽レン</td><td>アタッカー</td><td>heat</td><td>赤</td><td>こけおどし</td><td>skill_disable_1 (skill_disable)</td><td>label: (1)
+availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU&#29983;&#25928;&quot;, &quot;vu_only&quot;: true}
+activation: &#12356;&#12388;&#12391;&#12418;&#12450;&#12463;&#12486;&#12451;&#12502;
+raw: (2)&#32232;&#25104;&#20869;&#12398;&#12450;&#12479;&#12483;&#12459;&#12540;&#12364;&#12450;&#12463;&#12475;&#12473;&#12373;&#12428;&#12390;HP&#12364;99%&#20197;&#19979;&#12395;&#12394;&#12387;&#12383;&#26178;&#12289;&#30906;&#29575;&#12391;HP&#22238;&#24489;</td><td>&#8251;VU&#29983;&#25928;</td><td>&#8251;VU&#29983;&#25928;</td><td>30%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:022</td><td>&#24061;&#12524;&#12531;</td><td>&#12450;&#12479;&#12483;&#12459;&#12540;</td><td>heat</td><td>&#36196;</td><td>&#12371;&#12369;&#12362;&#12393;&#12375;</td><td>skill_disable_1 (skill_disable)</td><td>label: (1)
 role: default_effect
 target: [&quot;opponent_denko&quot;]
 trigger: {&quot;disabled_skill_scope_raw&quot;: &quot;?????????????????&quot;, &quot;event&quot;: &quot;accessed&quot;}
@@ -291,85 +291,85 @@ role: additional_effect
 target: [&quot;opponent_denko&quot;]
 trigger: {&quot;depends_on_component&quot;: &quot;skill_disable_1&quot;}
 availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU??&quot;, &quot;vu_only&quot;: true}
-raw: ???DEF??</td><td>※VU生效</td><td>※VU生效</td><td>100%</td><td>40?</td><td>1??30?</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:023</td><td>八潮みらい</td><td>トリックスター</td><td>heat</td><td>緑</td><td>ランブルアタック</td><td>atk_debuff_1 (atk_debuff)</td><td>label: (1)
+raw: ???DEF??</td><td>&#8251;VU&#29983;&#25928;</td><td>&#8251;VU&#29983;&#25928;</td><td>100%</td><td>40?</td><td>1??30?</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:023</td><td>&#20843;&#28526;&#12415;&#12425;&#12356;</td><td>&#12488;&#12522;&#12483;&#12463;&#12473;&#12479;&#12540;</td><td>heat</td><td>&#32209;</td><td>&#12521;&#12531;&#12502;&#12523;&#12450;&#12479;&#12483;&#12463;</td><td>atk_debuff_1 (atk_debuff)</td><td>label: (1)
 role: default_effect
 target: [&quot;self&quot;]
 availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;, &quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;vu_only&quot;: false}
-activation: いつでもアクティブ
-raw: (1)自身のATK変動</td><td>ATK -32%～+50%</td><td>ATK -39%～+60%</td><td>80%</td><td></td><td></td><td>atk_buff_2 (atk_buff)</td><td>label: (2)
+activation: &#12356;&#12388;&#12391;&#12418;&#12450;&#12463;&#12486;&#12451;&#12502;
+raw: (1)&#33258;&#36523;&#12398;ATK&#22793;&#21205;</td><td>ATK -32%&#65374;+50%</td><td>ATK -39%&#65374;+60%</td><td>80%</td><td></td><td></td><td>atk_buff_2 (atk_buff)</td><td>label: (2)
 role: supplemental_effect
 target: [&quot;self&quot;]
-availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU生效&quot;, &quot;vu_only&quot;: true}
-activation: いつでもアクティブ
-raw: (2)</td><td>※VU生效</td><td>※VU生效</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:024</td><td>ベアトリス＝ファン＝ライツェ</td><td>ディフェンダー</td><td>cool</td><td>青</td><td>パワーレジスト</td><td>def_buff_1 (def_buff)</td><td>label: (1)
+availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU&#29983;&#25928;&quot;, &quot;vu_only&quot;: true}
+activation: &#12356;&#12388;&#12391;&#12418;&#12450;&#12463;&#12486;&#12451;&#12502;
+raw: (2)</td><td>&#8251;VU&#29983;&#25928;</td><td>&#8251;VU&#29983;&#25928;</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:024</td><td>&#12505;&#12450;&#12488;&#12522;&#12473;&#65309;&#12501;&#12449;&#12531;&#65309;&#12521;&#12452;&#12484;&#12455;</td><td>&#12487;&#12451;&#12501;&#12455;&#12531;&#12480;&#12540;</td><td>cool</td><td>&#38738;</td><td>&#12497;&#12527;&#12540;&#12524;&#12472;&#12473;&#12488;</td><td>def_buff_1 (def_buff)</td><td>label: (1)
 role: default_effect
 target: [&quot;self&quot;]
 availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;, &quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;vu_only&quot;: false}
-activation: マスターにおまかせ
-raw: (1)自身のDEF上昇(効果量は相手のAPと自身のAPの差によって変動)</td><td>DEF +0%～+75%</td><td>DEF +0%～+75%</td><td>100%</td><td>Lv5: 1時間
-Lv15: 2時間
-Lv30: 3時間
-Lv50: 4時間
-Lv60: 5時間
-Lv70: 6時間
-Lv80/Lv92/Lv96/Lv100: 7時間</td><td>1時間</td><td>damage_reduction_2 (damage_reduction)</td><td>label: (2)
-role: supplemental_effect
-target: [&quot;opponent_denko&quot;]
-availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU生效&quot;, &quot;vu_only&quot;: true}
-activation: マスターにおまかせ
-raw: (2)自身の被ダメージを固定値軽減(相手のATKの増加量(上限100%)によって変動)</td><td>※VU生效</td><td>※VU生效</td><td>100%</td><td>7時間</td><td>1時間</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:025</td><td>新百合うらら</td><td>サポーター</td><td>cool</td><td>橙</td><td>じかんあっしゅく</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:026</td><td>新百合ほこね</td><td>アタッカー</td><td>cool</td><td>橙</td><td>妹愛バースト</td><td>atk_buff_1 (atk_buff)</td><td>label: (1)
-role: default_effect
-target: [&quot;self&quot;]
-availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;, &quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;vu_only&quot;: false}
-activation: マスターにおまかせ
-raw: (1)自身のATK上昇</td><td>ATK +38%</td><td>ATK +42%</td><td>100%</td><td>20分</td><td>2時間</td><td>fixed_damage_2 (fixed_damage)</td><td>label: (2)
+activation: &#12510;&#12473;&#12479;&#12540;&#12395;&#12362;&#12414;&#12363;&#12379;
+raw: (1)&#33258;&#36523;&#12398;DEF&#19978;&#26119;(&#21177;&#26524;&#37327;&#12399;&#30456;&#25163;&#12398;AP&#12392;&#33258;&#36523;&#12398;AP&#12398;&#24046;&#12395;&#12424;&#12387;&#12390;&#22793;&#21205;)</td><td>DEF +0%&#65374;+75%</td><td>DEF +0%&#65374;+75%</td><td>100%</td><td>Lv5: 1&#26178;&#38291;
+Lv15: 2&#26178;&#38291;
+Lv30: 3&#26178;&#38291;
+Lv50: 4&#26178;&#38291;
+Lv60: 5&#26178;&#38291;
+Lv70: 6&#26178;&#38291;
+Lv80/Lv92/Lv96/Lv100: 7&#26178;&#38291;</td><td>1&#26178;&#38291;</td><td>damage_reduction_2 (damage_reduction)</td><td>label: (2)
 role: supplemental_effect
 target: [&quot;opponent_denko&quot;]
-availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU生效&quot;, &quot;vu_only&quot;: true}
-activation: マスターにおまかせ
-raw: (2)自身のATK増加量合計が120%以上で 相手に軽減不能なダメージ</td><td>※VU生效</td><td>※VU生效</td><td>100%</td><td>20分</td><td>2時間</td><td>fixed_damage_3 (fixed_damage)</td><td>label: (3)
+availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU&#29983;&#25928;&quot;, &quot;vu_only&quot;: true}
+activation: &#12510;&#12473;&#12479;&#12540;&#12395;&#12362;&#12414;&#12363;&#12379;
+raw: (2)&#33258;&#36523;&#12398;&#34987;&#12480;&#12513;&#12540;&#12472;&#12434;&#22266;&#23450;&#20516;&#36605;&#28187;(&#30456;&#25163;&#12398;ATK&#12398;&#22679;&#21152;&#37327;(&#19978;&#38480;100%)&#12395;&#12424;&#12387;&#12390;&#22793;&#21205;)</td><td>&#8251;VU&#29983;&#25928;</td><td>&#8251;VU&#29983;&#25928;</td><td>100%</td><td>7&#26178;&#38291;</td><td>1&#26178;&#38291;</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:025</td><td>&#26032;&#30334;&#21512;&#12358;&#12425;&#12425;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>cool</td><td>&#27225;</td><td>&#12376;&#12363;&#12435;&#12354;&#12387;&#12375;&#12421;&#12367;</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:026</td><td>&#26032;&#30334;&#21512;&#12411;&#12371;&#12397;</td><td>&#12450;&#12479;&#12483;&#12459;&#12540;</td><td>cool</td><td>&#27225;</td><td>&#22969;&#24859;&#12496;&#12540;&#12473;&#12488;</td><td>atk_buff_1 (atk_buff)</td><td>label: (1)
+role: default_effect
+target: [&quot;self&quot;]
+availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;, &quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;vu_only&quot;: false}
+activation: &#12510;&#12473;&#12479;&#12540;&#12395;&#12362;&#12414;&#12363;&#12379;
+raw: (1)&#33258;&#36523;&#12398;ATK&#19978;&#26119;</td><td>ATK +38%</td><td>ATK +42%</td><td>100%</td><td>20&#20998;</td><td>2&#26178;&#38291;</td><td>fixed_damage_2 (fixed_damage)</td><td>label: (2)
+role: supplemental_effect
+target: [&quot;opponent_denko&quot;]
+availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU&#29983;&#25928;&quot;, &quot;vu_only&quot;: true}
+activation: &#12510;&#12473;&#12479;&#12540;&#12395;&#12362;&#12414;&#12363;&#12379;
+raw: (2)&#33258;&#36523;&#12398;ATK&#22679;&#21152;&#37327;&#21512;&#35336;&#12364;120%&#20197;&#19978;&#12391; &#30456;&#25163;&#12395;&#36605;&#28187;&#19981;&#33021;&#12394;&#12480;&#12513;&#12540;&#12472;</td><td>&#8251;VU&#29983;&#25928;</td><td>&#8251;VU&#29983;&#25928;</td><td>100%</td><td>20&#20998;</td><td>2&#26178;&#38291;</td><td>fixed_damage_3 (fixed_damage)</td><td>label: (3)
 role: additional_effect
 target: [&quot;opponent_denko&quot;]
-availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU生效&quot;, &quot;vu_only&quot;: true}
-activation: マスターにおまかせ
-raw: (3)自身のATK増加量合計が180%以上で(2)に追加で 相手に軽減不能なダメージ 相手がうららの場合HPを回復 回復量はうららの最大HPの40% (経験値1取得)</td><td>※VU生效</td><td>※VU生效</td><td>100%</td><td>20分</td><td>2時間</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:027</td><td>苔縄やちよ</td><td>トリックスター</td><td>cool</td><td>青</td><td>ラブホームズ</td><td>def_buff_1 (def_buff)</td><td>label: (1)
+availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU&#29983;&#25928;&quot;, &quot;vu_only&quot;: true}
+activation: &#12510;&#12473;&#12479;&#12540;&#12395;&#12362;&#12414;&#12363;&#12379;
+raw: (3)&#33258;&#36523;&#12398;ATK&#22679;&#21152;&#37327;&#21512;&#35336;&#12364;180%&#20197;&#19978;&#12391;(2)&#12395;&#36861;&#21152;&#12391; &#30456;&#25163;&#12395;&#36605;&#28187;&#19981;&#33021;&#12394;&#12480;&#12513;&#12540;&#12472; &#30456;&#25163;&#12364;&#12358;&#12425;&#12425;&#12398;&#22580;&#21512;HP&#12434;&#22238;&#24489; &#22238;&#24489;&#37327;&#12399;&#12358;&#12425;&#12425;&#12398;&#26368;&#22823;HP&#12398;40% (&#32076;&#39443;&#20516;1&#21462;&#24471;)</td><td>&#8251;VU&#29983;&#25928;</td><td>&#8251;VU&#29983;&#25928;</td><td>100%</td><td>20&#20998;</td><td>2&#26178;&#38291;</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:027</td><td>&#33492;&#32260;&#12420;&#12385;&#12424;</td><td>&#12488;&#12522;&#12483;&#12463;&#12473;&#12479;&#12540;</td><td>cool</td><td>&#38738;</td><td>&#12521;&#12502;&#12507;&#12540;&#12512;&#12474;</td><td>def_buff_1 (def_buff)</td><td>label: (1)
 role: default_effect
 target: [&quot;self&quot;]
 trigger: {&quot;access_direction&quot;: &quot;active&quot;, &quot;event_hint&quot;: &quot;access&quot;}
 availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;, &quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;vu_only&quot;: false}
-activation: いつでもアクティブ
-raw: (1)直近3ヶ月でアクセスが一番多い駅と、その周辺駅の合計5駅でDEF増加</td><td>DEF +21%</td><td>DEF +24%</td><td>100%</td><td></td><td></td><td>def_buff_2 (def_buff)</td><td>label: (2)
+activation: &#12356;&#12388;&#12391;&#12418;&#12450;&#12463;&#12486;&#12451;&#12502;
+raw: (1)&#30452;&#36817;3&#12534;&#26376;&#12391;&#12450;&#12463;&#12475;&#12473;&#12364;&#19968;&#30058;&#22810;&#12356;&#39365;&#12392;&#12289;&#12381;&#12398;&#21608;&#36794;&#39365;&#12398;&#21512;&#35336;5&#39365;&#12391;DEF&#22679;&#21152;</td><td>DEF +21%</td><td>DEF +24%</td><td>100%</td><td></td><td></td><td>def_buff_2 (def_buff)</td><td>label: (2)
 role: additional_effect
 target: [&quot;self&quot;]
 trigger: {&quot;station_ownership&quot;: &quot;self_linking&quot;}
-availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU生效&quot;, &quot;vu_only&quot;: true}
-activation: いつでもアクティブ
-raw: (2)自身がリンクしている駅のうち最も長いリンク時間に応じて追加でDEF増加(上限50分)</td><td>※VU生效</td><td>※VU生效</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:028</td><td>京橋リオナ</td><td>アタッカー</td><td>cool</td><td>黄</td><td>データアクセラレーター</td><td>atk_buff_1 (atk_buff)</td><td>label: (1)
+availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU&#29983;&#25928;&quot;, &quot;vu_only&quot;: true}
+activation: &#12356;&#12388;&#12391;&#12418;&#12450;&#12463;&#12486;&#12451;&#12502;
+raw: (2)&#33258;&#36523;&#12364;&#12522;&#12531;&#12463;&#12375;&#12390;&#12356;&#12427;&#39365;&#12398;&#12358;&#12385;&#26368;&#12418;&#38263;&#12356;&#12522;&#12531;&#12463;&#26178;&#38291;&#12395;&#24540;&#12376;&#12390;&#36861;&#21152;&#12391;DEF&#22679;&#21152;(&#19978;&#38480;50&#20998;)</td><td>&#8251;VU&#29983;&#25928;</td><td>&#8251;VU&#29983;&#25928;</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:028</td><td>&#20140;&#27211;&#12522;&#12458;&#12490;</td><td>&#12450;&#12479;&#12483;&#12459;&#12540;</td><td>cool</td><td>&#40644;</td><td>&#12487;&#12540;&#12479;&#12450;&#12463;&#12475;&#12521;&#12524;&#12540;&#12479;&#12540;</td><td>atk_buff_1 (atk_buff)</td><td>label: (1)
 role: default_effect
 target: [&quot;self&quot;]
 trigger: {&quot;access_direction&quot;: &quot;active&quot;, &quot;event_hint&quot;: &quot;access&quot;}
 availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;, &quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;vu_only&quot;: false}
-activation: マスターにおまかせ
-raw: (1)駅へのアクセス数の差に応じてATK上昇</td><td>ATK +0%～+55%</td><td>ATK +0%～+55%</td><td>100%</td><td>Lv5: 10分
-Lv15: 15分
-Lv30: 20分
-Lv50: 25分
-Lv60: 30分
-Lv70: 40分
-Lv80/Lv92/Lv96/Lv100: 50分</td><td>2時間</td><td>atk_buff_2 (atk_buff)</td><td>label: (2)
+activation: &#12510;&#12473;&#12479;&#12540;&#12395;&#12362;&#12414;&#12363;&#12379;
+raw: (1)&#39365;&#12408;&#12398;&#12450;&#12463;&#12475;&#12473;&#25968;&#12398;&#24046;&#12395;&#24540;&#12376;&#12390;ATK&#19978;&#26119;</td><td>ATK +0%&#65374;+55%</td><td>ATK +0%&#65374;+55%</td><td>100%</td><td>Lv5: 10&#20998;
+Lv15: 15&#20998;
+Lv30: 20&#20998;
+Lv50: 25&#20998;
+Lv60: 30&#20998;
+Lv70: 40&#20998;
+Lv80/Lv92/Lv96/Lv100: 50&#20998;</td><td>2&#26178;&#38291;</td><td>atk_buff_2 (atk_buff)</td><td>label: (2)
 role: additional_effect
 target: [&quot;self&quot;]
 trigger: {&quot;access_direction&quot;: &quot;active&quot;, &quot;event_hint&quot;: &quot;access&quot;}
-availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU生效&quot;, &quot;vu_only&quot;: true}
-activation: マスターにおまかせ
-raw: (2)アクセスした駅への相手のアクセス回数が、自身のアクセス回数より150回以上多い場合、追加でATK増加 相手の駅へのアクセス回数と自身の駅へのアクセス回数の差によって効果量変動</td><td>※VU生效</td><td>※VU生效</td><td>100%</td><td>50分</td><td>2時間</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:029</td><td>作草部チコ</td><td>トリックスター</td><td>cool</td><td>青</td><td>ラッシュアワー</td><td>hp_zero_1 (force_hp_zero)</td><td>label: (1)
+availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU&#29983;&#25928;&quot;, &quot;vu_only&quot;: true}
+activation: &#12510;&#12473;&#12479;&#12540;&#12395;&#12362;&#12414;&#12363;&#12379;
+raw: (2)&#12450;&#12463;&#12475;&#12473;&#12375;&#12383;&#39365;&#12408;&#12398;&#30456;&#25163;&#12398;&#12450;&#12463;&#12475;&#12473;&#22238;&#25968;&#12364;&#12289;&#33258;&#36523;&#12398;&#12450;&#12463;&#12475;&#12473;&#22238;&#25968;&#12424;&#12426;150&#22238;&#20197;&#19978;&#22810;&#12356;&#22580;&#21512;&#12289;&#36861;&#21152;&#12391;ATK&#22679;&#21152; &#30456;&#25163;&#12398;&#39365;&#12408;&#12398;&#12450;&#12463;&#12475;&#12473;&#22238;&#25968;&#12392;&#33258;&#36523;&#12398;&#39365;&#12408;&#12398;&#12450;&#12463;&#12475;&#12473;&#22238;&#25968;&#12398;&#24046;&#12395;&#12424;&#12387;&#12390;&#21177;&#26524;&#37327;&#22793;&#21205;</td><td>&#8251;VU&#29983;&#25928;</td><td>&#8251;VU&#29983;&#25928;</td><td>100%</td><td>50&#20998;</td><td>2&#26178;&#38291;</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:029</td><td>&#20316;&#33609;&#37096;&#12481;&#12467;</td><td>&#12488;&#12522;&#12483;&#12463;&#12473;&#12479;&#12540;</td><td>cool</td><td>&#38738;</td><td>&#12521;&#12483;&#12471;&#12517;&#12450;&#12527;&#12540;</td><td>hp_zero_1 (force_hp_zero)</td><td>label: (1)
 role: default_effect
 target: [&quot;opponent_denko&quot;]
 filters: {&quot;note_raw&quot;: &quot;HP1?????????????????????&quot;}
@@ -385,42 +385,42 @@ Lv80/Lv92/Lv96/Lv100: 15?</td><td>3??</td><td>activation_probability_boost_vu (a
 target: [&quot;component:hp_zero_1&quot;]
 trigger: {&quot;opponent_def_buff_total_percent_gte&quot;: 100}
 availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU??&quot;, &quot;vu_only&quot;: true}
-raw: ???DEF?????100%???????????????</td><td>※VU生效</td><td>※VU生效</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:030</td><td>八雲レーノ</td><td>アタッカー</td><td>eco</td><td>桃</td><td>ナイトレイダー</td><td>atk_buff</td><td>target: [&quot;self&quot;]
-trigger: {&quot;access_direction&quot;: &quot;active&quot;, &quot;event_hint&quot;: &quot;access&quot;, &quot;time_window_raw&quot;: &quot;6:00～18:00&quot;}
+raw: ???DEF?????100%???????????????</td><td>&#8251;VU&#29983;&#25928;</td><td>&#8251;VU&#29983;&#25928;</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:030</td><td>&#20843;&#38642;&#12524;&#12540;&#12494;</td><td>&#12450;&#12479;&#12483;&#12459;&#12540;</td><td>eco</td><td>&#26691;</td><td>&#12490;&#12452;&#12488;&#12524;&#12452;&#12480;&#12540;</td><td>atk_buff</td><td>target: [&quot;self&quot;]
+trigger: {&quot;access_direction&quot;: &quot;active&quot;, &quot;event_hint&quot;: &quot;access&quot;, &quot;time_window_raw&quot;: &quot;6:00&#65374;18:00&quot;}
 availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;, &quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;vu_only&quot;: false}
-activation: いつでもアクティブ
-raw: 夜の間はATKが増加、昼の間はDEFが減少 （Lv.92以降、リンクしてから12分間アクセス時に固定ダメージ付加） 夜間は18:00～翌朝6:00 昼間6:00～18:00は常時DEF-30%</td><td>ATK +40%</td><td>ATK +45%</td><td>100%</td><td></td><td></td><td>fixed_damage</td><td>target: [&quot;self&quot;]
-trigger: {&quot;access_direction&quot;: &quot;active&quot;, &quot;event_hint&quot;: &quot;access&quot;, &quot;time_window_raw&quot;: &quot;6:00～18:00&quot;}
-availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU生效&quot;, &quot;vu_only&quot;: true}
-activation: いつでもアクティブ
-raw: 夜の間はATKが増加、昼の間はDEFが減少 （Lv.92以降、リンクしてから12分間アクセス時に固定ダメージ付加） 夜間は18:00～翌朝6:00 昼間6:00～18:00は常時DEF-30%</td><td>※VU生效</td><td>※VU生效</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:031</td><td>新居浜ありす</td><td>ディフェンダー</td><td>heat</td><td>青</td><td>ハッピーホリデイ</td><td>def_buff_1 (def_buff)</td><td>label: (1)
+activation: &#12356;&#12388;&#12391;&#12418;&#12450;&#12463;&#12486;&#12451;&#12502;
+raw: &#22812;&#12398;&#38291;&#12399;ATK&#12364;&#22679;&#21152;&#12289;&#26172;&#12398;&#38291;&#12399;DEF&#12364;&#28187;&#23569; &#65288;Lv.92&#20197;&#38477;&#12289;&#12522;&#12531;&#12463;&#12375;&#12390;&#12363;&#12425;12&#20998;&#38291;&#12450;&#12463;&#12475;&#12473;&#26178;&#12395;&#22266;&#23450;&#12480;&#12513;&#12540;&#12472;&#20184;&#21152;&#65289; &#22812;&#38291;&#12399;18:00&#65374;&#32716;&#26397;6:00 &#26172;&#38291;6:00&#65374;18:00&#12399;&#24120;&#26178;DEF-30%</td><td>ATK +40%</td><td>ATK +45%</td><td>100%</td><td></td><td></td><td>fixed_damage</td><td>target: [&quot;self&quot;]
+trigger: {&quot;access_direction&quot;: &quot;active&quot;, &quot;event_hint&quot;: &quot;access&quot;, &quot;time_window_raw&quot;: &quot;6:00&#65374;18:00&quot;}
+availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU&#29983;&#25928;&quot;, &quot;vu_only&quot;: true}
+activation: &#12356;&#12388;&#12391;&#12418;&#12450;&#12463;&#12486;&#12451;&#12502;
+raw: &#22812;&#12398;&#38291;&#12399;ATK&#12364;&#22679;&#21152;&#12289;&#26172;&#12398;&#38291;&#12399;DEF&#12364;&#28187;&#23569; &#65288;Lv.92&#20197;&#38477;&#12289;&#12522;&#12531;&#12463;&#12375;&#12390;&#12363;&#12425;12&#20998;&#38291;&#12450;&#12463;&#12475;&#12473;&#26178;&#12395;&#22266;&#23450;&#12480;&#12513;&#12540;&#12472;&#20184;&#21152;&#65289; &#22812;&#38291;&#12399;18:00&#65374;&#32716;&#26397;6:00 &#26172;&#38291;6:00&#65374;18:00&#12399;&#24120;&#26178;DEF-30%</td><td>&#8251;VU&#29983;&#25928;</td><td>&#8251;VU&#29983;&#25928;</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:031</td><td>&#26032;&#23621;&#27996;&#12354;&#12426;&#12377;</td><td>&#12487;&#12451;&#12501;&#12455;&#12531;&#12480;&#12540;</td><td>heat</td><td>&#38738;</td><td>&#12495;&#12483;&#12500;&#12540;&#12507;&#12522;&#12487;&#12452;</td><td>def_buff_1 (def_buff)</td><td>label: (1)
 role: default_effect
 target: [&quot;self&quot;]
 availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;, &quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;vu_only&quot;: false}
-activation: いつでもアクティブ
-raw: (1)土日と祝日だけDEFが増加</td><td>DEF +20%</td><td>DEF +25%</td><td>Lv5/Lv15/Lv30: 75%
+activation: &#12356;&#12388;&#12391;&#12418;&#12450;&#12463;&#12486;&#12451;&#12502;
+raw: (1)&#22303;&#26085;&#12392;&#31069;&#26085;&#12384;&#12369;DEF&#12364;&#22679;&#21152;</td><td>DEF +20%</td><td>DEF +25%</td><td>Lv5/Lv15/Lv30: 75%
 Lv50/Lv60/Lv70/Lv80/Lv92/Lv96/Lv100: 85%</td><td></td><td></td><td>def_buff_2 (def_buff)</td><td>label: (2)
 role: additional_effect
 target: [&quot;self&quot;]
-availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU生效&quot;, &quot;vu_only&quot;: true}
-activation: いつでもアクティブ
-raw: (2)スキル(1)発動時に自身のリンク駅中最も長いリンク時間により追加でDEF増加</td><td>※VU生效</td><td>※VU生效</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:032</td><td>神居コタン</td><td>トリックスター</td><td>heat</td><td>赤</td><td>ボイラー出力上昇</td><td>atk_buff_1 (atk_buff)</td><td>label: (1)
+availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU&#29983;&#25928;&quot;, &quot;vu_only&quot;: true}
+activation: &#12356;&#12388;&#12391;&#12418;&#12450;&#12463;&#12486;&#12451;&#12502;
+raw: (2)&#12473;&#12461;&#12523;(1)&#30330;&#21205;&#26178;&#12395;&#33258;&#36523;&#12398;&#12522;&#12531;&#12463;&#39365;&#20013;&#26368;&#12418;&#38263;&#12356;&#12522;&#12531;&#12463;&#26178;&#38291;&#12395;&#12424;&#12426;&#36861;&#21152;&#12391;DEF&#22679;&#21152;</td><td>&#8251;VU&#29983;&#25928;</td><td>&#8251;VU&#29983;&#25928;</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:032</td><td>&#31070;&#23621;&#12467;&#12479;&#12531;</td><td>&#12488;&#12522;&#12483;&#12463;&#12473;&#12479;&#12540;</td><td>heat</td><td>&#36196;</td><td>&#12508;&#12452;&#12521;&#12540;&#20986;&#21147;&#19978;&#26119;</td><td>atk_buff_1 (atk_buff)</td><td>label: (1)
 role: default_effect
 target: [&quot;self&quot;]
 trigger: {&quot;access_direction&quot;: &quot;active&quot;, &quot;event_hint&quot;: &quot;access&quot;}
 availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;, &quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;vu_only&quot;: false}
-activation: いつでもアクティブ
-raw: (1)その日にアクセスした駅数に応じて自身のATK増加</td><td>ATK +0%～+40%</td><td>ATK +0%～+50%</td><td>100%</td><td></td><td></td><td>atk_buff_2 (atk_buff)</td><td>label: (2)
+activation: &#12356;&#12388;&#12391;&#12418;&#12450;&#12463;&#12486;&#12451;&#12502;
+raw: (1)&#12381;&#12398;&#26085;&#12395;&#12450;&#12463;&#12475;&#12473;&#12375;&#12383;&#39365;&#25968;&#12395;&#24540;&#12376;&#12390;&#33258;&#36523;&#12398;ATK&#22679;&#21152;</td><td>ATK +0%&#65374;+40%</td><td>ATK +0%&#65374;+50%</td><td>100%</td><td></td><td></td><td>atk_buff_2 (atk_buff)</td><td>label: (2)
 role: additional_effect
 target: [&quot;self&quot;]
 trigger: {&quot;access_direction&quot;: &quot;active&quot;, &quot;event_hint&quot;: &quot;access&quot;}
-availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU生效&quot;, &quot;vu_only&quot;: true}
-activation: いつでもアクティブ
-raw: (2)その日にアクセスした駅数が18駅以上の場合、追加で自身のATK増加 駅数は50駅が上限 詳細は下記計算式を参照</td><td>※VU生效</td><td>※VU生效</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:033</td><td>賢島エリア</td><td>トリックスター</td><td>eco</td><td>青</td><td>天真爛漫</td><td>skill_disable_1 (skill_disable)</td><td>label: (1)
+availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU&#29983;&#25928;&quot;, &quot;vu_only&quot;: true}
+activation: &#12356;&#12388;&#12391;&#12418;&#12450;&#12463;&#12486;&#12451;&#12502;
+raw: (2)&#12381;&#12398;&#26085;&#12395;&#12450;&#12463;&#12475;&#12473;&#12375;&#12383;&#39365;&#25968;&#12364;18&#39365;&#20197;&#19978;&#12398;&#22580;&#21512;&#12289;&#36861;&#21152;&#12391;&#33258;&#36523;&#12398;ATK&#22679;&#21152; &#39365;&#25968;&#12399;50&#39365;&#12364;&#19978;&#38480; &#35443;&#32048;&#12399;&#19979;&#35352;&#35336;&#31639;&#24335;&#12434;&#21442;&#29031;</td><td>&#8251;VU&#29983;&#25928;</td><td>&#8251;VU&#29983;&#25928;</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:033</td><td>&#36066;&#23798;&#12456;&#12522;&#12450;</td><td>&#12488;&#12522;&#12483;&#12463;&#12473;&#12479;&#12540;</td><td>eco</td><td>&#38738;</td><td>&#22825;&#30495;&#29211;&#28459;</td><td>skill_disable_1 (skill_disable)</td><td>label: (1)
 role: default_effect
 target: [&quot;opponent_denko&quot;]
 trigger: {&quot;disabled_skill_scope_raw&quot;: &quot;???????????????????????&quot;, &quot;event&quot;: &quot;access&quot;}
@@ -432,10 +432,10 @@ role: additional_effect
 target: [&quot;opponent_denko&quot;]
 trigger: {&quot;access_direction&quot;: &quot;active&quot;, &quot;event_hint&quot;: &quot;access&quot;}
 availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU??&quot;, &quot;vu_only&quot;: true}
-activation: マスターにおまかせ
-raw: (2)相手のATK減少 アクセスしたでんこ自体のスキルが対象 /</td><td>※VU生效</td><td>※VU生效</td><td>100%</td><td>7時間</td><td>1時間</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:034</td><td>碇ヶ関ひいる</td><td>サポーター</td><td>heat</td><td>赤</td><td>テンションAGEAGE↑↑</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:035</td><td>神畑いおり</td><td>ディフェンダー</td><td>eco</td><td>緑</td><td>ビブリオフィル</td><td>def_buff_1 (def_buff)</td><td>label: (1)
+activation: &#12510;&#12473;&#12479;&#12540;&#12395;&#12362;&#12414;&#12363;&#12379;
+raw: (2)&#30456;&#25163;&#12398;ATK&#28187;&#23569; &#12450;&#12463;&#12475;&#12473;&#12375;&#12383;&#12391;&#12435;&#12371;&#33258;&#20307;&#12398;&#12473;&#12461;&#12523;&#12364;&#23550;&#35937; /</td><td>&#8251;VU&#29983;&#25928;</td><td>&#8251;VU&#29983;&#25928;</td><td>100%</td><td>7&#26178;&#38291;</td><td>1&#26178;&#38291;</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:034</td><td>&#30855;&#12534;&#38306;&#12402;&#12356;&#12427;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>heat</td><td>&#36196;</td><td>&#12486;&#12531;&#12471;&#12519;&#12531;AGEAGE&#8593;&#8593;</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:035</td><td>&#31070;&#30033;&#12356;&#12362;&#12426;</td><td>&#12487;&#12451;&#12501;&#12455;&#12531;&#12480;&#12540;</td><td>eco</td><td>&#32209;</td><td>&#12499;&#12502;&#12522;&#12458;&#12501;&#12451;&#12523;</td><td>def_buff_1 (def_buff)</td><td>label: (1)
 role: default_effect
 target: [&quot;self&quot;]
 trigger: {&quot;event&quot;: &quot;link_holding&quot;}
@@ -447,28 +447,28 @@ target: [&quot;self&quot;]
 trigger: {&quot;minimum_matching_linked_station_count&quot;: 2}
 scaling: {&quot;basis&quot;: &quot;linked_station_or_route_name_contains&quot;, &quot;keyword&quot;: &quot;?&quot;}
 availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU??&quot;, &quot;vu_only&quot;: true}
-activation: いつでもアクティブ
-raw: (2)駅名か路線名に「本」がつく駅に2駅以上リンクしている場合、追加でDEFが増加 駅メモ内に登録されている名称で、「本」を含む駅・路線(廃駅・廃路線も対象)</td><td>※VU生效</td><td>※VU生效</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:036</td><td>蓮台寺ミオ</td><td>サポーター</td><td>cool</td><td>青</td><td>スタンドイン</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:037</td><td>美談みこと</td><td>サポーター</td><td>eco</td><td>桃</td><td>惻隠之心</td><td>atk_buff</td><td>target: [&quot;self&quot;]
+activation: &#12356;&#12388;&#12391;&#12418;&#12450;&#12463;&#12486;&#12451;&#12502;
+raw: (2)&#39365;&#21517;&#12363;&#36335;&#32218;&#21517;&#12395;&#12300;&#26412;&#12301;&#12364;&#12388;&#12367;&#39365;&#12395;2&#39365;&#20197;&#19978;&#12522;&#12531;&#12463;&#12375;&#12390;&#12356;&#12427;&#22580;&#21512;&#12289;&#36861;&#21152;&#12391;DEF&#12364;&#22679;&#21152; &#39365;&#12513;&#12514;&#20869;&#12395;&#30331;&#37682;&#12373;&#12428;&#12390;&#12356;&#12427;&#21517;&#31216;&#12391;&#12289;&#12300;&#26412;&#12301;&#12434;&#21547;&#12416;&#39365;&#12539;&#36335;&#32218;(&#24259;&#39365;&#12539;&#24259;&#36335;&#32218;&#12418;&#23550;&#35937;)</td><td>&#8251;VU&#29983;&#25928;</td><td>&#8251;VU&#29983;&#25928;</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:036</td><td>&#34030;&#21488;&#23546;&#12511;&#12458;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>cool</td><td>&#38738;</td><td>&#12473;&#12479;&#12531;&#12489;&#12452;&#12531;</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:037</td><td>&#32654;&#35527;&#12415;&#12371;&#12392;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>eco</td><td>&#26691;</td><td>&#24827;&#38560;&#20043;&#24515;</td><td>atk_buff</td><td>target: [&quot;self&quot;]
 filters: {&quot;type&quot;: &quot;defender&quot;}
 availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;], &quot;vu_only&quot;: false}
-activation: いつでもアクティブ
-raw: ディフェンダーのATK増加</td><td>ATK +10%</td><td>ATK +12%</td><td>70%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:038</td><td>美談くに</td><td>ディフェンダー</td><td>eco</td><td>桃</td><td>シスターガード</td><td>hp_recovery</td><td>trigger: {&quot;hp_threshold_percent&quot;: 30, &quot;operator&quot;: &quot;lte&quot;}
+activation: &#12356;&#12388;&#12391;&#12418;&#12450;&#12463;&#12486;&#12451;&#12502;
+raw: &#12487;&#12451;&#12501;&#12455;&#12531;&#12480;&#12540;&#12398;ATK&#22679;&#21152;</td><td>ATK +10%</td><td>ATK +12%</td><td>70%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:038</td><td>&#32654;&#35527;&#12367;&#12395;</td><td>&#12487;&#12451;&#12501;&#12455;&#12531;&#12480;&#12540;</td><td>eco</td><td>&#26691;</td><td>&#12471;&#12473;&#12479;&#12540;&#12460;&#12540;&#12489;</td><td>hp_recovery</td><td>trigger: {&quot;hp_threshold_percent&quot;: 30, &quot;operator&quot;: &quot;lte&quot;}
 availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;], &quot;vu_only&quot;: false}
-activation: マスターにおまかせ
-raw: のHPが30%以下になったとき、みことのHPを回復しカウンター みこと リブート時は発動しない</td><td>HP回復 20</td><td>HP回復 30</td><td>Lv5/Lv15/Lv30/Lv50: 25%
-Lv60/Lv70/Lv80: 35%</td><td>30分</td><td>2時間</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:039</td><td>尺土るる</td><td>トリックスター</td><td>heat</td><td>黄</td><td>るるだけのお時間♪</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:040</td><td>白鳥ハル</td><td>アタッカー</td><td>heat</td><td>青</td><td>ウィルパワー</td><td>skill_disable_1 (skill_disable)</td><td>label: (1)
+activation: &#12510;&#12473;&#12479;&#12540;&#12395;&#12362;&#12414;&#12363;&#12379;
+raw: &#12398;HP&#12364;30%&#20197;&#19979;&#12395;&#12394;&#12387;&#12383;&#12392;&#12365;&#12289;&#12415;&#12371;&#12392;&#12398;HP&#12434;&#22238;&#24489;&#12375;&#12459;&#12454;&#12531;&#12479;&#12540; &#12415;&#12371;&#12392; &#12522;&#12502;&#12540;&#12488;&#26178;&#12399;&#30330;&#21205;&#12375;&#12394;&#12356;</td><td>HP&#22238;&#24489; 20</td><td>HP&#22238;&#24489; 30</td><td>Lv5/Lv15/Lv30/Lv50: 25%
+Lv60/Lv70/Lv80: 35%</td><td>30&#20998;</td><td>2&#26178;&#38291;</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:039</td><td>&#23610;&#22303;&#12427;&#12427;</td><td>&#12488;&#12522;&#12483;&#12463;&#12473;&#12479;&#12540;</td><td>heat</td><td>&#40644;</td><td>&#12427;&#12427;&#12384;&#12369;&#12398;&#12362;&#26178;&#38291;&#9834;</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+<tr><td>original:040</td><td>&#30333;&#40165;&#12495;&#12523;</td><td>&#12450;&#12479;&#12483;&#12459;&#12540;</td><td>heat</td><td>&#38738;</td><td>&#12454;&#12451;&#12523;&#12497;&#12527;&#12540;</td><td>skill_disable_1 (skill_disable)</td><td>label: (1)
 role: default_effect
 target: [&quot;team_all&quot;]
-filters: {&quot;disabled_skill_target&quot;: &quot;スキル無効化&quot;, &quot;type&quot;: &quot;supporter&quot;}
+filters: {&quot;disabled_skill_target&quot;: &quot;&#12473;&#12461;&#12523;&#28961;&#21177;&#21270;&quot;, &quot;type&quot;: &quot;supporter&quot;}
 trigger: {&quot;access_direction&quot;: &quot;active&quot;, &quot;event_hint&quot;: &quot;access&quot;}
 availability: {&quot;levels&quot;: [&quot;5&quot;, &quot;15&quot;, &quot;30&quot;, &quot;50&quot;, &quot;60&quot;, &quot;70&quot;, &quot;80&quot;, &quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;vu_only&quot;: false}
-activation: いつでもアクティブ
-raw: (1)アクセスしたとき、相手及び自編成のサポーターのスキル無効化</td><td>スキル無効化</td><td>スキル無効化</td><td>Lv5: 10%
+activation: &#12356;&#12388;&#12391;&#12418;&#12450;&#12463;&#12486;&#12451;&#12502;
+raw: (1)&#12450;&#12463;&#12475;&#12473;&#12375;&#12383;&#12392;&#12365;&#12289;&#30456;&#25163;&#21450;&#12403;&#33258;&#32232;&#25104;&#12398;&#12469;&#12509;&#12540;&#12479;&#12540;&#12398;&#12473;&#12461;&#12523;&#28961;&#21177;&#21270;</td><td>&#12473;&#12461;&#12523;&#28961;&#21177;&#21270;</td><td>&#12473;&#12461;&#12523;&#28961;&#21177;&#21270;</td><td>Lv5: 10%
 Lv15: 15%
 Lv30: 20%
 Lv50: 25%
@@ -478,16 +478,16 @@ Lv80/Lv92/Lv96/Lv100: 40%</td><td></td><td></td><td>activation_probability_boost
 role: additional_effect
 target: [&quot;team_all&quot;]
 filters: {&quot;exclude_self&quot;: true, &quot;type&quot;: &quot;supporter&quot;}
-availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU生效&quot;, &quot;vu_only&quot;: true}
-activation: いつでもアクティブ
-raw: (2)自身を除く編成内の誰かがリンクしている場合、発動率が追加で増加 サポーター は無効化されない 以外</td><td>※VU生效</td><td>※VU生效</td><td>Lv92/Lv96: (1)40% (2)x%
+availability: {&quot;levels&quot;: [&quot;92&quot;, &quot;96&quot;, &quot;100&quot;], &quot;note&quot;: &quot;VU&#29983;&#25928;&quot;, &quot;vu_only&quot;: true}
+activation: &#12356;&#12388;&#12391;&#12418;&#12450;&#12463;&#12486;&#12451;&#12502;
+raw: (2)&#33258;&#36523;&#12434;&#38500;&#12367;&#32232;&#25104;&#20869;&#12398;&#35504;&#12363;&#12364;&#12522;&#12531;&#12463;&#12375;&#12390;&#12356;&#12427;&#22580;&#21512;&#12289;&#30330;&#21205;&#29575;&#12364;&#36861;&#21152;&#12391;&#22679;&#21152; &#12469;&#12509;&#12540;&#12479;&#12540; &#12399;&#28961;&#21177;&#21270;&#12373;&#12428;&#12394;&#12356; &#20197;&#22806;</td><td>&#8251;VU&#29983;&#25928;</td><td>&#8251;VU&#29983;&#25928;</td><td>Lv92/Lv96: (1)40% (2)x%
 Lv100: (1)40% (2)25%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
 </tbody></table></div>
-<h2>Controller 判定</h2>
+<h2>Controller &#21028;&#23450;</h2>
 <ul>
-<li>本报告中的 <code>needs_manual_review</code> 主要来自样本阶段默认复核标记，不代表全部解析失败。</li>
-<li>若同类 review reason 在后续批次重复出现，应优先调整 parser 规则，再考虑 LLM snippet。</li>
-<li>本批次输出用于 Step1 数据读取，不启动 solver。</li>
+<li>&#26412;&#25253;&#21578;&#20013;&#30340; <code>needs_manual_review</code> &#20027;&#35201;&#26469;&#33258;&#26679;&#26412;&#38454;&#27573;&#40664;&#35748;&#22797;&#26680;&#26631;&#35760;&#65292;&#19981;&#20195;&#34920;&#20840;&#37096;&#35299;&#26512;&#22833;&#36133;&#12290;</li>
+<li>&#33509;&#21516;&#31867; review reason &#22312;&#21518;&#32493;&#25209;&#27425;&#37325;&#22797;&#20986;&#29616;&#65292;&#24212;&#20248;&#20808;&#35843;&#25972; parser &#35268;&#21017;&#65292;&#20877;&#32771;&#34385; LLM snippet&#12290;</li>
+<li>&#26412;&#25209;&#27425;&#36755;&#20986;&#29992;&#20110; Step1 &#25968;&#25454;&#35835;&#21462;&#65292;&#19981;&#21551;&#21160; solver&#12290;</li>
 </ul>
-<p>generated_at: 2026-06-09T01:16:12.507649+09:00</p>
+<p>generated_at: 2026-06-09T01:21:02.012671+09:00</p>
 </body></html>

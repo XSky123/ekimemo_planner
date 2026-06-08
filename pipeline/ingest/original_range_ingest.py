@@ -90,6 +90,12 @@ def compact_report_json(value: Any) -> str:
     return str(value)
 
 
+def write_html_entity_report(path: Path, lines: list[str]) -> None:
+    """Write ASCII-only HTML so local viewers cannot mis-detect UTF-8."""
+    text = "\n".join(lines).encode("ascii", "xmlcharrefreplace").decode("ascii")
+    path.write_text(text, encoding="ascii")
+
+
 def compact_report_field(value: Any) -> str:
     if value in (None, "", [], {}):
         return ""
@@ -316,7 +322,7 @@ def write_html_report(
     )
     base.REPORT_DIR.mkdir(parents=True, exist_ok=True)
     path = base.REPORT_DIR / f"{output_stem(start, end)}_batch_review_zh.html"
-    path.write_text("\n".join(lines), encoding="utf-8")
+    write_html_entity_report(path, lines)
     return path
 
 
