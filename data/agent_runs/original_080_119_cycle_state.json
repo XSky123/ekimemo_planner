@@ -1,0 +1,107 @@
+{
+  "blocking_items": [
+    {
+      "component_id": "def_buff_1",
+      "condition_label": "(1)",
+      "denko_id": "original:091",
+      "effect_kind": "def_buff",
+      "name": "岩切よしの",
+      "reasons": [
+        "attribute_branch_effect_needs_review"
+      ],
+      "reasons_zh": [
+        "属性分支需要复查"
+      ]
+    },
+    {
+      "component_id": "def_debuff_2",
+      "condition_label": "(2)",
+      "denko_id": "original:091",
+      "effect_kind": "def_debuff",
+      "name": "岩切よしの",
+      "reasons": [
+        "condition_effect_mismatch_needs_review"
+      ],
+      "reasons_zh": [
+        "日文效果词与组件类型矛盾"
+      ]
+    },
+    {
+      "component_id": "damage_reduction_3",
+      "condition_label": "(3)",
+      "denko_id": "original:109",
+      "effect_kind": "damage_reduction",
+      "name": "小涌谷あすか",
+      "reasons": [
+        "attribute_branch_effect_needs_review"
+      ],
+      "reasons_zh": [
+        "属性分支需要复查"
+      ]
+    },
+    {
+      "component_id": "seasonal_damage_reduction_winter",
+      "condition_label": null,
+      "denko_id": "original:111",
+      "effect_kind": "damage_reduction",
+      "name": "糸魚川せつか",
+      "reasons": [
+        "condition_effect_mismatch_needs_review"
+      ],
+      "reasons_zh": [
+        "日文效果词与组件类型矛盾"
+      ]
+    },
+    {
+      "component_id": "seasonal_fixed_damage_summer",
+      "condition_label": null,
+      "denko_id": "original:111",
+      "effect_kind": "fixed_damage",
+      "name": "糸魚川せつか",
+      "reasons": [
+        "condition_effect_mismatch_needs_review"
+      ],
+      "reasons_zh": [
+        "日文效果词与组件类型矛盾"
+      ]
+    }
+  ],
+  "generated_at": "2026-06-09T01:37:43.961219+09:00",
+  "metrics": {
+    "blocking_item_count": 5,
+    "component_review_reason_counts": {
+      "attribute_branch_effect_needs_review": 2,
+      "component_semantics_need_review": 106,
+      "condition_effect_mismatch_needs_review": 3,
+      "condition_only_component_needs_review": 1
+    },
+    "skill_records": 40
+  },
+  "next_action": "spawn_batch_review_expert",
+  "parser_version": "detail_html_table_matrix.v8",
+  "paths": {
+    "denko_facts": "data/records/original_080_119_denko_facts.jsonl",
+    "observed_cases": [
+      "data\\observed_cases\\ingestion_cycle_review_rules_2026-06-07.jsonl",
+      "data\\observed_cases\\original_080_119_manual_parser_findings.jsonl",
+      "data\\observed_cases\\original_080_119_parser_resolution_2026-06-07.jsonl",
+      "data\\observed_cases\\original_080_119_parser_resolution_2026-06-07_round2.jsonl",
+      "data\\observed_cases\\original_120_163_manual_parser_findings.jsonl",
+      "data\\observed_cases\\original_120_163_parser_resolution_2026-06-07.jsonl",
+      "data\\observed_cases\\original_120_163_parser_resolution_2026-06-07_round2.jsonl",
+      "data\\observed_cases\\original_120_163_parser_resolution_2026-06-07_round3.jsonl",
+      "data\\observed_cases\\original_120_163_parser_resolution_2026-06-07_round4.jsonl"
+    ],
+    "report": "data\\reports\\original_080_119_batch_review_zh.html",
+    "review_queue": "data/review_queue/original_080_119_review_queue.jsonl",
+    "skill_facts": "data/records/original_080_119_skill_facts.jsonl"
+  },
+  "run_result": null,
+  "schema_version": 1,
+  "scope": {
+    "batch_size": 30,
+    "end": 119,
+    "pool": "original",
+    "start": 80
+  }
+}

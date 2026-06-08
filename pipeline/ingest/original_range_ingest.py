@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import html
 import json
+import re
 from collections import Counter
 from datetime import datetime
 from pathlib import Path
@@ -133,12 +134,64 @@ def component_value_report(component: dict[str, Any], level: str) -> str:
     return value.get("value_raw") or ""
 
 
+def component_label_number(component: dict[str, Any]) -> str | None:
+    label = component.get("condition_label")
+    if isinstance(label, str):
+        match = re.search(r"\d+", label)
+        if match:
+            return match.group(0)
+    component_id = component.get("component_id") or ""
+    match = re.search(r"_(\d+)$", component_id)
+    return match.group(1) if match else None
+
+
+def extract_numbered_probability(text: str, label_number: str | None) -> str:
+    if not label_number:
+        return text
+    marker = f"({label_number})"
+    start = text.find(marker)
+    if start < 0:
+        first_other = re.search(r"\s[\(（][1-5][\)）]", text)
+        if first_other:
+            return text[: first_other.start()].strip()
+        return text
+    remainder = text[start + len(marker) :].strip()
+    for other in range(1, 6):
+        if str(other) == label_number:
+            continue
+        next_marker = f" ({other})"
+        next_index = remainder.find(next_marker)
+        if next_index >= 0:
+            remainder = remainder[:next_index].strip()
+            break
+    return remainder
+
+
+def component_probability_text(component: dict[str, Any], probability: Any) -> str:
+    if not probability:
+        return ""
+    label_number = component_label_number(component)
+    if isinstance(probability, dict):
+        for key, value in probability.items():
+            if label_number and f"({label_number})" in str(key):
+                return "" if value == "-" else str(value)
+        if len(probability) == 1:
+            value = str(next(iter(probability.values())))
+            if label_number and "(" in value:
+                return extract_numbered_probability(value, label_number)
+            return value
+    text = compact_report_field(probability)
+    if label_number and "(" in text:
+        return extract_numbered_probability(text, label_number)
+    return text
+
+
 def component_field_by_level_report(component: dict[str, Any], field: str) -> str:
     values = component.get("values_by_denko_level") or {}
     grouped: dict[str, list[str]] = {}
     for level in REPORT_LEVEL_ORDER:
         value = values.get(level, {}).get(field)
-        text = compact_report_field(value)
+        text = component_probability_text(component, value) if field == "probability" else compact_report_field(value)
         if not text:
             continue
         label = "base" if level == "base" else f"Lv{level}"
@@ -232,7 +285,7 @@ def write_html_report(
         "<head>",
         '<meta charset="utf-8">',
         f"<title>Original {start}-{end} Ingestion Review</title>",
-        "<style>body{font-family:system-ui,sans-serif;line-height:1.5;margin:24px}table{border-collapse:collapse;width:100%;margin:12px 0 24px}th,td{border:1px solid #ccc;padding:6px 8px;vertical-align:top}th{background:#f5f5f5}code{background:#f6f8fa;padding:1px 4px}.table-scroll{overflow-x:auto}.component-matrix{font-size:12px;min-width:3600px}.component-matrix th,.component-matrix td{white-space:pre-wrap;min-width:120px;max-width:260px}.component-matrix .base-col{min-width:90px}.component-matrix .condition-col{min-width:260px;max-width:340px}</style>",
+        "<style>body{font-family:system-ui,sans-serif;line-height:1.5;margin:24px}table{border-collapse:collapse;width:100%;margin:12px 0 24px}th,td{border:1px solid #ccc;padding:6px 8px;vertical-align:top}th{background:#f5f5f5}code{background:#f6f8fa;padding:1px 4px}.table-scroll{overflow-x:auto}.component-table{font-size:12px;min-width:1800px}.component-table th,.component-table td{white-space:pre-wrap;min-width:90px;max-width:300px}.component-table .condition-col{min-width:260px;max-width:380px}.component-table .value-col{min-width:150px;max-width:240px}</style>",
         "</head><body>",
         f"<h1>Original {start}-{end} 数据读取报告</h1>",
         "<p>controller-first 执行：本批只使用脚本、缓存与确定性 parser；未调用 LLM。</p>",
@@ -275,38 +328,74 @@ def write_html_report(
             f"{len(batch)} records, {esc(dict(batch_classification))}</p>"
         )
 
-    lines.append("<h2>技能分量矩阵</h2>")
-    lines.append("<p>每个でんこ固定预留 5 个技能分量槽。一般技能只有 1-2 个分量，空槽表示当前 parser 没有识别到更多独立效果。</p>")
-    base_headers = ["denko_id", "name", "type", "attribute", "color", "skill"]
-    slot_fields = ["kind", "condition", "Lv30内容", "Lv50内容", "probability", "duration", "CD"]
-    header_cells = [f'<th class="base-col">{esc(header)}</th>' for header in base_headers]
-    for slot in range(1, COMPONENT_SLOT_COUNT + 1):
-        for field in slot_fields:
-            css_class = ' class="condition-col"' if field == "condition" else ""
-            header_cells.append(f"<th{css_class}>skill{slot}_{esc(field)}</th>")
-    header_cells.append('<th class="base-col">review_reasons</th>')
+    lines.append("<h2>技能分量表</h2>")
+    lines.append("<p>一行表示一个已识别的技能分量；不再展开空 skill slot。概率列按当前分量的 (1)/(2)/(3) label 单独显示。</p>")
+    headers = [
+        "denko_id",
+        "name",
+        "type",
+        "attribute",
+        "color",
+        "skill",
+        "component",
+        "label",
+        "role",
+        "kind",
+        "target",
+        "condition",
+        "Lv30内容",
+        "Lv50内容",
+        "Lv92内容",
+        "Lv96内容",
+        "Lv100内容",
+        "probability",
+        "duration",
+        "CD",
+        "review_reasons",
+    ]
+    header_cells = []
+    for header in headers:
+        css_class = ' class="condition-col"' if header == "condition" else ' class="value-col"' if header in {"Lv30内容", "Lv50内容", "Lv92内容", "Lv96内容", "Lv100内容", "probability"} else ""
+        header_cells.append(f"<th{css_class}>{esc(header)}</th>")
     lines.append('<div class="table-scroll">')
-    lines.append(f'<table class="component-matrix"><thead><tr>{"".join(header_cells)}</tr></thead><tbody>')
+    lines.append(f'<table class="component-table"><thead><tr>{"".join(header_cells)}</tr></thead><tbody>')
     for denko in denko_rows:
         ident = denko["identity"]
         skill = by_id.get(ident["denko_id"], {})
-        components = list(skill.get("skill_components") or [])[:COMPONENT_SLOT_COUNT]
-        component_cells = []
-        for slot_index in range(COMPONENT_SLOT_COUNT):
-            component = components[slot_index] if slot_index < len(components) else None
-            component_cells.extend(f"<td>{esc(cell)}</td>" for cell in component_slot_cells(component))
-        lines.append(
-            "<tr>"
-            f"<td>{esc(ident['denko_id'])}</td>"
-            f"<td>{esc(ident['name'])}</td>"
-            f"<td>{esc(ident.get('type'))}</td>"
-            f"<td>{esc(ident.get('attribute'))}</td>"
-            f"<td>{esc(ident.get('color'))}</td>"
-            f"<td>{esc(skill.get('skill_name'))}</td>"
-            f"{''.join(component_cells)}"
-            f"<td>{esc(skill.get('record_meta', {}).get('review_reasons'))}</td>"
-            "</tr>"
-        )
+        components = list(skill.get("skill_components") or [])
+        if not components:
+            components = [None]
+        for component in components:
+            kind = ""
+            if component:
+                kind = compact_report_json(component.get("component_id") or component.get("effect_kind"))
+                if component.get("component_id") and component.get("effect_kind") != component.get("component_id"):
+                    kind = f"{component.get('component_id')} ({component.get('effect_kind')})"
+            lines.append(
+                "<tr>"
+                f"<td>{esc(ident['denko_id'])}</td>"
+                f"<td>{esc(ident['name'])}</td>"
+                f"<td>{esc(ident.get('type'))}</td>"
+                f"<td>{esc(ident.get('attribute'))}</td>"
+                f"<td>{esc(ident.get('color'))}</td>"
+                f"<td>{esc(skill.get('skill_name'))}</td>"
+                f"<td>{esc(kind)}</td>"
+                f"<td>{esc(component.get('condition_label') if component else '')}</td>"
+                f"<td>{esc(component.get('effect_role') if component else '')}</td>"
+                f"<td>{esc(component.get('effect_kind') if component else '')}</td>"
+                f"<td>{esc(compact_report_json(component.get('target_scope')) if component else '')}</td>"
+                f"<td>{esc(component_condition_report(component) if component else '')}</td>"
+                f"<td>{esc(component_value_report(component, '30') if component else '')}</td>"
+                f"<td>{esc((component_value_report(component, '50') or component_value_report(component, 'base')) if component else '')}</td>"
+                f"<td>{esc(component_value_report(component, '92') if component else '')}</td>"
+                f"<td>{esc(component_value_report(component, '96') if component else '')}</td>"
+                f"<td>{esc(component_value_report(component, '100') if component else '')}</td>"
+                f"<td>{esc(component_field_by_level_report(component, 'probability') if component else '')}</td>"
+                f"<td>{esc(component_field_by_level_report(component, 'duration') if component else '')}</td>"
+                f"<td>{esc(component_field_by_level_report(component, 'cooldown') if component else '')}</td>"
+                f"<td>{esc(component.get('review_reasons') if component else skill.get('record_meta', {}).get('review_reasons'))}</td>"
+                "</tr>"
+            )
     lines.extend(
         [
             "</tbody></table></div>",

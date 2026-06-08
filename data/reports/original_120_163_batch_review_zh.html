@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <title>Original 120-163 Ingestion Review</title>
-<style>body{font-family:system-ui,sans-serif;line-height:1.5;margin:24px}table{border-collapse:collapse;width:100%;margin:12px 0 24px}th,td{border:1px solid #ccc;padding:6px 8px;vertical-align:top}th{background:#f5f5f5}code{background:#f6f8fa;padding:1px 4px}.table-scroll{overflow-x:auto}.component-matrix{font-size:12px;min-width:3600px}.component-matrix th,.component-matrix td{white-space:pre-wrap;min-width:120px;max-width:260px}.component-matrix .base-col{min-width:90px}.component-matrix .condition-col{min-width:260px;max-width:340px}</style>
+<style>body{font-family:system-ui,sans-serif;line-height:1.5;margin:24px}table{border-collapse:collapse;width:100%;margin:12px 0 24px}th,td{border:1px solid #ccc;padding:6px 8px;vertical-align:top}th{background:#f5f5f5}code{background:#f6f8fa;padding:1px 4px}.table-scroll{overflow-x:auto}.component-table{font-size:12px;min-width:1800px}.component-table th,.component-table td{white-space:pre-wrap;min-width:90px;max-width:300px}.component-table .condition-col{min-width:260px;max-width:380px}.component-table .value-col{min-width:150px;max-width:240px}</style>
 </head><body>
 <h1>Original 120-163 &#25968;&#25454;&#35835;&#21462;&#25253;&#21578;</h1>
 <p>controller-first &#25191;&#34892;&#65306;&#26412;&#25209;&#21482;&#20351;&#29992;&#33050;&#26412;&#12289;&#32531;&#23384;&#19982;&#30830;&#23450;&#24615; parser&#65307;&#26410;&#35843;&#29992; LLM&#12290;</p>
@@ -23,37 +23,38 @@
 <h2>&#20998;&#25209;&#22797;&#30424;</h2>
 <p><strong>original:120 - original:149</strong>: 30 records, {&#x27;needs_manual_review&#x27;: 27, &#x27;needs_llm_snippet&#x27;: 3}</p>
 <p><strong>original:150 - original:163</strong>: 14 records, {&#x27;needs_manual_review&#x27;: 14}</p>
-<h2>&#25216;&#33021;&#20998;&#37327;&#30697;&#38453;</h2>
-<p>&#27599;&#20010;&#12391;&#12435;&#12371;&#22266;&#23450;&#39044;&#30041; 5 &#20010;&#25216;&#33021;&#20998;&#37327;&#27133;&#12290;&#19968;&#33324;&#25216;&#33021;&#21482;&#26377; 1-2 &#20010;&#20998;&#37327;&#65292;&#31354;&#27133;&#34920;&#31034;&#24403;&#21069; parser &#27809;&#26377;&#35782;&#21035;&#21040;&#26356;&#22810;&#29420;&#31435;&#25928;&#26524;&#12290;</p>
+<h2>&#25216;&#33021;&#20998;&#37327;&#34920;</h2>
+<p>&#19968;&#34892;&#34920;&#31034;&#19968;&#20010;&#24050;&#35782;&#21035;&#30340;&#25216;&#33021;&#20998;&#37327;&#65307;&#19981;&#20877;&#23637;&#24320;&#31354; skill slot&#12290;&#27010;&#29575;&#21015;&#25353;&#24403;&#21069;&#20998;&#37327;&#30340; (1)/(2)/(3) label &#21333;&#29420;&#26174;&#31034;&#12290;</p>
 <div class="table-scroll">
-<table class="component-matrix"><thead><tr><th class="base-col">denko_id</th><th class="base-col">name</th><th class="base-col">type</th><th class="base-col">attribute</th><th class="base-col">color</th><th class="base-col">skill</th><th>skill1_kind</th><th class="condition-col">skill1_condition</th><th>skill1_Lv30&#20869;&#23481;</th><th>skill1_Lv50&#20869;&#23481;</th><th>skill1_probability</th><th>skill1_duration</th><th>skill1_CD</th><th>skill2_kind</th><th class="condition-col">skill2_condition</th><th>skill2_Lv30&#20869;&#23481;</th><th>skill2_Lv50&#20869;&#23481;</th><th>skill2_probability</th><th>skill2_duration</th><th>skill2_CD</th><th>skill3_kind</th><th class="condition-col">skill3_condition</th><th>skill3_Lv30&#20869;&#23481;</th><th>skill3_Lv50&#20869;&#23481;</th><th>skill3_probability</th><th>skill3_duration</th><th>skill3_CD</th><th>skill4_kind</th><th class="condition-col">skill4_condition</th><th>skill4_Lv30&#20869;&#23481;</th><th>skill4_Lv50&#20869;&#23481;</th><th>skill4_probability</th><th>skill4_duration</th><th>skill4_CD</th><th>skill5_kind</th><th class="condition-col">skill5_condition</th><th>skill5_Lv30&#20869;&#23481;</th><th>skill5_Lv50&#20869;&#23481;</th><th>skill5_probability</th><th>skill5_duration</th><th>skill5_CD</th><th class="base-col">review_reasons</th></tr></thead><tbody>
-<tr><td>original:120</td><td>&#26032;&#34276;&#21407;&#12412;&#12383;&#12435;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>eco</td><td>&#27225;</td><td>&#35352;&#24565;&#12398;&#37444;&#36947;&#20889;&#30495;</td><td>def_buff</td><td>target: [&quot;team_all&quot;]
+<table class="component-table"><thead><tr><th>denko_id</th><th>name</th><th>type</th><th>attribute</th><th>color</th><th>skill</th><th>component</th><th>label</th><th>role</th><th>kind</th><th>target</th><th class="condition-col">condition</th><th class="value-col">Lv30&#20869;&#23481;</th><th class="value-col">Lv50&#20869;&#23481;</th><th class="value-col">Lv92&#20869;&#23481;</th><th class="value-col">Lv96&#20869;&#23481;</th><th class="value-col">Lv100&#20869;&#23481;</th><th class="value-col">probability</th><th>duration</th><th>CD</th><th>review_reasons</th></tr></thead><tbody>
+<tr><td>original:120</td><td>&#26032;&#34276;&#21407;&#12412;&#12383;&#12435;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>eco</td><td>&#27225;</td><td>&#35352;&#24565;&#12398;&#37444;&#36947;&#20889;&#30495;</td><td>def_buff</td><td></td><td></td><td>def_buff</td><td>[&quot;team_all&quot;]</td><td>target: [&quot;team_all&quot;]
 filters: {&quot;attribute&quot;: &quot;eco&quot;}
 scaling: {&quot;basis&quot;: &quot;team_each_denko_max_link_time_sum&quot;}
 activation: &#12356;&#12388;&#12391;&#12418;&#12450;&#12463;&#12486;&#12451;&#12502;
-raw: &#32232;&#25104;&#20869;&#21508;&#12391;&#12435;&#12371;&#12398;&#26368;&#12418;&#38263;&#12356;&#12522;&#12531;&#12463;&#26178;&#38291;&#12398;&#21512;&#35336;&#12395;&#12424;&#12426;&#32232;&#25104;&#20869;eco&#23646;&#24615;&#12398;DEF&#22679;&#21152;</td><td>DEF 0%&#65374;+12%</td><td>DEF 0%&#65374;+16%</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:121</td><td>&#29983;&#39378;&#12431;&#12363;&#12394;</td><td>&#12488;&#12522;&#12483;&#12463;&#12473;&#12479;&#12540;</td><td>cool</td><td>&#32043;</td><td>&#21476;&#20856;&#25991;&#23398;&#12395;&#24605;&#12356;&#12434;&#39347;&#12379;&#12390;</td><td>exp_gain</td><td>target: [&quot;accessing_denko&quot;]
+raw: &#32232;&#25104;&#20869;&#21508;&#12391;&#12435;&#12371;&#12398;&#26368;&#12418;&#38263;&#12356;&#12522;&#12531;&#12463;&#26178;&#38291;&#12398;&#21512;&#35336;&#12395;&#12424;&#12426;&#32232;&#25104;&#20869;eco&#23646;&#24615;&#12398;DEF&#22679;&#21152;</td><td>DEF 0%&#65374;+12%</td><td>DEF 0%&#65374;+16%</td><td></td><td></td><td></td><td>100%</td><td></td><td></td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:121</td><td>&#29983;&#39378;&#12431;&#12363;&#12394;</td><td>&#12488;&#12522;&#12483;&#12463;&#12473;&#12479;&#12540;</td><td>cool</td><td>&#32043;</td><td>&#21476;&#20856;&#25991;&#23398;&#12395;&#24605;&#12356;&#12434;&#39347;&#12379;&#12390;</td><td>exp_gain</td><td></td><td></td><td>exp_gain</td><td>[&quot;accessing_denko&quot;]</td><td>target: [&quot;accessing_denko&quot;]
 trigger: {&quot;access_direction&quot;: &quot;active&quot;, &quot;event_hint&quot;: &quot;access&quot;}
 scaling: {&quot;basis&quot;: &quot;same_theme_film_wearer_count&quot;, &quot;max_count&quot;: 7}
 activation: &#12356;&#12388;&#12391;&#12418;&#12450;&#12463;&#12486;&#12451;&#12502;
-raw: &#32232;&#25104;&#20869;&#12395;&#21516;&#12376;&#12486;&#12540;&#12510;&#12398;&#12501;&#12451;&#12523;&#12512;&#12434;&#30528;&#12383;&#12391;&#12435;&#12371;&#12364;&#12356;&#12427;&#12392;&#12450;&#12463;&#12475;&#12473;&#12375;&#12383;&#12391;&#12435;&#12371;&#12395;&#32076;&#39443;&#20516;&#20184;&#19982; &#8251;&#12431;&#12363;&#12394;&#12392;&#21516;&#12376;&#12501;&#12451;&#12523;&#12512;&#12391;&#12394;&#12367;&#12392;&#12418;&#12424;&#12356; &#21516;&#31278;&#12398;&#12521;&#12483;&#12500;&#12531;&#12464;&#12434;&#12388;&#12369;&#12383;&#12391;&#12435;&#12371;&#12398;&#26368;&#22823;&#25968;(&#19978;&#38480;7&#20307;)&#12395;&#27604;&#20363;&#12375;&#12390;&#22679;&#21152;</td><td>&#32076;&#39443;&#20516;&#20184;&#19982; 0&#65374;210</td><td>&#32076;&#39443;&#20516;&#20184;&#19982; 0&#65374;240</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:122</td><td>&#23567;&#27996;&#12414;&#12356;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>eco</td><td>&#32209;</td><td>&#33258;&#20998;&#12434;&#22793;&#12360;&#12383;&#12356;&#12435;&#12391;&#12377;&#8230;&#8230;&#65281;</td><td>atk_buff_1 (atk_buff)</td><td>label: (1)
+raw: &#32232;&#25104;&#20869;&#12395;&#21516;&#12376;&#12486;&#12540;&#12510;&#12398;&#12501;&#12451;&#12523;&#12512;&#12434;&#30528;&#12383;&#12391;&#12435;&#12371;&#12364;&#12356;&#12427;&#12392;&#12450;&#12463;&#12475;&#12473;&#12375;&#12383;&#12391;&#12435;&#12371;&#12395;&#32076;&#39443;&#20516;&#20184;&#19982; &#8251;&#12431;&#12363;&#12394;&#12392;&#21516;&#12376;&#12501;&#12451;&#12523;&#12512;&#12391;&#12394;&#12367;&#12392;&#12418;&#12424;&#12356; &#21516;&#31278;&#12398;&#12521;&#12483;&#12500;&#12531;&#12464;&#12434;&#12388;&#12369;&#12383;&#12391;&#12435;&#12371;&#12398;&#26368;&#22823;&#25968;(&#19978;&#38480;7&#20307;)&#12395;&#27604;&#20363;&#12375;&#12390;&#22679;&#21152;</td><td>&#32076;&#39443;&#20516;&#20184;&#19982; 0&#65374;210</td><td>&#32076;&#39443;&#20516;&#20184;&#19982; 0&#65374;240</td><td></td><td></td><td></td><td>100%</td><td></td><td></td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:122</td><td>&#23567;&#27996;&#12414;&#12356;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>eco</td><td>&#32209;</td><td>&#33258;&#20998;&#12434;&#22793;&#12360;&#12383;&#12356;&#12435;&#12391;&#12377;&#8230;&#8230;&#65281;</td><td>atk_buff_1 (atk_buff)</td><td>(1)</td><td>default_effect</td><td>atk_buff</td><td>[&quot;team_all&quot;]</td><td>label: (1)
 role: default_effect
 target: [&quot;team_all&quot;]
 filters: {&quot;attribute&quot;: &quot;eco&quot;}
 activation: &#12510;&#12473;&#12479;&#12540;&#12395;&#12362;&#12414;&#12363;&#12379;
-raw: (1)&#32232;&#25104;&#20869;eco&#23646;&#24615;&#12391;&#12435;&#12371;&#12398;ATK&#22679;&#21152;</td><td>ATK +12%</td><td>ATK +14%</td><td>100%</td><td>45&#20998;</td><td>2&#26178;&#38291;15&#20998;</td><td>atk_buff_2 (atk_buff)</td><td>label: (2)
+raw: (1)&#32232;&#25104;&#20869;eco&#23646;&#24615;&#12391;&#12435;&#12371;&#12398;ATK&#22679;&#21152;</td><td>ATK +12%</td><td>ATK +14%</td><td></td><td></td><td></td><td>100%</td><td>45&#20998;</td><td>2&#26178;&#38291;15&#20998;</td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:122</td><td>&#23567;&#27996;&#12414;&#12356;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>eco</td><td>&#32209;</td><td>&#33258;&#20998;&#12434;&#22793;&#12360;&#12383;&#12356;&#12435;&#12391;&#12377;&#8230;&#8230;&#65281;</td><td>atk_buff_2 (atk_buff)</td><td>(2)</td><td>additional_effect</td><td>atk_buff</td><td>[&quot;team_all&quot;]</td><td>label: (2)
 role: additional_effect
 target: [&quot;team_all&quot;]
 filters: {&quot;type&quot;: &quot;defender&quot;}
 activation: &#12510;&#12473;&#12479;&#12540;&#12395;&#12362;&#12414;&#12363;&#12379;
-raw: (2)&#30456;&#25163;&#12364; &#12398;&#22580;&#21512;&#12399;(1)&#12395;&#36861;&#21152;&#12391;ATK&#22679;&#21152; &#12487;&#12451;&#12501;&#12455;&#12531;&#12480;&#12540;</td><td>ATK +6%</td><td>ATK +7%</td><td>100%</td><td>45&#20998;</td><td>2&#26178;&#38291;15&#20998;</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:123</td><td>&#35563;&#26089;&#12385;&#12393;&#12426;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>heat</td><td>&#36196;</td><td>&#12354;&#12383;&#12375;&#12375;&#12363;&#21213;&#12383;&#12435;&#65281;</td><td>atk_buff_1 (atk_buff)</td><td>label: (1)
+raw: (2)&#30456;&#25163;&#12364; &#12398;&#22580;&#21512;&#12399;(1)&#12395;&#36861;&#21152;&#12391;ATK&#22679;&#21152; &#12487;&#12451;&#12501;&#12455;&#12531;&#12480;&#12540;</td><td>ATK +6%</td><td>ATK +7%</td><td></td><td></td><td></td><td>100%</td><td>45&#20998;</td><td>2&#26178;&#38291;15&#20998;</td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:123</td><td>&#35563;&#26089;&#12385;&#12393;&#12426;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>heat</td><td>&#36196;</td><td>&#12354;&#12383;&#12375;&#12375;&#12363;&#21213;&#12383;&#12435;&#65281;</td><td>atk_buff_1 (atk_buff)</td><td>(1)</td><td>default_effect</td><td>atk_buff</td><td>[&quot;team_all&quot;]</td><td>label: (1)
 role: default_effect
 target: [&quot;team_all&quot;]
 filters: {&quot;attribute&quot;: &quot;heat&quot;}
 activation: &#12510;&#12473;&#12479;&#12540;&#12395;&#12362;&#12414;&#12363;&#12379;
-raw: (1)&#32232;&#25104;&#20869;heat&#23646;&#24615;&#12398;ATK&#22679;&#21152;</td><td>ATK +6%</td><td>ATK +7%</td><td>100%</td><td>Lv5: 30&#20998;
+raw: (1)&#32232;&#25104;&#20869;heat&#23646;&#24615;&#12398;ATK&#22679;&#21152;</td><td>ATK +6%</td><td>ATK +7%</td><td></td><td></td><td></td><td>100%</td><td>Lv5: 30&#20998;
 Lv15: 35&#20998;
 Lv30: 40&#20998;
 Lv50: 45&#20998;
@@ -65,12 +66,13 @@ Lv30: 2&#26178;&#38291;20&#20998;
 Lv50: 2&#26178;&#38291;15&#20998;
 Lv60: 2&#26178;&#38291;10&#20998;
 Lv70: 2&#26178;&#38291;5&#20998;
-Lv80: 2&#26178;&#38291;</td><td>atk_buff_2 (atk_buff)</td><td>label: (2)
+Lv80: 2&#26178;&#38291;</td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:123</td><td>&#35563;&#26089;&#12385;&#12393;&#12426;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>heat</td><td>&#36196;</td><td>&#12354;&#12383;&#12375;&#12375;&#12363;&#21213;&#12383;&#12435;&#65281;</td><td>atk_buff_2 (atk_buff)</td><td>(2)</td><td>additional_effect</td><td>atk_buff</td><td>[&quot;team_all&quot;]</td><td>label: (2)
 role: additional_effect
 target: [&quot;team_all&quot;]
 scaling: {&quot;basis&quot;: &quot;max_damage_dealt_during_skill&quot;}
 activation: &#12510;&#12473;&#12479;&#12540;&#12395;&#12362;&#12414;&#12363;&#12379;
-raw: (2)&#30330;&#21205;&#20013;&#12398;&#26368;&#22823;&#19982;&#12480;&#12513;&#12540;&#12472;&#20516;&#12395;&#24540;&#12376;&#12390;&#36861;&#21152;&#12391;ATK&#22679;&#21152;</td><td>ATK 0%&#65374;+12%</td><td>ATK 0%&#65374;+14%</td><td>100%</td><td>Lv5: 30&#20998;
+raw: (2)&#30330;&#21205;&#20013;&#12398;&#26368;&#22823;&#19982;&#12480;&#12513;&#12540;&#12472;&#20516;&#12395;&#24540;&#12376;&#12390;&#36861;&#21152;&#12391;ATK&#22679;&#21152;</td><td>ATK 0%&#65374;+12%</td><td>ATK 0%&#65374;+14%</td><td></td><td></td><td></td><td>100%</td><td>Lv5: 30&#20998;
 Lv15: 35&#20998;
 Lv30: 40&#20998;
 Lv50: 45&#20998;
@@ -82,12 +84,12 @@ Lv30: 2&#26178;&#38291;20&#20998;
 Lv50: 2&#26178;&#38291;15&#20998;
 Lv60: 2&#26178;&#38291;10&#20998;
 Lv70: 2&#26178;&#38291;5&#20998;
-Lv80: 2&#26178;&#38291;</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:124</td><td>&#27178;&#27996;&#12415;&#12385;&#12427;</td><td>&#12487;&#12451;&#12501;&#12455;&#12531;&#12480;&#12540;</td><td>cool</td><td>&#26691;</td><td>&#12487;&#12540;&#12488;&#12473;&#12509;&#12483;&#12488;&#35519;&#26619;&#21147;</td><td>def_buff_1 (def_buff)</td><td>label: (1)
+Lv80: 2&#26178;&#38291;</td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:124</td><td>&#27178;&#27996;&#12415;&#12385;&#12427;</td><td>&#12487;&#12451;&#12501;&#12455;&#12531;&#12480;&#12540;</td><td>cool</td><td>&#26691;</td><td>&#12487;&#12540;&#12488;&#12473;&#12509;&#12483;&#12488;&#35519;&#26619;&#21147;</td><td>def_buff_1 (def_buff)</td><td>(1)</td><td>default_effect</td><td>def_buff</td><td>[&quot;self&quot;]</td><td>label: (1)
 role: default_effect
 target: [&quot;self&quot;]
 activation: &#12510;&#12473;&#12479;&#12540;&#12395;&#12362;&#12414;&#12363;&#12379;
-raw: (1)&#33258;&#36523;&#12398;DEF&#19978;&#26119;</td><td>DEF +12%</td><td>DEF +14%</td><td>100%</td><td>Lv5: 30&#20998;
+raw: (1)&#33258;&#36523;&#12398;DEF&#19978;&#26119;</td><td>DEF +12%</td><td>DEF +14%</td><td></td><td></td><td></td><td>100%</td><td>Lv5: 30&#20998;
 Lv15: 35&#20998;
 Lv30: 40&#20998;
 Lv50: 45&#20998;
@@ -99,12 +101,13 @@ Lv30: 3&#26178;&#38291;20&#20998;
 Lv50: 3&#26178;&#38291;15&#20998;
 Lv60: 3&#26178;&#38291;10&#20998;
 Lv70: 3&#26178;&#38291;5&#20998;
-Lv80: 3&#26178;&#38291;</td><td>def_buff_2 (def_buff)</td><td>label: (2)
+Lv80: 3&#26178;&#38291;</td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:124</td><td>&#27178;&#27996;&#12415;&#12385;&#12427;</td><td>&#12487;&#12451;&#12501;&#12455;&#12531;&#12480;&#12540;</td><td>cool</td><td>&#26691;</td><td>&#12487;&#12540;&#12488;&#12473;&#12509;&#12483;&#12488;&#35519;&#26619;&#21147;</td><td>def_buff_2 (def_buff)</td><td>(2)</td><td>additional_effect</td><td>def_buff</td><td>[&quot;self&quot;]</td><td>label: (2)
 role: additional_effect
 target: [&quot;self&quot;]
 trigger: {&quot;access_direction&quot;: &quot;received&quot;, &quot;event_hint&quot;: &quot;accessed&quot;}
 activation: &#12510;&#12473;&#12479;&#12540;&#12395;&#12362;&#12414;&#12363;&#12379;
-raw: (2)&#21069;&#22238;&#12398;&#33258;&#36523;&#12398;&#34987;&#12450;&#12463;&#12475;&#12473;&#12363;&#12425;2&#20998;&#20197;&#20869;&#12398;&#34987;&#12450;&#12463;&#12475;&#12473;&#26178;&#12395;(1)&#12395;&#36861;&#21152;&#12391;DEF&#19978;&#26119;</td><td>DEF +30%</td><td>DEF +35%</td><td>100%</td><td>Lv5: 30&#20998;
+raw: (2)&#21069;&#22238;&#12398;&#33258;&#36523;&#12398;&#34987;&#12450;&#12463;&#12475;&#12473;&#12363;&#12425;2&#20998;&#20197;&#20869;&#12398;&#34987;&#12450;&#12463;&#12475;&#12473;&#26178;&#12395;(1)&#12395;&#36861;&#21152;&#12391;DEF&#19978;&#26119;</td><td>DEF +30%</td><td>DEF +35%</td><td></td><td></td><td></td><td>100%</td><td>Lv5: 30&#20998;
 Lv15: 35&#20998;
 Lv30: 40&#20998;
 Lv50: 45&#20998;
@@ -116,41 +119,43 @@ Lv30: 3&#26178;&#38291;20&#20998;
 Lv50: 3&#26178;&#38291;15&#20998;
 Lv60: 3&#26178;&#38291;10&#20998;
 Lv70: 3&#26178;&#38291;5&#20998;
-Lv80: 3&#26178;&#38291;</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:125</td><td>&#38738;&#28023;&#24029;&#12375;&#12421;&#12363;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>cool</td><td>&#38738;</td><td>&#38972;&#12428;&#12427;&#12362;&#22985;&#12373;&#12435;</td><td>def_buff_1 (def_buff)</td><td>label: (1)
+Lv80: 3&#26178;&#38291;</td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:125</td><td>&#38738;&#28023;&#24029;&#12375;&#12421;&#12363;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>cool</td><td>&#38738;</td><td>&#38972;&#12428;&#12427;&#12362;&#22985;&#12373;&#12435;</td><td>def_buff_1 (def_buff)</td><td>(1)</td><td>default_effect</td><td>def_buff</td><td>[&quot;team_all&quot;]</td><td>label: (1)
 role: default_effect
 target: [&quot;team_all&quot;]
 activation: &#12356;&#12388;&#12391;&#12418;&#12450;&#12463;&#12486;&#12451;&#12502;
-raw: (1)DEF&#22679;&#21152;</td><td>DEF +4%</td><td>DEF +4.4%</td><td>75%</td><td></td><td></td><td>def_buff_2 (def_buff)</td><td>label: (2)
+raw: (1)DEF&#22679;&#21152;</td><td>DEF +4%</td><td>DEF +4.4%</td><td></td><td></td><td></td><td>75%</td><td></td><td></td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:125</td><td>&#38738;&#28023;&#24029;&#12375;&#12421;&#12363;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>cool</td><td>&#38738;</td><td>&#38972;&#12428;&#12427;&#12362;&#22985;&#12373;&#12435;</td><td>def_buff_2 (def_buff)</td><td>(2)</td><td>additional_effect</td><td>def_buff</td><td>[&quot;team_all&quot;]</td><td>label: (2)
 role: additional_effect
 target: [&quot;team_all&quot;]
 scaling: {&quot;basis&quot;: &quot;activation_count&quot;}
 activation: &#12356;&#12388;&#12391;&#12418;&#12450;&#12463;&#12486;&#12451;&#12502;
-raw: (2)&#30330;&#21205;&#22238;&#25968;&#12395;&#24540;&#12376;&#12390;&#36861;&#21152;&#12391;DEF&#22679;&#21152;</td><td>DEF 0%&#65374;+10.8%</td><td>DEF 0%&#65374;+12.6%</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:126</td><td>&#30333;&#20814;&#12418;&#12418;&#12394;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>eco</td><td>&#26691;</td><td>&#12418;&#12418;&#12394;&#12398;&#33457;&#21344;&#12356;</td><td>atk_buff_1 (atk_buff)</td><td>label: (1)
+raw: (2)&#30330;&#21205;&#22238;&#25968;&#12395;&#24540;&#12376;&#12390;&#36861;&#21152;&#12391;DEF&#22679;&#21152;</td><td>DEF 0%&#65374;+10.8%</td><td>DEF 0%&#65374;+12.6%</td><td></td><td></td><td></td><td>100%</td><td></td><td></td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:126</td><td>&#30333;&#20814;&#12418;&#12418;&#12394;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>eco</td><td>&#26691;</td><td>&#12418;&#12418;&#12394;&#12398;&#33457;&#21344;&#12356;</td><td>atk_buff_1 (atk_buff)</td><td>(1)</td><td>default_effect</td><td>atk_buff</td><td>[&quot;team_all&quot;]</td><td>label: (1)
 role: default_effect
 target: [&quot;team_all&quot;]
 filters: {&quot;attribute&quot;: &quot;eco&quot;}
 scaling: {&quot;max_count&quot;: 5}
 activation: &#12510;&#12473;&#12479;&#12540;&#12395;&#12362;&#12414;&#12363;&#12379;
-raw: (1)&#32232;&#25104;&#20869;&#12398;eco&#23646;&#24615;&#12398;&#12391;&#12435;&#12371;&#12398;&#25968;(&#19978;&#38480;5&#20307;)&#12395;&#24540;&#12376;&#12390;ATK&#22679;&#21152;</td><td>ATK +1%&#65374;+12%</td><td>ATK +1%&#65374;+14%</td><td>100%</td><td>45&#20998;</td><td>2&#26178;&#38291;15&#20998;</td><td>atk_buff_2 (atk_buff)</td><td>label: (2)
+raw: (1)&#32232;&#25104;&#20869;&#12398;eco&#23646;&#24615;&#12398;&#12391;&#12435;&#12371;&#12398;&#25968;(&#19978;&#38480;5&#20307;)&#12395;&#24540;&#12376;&#12390;ATK&#22679;&#21152;</td><td>ATK +1%&#65374;+12%</td><td>ATK +1%&#65374;+14%</td><td></td><td></td><td></td><td>100%</td><td>45&#20998;</td><td>2&#26178;&#38291;15&#20998;</td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:126</td><td>&#30333;&#20814;&#12418;&#12418;&#12394;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>eco</td><td>&#26691;</td><td>&#12418;&#12418;&#12394;&#12398;&#33457;&#21344;&#12356;</td><td>atk_buff_2 (atk_buff)</td><td>(2)</td><td>supplemental_effect</td><td>atk_buff</td><td>[&quot;team_all&quot;]</td><td>label: (2)
 role: supplemental_effect
 target: [&quot;team_all&quot;]
 filters: {&quot;attribute&quot;: &quot;eco&quot;}
 scaling: {&quot;max_count&quot;: 5}
 activation: &#12510;&#12473;&#12479;&#12540;&#12395;&#12362;&#12414;&#12363;&#12379;
-raw: (2)&#30456;&#25163;&#12398;&#32232;&#25104;&#12398;eco&#23646;&#24615;&#12398;&#12391;&#12435;&#12371;&#12398;&#25968;(&#19978;&#38480;5&#20307;)&#12395;&#24540;&#12376;&#12390;ATK&#22679;&#21152;</td><td>ATK 0%&#65374;+17%</td><td>ATK 0%&#65374;+19%</td><td>100%</td><td>45&#20998;</td><td>2&#26178;&#38291;15&#20998;</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:127</td><td>&#21315;&#26086;&#12354;&#12378;&#12373;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>eco</td><td>&#32209;</td><td>&#12463;&#12540;&#12523;&#12394;&#23567;&#29983;&#24847;&#27671;&#12460;&#12540;&#12523;</td><td>atk_debuff</td><td>filters: {&quot;attribute&quot;: &quot;eco&quot;}
+raw: (2)&#30456;&#25163;&#12398;&#32232;&#25104;&#12398;eco&#23646;&#24615;&#12398;&#12391;&#12435;&#12371;&#12398;&#25968;(&#19978;&#38480;5&#20307;)&#12395;&#24540;&#12376;&#12390;ATK&#22679;&#21152;</td><td>ATK 0%&#65374;+17%</td><td>ATK 0%&#65374;+19%</td><td></td><td></td><td></td><td>100%</td><td>45&#20998;</td><td>2&#26178;&#38291;15&#20998;</td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:127</td><td>&#21315;&#26086;&#12354;&#12378;&#12373;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>eco</td><td>&#32209;</td><td>&#12463;&#12540;&#12523;&#12394;&#23567;&#29983;&#24847;&#27671;&#12460;&#12540;&#12523;</td><td>atk_debuff</td><td></td><td></td><td>atk_debuff</td><td></td><td>filters: {&quot;attribute&quot;: &quot;eco&quot;}
 activation: &#12356;&#12388;&#12391;&#12418;&#12450;&#12463;&#12486;&#12451;&#12502;
-raw: &#12398;&#12415;&#12398;&#32232;&#25104;&#26178;&#12289;&#30456;&#25163;&#12398;ATK&#28187;&#23569; eco&#23646;&#24615;</td><td>ATK -8%</td><td>ATK -9.5%</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:128</td><td>&#25152;&#27810;&#12395;&#12371;</td><td>&#12488;&#12522;&#12483;&#12463;&#12473;&#12479;&#12540;</td><td>cool</td><td>&#38738;</td><td>&#12356;&#12388;&#12418;&#12395;&#12371;&#12395;&#12371;</td><td>exp_gain</td><td>target: [&quot;accessing_denko&quot;]
+raw: &#12398;&#12415;&#12398;&#32232;&#25104;&#26178;&#12289;&#30456;&#25163;&#12398;ATK&#28187;&#23569; eco&#23646;&#24615;</td><td>ATK -8%</td><td>ATK -9.5%</td><td></td><td></td><td></td><td>100%</td><td></td><td></td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:128</td><td>&#25152;&#27810;&#12395;&#12371;</td><td>&#12488;&#12522;&#12483;&#12463;&#12473;&#12479;&#12540;</td><td>cool</td><td>&#38738;</td><td>&#12356;&#12388;&#12418;&#12395;&#12371;&#12395;&#12371;</td><td>exp_gain</td><td></td><td></td><td>exp_gain</td><td>[&quot;accessing_denko&quot;]</td><td>target: [&quot;accessing_denko&quot;]
 trigger: {&quot;access_direction&quot;: &quot;active&quot;, &quot;event_hint&quot;: &quot;access&quot;}
 activation: &#12356;&#12388;&#12391;&#12418;&#12450;&#12463;&#12486;&#12451;&#12502;
-raw: &#32232;&#25104;&#20869;&#12391;&#12435;&#12371;&#12364;&#12450;&#12463;&#12475;&#12473;&#12375;&#12522;&#12531;&#12463;&#12395;&#22833;&#25943;&#12377;&#12427;&#12392;&#32076;&#39443;&#20516;&#20184;&#19982;</td><td>&#32076;&#39443;&#20516;&#20184;&#19982; 185</td><td>&#32076;&#39443;&#20516;&#20184;&#19982; 220</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:129</td><td>&#20116;&#25152;&#24029;&#21407;&#12409;&#12395;&#12363;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>heat</td><td>&#27225;</td><td>&#22120;&#29992;&#12394;&#38957;&#33075;&#27966;&#8230;&#8230;&#65311;</td><td>fixed_damage</td><td>target: [&quot;team_all&quot;]
+raw: &#32232;&#25104;&#20869;&#12391;&#12435;&#12371;&#12364;&#12450;&#12463;&#12475;&#12473;&#12375;&#12522;&#12531;&#12463;&#12395;&#22833;&#25943;&#12377;&#12427;&#12392;&#32076;&#39443;&#20516;&#20184;&#19982;</td><td>&#32076;&#39443;&#20516;&#20184;&#19982; 185</td><td>&#32076;&#39443;&#20516;&#20184;&#19982; 220</td><td></td><td></td><td></td><td>100%</td><td></td><td></td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:129</td><td>&#20116;&#25152;&#24029;&#21407;&#12409;&#12395;&#12363;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>heat</td><td>&#27225;</td><td>&#22120;&#29992;&#12394;&#38957;&#33075;&#27966;&#8230;&#8230;&#65311;</td><td>fixed_damage</td><td></td><td></td><td>fixed_damage</td><td>[&quot;team_all&quot;]</td><td>target: [&quot;team_all&quot;]
 trigger: {&quot;access_direction&quot;: &quot;active&quot;, &quot;event_hint&quot;: &quot;access&quot;}
 activation: &#12510;&#12473;&#12479;&#12540;&#12395;&#12362;&#12414;&#12363;&#12379;
-raw: &#12304;&#30330;&#21205;&#26465;&#20214;&#12305;&#32232;&#25104;&#20869;&#12398;&#12391;&#12435;&#12371;&#12364;&#12450;&#12463;&#12475;&#12473;&#12375;&#12383;&#12392;&#12365; / &#12304;&#21177;&#26524;&#12305;&#12450;&#12463;&#12475;&#12473;&#12375;&#12383;&#12391;&#12435;&#12371;&#12398;ATK&#22679;&#21152;&#37327;&#12398;&#21512;&#35336;&#65288;&#19978;&#38480;100%&#65289;&#12395;&#12424;&#12387;&#12390;&#22793;&#21205;</td><td>&#22266;&#23450;&#12480;&#12513;&#12540;&#12472; 0&#65374;30</td><td>&#22266;&#23450;&#12480;&#12513;&#12540;&#12472; 0&#65374;40</td><td>100%</td><td>Lv5: 30&#20998;
+raw: &#12304;&#30330;&#21205;&#26465;&#20214;&#12305;&#32232;&#25104;&#20869;&#12398;&#12391;&#12435;&#12371;&#12364;&#12450;&#12463;&#12475;&#12473;&#12375;&#12383;&#12392;&#12365; / &#12304;&#21177;&#26524;&#12305;&#12450;&#12463;&#12475;&#12473;&#12375;&#12383;&#12391;&#12435;&#12371;&#12398;ATK&#22679;&#21152;&#37327;&#12398;&#21512;&#35336;&#65288;&#19978;&#38480;100%&#65289;&#12395;&#12424;&#12387;&#12390;&#22793;&#21205;</td><td>&#22266;&#23450;&#12480;&#12513;&#12540;&#12472; 0&#65374;30</td><td>&#22266;&#23450;&#12480;&#12513;&#12540;&#12472; 0&#65374;40</td><td></td><td></td><td></td><td>100%</td><td>Lv5: 30&#20998;
 Lv15: 35&#20998;
 Lv30: 40&#20998;
 Lv50: 45&#20998;
@@ -162,98 +167,106 @@ Lv30: 2&#26178;&#38291;20&#20998;
 Lv50: 2&#26178;&#38291;15&#20998;
 Lv60: 2&#26178;&#38291;10&#20998;
 Lv70: 2&#26178;&#38291;5&#20998;
-Lv80: 2&#26178;&#38291;</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:130</td><td>&#31481;&#21407;&#12379;&#12392;&#12425;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>cool</td><td>&#38738;</td><td>&#12385;&#12423;&#12387;&#12392;&#12511;&#12473;&#12486;&#12522;&#12450;&#12473;&#65311;</td><td>damage_reduction</td><td>target: [&quot;team_all&quot;]
+Lv80: 2&#26178;&#38291;</td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:130</td><td>&#31481;&#21407;&#12379;&#12392;&#12425;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>cool</td><td>&#38738;</td><td>&#12385;&#12423;&#12387;&#12392;&#12511;&#12473;&#12486;&#12522;&#12450;&#12473;&#65311;</td><td>damage_reduction</td><td></td><td></td><td>damage_reduction</td><td>[&quot;team_all&quot;]</td><td>target: [&quot;team_all&quot;]
 filters: {&quot;attribute&quot;: &quot;cool&quot;}
 activation: &#12356;&#12388;&#12391;&#12418;&#12450;&#12463;&#12486;&#12451;&#12502;
-raw: cool&#23646;&#24615;&#12398;&#12415;&#12398;&#32232;&#25104;&#12391;&#32232;&#25104;&#20869;&#12398;&#34987;&#12480;&#12513;&#12540;&#12472;&#12434;&#22266;&#23450;&#20516;&#12391;&#36605;&#28187;</td><td>&#12480;&#12513;&#12540;&#12472;&#36605;&#28187; 24</td><td>&#12480;&#12513;&#12540;&#12472;&#36605;&#28187; 28</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:131</td><td>&#21213;&#30000;&#12511;&#12461;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>eco</td><td>&#26691;</td><td>&#12525;&#12483;&#12463;&#12531;&#12525;&#12540;&#12523;&#39746;</td><td>fixed_damage_1 (fixed_damage)</td><td>label: (1)
+raw: cool&#23646;&#24615;&#12398;&#12415;&#12398;&#32232;&#25104;&#12391;&#32232;&#25104;&#20869;&#12398;&#34987;&#12480;&#12513;&#12540;&#12472;&#12434;&#22266;&#23450;&#20516;&#12391;&#36605;&#28187;</td><td>&#12480;&#12513;&#12540;&#12472;&#36605;&#28187; 24</td><td>&#12480;&#12513;&#12540;&#12472;&#36605;&#28187; 28</td><td></td><td></td><td></td><td>100%</td><td></td><td></td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:131</td><td>&#21213;&#30000;&#12511;&#12461;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>eco</td><td>&#26691;</td><td>&#12525;&#12483;&#12463;&#12531;&#12525;&#12540;&#12523;&#39746;</td><td>fixed_damage_1 (fixed_damage)</td><td>(1)</td><td>default_effect</td><td>fixed_damage</td><td>[&quot;team_all&quot;]</td><td>label: (1)
 role: default_effect
 target: [&quot;team_all&quot;]
 filters: {&quot;attributes&quot;: [&quot;cool&quot;, &quot;eco&quot;], &quot;formation_only&quot;: true}
 trigger: {&quot;access_direction&quot;: &quot;active&quot;, &quot;event_hint&quot;: &quot;access&quot;}
 activation: &#12356;&#12388;&#12391;&#12418;&#12450;&#12463;&#12486;&#12451;&#12502;
-raw: cool&#12392;eco&#12398;&#12415;&#32232;&#25104; (1)&#32232;&#25104;&#20869;&#12398;&#12391;&#12435;&#12371;&#12364;&#12450;&#12463;&#12475;&#12473;&#26178;&#12395;&#22266;&#23450;&#12480;&#12513;&#12540;&#12472;</td><td>&#22266;&#23450;&#12480;&#12513;&#12540;&#12472; 12</td><td>&#22266;&#23450;&#12480;&#12513;&#12540;&#12472; 14</td><td>100%</td><td></td><td></td><td>damage_reduction_2 (damage_reduction)</td><td>label: (2)
+raw: cool&#12392;eco&#12398;&#12415;&#32232;&#25104; (1)&#32232;&#25104;&#20869;&#12398;&#12391;&#12435;&#12371;&#12364;&#12450;&#12463;&#12475;&#12473;&#26178;&#12395;&#22266;&#23450;&#12480;&#12513;&#12540;&#12472;</td><td>&#22266;&#23450;&#12480;&#12513;&#12540;&#12472; 12</td><td>&#22266;&#23450;&#12480;&#12513;&#12540;&#12472; 14</td><td></td><td></td><td></td><td>100%</td><td></td><td></td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:131</td><td>&#21213;&#30000;&#12511;&#12461;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>eco</td><td>&#26691;</td><td>&#12525;&#12483;&#12463;&#12531;&#12525;&#12540;&#12523;&#39746;</td><td>damage_reduction_2 (damage_reduction)</td><td>(2)</td><td>supplemental_effect</td><td>damage_reduction</td><td>[&quot;team_all&quot;]</td><td>label: (2)
 role: supplemental_effect
 target: [&quot;team_all&quot;]
 filters: {&quot;attributes&quot;: [&quot;cool&quot;, &quot;eco&quot;], &quot;formation_only&quot;: true}
 trigger: {&quot;access_direction&quot;: &quot;received&quot;, &quot;event_hint&quot;: &quot;accessed&quot;}
 activation: &#12356;&#12388;&#12391;&#12418;&#12450;&#12463;&#12486;&#12451;&#12502;
-raw: cool&#12392;eco&#12398;&#12415;&#32232;&#25104; (2)&#32232;&#25104;&#20869;&#12398;&#12391;&#12435;&#12371;&#12364;&#12450;&#12463;&#12475;&#12473;&#12373;&#12428;&#12383;&#26178;&#12395;&#12480;&#12513;&#12540;&#12472;&#36605;&#28187;</td><td>&#12480;&#12513;&#12540;&#12472;&#36605;&#28187; 12</td><td>&#12480;&#12513;&#12540;&#12472;&#36605;&#28187; 14</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:132</td><td>&#26481;&#28023;&#12394;&#12394;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>cool</td><td>&#38738;</td><td>with&#12459;&#12481;&#12459;&#12481;&#12450;&#12452;&#12473;&#65281;</td><td>def_buff_1 (def_buff)</td><td>label: (1)
+raw: cool&#12392;eco&#12398;&#12415;&#32232;&#25104; (2)&#32232;&#25104;&#20869;&#12398;&#12391;&#12435;&#12371;&#12364;&#12450;&#12463;&#12475;&#12473;&#12373;&#12428;&#12383;&#26178;&#12395;&#12480;&#12513;&#12540;&#12472;&#36605;&#28187;</td><td>&#12480;&#12513;&#12540;&#12472;&#36605;&#28187; 12</td><td>&#12480;&#12513;&#12540;&#12472;&#36605;&#28187; 14</td><td></td><td></td><td></td><td>100%</td><td></td><td></td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:132</td><td>&#26481;&#28023;&#12394;&#12394;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>cool</td><td>&#38738;</td><td>with&#12459;&#12481;&#12459;&#12481;&#12450;&#12452;&#12473;&#65281;</td><td>def_buff_1 (def_buff)</td><td>(1)</td><td>default_effect</td><td>def_buff</td><td>[&quot;team_all&quot;]</td><td>label: (1)
 role: default_effect
 target: [&quot;team_all&quot;]
 filters: {&quot;attribute&quot;: &quot;cool&quot;}
 activation: &#12356;&#12388;&#12391;&#12418;&#12450;&#12463;&#12486;&#12451;&#12502;
-raw: &#30330;&#21205;&#26465;&#20214;&#65306;cool&#23646;&#24615;&#12398;&#12415;&#12398;&#32232;&#25104; (1)&#65306;&#32232;&#25104;&#20869;DEF&#22679;&#21152;</td><td>DEF +6%</td><td>DEF +7%</td><td>70%</td><td></td><td></td><td>atk_debuff_2 (atk_debuff)</td><td>label: (2)
+raw: &#30330;&#21205;&#26465;&#20214;&#65306;cool&#23646;&#24615;&#12398;&#12415;&#12398;&#32232;&#25104; (1)&#65306;&#32232;&#25104;&#20869;DEF&#22679;&#21152;</td><td>DEF +6%</td><td>DEF +7%</td><td></td><td></td><td></td><td>70%</td><td></td><td></td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:132</td><td>&#26481;&#28023;&#12394;&#12394;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>cool</td><td>&#38738;</td><td>with&#12459;&#12481;&#12459;&#12481;&#12450;&#12452;&#12473;&#65281;</td><td>atk_debuff_2 (atk_debuff)</td><td>(2)</td><td>supplemental_effect</td><td>atk_debuff</td><td>[&quot;team_all&quot;]</td><td>label: (2)
 role: supplemental_effect
 target: [&quot;team_all&quot;]
 filters: {&quot;attribute&quot;: &quot;cool&quot;}
 activation: &#12356;&#12388;&#12391;&#12418;&#12450;&#12463;&#12486;&#12451;&#12502;
-raw: &#30330;&#21205;&#26465;&#20214;&#65306;cool&#23646;&#24615;&#12398;&#12415;&#12398;&#32232;&#25104; (2)&#65306;(1)&#30330;&#21205;&#26178;&#12289;&#30456;&#25163;&#12398;ATK&#28187;&#23569;</td><td>ATK -6%</td><td>ATK -7%</td><td>70%</td><td></td><td></td><td>damage_reduction_3 (damage_reduction)</td><td>label: (3)
+raw: &#30330;&#21205;&#26465;&#20214;&#65306;cool&#23646;&#24615;&#12398;&#12415;&#12398;&#32232;&#25104; (2)&#65306;(1)&#30330;&#21205;&#26178;&#12289;&#30456;&#25163;&#12398;ATK&#28187;&#23569;</td><td>ATK -6%</td><td>ATK -7%</td><td></td><td></td><td></td><td>70%</td><td></td><td></td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:132</td><td>&#26481;&#28023;&#12394;&#12394;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>cool</td><td>&#38738;</td><td>with&#12459;&#12481;&#12459;&#12481;&#12450;&#12452;&#12473;&#65281;</td><td>damage_reduction_3 (damage_reduction)</td><td>(3)</td><td>supplemental_effect</td><td>damage_reduction</td><td>[&quot;team_all&quot;]</td><td>label: (3)
 role: supplemental_effect
 target: [&quot;team_all&quot;]
 filters: {&quot;attribute&quot;: &quot;cool&quot;}
 activation: &#12356;&#12388;&#12391;&#12418;&#12450;&#12463;&#12486;&#12451;&#12502;
-raw: &#30330;&#21205;&#26465;&#20214;&#65306;cool&#23646;&#24615;&#12398;&#12415;&#12398;&#32232;&#25104; (3)&#65306;(2)&#30330;&#21205;&#26178;&#12289;&#32232;&#25104;&#20869;&#12398;&#34987;&#12480;&#12513;&#12540;&#12472;&#12434;&#22266;&#23450;&#20516;&#12391;&#36605;&#28187; &#21177;&#26524;&#12381;&#12428;&#12382;&#12428;&#12391;70%&#12398;&#30330;&#21205;&#29575;</td><td>&#12480;&#12513;&#12540;&#12472;&#36605;&#28187; 13</td><td>&#12480;&#12513;&#12540;&#12472;&#36605;&#28187; 16</td><td>70%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:133</td><td>&#36234;&#32654;&#12365;&#12425;&#12425;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>heat</td><td>&#36196;</td><td>&#12354;&#12384;&#21517;&#12434;&#12388;&#12369;&#12383;&#12356;&#9734;</td><td>def_buff</td><td>target: [&quot;team_all&quot;]
+raw: &#30330;&#21205;&#26465;&#20214;&#65306;cool&#23646;&#24615;&#12398;&#12415;&#12398;&#32232;&#25104; (3)&#65306;(2)&#30330;&#21205;&#26178;&#12289;&#32232;&#25104;&#20869;&#12398;&#34987;&#12480;&#12513;&#12540;&#12472;&#12434;&#22266;&#23450;&#20516;&#12391;&#36605;&#28187; &#21177;&#26524;&#12381;&#12428;&#12382;&#12428;&#12391;70%&#12398;&#30330;&#21205;&#29575;</td><td>&#12480;&#12513;&#12540;&#12472;&#36605;&#28187; 13</td><td>&#12480;&#12513;&#12540;&#12472;&#36605;&#28187; 16</td><td></td><td></td><td></td><td>70%</td><td></td><td></td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:133</td><td>&#36234;&#32654;&#12365;&#12425;&#12425;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>heat</td><td>&#36196;</td><td>&#12354;&#12384;&#21517;&#12434;&#12388;&#12369;&#12383;&#12356;&#9734;</td><td>def_buff</td><td></td><td></td><td>def_buff</td><td>[&quot;team_all&quot;]</td><td>target: [&quot;team_all&quot;]
 scaling: {&quot;basis&quot;: &quot;linked_denko_count&quot;}
 activation: &#12391;&#12435;&#12371;&#12395;&#12362;&#12414;&#12363;&#12379;
-raw: &#32232;&#25104;&#20869;&#12398;DEF&#22679;&#21152; &#8251;&#32232;&#25104;&#20869;&#12391;&#12435;&#12371;&#12364;&#12522;&#12502;&#12540;&#12488;&#26178;&#12395;&#20182;&#12395;&#12522;&#12531;&#12463;&#12375;&#12390;&#12356;&#12427;&#12391;&#12435;&#12371;&#12364;&#12356;&#12394;&#12356;&#22580;&#21512;&#12463;&#12540;&#12523;&#12479;&#12452;&#12512;&#12395;</td><td>DEF +12%</td><td>DEF +14%</td><td>100%</td><td></td><td>Lv5: 50&#20998;
+raw: &#32232;&#25104;&#20869;&#12398;DEF&#22679;&#21152; &#8251;&#32232;&#25104;&#20869;&#12391;&#12435;&#12371;&#12364;&#12522;&#12502;&#12540;&#12488;&#26178;&#12395;&#20182;&#12395;&#12522;&#12531;&#12463;&#12375;&#12390;&#12356;&#12427;&#12391;&#12435;&#12371;&#12364;&#12356;&#12394;&#12356;&#22580;&#21512;&#12463;&#12540;&#12523;&#12479;&#12452;&#12512;&#12395;</td><td>DEF +12%</td><td>DEF +14%</td><td></td><td></td><td></td><td>100%</td><td></td><td>Lv5: 50&#20998;
 Lv15: 45&#20998;
 Lv30: 40&#20998;
 Lv50: 35&#20998;
 Lv60: 30&#20998;
 Lv70: 25&#20998;
-Lv80: 20&#20998;</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:134</td><td>&#31119;&#20998;&#12362;&#12392;&#12399;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>cool</td><td>&#38738;</td><td>&#26222;&#36890;&#12408;&#12398;&#12354;&#12371;&#12364;&#12428;</td><td>atk_buff_1 (atk_buff)</td><td>label: (1)
+Lv80: 20&#20998;</td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:134</td><td>&#31119;&#20998;&#12362;&#12392;&#12399;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>cool</td><td>&#38738;</td><td>&#26222;&#36890;&#12408;&#12398;&#12354;&#12371;&#12364;&#12428;</td><td>atk_buff_1 (atk_buff)</td><td>(1)</td><td>default_effect</td><td>atk_buff</td><td>[&quot;team_all&quot;]</td><td>label: (1)
 role: default_effect
 target: [&quot;team_all&quot;]
 activation: &#12510;&#12473;&#12479;&#12540;&#12395;&#12362;&#12414;&#12363;&#12379;
-raw: (1)&#27531;&#12426;&#21177;&#26524;&#26178;&#38291;(&#19978;&#38480;20&#20998;)&#12395;&#24540;&#12376;&#12390;&#32232;&#25104;&#20869;ATK&#22679;&#21152;</td><td>ATK +1%&#65374;+17%</td><td>ATK +1%&#65374;+19%</td><td>100%</td><td>30&#20998;</td><td>1&#26178;&#38291;30&#20998;</td><td>duration_extension_2 (duration_extension)</td><td>label: (2)
+raw: (1)&#27531;&#12426;&#21177;&#26524;&#26178;&#38291;(&#19978;&#38480;20&#20998;)&#12395;&#24540;&#12376;&#12390;&#32232;&#25104;&#20869;ATK&#22679;&#21152;</td><td>ATK +1%&#65374;+17%</td><td>ATK +1%&#65374;+19%</td><td></td><td></td><td></td><td>100%</td><td>30&#20998;</td><td>1&#26178;&#38291;30&#20998;</td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:134</td><td>&#31119;&#20998;&#12362;&#12392;&#12399;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>cool</td><td>&#38738;</td><td>&#26222;&#36890;&#12408;&#12398;&#12354;&#12371;&#12364;&#12428;</td><td>duration_extension_2 (duration_extension)</td><td>(2)</td><td>supplemental_effect</td><td>duration_extension</td><td>[&quot;team_all&quot;]</td><td>label: (2)
 role: supplemental_effect
 target: [&quot;team_all&quot;]
 activation: &#12510;&#12473;&#12479;&#12540;&#12395;&#12362;&#12414;&#12363;&#12379;
-raw: (2)&#32232;&#25104;&#20869;&#12391;&#12435;&#12371;&#12364;&#12522;&#12531;&#12463;&#12377;&#12427;&#24230;&#12395;&#21177;&#26524;&#26178;&#38291;&#24310;&#38263;(&#19978;&#38480;40&#20998;)</td><td>&#21177;&#26524;&#26178;&#38291; +4&#20998;</td><td>&#21177;&#26524;&#26178;&#38291; +4&#20998;15&#31186;</td><td>60%</td><td>30&#20998;</td><td>1&#26178;&#38291;30&#20998;</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:135</td><td>&#23551;&#12416;&#12388;&#12415;</td><td>&#12488;&#12522;&#12483;&#12463;&#12473;&#12479;&#12540;</td><td>cool</td><td>&#38738;</td><td>&#12473;&#12522;&#12523;&#12434;&#27714;&#12417;&#12390;&#8230;&#8230;</td><td>atk_buff_1 (atk_buff)</td><td>label: (1)
+raw: (2)&#32232;&#25104;&#20869;&#12391;&#12435;&#12371;&#12364;&#12522;&#12531;&#12463;&#12377;&#12427;&#24230;&#12395;&#21177;&#26524;&#26178;&#38291;&#24310;&#38263;(&#19978;&#38480;40&#20998;)</td><td>&#21177;&#26524;&#26178;&#38291; +4&#20998;</td><td>&#21177;&#26524;&#26178;&#38291; +4&#20998;15&#31186;</td><td></td><td></td><td></td><td>60%</td><td>30&#20998;</td><td>1&#26178;&#38291;30&#20998;</td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:135</td><td>&#23551;&#12416;&#12388;&#12415;</td><td>&#12488;&#12522;&#12483;&#12463;&#12473;&#12479;&#12540;</td><td>cool</td><td>&#38738;</td><td>&#12473;&#12522;&#12523;&#12434;&#27714;&#12417;&#12390;&#8230;&#8230;</td><td>atk_buff_1 (atk_buff)</td><td>(1)</td><td>default_effect</td><td>atk_buff</td><td>[&quot;team_all&quot;]</td><td>label: (1)
 role: default_effect
 target: [&quot;team_all&quot;]
 activation: &#12510;&#12473;&#12479;&#12540;&#12395;&#12362;&#12414;&#12363;&#12379;
-raw: (1)ATK&#22679;&#21152;</td><td>ATK +6%</td><td>ATK +7%</td><td>100%</td><td>30&#20998;</td><td>2&#26178;&#38291;</td><td>atk_buff_2 (atk_buff)</td><td>label: (2)
+raw: (1)ATK&#22679;&#21152;</td><td>ATK +6%</td><td>ATK +7%</td><td></td><td></td><td></td><td>100%</td><td>30&#20998;</td><td>2&#26178;&#38291;</td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:135</td><td>&#23551;&#12416;&#12388;&#12415;</td><td>&#12488;&#12522;&#12483;&#12463;&#12473;&#12479;&#12540;</td><td>cool</td><td>&#38738;</td><td>&#12473;&#12522;&#12523;&#12434;&#27714;&#12417;&#12390;&#8230;&#8230;</td><td>atk_buff_2 (atk_buff)</td><td>(2)</td><td>additional_effect</td><td>atk_buff</td><td>[&quot;team_all&quot;]</td><td>label: (2)
 role: additional_effect
 target: [&quot;team_all&quot;]
 scaling: {&quot;basis&quot;: &quot;linked_station_count&quot;}
 activation: &#12510;&#12473;&#12479;&#12540;&#12395;&#12362;&#12414;&#12363;&#12379;
-raw: (2)&#12391;&#12435;&#12371;&#27598;&#12398;&#12522;&#12531;&#12463;&#39365;&#25968;(&#19978;&#38480;2&#39365;)&#12395;&#24540;&#12376;&#12390;&#36861;&#21152;&#12391;ATK&#22679;&#21152;</td><td>ATK 0%&#65374;+24%</td><td>ATK 0%&#65374;+28%</td><td>100%</td><td>30&#20998;</td><td>2&#26178;&#38291;</td><td>reboot_3 (reboot)</td><td>label: (3)
+raw: (2)&#12391;&#12435;&#12371;&#27598;&#12398;&#12522;&#12531;&#12463;&#39365;&#25968;(&#19978;&#38480;2&#39365;)&#12395;&#24540;&#12376;&#12390;&#36861;&#21152;&#12391;ATK&#22679;&#21152;</td><td>ATK 0%&#65374;+24%</td><td>ATK 0%&#65374;+28%</td><td></td><td></td><td></td><td>100%</td><td>30&#20998;</td><td>2&#26178;&#38291;</td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:135</td><td>&#23551;&#12416;&#12388;&#12415;</td><td>&#12488;&#12522;&#12483;&#12463;&#12473;&#12479;&#12540;</td><td>cool</td><td>&#38738;</td><td>&#12473;&#12522;&#12523;&#12434;&#27714;&#12417;&#12390;&#8230;&#8230;</td><td>reboot_3 (reboot)</td><td>(3)</td><td>supplemental_effect</td><td>reboot</td><td></td><td>label: (3)
 role: supplemental_effect
 trigger: {&quot;access_direction&quot;: &quot;active&quot;, &quot;event_hint&quot;: &quot;access&quot;}
 scaling: {&quot;basis&quot;: &quot;linked_station_count&quot;}
 activation: &#12510;&#12473;&#12479;&#12540;&#12395;&#12362;&#12414;&#12363;&#12379;
-raw: (3)&#12522;&#12531;&#12463;&#26178;&#12289;&#30906;&#29575;&#12391;&#12522;&#12502;&#12540;&#12488;(&#12450;&#12463;&#12475;&#12473;&#26178;&#12398;&#12522;&#12531;&#12463;&#39365;&#25968;&#12395;&#24540;&#12376;&#12390;&#30906;&#29575;&#22679;&#21152;&#12289;&#19978;&#38480;2&#39365;)</td><td>reboot</td><td>reboot</td><td>5&#65374;25%</td><td>30&#20998;</td><td>2&#26178;&#38291;</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:136</td><td>&#20294;&#39340;&#12402;&#12423;&#12358;&#12371;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>heat</td><td>&#27225;</td><td>&#12424;&#12387;&#12371;&#12356;&#12375;&#12423;&#12387;&#12392;&#8230;&#8230;</td><td>atk_buff</td><td>target: [&quot;team_all&quot;]
+raw: (3)&#12522;&#12531;&#12463;&#26178;&#12289;&#30906;&#29575;&#12391;&#12522;&#12502;&#12540;&#12488;(&#12450;&#12463;&#12475;&#12473;&#26178;&#12398;&#12522;&#12531;&#12463;&#39365;&#25968;&#12395;&#24540;&#12376;&#12390;&#30906;&#29575;&#22679;&#21152;&#12289;&#19978;&#38480;2&#39365;)</td><td>reboot</td><td>reboot</td><td></td><td></td><td></td><td>5&#65374;25%</td><td>30&#20998;</td><td>2&#26178;&#38291;</td><td>[&#x27;condition_only_component_needs_review&#x27;]</td></tr>
+<tr><td>original:136</td><td>&#20294;&#39340;&#12402;&#12423;&#12358;&#12371;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>heat</td><td>&#27225;</td><td>&#12424;&#12387;&#12371;&#12356;&#12375;&#12423;&#12387;&#12392;&#8230;&#8230;</td><td>atk_buff</td><td></td><td></td><td>atk_buff</td><td>[&quot;team_all&quot;]</td><td>target: [&quot;team_all&quot;]
 trigger: {&quot;access_direction&quot;: &quot;own_team_link&quot;, &quot;event_hint&quot;: &quot;link&quot;}
 activation: &#12391;&#12435;&#12371;&#12395;&#12362;&#12414;&#12363;&#12379;
-raw: &#30330;&#21205;&#26465;&#20214;&#65306;&#32232;&#25104;&#20869;&#12398;&#35504;&#12363;&#12364;&#12522;&#12531;&#12463;&#12375;&#12383; / &#21177;&#26524;&#65306;&#32232;&#25104;&#20869;&#12398;&#12391;&#12435;&#12371;&#12398;ATK&#12392;DEF&#12364;&#22679;&#21152; &#21177;&#26524;&#30330;&#21205;&#12375;&#12383;&#12358;&#12360;&#12391;&#32232;&#25104;&#20869;&#12391;&#12435;&#12371;&#12398;HP&#12364;0&#12395;&#12394;&#12387;&#12383;&#22580;&#21512;&#12463;&#12540;&#12523;&#12479;&#12452;&#12512;&#12395;</td><td>ATK +20%</td><td>ATK +23%</td><td>100%</td><td>20&#20998;</td><td>1&#26178;&#38291;30&#20998;</td><td>def_buff</td><td>target: [&quot;team_all&quot;]
+raw: &#30330;&#21205;&#26465;&#20214;&#65306;&#32232;&#25104;&#20869;&#12398;&#35504;&#12363;&#12364;&#12522;&#12531;&#12463;&#12375;&#12383; / &#21177;&#26524;&#65306;&#32232;&#25104;&#20869;&#12398;&#12391;&#12435;&#12371;&#12398;ATK&#12392;DEF&#12364;&#22679;&#21152; &#21177;&#26524;&#30330;&#21205;&#12375;&#12383;&#12358;&#12360;&#12391;&#32232;&#25104;&#20869;&#12391;&#12435;&#12371;&#12398;HP&#12364;0&#12395;&#12394;&#12387;&#12383;&#22580;&#21512;&#12463;&#12540;&#12523;&#12479;&#12452;&#12512;&#12395;</td><td>ATK +20%</td><td>ATK +23%</td><td></td><td></td><td></td><td>100%</td><td>20&#20998;</td><td>1&#26178;&#38291;30&#20998;</td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:136</td><td>&#20294;&#39340;&#12402;&#12423;&#12358;&#12371;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>heat</td><td>&#27225;</td><td>&#12424;&#12387;&#12371;&#12356;&#12375;&#12423;&#12387;&#12392;&#8230;&#8230;</td><td>def_buff</td><td></td><td></td><td>def_buff</td><td>[&quot;team_all&quot;]</td><td>target: [&quot;team_all&quot;]
 trigger: {&quot;access_direction&quot;: &quot;own_team_link&quot;, &quot;event_hint&quot;: &quot;link&quot;}
 activation: &#12391;&#12435;&#12371;&#12395;&#12362;&#12414;&#12363;&#12379;
-raw: &#30330;&#21205;&#26465;&#20214;&#65306;&#32232;&#25104;&#20869;&#12398;&#35504;&#12363;&#12364;&#12522;&#12531;&#12463;&#12375;&#12383; / &#21177;&#26524;&#65306;&#32232;&#25104;&#20869;&#12398;&#12391;&#12435;&#12371;&#12398;ATK&#12392;DEF&#12364;&#22679;&#21152; &#21177;&#26524;&#30330;&#21205;&#12375;&#12383;&#12358;&#12360;&#12391;&#32232;&#25104;&#20869;&#12391;&#12435;&#12371;&#12398;HP&#12364;0&#12395;&#12394;&#12387;&#12383;&#22580;&#21512;&#12463;&#12540;&#12523;&#12479;&#12452;&#12512;&#12395;</td><td>DEF +20%</td><td>DEF +23%</td><td>100%</td><td>20&#20998;</td><td>1&#26178;&#38291;30&#20998;</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:137</td><td>&#29579;&#23376;&#20445;&#12371;&#12399;&#12394;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>eco</td><td>&#26691;</td><td>&#12501;&#12524;&#12483;&#12471;&#12517;&#12391;&#12435;&#12371;</td><td>fixed_damage_1 (fixed_damage)</td><td>label: (1)
+raw: &#30330;&#21205;&#26465;&#20214;&#65306;&#32232;&#25104;&#20869;&#12398;&#35504;&#12363;&#12364;&#12522;&#12531;&#12463;&#12375;&#12383; / &#21177;&#26524;&#65306;&#32232;&#25104;&#20869;&#12398;&#12391;&#12435;&#12371;&#12398;ATK&#12392;DEF&#12364;&#22679;&#21152; &#21177;&#26524;&#30330;&#21205;&#12375;&#12383;&#12358;&#12360;&#12391;&#32232;&#25104;&#20869;&#12391;&#12435;&#12371;&#12398;HP&#12364;0&#12395;&#12394;&#12387;&#12383;&#22580;&#21512;&#12463;&#12540;&#12523;&#12479;&#12452;&#12512;&#12395;</td><td>DEF +20%</td><td>DEF +23%</td><td></td><td></td><td></td><td>100%</td><td>20&#20998;</td><td>1&#26178;&#38291;30&#20998;</td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:137</td><td>&#29579;&#23376;&#20445;&#12371;&#12399;&#12394;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>eco</td><td>&#26691;</td><td>&#12501;&#12524;&#12483;&#12471;&#12517;&#12391;&#12435;&#12371;</td><td>fixed_damage_1 (fixed_damage)</td><td>(1)</td><td>default_effect</td><td>fixed_damage</td><td>[&quot;team_all&quot;]</td><td>label: (1)
 role: default_effect
 target: [&quot;team_all&quot;]
 filters: {&quot;type&quot;: &quot;trickster&quot;}
 trigger: {&quot;access_direction&quot;: &quot;active&quot;, &quot;event_hint&quot;: &quot;access&quot;}
 activation: &#12356;&#12388;&#12391;&#12418;&#12450;&#12463;&#12486;&#12451;&#12502;
-raw: (1)&#32232;&#25104;&#20869; &#12398;&#12450;&#12463;&#12475;&#12473;&#26178;&#12289;&#30456;&#25163;&#12395;&#36605;&#28187;&#19981;&#33021;&#12394;&#12480;&#12513;&#12540;&#12472;&#36861;&#21152; &#12488;&#12522;&#12483;&#12463;&#12473;&#12479;&#12540;</td><td>&#22266;&#23450;&#12480;&#12513;&#12540;&#12472; +18</td><td>&#22266;&#23450;&#12480;&#12513;&#12540;&#12472; +21</td><td>100%</td><td></td><td></td><td>additional_fixed_damage_2 (additional_fixed_damage)</td><td>label: (2)
+raw: (1)&#32232;&#25104;&#20869; &#12398;&#12450;&#12463;&#12475;&#12473;&#26178;&#12289;&#30456;&#25163;&#12395;&#36605;&#28187;&#19981;&#33021;&#12394;&#12480;&#12513;&#12540;&#12472;&#36861;&#21152; &#12488;&#12522;&#12483;&#12463;&#12473;&#12479;&#12540;</td><td>&#22266;&#23450;&#12480;&#12513;&#12540;&#12472; +18</td><td>&#22266;&#23450;&#12480;&#12513;&#12540;&#12472; +21</td><td></td><td></td><td></td><td>100%</td><td></td><td></td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:137</td><td>&#29579;&#23376;&#20445;&#12371;&#12399;&#12394;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>eco</td><td>&#26691;</td><td>&#12501;&#12524;&#12483;&#12471;&#12517;&#12391;&#12435;&#12371;</td><td>additional_fixed_damage_2 (additional_fixed_damage)</td><td>(2)</td><td>additional_effect</td><td>additional_fixed_damage</td><td>[&quot;team_all&quot;]</td><td>label: (2)
 role: additional_effect
 target: [&quot;team_all&quot;]
 filters: {&quot;attribute&quot;: &quot;eco&quot;, &quot;type&quot;: &quot;trickster&quot;}
 activation: &#12356;&#12388;&#12391;&#12418;&#12450;&#12463;&#12486;&#12451;&#12502;
-raw: (2)&#32232;&#25104;&#20869;&#12488;&#12522;&#12483;&#12463;&#12473;&#12479;&#12540;&#12364; &#12398;&#22580;&#21512;&#12289;(1)&#12395;&#36861;&#21152;&#12391;&#36605;&#28187;&#19981;&#33021;&#12394;&#12480;&#12513;&#12540;&#12472; eco&#23646;&#24615;</td><td>&#36861;&#21152;&#22266;&#23450;&#12480;&#12513;&#12540;&#12472; +7</td><td>&#36861;&#21152;&#22266;&#23450;&#12480;&#12513;&#12540;&#12472; +9</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:138</td><td>&#23431;&#37117;&#23470;&#12425;&#12356;&#12363;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>heat</td><td>&#40644;</td><td>&#38275;&#12356;&#12385;&#12419;&#12387;&#12383;&#65281;</td><td>damage_reduction</td><td>target: [&quot;team_all&quot;]
+raw: (2)&#32232;&#25104;&#20869;&#12488;&#12522;&#12483;&#12463;&#12473;&#12479;&#12540;&#12364; &#12398;&#22580;&#21512;&#12289;(1)&#12395;&#36861;&#21152;&#12391;&#36605;&#28187;&#19981;&#33021;&#12394;&#12480;&#12513;&#12540;&#12472; eco&#23646;&#24615;</td><td>&#36861;&#21152;&#22266;&#23450;&#12480;&#12513;&#12540;&#12472; +7</td><td>&#36861;&#21152;&#22266;&#23450;&#12480;&#12513;&#12540;&#12472; +9</td><td></td><td></td><td></td><td>100%</td><td></td><td></td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:138</td><td>&#23431;&#37117;&#23470;&#12425;&#12356;&#12363;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>heat</td><td>&#40644;</td><td>&#38275;&#12356;&#12385;&#12419;&#12387;&#12383;&#65281;</td><td>damage_reduction</td><td></td><td></td><td>damage_reduction</td><td>[&quot;team_all&quot;]</td><td>target: [&quot;team_all&quot;]
 filters: {&quot;attribute&quot;: &quot;heat&quot;}
 scaling: {&quot;basis&quot;: &quot;linked_station_count&quot;}
 activation: &#12510;&#12473;&#12479;&#12540;&#12395;&#12362;&#12414;&#12363;&#12379;
-raw: &#30330;&#21205;&#26465;&#20214;&#65306;&#32232;&#25104;&#20869;&#12398; &#12391;&#12435;&#12371;&#12364;3&#20307;&#20197;&#19978; heat&#23646;&#24615; / &#21177;&#26524;&#65306;&#12480;&#12513;&#12540;&#12472;&#12434;&#21463;&#12369;&#12383;&#12391;&#12435;&#12371;&#12398;&#12522;&#12531;&#12463;&#39365;&#25968;(&#19978;&#38480;3&#39365;)&#12395;&#24540;&#12376;&#12390;&#12381;&#12398;&#34987;&#12480;&#12513;&#12540;&#12472;&#12434;&#22266;&#23450;&#20516;&#36605;&#28187;</td><td>&#12480;&#12513;&#12540;&#12472;&#36605;&#28187; 0&#65374;69</td><td>&#12480;&#12513;&#12540;&#12472;&#36605;&#28187; 0&#65374;78</td><td>100%</td><td>Lv5: 15&#20998;
+raw: &#30330;&#21205;&#26465;&#20214;&#65306;&#32232;&#25104;&#20869;&#12398; &#12391;&#12435;&#12371;&#12364;3&#20307;&#20197;&#19978; heat&#23646;&#24615; / &#21177;&#26524;&#65306;&#12480;&#12513;&#12540;&#12472;&#12434;&#21463;&#12369;&#12383;&#12391;&#12435;&#12371;&#12398;&#12522;&#12531;&#12463;&#39365;&#25968;(&#19978;&#38480;3&#39365;)&#12395;&#24540;&#12376;&#12390;&#12381;&#12398;&#34987;&#12480;&#12513;&#12540;&#12472;&#12434;&#22266;&#23450;&#20516;&#36605;&#28187;</td><td>&#12480;&#12513;&#12540;&#12472;&#36605;&#28187; 0&#65374;69</td><td>&#12480;&#12513;&#12540;&#12472;&#36605;&#28187; 0&#65374;78</td><td></td><td></td><td></td><td>100%</td><td>Lv5: 15&#20998;
 Lv15: 20&#20998;
 Lv30: 25&#20998;
 Lv50: 30&#20998;
@@ -265,40 +278,43 @@ Lv30: 2&#26178;&#38291;35&#20998;
 Lv50: 2&#26178;&#38291;30&#20998;
 Lv60: 2&#26178;&#38291;25&#20998;
 Lv70: 2&#26178;&#38291;20&#20998;
-Lv80: 2&#26178;&#38291;15&#20998;</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:139</td><td>&#33618;&#20117;&#12414;&#12420;&#12363;</td><td>&#12487;&#12451;&#12501;&#12455;&#12531;&#12480;&#12540;</td><td>cool</td><td>&#40644;</td><td>&#12371;&#12398;&#12372;&#24681;&#12399;&#24517;&#12378;&#12420;&#8230;&#8230;&#65281;</td><td>def_buff_1 (def_buff)</td><td>label: (1)
+Lv80: 2&#26178;&#38291;15&#20998;</td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:139</td><td>&#33618;&#20117;&#12414;&#12420;&#12363;</td><td>&#12487;&#12451;&#12501;&#12455;&#12531;&#12480;&#12540;</td><td>cool</td><td>&#40644;</td><td>&#12371;&#12398;&#12372;&#24681;&#12399;&#24517;&#12378;&#12420;&#8230;&#8230;&#65281;</td><td>def_buff_1 (def_buff)</td><td>(1)</td><td>default_effect</td><td>def_buff</td><td>[&quot;team_all&quot;]</td><td>label: (1)
 role: default_effect
 target: [&quot;team_all&quot;]
 activation: &#12356;&#12388;&#12391;&#12418;&#12450;&#12463;&#12486;&#12451;&#12502;
-raw: (1)&#32232;&#25104;&#20869;&#12377;&#12409;&#12390;&#12398;&#12391;&#12435;&#12371;&#12364; &#12398;&#12392;&#12365;&#12289;&#33258;&#36523;&#12398;DEF&#22679;&#21152;</td><td>DEF +24%</td><td>DEF +28%</td><td>100%</td><td></td><td></td><td>hp_recovery_2 (hp_recovery)</td><td>label: (2)
+raw: (1)&#32232;&#25104;&#20869;&#12377;&#12409;&#12390;&#12398;&#12391;&#12435;&#12371;&#12364; &#12398;&#12392;&#12365;&#12289;&#33258;&#36523;&#12398;DEF&#22679;&#21152;</td><td>DEF +24%</td><td>DEF +28%</td><td></td><td></td><td></td><td>100%</td><td></td><td></td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:139</td><td>&#33618;&#20117;&#12414;&#12420;&#12363;</td><td>&#12487;&#12451;&#12501;&#12455;&#12531;&#12480;&#12540;</td><td>cool</td><td>&#40644;</td><td>&#12371;&#12398;&#12372;&#24681;&#12399;&#24517;&#12378;&#12420;&#8230;&#8230;&#65281;</td><td>hp_recovery_2 (hp_recovery)</td><td>(2)</td><td>supplemental_effect</td><td>hp_recovery</td><td>[&quot;team_all&quot;]</td><td>label: (2)
 role: supplemental_effect
 target: [&quot;team_all&quot;]
 trigger: {&quot;access_direction&quot;: &quot;active&quot;, &quot;event_hint&quot;: &quot;access&quot;}
 activation: &#12356;&#12388;&#12391;&#12418;&#12450;&#12463;&#12486;&#12451;&#12502;
-raw: (2)&#21069;&#22238;&#12450;&#12463;&#12475;&#12473;&#12373;&#12428;&#12390;&#12363;&#12425;12&#20998;&#20197;&#20869;&#12395;&#12450;&#12463;&#12475;&#12473;&#12373;&#12428;&#12390;&#12480;&#12513;&#12540;&#12472;&#12434;&#21463;&#12369;&#12383;&#26178;&#12289;&#22238;&#24489;</td><td>HP&#22238;&#24489; 54</td><td>HP&#22238;&#24489; 63</td><td>100%</td><td></td><td></td><td>battery_disable_3 (battery_disable)</td><td>label: (3)
+raw: (2)&#21069;&#22238;&#12450;&#12463;&#12475;&#12473;&#12373;&#12428;&#12390;&#12363;&#12425;12&#20998;&#20197;&#20869;&#12395;&#12450;&#12463;&#12475;&#12473;&#12373;&#12428;&#12390;&#12480;&#12513;&#12540;&#12472;&#12434;&#21463;&#12369;&#12383;&#26178;&#12289;&#22238;&#24489;</td><td>HP&#22238;&#24489; 54</td><td>HP&#22238;&#24489; 63</td><td></td><td></td><td></td><td>100%</td><td></td><td></td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:139</td><td>&#33618;&#20117;&#12414;&#12420;&#12363;</td><td>&#12487;&#12451;&#12501;&#12455;&#12531;&#12480;&#12540;</td><td>cool</td><td>&#40644;</td><td>&#12371;&#12398;&#12372;&#24681;&#12399;&#24517;&#12378;&#12420;&#8230;&#8230;&#65281;</td><td>battery_disable_3 (battery_disable)</td><td>(3)</td><td>supplemental_effect</td><td>battery_disable</td><td></td><td>label: (3)
 role: supplemental_effect
 filters: {&quot;attribute&quot;: &quot;cool&quot;}
 activation: &#12356;&#12388;&#12391;&#12418;&#12450;&#12463;&#12486;&#12451;&#12502;
-raw: (3)&#12496;&#12483;&#12486;&#12522;&#12540;&#20351;&#29992;&#19981;&#21487; cool&#23646;&#24615;</td><td>battery_disable</td><td>battery_disable</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:140</td><td>&#23665;&#21475;&#12422;&#12389;&#12427;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>eco</td><td>&#40644;</td><td>&#25968;&#22810;&#12398;&#20253;&#35500;&#12434;&#25345;&#12388;&#12391;&#12435;&#12371;</td><td>def_buff</td><td>target: [&quot;team_all&quot;]
+raw: (3)&#12496;&#12483;&#12486;&#12522;&#12540;&#20351;&#29992;&#19981;&#21487; cool&#23646;&#24615;</td><td>battery_disable</td><td>battery_disable</td><td></td><td></td><td></td><td>100%</td><td></td><td></td><td>[&#x27;condition_only_component_needs_review&#x27;]</td></tr>
+<tr><td>original:140</td><td>&#23665;&#21475;&#12422;&#12389;&#12427;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>eco</td><td>&#40644;</td><td>&#25968;&#22810;&#12398;&#20253;&#35500;&#12434;&#25345;&#12388;&#12391;&#12435;&#12371;</td><td>def_buff</td><td></td><td></td><td>def_buff</td><td>[&quot;team_all&quot;]</td><td>target: [&quot;team_all&quot;]
 filters: {&quot;attribute&quot;: &quot;eco&quot;}
 activation: &#12356;&#12388;&#12391;&#12418;&#12450;&#12463;&#12486;&#12451;&#12502;
-raw: &#30330;&#21205;&#26465;&#20214;&#65306;&#32232;&#25104;&#20869;&#12377;&#12409;&#12390;&#12398;&#12391;&#12435;&#12371;&#12364; &#21177;&#26524;&#65306;&#32232;&#25104;&#20869;&#12398;&#12391;&#12435;&#12371;&#12398;&#12479;&#12452;&#12503;&#25968;&#12395;&#12424;&#12387;&#12390;&#32232;&#25104;&#20869;DEF&#22679;&#21152; eco&#23646;&#24615;</td><td>DEF +2.5% &#65374; +10%</td><td>DEF +3% &#65374; +12%</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:141</td><td>&#22823;&#19977;&#26481;&#12365;&#12387;&#12363;</td><td>&#12487;&#12451;&#12501;&#12455;&#12531;&#12480;&#12540;</td><td>heat</td><td>&#40644;</td><td>&#24179;&#21644;&#12364;&#19968;&#30058;&#12387;&#12375;&#12423;&#9834;</td><td>def_buff_1 (def_buff)</td><td>label: (1)
+raw: &#30330;&#21205;&#26465;&#20214;&#65306;&#32232;&#25104;&#20869;&#12377;&#12409;&#12390;&#12398;&#12391;&#12435;&#12371;&#12364; &#21177;&#26524;&#65306;&#32232;&#25104;&#20869;&#12398;&#12391;&#12435;&#12371;&#12398;&#12479;&#12452;&#12503;&#25968;&#12395;&#12424;&#12387;&#12390;&#32232;&#25104;&#20869;DEF&#22679;&#21152; eco&#23646;&#24615;</td><td>DEF +2.5% &#65374; +10%</td><td>DEF +3% &#65374; +12%</td><td></td><td></td><td></td><td>100%</td><td></td><td></td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:141</td><td>&#22823;&#19977;&#26481;&#12365;&#12387;&#12363;</td><td>&#12487;&#12451;&#12501;&#12455;&#12531;&#12480;&#12540;</td><td>heat</td><td>&#40644;</td><td>&#24179;&#21644;&#12364;&#19968;&#30058;&#12387;&#12375;&#12423;&#9834;</td><td>def_buff_1 (def_buff)</td><td>(1)</td><td>default_effect</td><td>def_buff</td><td>[&quot;team_all&quot;]</td><td>label: (1)
 role: default_effect
 target: [&quot;team_all&quot;]
 scaling: {&quot;basis&quot;: &quot;linked_denko_count&quot;, &quot;max_count&quot;: 5}
 activation: &#12356;&#12388;&#12391;&#12418;&#12450;&#12463;&#12486;&#12451;&#12502;
-raw: (1)&#32232;&#25104;&#20869;&#12398;&#12522;&#12531;&#12463;&#12375;&#12390;&#12356;&#12427;&#12391;&#12435;&#12371;&#12398;&#25968;&#12395;&#24540;&#12376;&#12390;&#33258;&#36523;&#12398;DEF&#22679;&#21152;(&#19978;&#38480;5&#20307;)</td><td>DEF 0&#65374;+20%</td><td>DEF 0&#65374;+25%</td><td>100%</td><td></td><td></td><td>def_buff_2 (def_buff)</td><td>label: (2)
+raw: (1)&#32232;&#25104;&#20869;&#12398;&#12522;&#12531;&#12463;&#12375;&#12390;&#12356;&#12427;&#12391;&#12435;&#12371;&#12398;&#25968;&#12395;&#24540;&#12376;&#12390;&#33258;&#36523;&#12398;DEF&#22679;&#21152;(&#19978;&#38480;5&#20307;)</td><td>DEF 0&#65374;+20%</td><td>DEF 0&#65374;+25%</td><td></td><td></td><td></td><td>100%</td><td></td><td></td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:141</td><td>&#22823;&#19977;&#26481;&#12365;&#12387;&#12363;</td><td>&#12487;&#12451;&#12501;&#12455;&#12531;&#12480;&#12540;</td><td>heat</td><td>&#40644;</td><td>&#24179;&#21644;&#12364;&#19968;&#30058;&#12387;&#12375;&#12423;&#9834;</td><td>def_buff_2 (def_buff)</td><td>(2)</td><td>supplemental_effect</td><td>def_buff</td><td>[&quot;team_all&quot;]</td><td>label: (2)
 role: supplemental_effect
 target: [&quot;team_all&quot;]
 trigger: {&quot;station_ownership&quot;: &quot;self_linking&quot;}
 activation: &#12356;&#12388;&#12391;&#12418;&#12450;&#12463;&#12486;&#12451;&#12502;
-raw: (2)&#33258;&#36523;&#12364;&#12522;&#12531;&#12463;&#12375;&#12390;&#12356;&#12427;&#22580;&#21512;&#12289;&#32232;&#25104;&#20869;&#12398;&#12391;&#12435;&#12371;&#12398;DEF&#22679;&#21152;</td><td>DEF +9%</td><td>DEF +10%</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:142</td><td>&#21335;&#23567;&#35895;&#12428;&#12435;&#12370;</td><td>&#12488;&#12522;&#12483;&#12463;&#12473;&#12479;&#12540;</td><td>eco</td><td>&#32209;</td><td>&#36969;&#24540;&#21147;&#12398;&#36948;&#20154;</td><td>extra_access</td><td>target: [&quot;self&quot;]
+raw: (2)&#33258;&#36523;&#12364;&#12522;&#12531;&#12463;&#12375;&#12390;&#12356;&#12427;&#22580;&#21512;&#12289;&#32232;&#25104;&#20869;&#12398;&#12391;&#12435;&#12371;&#12398;DEF&#22679;&#21152;</td><td>DEF +9%</td><td>DEF +10%</td><td></td><td></td><td></td><td>100%</td><td></td><td></td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:142</td><td>&#21335;&#23567;&#35895;&#12428;&#12435;&#12370;</td><td>&#12488;&#12522;&#12483;&#12463;&#12473;&#12479;&#12540;</td><td>eco</td><td>&#32209;</td><td>&#36969;&#24540;&#21147;&#12398;&#36948;&#20154;</td><td>extra_access</td><td></td><td></td><td>extra_access</td><td>[&quot;self&quot;]</td><td>target: [&quot;self&quot;]
 trigger: {&quot;access_direction&quot;: &quot;active&quot;, &quot;event_hint&quot;: &quot;access&quot;, &quot;hp_threshold_percent&quot;: 50, &quot;operator&quot;: &quot;lte&quot;}
 activation: &#12510;&#12473;&#12479;&#12540;&#12395;&#12362;&#12414;&#12363;&#12379;
-raw: &#33258;&#36523;&#12364;&#12522;&#12531;&#12463;&#22833;&#25943;&#26178;&#30456;&#25163;&#12398;HP&#12364;50%&#20197;&#19979;&#12391;&#21516;&#12376;&#20206;&#24819;&#12507;&#12540;&#12512;&#12395;&#12450;&#12463;&#12475;&#12473;</td><td>&#12418;&#12358;1&#24230;&#12384;&#12369;&#12450;&#12463;&#12475;&#12473;</td><td>&#12418;&#12358;1&#24230;&#12384;&#12369;&#12450;&#12463;&#12475;&#12473;</td><td>100%</td><td>Lv5: 12&#20998;
+raw: &#33258;&#36523;&#12364;&#12522;&#12531;&#12463;&#22833;&#25943;&#26178;&#30456;&#25163;&#12398;HP&#12364;50%&#20197;&#19979;&#12391;&#21516;&#12376;&#20206;&#24819;&#12507;&#12540;&#12512;&#12395;&#12450;&#12463;&#12475;&#12473;</td><td>&#12418;&#12358;1&#24230;&#12384;&#12369;&#12450;&#12463;&#12475;&#12473;</td><td>&#12418;&#12358;1&#24230;&#12384;&#12369;&#12450;&#12463;&#12475;&#12473;</td><td></td><td></td><td></td><td>100%</td><td>Lv5: 12&#20998;
 Lv15: 15&#20998;
 Lv30: 18&#20998;
 Lv50: 21&#20998;
@@ -308,68 +324,70 @@ Lv15: 3&#26178;&#38291;15&#20998;
 Lv30: 3&#26178;&#38291;12&#20998;
 Lv50: 3&#26178;&#38291;9&#20998;
 Lv60: 3&#26178;&#38291;6&#20998;
-Lv70: 3&#26178;&#38291;3&#20998;</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:143</td><td>&#40372;&#33310;&#12373;&#12392;&#12415;</td><td>&#12488;&#12522;&#12483;&#12463;&#12473;&#12479;&#12540;</td><td>heat</td><td>&#27225;</td><td>&#12405;&#12427;&#12373;&#12392;&#12398;&#28858;&#12394;&#12425;&#12400;</td><td>exp_gain</td><td>target: [&quot;accessing_denko&quot;]
+Lv70: 3&#26178;&#38291;3&#20998;</td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:143</td><td>&#40372;&#33310;&#12373;&#12392;&#12415;</td><td>&#12488;&#12522;&#12483;&#12463;&#12473;&#12479;&#12540;</td><td>heat</td><td>&#27225;</td><td>&#12405;&#12427;&#12373;&#12392;&#12398;&#28858;&#12394;&#12425;&#12400;</td><td>exp_gain</td><td></td><td></td><td>exp_gain</td><td>[&quot;accessing_denko&quot;]</td><td>target: [&quot;accessing_denko&quot;]
 trigger: {&quot;access_direction&quot;: &quot;active&quot;, &quot;event_hint&quot;: &quot;access&quot;}
 activation: &#12391;&#12435;&#12371;&#12395;&#12362;&#12414;&#12363;&#12379;
-raw: &#30330;&#21205;&#26465;&#20214;&#65306;&#32232;&#25104;&#20869;&#12398;&#12391;&#12435;&#12371;&#12364;&#12481;&#12455;&#12483;&#12463;&#12452;&#12531;&#12375;&#12383;&#26178;&#12289;&#12481;&#12455;&#12483;&#12463;&#12452;&#12531;&#12375;&#12383;&#22580;&#25152;&#12392;&#39365;&#12398;&#36317;&#38626;&#12364;500m&#20197;&#20869; / &#21177;&#26524;&#65306;&#19968;&#23450;&#26178;&#38291;&#12289;&#32232;&#25104;&#20869;&#12398;&#12391;&#12435;&#12371;&#12364;&#12450;&#12463;&#12475;&#12473;&#12375;&#12383;&#26178;&#12289;&#12450;&#12463;&#12475;&#12473;&#12375;&#12383;&#12391;&#12435;&#12371;&#12395;&#32076;&#39443;&#20516;&#20184;&#19982;</td><td>&#32076;&#39443;&#20516;&#20184;&#19982; 185</td><td>&#32076;&#39443;&#20516;&#20184;&#19982; 220</td><td>100%</td><td>15&#20998;</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:144</td><td>&#20170;&#20117;&#27996;&#12510;&#12458;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>cool</td><td>&#40644;</td><td>&#12509;&#12472;&#12486;&#12451;&#12502;&#12539;&#12521;&#12483;&#12461;&#12540;&#12460;&#12540;&#12523;</td><td>def_buff</td><td>target: [&quot;team_all&quot;]
+raw: &#30330;&#21205;&#26465;&#20214;&#65306;&#32232;&#25104;&#20869;&#12398;&#12391;&#12435;&#12371;&#12364;&#12481;&#12455;&#12483;&#12463;&#12452;&#12531;&#12375;&#12383;&#26178;&#12289;&#12481;&#12455;&#12483;&#12463;&#12452;&#12531;&#12375;&#12383;&#22580;&#25152;&#12392;&#39365;&#12398;&#36317;&#38626;&#12364;500m&#20197;&#20869; / &#21177;&#26524;&#65306;&#19968;&#23450;&#26178;&#38291;&#12289;&#32232;&#25104;&#20869;&#12398;&#12391;&#12435;&#12371;&#12364;&#12450;&#12463;&#12475;&#12473;&#12375;&#12383;&#26178;&#12289;&#12450;&#12463;&#12475;&#12473;&#12375;&#12383;&#12391;&#12435;&#12371;&#12395;&#32076;&#39443;&#20516;&#20184;&#19982;</td><td>&#32076;&#39443;&#20516;&#20184;&#19982; 185</td><td>&#32076;&#39443;&#20516;&#20184;&#19982; 220</td><td></td><td></td><td></td><td>100%</td><td>15&#20998;</td><td></td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:144</td><td>&#20170;&#20117;&#27996;&#12510;&#12458;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>cool</td><td>&#40644;</td><td>&#12509;&#12472;&#12486;&#12451;&#12502;&#12539;&#12521;&#12483;&#12461;&#12540;&#12460;&#12540;&#12523;</td><td>def_buff</td><td></td><td></td><td>def_buff</td><td>[&quot;team_all&quot;]</td><td>target: [&quot;team_all&quot;]
 filters: {&quot;attribute&quot;: &quot;cool&quot;}
 scaling: {&quot;max_count&quot;: 5}
 activation: &#12510;&#12473;&#12479;&#12540;&#12395;&#12362;&#12414;&#12363;&#12379;
-raw: &#32232;&#25104;&#20869;&#12398;cool&#23646;&#24615;&#25968;(&#19978;&#38480;5&#20307;)&#12395;&#24540;&#12376;&#12390;&#32232;&#25104;&#20869;cool&#23646;&#24615;&#12398;DEF&#22679;&#21152;</td><td>DEF +1%&#65374;+18%</td><td>DEF +1%&#65374;+24%</td><td>100%</td><td>30&#20998;</td><td>2&#26178;&#38291;</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:145</td><td>&#22303;&#20304;&#20037;&#31036;&#12426;&#12423;&#12358;</td><td>&#12488;&#12522;&#12483;&#12463;&#12473;&#12479;&#12540;</td><td>cool</td><td>&#26691;</td><td>&#24819;&#12356;&#12434;&#32180;&#12427;&#12289;&#28961;&#38480;&#12398;&#24070;&#33337;</td><td>def_buff</td><td>target: [&quot;team_all&quot;]
+raw: &#32232;&#25104;&#20869;&#12398;cool&#23646;&#24615;&#25968;(&#19978;&#38480;5&#20307;)&#12395;&#24540;&#12376;&#12390;&#32232;&#25104;&#20869;cool&#23646;&#24615;&#12398;DEF&#22679;&#21152;</td><td>DEF +1%&#65374;+18%</td><td>DEF +1%&#65374;+24%</td><td></td><td></td><td></td><td>100%</td><td>30&#20998;</td><td>2&#26178;&#38291;</td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:145</td><td>&#22303;&#20304;&#20037;&#31036;&#12426;&#12423;&#12358;</td><td>&#12488;&#12522;&#12483;&#12463;&#12473;&#12479;&#12540;</td><td>cool</td><td>&#26691;</td><td>&#24819;&#12356;&#12434;&#32180;&#12427;&#12289;&#28961;&#38480;&#12398;&#24070;&#33337;</td><td>def_buff</td><td></td><td></td><td>def_buff</td><td>[&quot;team_all&quot;]</td><td>target: [&quot;team_all&quot;]
 filters: {&quot;attribute&quot;: &quot;cool&quot;}
 activation: &#12356;&#12388;&#12391;&#12418;&#12450;&#12463;&#12486;&#12451;&#12502;
-raw: &#32232;&#25104;&#20869;&#12364;&#20840;&#12390; &#12398;&#12392;&#12365;&#12289;&#33258;&#32232;&#25104;&#21450;&#12403;&#30456;&#25163;&#32232;&#25104;&#12398;&#20808;&#38957;&#12391;&#12435;&#12371;&#12398;DEF&#22679;&#21152; cool&#23646;&#24615;</td><td>DEF +8%</td><td>DEF +10%</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:146</td><td>&#26705;&#24029;&#12422;&#12358;&#12426;</td><td>&#12487;&#12451;&#12501;&#12455;&#12531;&#12480;&#12540;</td><td>heat</td><td>&#27225;</td><td>&#39135;&#26448;&#12434;&#27714;&#12417;&#12390;&#19977;&#21315;&#37324;</td><td>def_buff_1 (def_buff)</td><td>label: (1)
+raw: &#32232;&#25104;&#20869;&#12364;&#20840;&#12390; &#12398;&#12392;&#12365;&#12289;&#33258;&#32232;&#25104;&#21450;&#12403;&#30456;&#25163;&#32232;&#25104;&#12398;&#20808;&#38957;&#12391;&#12435;&#12371;&#12398;DEF&#22679;&#21152; cool&#23646;&#24615;</td><td>DEF +8%</td><td>DEF +10%</td><td></td><td></td><td></td><td>100%</td><td></td><td></td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:146</td><td>&#26705;&#24029;&#12422;&#12358;&#12426;</td><td>&#12487;&#12451;&#12501;&#12455;&#12531;&#12480;&#12540;</td><td>heat</td><td>&#27225;</td><td>&#39135;&#26448;&#12434;&#27714;&#12417;&#12390;&#19977;&#21315;&#37324;</td><td>def_buff_1 (def_buff)</td><td>(1)</td><td>default_effect</td><td>def_buff</td><td>[&quot;self&quot;]</td><td>label: (1)
 role: default_effect
 target: [&quot;self&quot;]
 filters: {&quot;attribute&quot;: &quot;heat&quot;}
 activation: &#12510;&#12473;&#12479;&#12540;&#12395;&#12362;&#12414;&#12363;&#12379;
-raw: (1)&#19968;&#23450;&#26178;&#38291;&#12289;&#32232;&#25104;&#12375;&#12390;&#12356;&#12427;&#12391;&#12435;&#12371;&#12364;&#12377;&#12409;&#12390; &#12398;&#26178;&#12395;&#12289;&#33258;&#36523;&#12398;DEF&#12364;&#22679;&#21152; heat&#23646;&#24615;</td><td>DEF +12%</td><td>DEF +14%</td><td>100%</td><td>Lv5/Lv15/Lv30/Lv50: 30&#20998;
+raw: (1)&#19968;&#23450;&#26178;&#38291;&#12289;&#32232;&#25104;&#12375;&#12390;&#12356;&#12427;&#12391;&#12435;&#12371;&#12364;&#12377;&#12409;&#12390; &#12398;&#26178;&#12395;&#12289;&#33258;&#36523;&#12398;DEF&#12364;&#22679;&#21152; heat&#23646;&#24615;</td><td>DEF +12%</td><td>DEF +14%</td><td></td><td></td><td></td><td>100%</td><td>Lv5/Lv15/Lv30/Lv50: 30&#20998;
 Lv60: 35&#20998;
 Lv70: 40&#20998;
 Lv80: 45&#20998;</td><td>Lv5/Lv15/Lv30/Lv50: 3&#26178;&#38291;15&#20998;
 Lv60: 3&#26178;&#38291;10&#20998;
 Lv70: 3&#26178;&#38291;5&#20998;
-Lv80: 3&#26178;&#38291;</td><td>def_buff_2 (def_buff)</td><td>label: (2)
+Lv80: 3&#26178;&#38291;</td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:146</td><td>&#26705;&#24029;&#12422;&#12358;&#12426;</td><td>&#12487;&#12451;&#12501;&#12455;&#12531;&#12480;&#12540;</td><td>heat</td><td>&#27225;</td><td>&#39135;&#26448;&#12434;&#27714;&#12417;&#12390;&#19977;&#21315;&#37324;</td><td>def_buff_2 (def_buff)</td><td>(2)</td><td>additional_effect</td><td>def_buff</td><td>[&quot;self&quot;]</td><td>label: (2)
 role: additional_effect
 target: [&quot;self&quot;]
 activation: &#12510;&#12473;&#12479;&#12540;&#12395;&#12362;&#12414;&#12363;&#12379;
-raw: (2)&#33258;&#36523;&#12395;&#12496;&#12483;&#12486;&#12522;&#12540;&#12434;&#20351;&#29992;&#12375;&#12390;&#12363;&#12425;6&#20998;&#38291;&#12289;&#36861;&#21152;&#12391;DEF&#12364;&#22679;&#21152;</td><td>DEF +30%</td><td>DEF +35%</td><td>100%</td><td>Lv5/Lv15/Lv30/Lv50: 30&#20998;
+raw: (2)&#33258;&#36523;&#12395;&#12496;&#12483;&#12486;&#12522;&#12540;&#12434;&#20351;&#29992;&#12375;&#12390;&#12363;&#12425;6&#20998;&#38291;&#12289;&#36861;&#21152;&#12391;DEF&#12364;&#22679;&#21152;</td><td>DEF +30%</td><td>DEF +35%</td><td></td><td></td><td></td><td>100%</td><td>Lv5/Lv15/Lv30/Lv50: 30&#20998;
 Lv60: 35&#20998;
 Lv70: 40&#20998;
 Lv80: 45&#20998;</td><td>Lv5/Lv15/Lv30/Lv50: 3&#26178;&#38291;15&#20998;
 Lv60: 3&#26178;&#38291;10&#20998;
 Lv70: 3&#26178;&#38291;5&#20998;
-Lv80: 3&#26178;&#38291;</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:147</td><td>&#21152;&#22826;&#12371;&#12394;&#12383;</td><td>&#12488;&#12522;&#12483;&#12463;&#12473;&#12479;&#12540;</td><td>eco</td><td>&#32043;</td><td>&#12399;&#12376;&#12414;&#12426;&#12399;&#27492;&#26041;&#12424;&#12426;</td><td>exp_gain_1 (exp_gain)</td><td>label: (1)
+Lv80: 3&#26178;&#38291;</td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:147</td><td>&#21152;&#22826;&#12371;&#12394;&#12383;</td><td>&#12488;&#12522;&#12483;&#12463;&#12473;&#12479;&#12540;</td><td>eco</td><td>&#32043;</td><td>&#12399;&#12376;&#12414;&#12426;&#12399;&#27492;&#26041;&#12424;&#12426;</td><td>exp_gain_1 (exp_gain)</td><td>(1)</td><td>default_effect</td><td>exp_gain</td><td>[&quot;team_all&quot;]</td><td>label: (1)
 role: default_effect
 target: [&quot;team_all&quot;]
 activation: &#12510;&#12473;&#12479;&#12540;&#12395;&#12362;&#12414;&#12363;&#12379;
-raw: (1)&#12473;&#12461;&#12523;&#12434;&#30330;&#21205;&#12375;&#12390;&#12363;&#12425;1&#26178;&#38291;&#24460;&#12395;&#33258;&#32232;&#25104;&#20869;&#12391;&#12435;&#12371;&#12395;&#32076;&#39443;&#20516;&#20184;&#19982;</td><td>&#32076;&#39443;&#20516;&#20184;&#19982; 200</td><td>&#32076;&#39443;&#20516;&#20184;&#19982; 250</td><td>100%</td><td></td><td>Lv5/Lv15/Lv30/Lv50: 3&#26178;&#38291;15&#20998;
+raw: (1)&#12473;&#12461;&#12523;&#12434;&#30330;&#21205;&#12375;&#12390;&#12363;&#12425;1&#26178;&#38291;&#24460;&#12395;&#33258;&#32232;&#25104;&#20869;&#12391;&#12435;&#12371;&#12395;&#32076;&#39443;&#20516;&#20184;&#19982;</td><td>&#32076;&#39443;&#20516;&#20184;&#19982; 200</td><td>&#32076;&#39443;&#20516;&#20184;&#19982; 250</td><td></td><td></td><td></td><td>100%</td><td></td><td>Lv5/Lv15/Lv30/Lv50: 3&#26178;&#38291;15&#20998;
 Lv60: 3&#26178;&#38291;10&#20998;
 Lv70: 3&#26178;&#38291;5&#20998;
-Lv80: 3&#26178;&#38291;</td><td>exp_gain_2 (exp_gain)</td><td>label: (2)
+Lv80: 3&#26178;&#38291;</td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:147</td><td>&#21152;&#22826;&#12371;&#12394;&#12383;</td><td>&#12488;&#12522;&#12483;&#12463;&#12473;&#12479;&#12540;</td><td>eco</td><td>&#32043;</td><td>&#12399;&#12376;&#12414;&#12426;&#12399;&#27492;&#26041;&#12424;&#12426;</td><td>exp_gain_2 (exp_gain)</td><td>(2)</td><td>additional_effect</td><td>exp_gain</td><td>[&quot;team_all&quot;]</td><td>label: (2)
 role: additional_effect
 target: [&quot;team_all&quot;]
 trigger: {&quot;access_direction&quot;: &quot;active&quot;, &quot;event_hint&quot;: &quot;access&quot;}
 activation: &#12510;&#12473;&#12479;&#12540;&#12395;&#12362;&#12414;&#12363;&#12379;
-raw: (2)&#12473;&#12461;&#12523;&#12434;&#12450;&#12463;&#12486;&#12451;&#12502;&#12395;&#12375;&#12390;&#12363;&#12425;&#30330;&#21205;&#12414;&#12391;&#12395;3&#22238;&#20197;&#19978;&#12450;&#12463;&#12475;&#12473;&#12375;&#12390;&#12356;&#12383;&#39365;&#23646;&#24615;&#12398;&#25968;&#12395;&#24540;&#12376;&#12390;&#12289;&#36861;&#21152;&#12391;&#32076;&#39443;&#20516;&#20184;&#19982; &#12473;&#12461;&#12523;&#30330;&#21205;&#26178;&#12395;&#12371;&#12394;&#12383;&#12364;&#32232;&#25104;&#12373;&#12428;&#12390;&#12356;&#12394;&#12367;&#12390;&#12418;&#30330;&#21205;</td><td>&#32076;&#39443;&#20516;&#20184;&#19982; 400&#65374;1200</td><td>&#32076;&#39443;&#20516;&#20184;&#19982; 500&#65374;1500</td><td>100%</td><td></td><td>Lv5/Lv15/Lv30/Lv50: 3&#26178;&#38291;15&#20998;
+raw: (2)&#12473;&#12461;&#12523;&#12434;&#12450;&#12463;&#12486;&#12451;&#12502;&#12395;&#12375;&#12390;&#12363;&#12425;&#30330;&#21205;&#12414;&#12391;&#12395;3&#22238;&#20197;&#19978;&#12450;&#12463;&#12475;&#12473;&#12375;&#12390;&#12356;&#12383;&#39365;&#23646;&#24615;&#12398;&#25968;&#12395;&#24540;&#12376;&#12390;&#12289;&#36861;&#21152;&#12391;&#32076;&#39443;&#20516;&#20184;&#19982; &#12473;&#12461;&#12523;&#30330;&#21205;&#26178;&#12395;&#12371;&#12394;&#12383;&#12364;&#32232;&#25104;&#12373;&#12428;&#12390;&#12356;&#12394;&#12367;&#12390;&#12418;&#30330;&#21205;</td><td>&#32076;&#39443;&#20516;&#20184;&#19982; 400&#65374;1200</td><td>&#32076;&#39443;&#20516;&#20184;&#19982; 500&#65374;1500</td><td></td><td></td><td></td><td>100%</td><td></td><td>Lv5/Lv15/Lv30/Lv50: 3&#26178;&#38291;15&#20998;
 Lv60: 3&#26178;&#38291;10&#20998;
 Lv70: 3&#26178;&#38291;5&#20998;
-Lv80: 3&#26178;&#38291;</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:148</td><td>&#20489;&#25975;&#12428;&#12362;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>heat</td><td>&#26691;</td><td>&#12365;&#12403;&#12384;&#12435;&#12372;&#12391;&#12362;&#21451;&#36948;&#9734;</td><td>atk_buff</td><td>target: [&quot;team_all&quot;]
+Lv80: 3&#26178;&#38291;</td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:148</td><td>&#20489;&#25975;&#12428;&#12362;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>heat</td><td>&#26691;</td><td>&#12365;&#12403;&#12384;&#12435;&#12372;&#12391;&#12362;&#21451;&#36948;&#9734;</td><td>atk_buff</td><td></td><td></td><td>atk_buff</td><td>[&quot;team_all&quot;]</td><td>target: [&quot;team_all&quot;]
 filters: {&quot;attribute&quot;: &quot;heat&quot;, &quot;exclude_self&quot;: true}
 trigger: {&quot;access_direction&quot;: &quot;active&quot;, &quot;event_hint&quot;: &quot;access&quot;}
 scaling: {&quot;max_count&quot;: 4}
 activation: &#12356;&#12388;&#12391;&#12418;&#12450;&#12463;&#12486;&#12451;&#12502;
-raw: &#12450;&#12463;&#12475;&#12473;&#12375;&#12383;&#39365;&#12398;&#22825;&#27671;&#12364;&#26228;&#12428;&#12398;&#22580;&#21512;&#12289;&#33258;&#36523;&#12434;&#38500;&#12367;&#32232;&#25104;&#20869;&#12398; &#12398;&#25968;&#12395;&#24540;&#12376;&#12390;&#12289;&#33258;&#36523;&#12434;&#38500;&#12367;&#32232;&#25104;&#20869;&#12398;&#12391;&#12435;&#12371;&#12398;ATK&#19978;&#26119;&#65288;&#19978;&#38480;4&#20307;&#65289; heat&#23646;&#24615;&#12391;&#12435;&#12371; &#22825;&#27671;&#12399;&#12450;&#12463;&#12475;&#12473;&#32080;&#26524;&#12398;&#35352;&#36617;&#12395;&#20381;&#23384;</td><td>ATK 0%&#65374;+10%</td><td>ATK 0%&#65374;+12%</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:149</td><td>&#26085;&#26286;&#37324;&#12495;&#12523;&#12459;&#12476;</td><td>&#12450;&#12479;&#12483;&#12459;&#12540;</td><td>cool</td><td>&#26691;</td><td>&#19981;&#22120;&#29992;&#12458;&#12540;&#12496;&#12540;&#12527;&#12540;&#12463;</td><td>atk_buff_1 (atk_buff)</td><td>label: (1)
+raw: &#12450;&#12463;&#12475;&#12473;&#12375;&#12383;&#39365;&#12398;&#22825;&#27671;&#12364;&#26228;&#12428;&#12398;&#22580;&#21512;&#12289;&#33258;&#36523;&#12434;&#38500;&#12367;&#32232;&#25104;&#20869;&#12398; &#12398;&#25968;&#12395;&#24540;&#12376;&#12390;&#12289;&#33258;&#36523;&#12434;&#38500;&#12367;&#32232;&#25104;&#20869;&#12398;&#12391;&#12435;&#12371;&#12398;ATK&#19978;&#26119;&#65288;&#19978;&#38480;4&#20307;&#65289; heat&#23646;&#24615;&#12391;&#12435;&#12371; &#22825;&#27671;&#12399;&#12450;&#12463;&#12475;&#12473;&#32080;&#26524;&#12398;&#35352;&#36617;&#12395;&#20381;&#23384;</td><td>ATK 0%&#65374;+10%</td><td>ATK 0%&#65374;+12%</td><td></td><td></td><td></td><td>100%</td><td></td><td></td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:149</td><td>&#26085;&#26286;&#37324;&#12495;&#12523;&#12459;&#12476;</td><td>&#12450;&#12479;&#12483;&#12459;&#12540;</td><td>cool</td><td>&#26691;</td><td>&#19981;&#22120;&#29992;&#12458;&#12540;&#12496;&#12540;&#12527;&#12540;&#12463;</td><td>atk_buff_1 (atk_buff)</td><td>(1)</td><td>default_effect</td><td>atk_buff</td><td></td><td>label: (1)
 role: default_effect
 activation: &#12510;&#12473;&#12479;&#12540;&#12395;&#12362;&#12414;&#12363;&#12379;
-raw: (1)&#19968;&#23450;&#26178;&#38291;ATK&#22679;&#21152;</td><td>ATK +37%</td><td>ATK +44%</td><td>100%</td><td>Lv5: 30&#20998;
+raw: (1)&#19968;&#23450;&#26178;&#38291;ATK&#22679;&#21152;</td><td>ATK +37%</td><td>ATK +44%</td><td></td><td></td><td></td><td>100%</td><td>Lv5: 30&#20998;
 Lv15: 35&#20998;
 Lv30: 40&#20998;
 Lv50: 45&#20998;
@@ -381,10 +399,11 @@ Lv30: 2&#26178;&#38291;20&#20998;
 Lv50: 2&#26178;&#38291;15&#20998;
 Lv60: 2&#26178;&#38291;10&#20998;
 Lv70: 2&#26178;&#38291;5&#20998;
-Lv80: 2&#26178;&#38291;</td><td>reboot_2 (reboot)</td><td>label: (2)
+Lv80: 2&#26178;&#38291;</td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:149</td><td>&#26085;&#26286;&#37324;&#12495;&#12523;&#12459;&#12476;</td><td>&#12450;&#12479;&#12483;&#12459;&#12540;</td><td>cool</td><td>&#26691;</td><td>&#19981;&#22120;&#29992;&#12458;&#12540;&#12496;&#12540;&#12527;&#12540;&#12463;</td><td>reboot_2 (reboot)</td><td>(2)</td><td>supplemental_effect</td><td>reboot</td><td></td><td>label: (2)
 role: supplemental_effect
 activation: &#12510;&#12473;&#12479;&#12540;&#12395;&#12362;&#12414;&#12363;&#12379;
-raw: (2)&#12522;&#12531;&#12463;&#22833;&#25943;&#12398;&#22580;&#21512;&#12289;&#30906;&#29575;&#12391;&#12522;&#12502;&#12540;&#12488;&#12289;&#12473;&#12461;&#12523;&#24375;&#21046;&#32066;&#20102;</td><td>reboot</td><td>reboot</td><td>15%</td><td>Lv5: 30&#20998;
+raw: (2)&#12522;&#12531;&#12463;&#22833;&#25943;&#12398;&#22580;&#21512;&#12289;&#30906;&#29575;&#12391;&#12522;&#12502;&#12540;&#12488;&#12289;&#12473;&#12461;&#12523;&#24375;&#21046;&#32066;&#20102;</td><td>reboot</td><td>reboot</td><td></td><td></td><td></td><td>15%</td><td>Lv5: 30&#20998;
 Lv15: 35&#20998;
 Lv30: 40&#20998;
 Lv50: 45&#20998;
@@ -396,18 +415,18 @@ Lv30: 2&#26178;&#38291;20&#20998;
 Lv50: 2&#26178;&#38291;15&#20998;
 Lv60: 2&#26178;&#38291;10&#20998;
 Lv70: 2&#26178;&#38291;5&#20998;
-Lv80: 2&#26178;&#38291;</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:150</td><td>&#26377;&#30000;&#12356;&#12414;&#12426;</td><td>&#12488;&#12522;&#12483;&#12463;&#12473;&#12479;&#12540;</td><td>eco</td><td>&#32043;</td><td>&#19968;&#12363;&#20843;&#12363;&#9734;&#12393;&#12540;&#12435;&#12392;&#34892;&#12387;&#12390;&#12415;&#12424;&#12358;&#65281;</td><td>score_gain</td><td>target: [&quot;front_car&quot;]
+Lv80: 2&#26178;&#38291;</td><td>[&#x27;condition_only_component_needs_review&#x27;]</td></tr>
+<tr><td>original:150</td><td>&#26377;&#30000;&#12356;&#12414;&#12426;</td><td>&#12488;&#12522;&#12483;&#12463;&#12473;&#12479;&#12540;</td><td>eco</td><td>&#32043;</td><td>&#19968;&#12363;&#20843;&#12363;&#9734;&#12393;&#12540;&#12435;&#12392;&#34892;&#12387;&#12390;&#12415;&#12424;&#12358;&#65281;</td><td>score_gain</td><td></td><td></td><td>score_gain</td><td>[&quot;front_car&quot;]</td><td>target: [&quot;front_car&quot;]
 trigger: {&quot;access_direction&quot;: &quot;active&quot;, &quot;event_hint&quot;: &quot;access&quot;}
 scaling: {&quot;basis&quot;: &quot;linked_station_count&quot;}
 activation: &#12510;&#12473;&#12479;&#12540;&#12395;&#12362;&#12414;&#12363;&#12379;
-raw: &#19968;&#23450;&#26178;&#38291;&#12289;&#20808;&#38957;&#36554;&#20001;&#12398;&#12391;&#12435;&#12371;&#12364;&#12450;&#12463;&#12475;&#12473;&#12373;&#12428;&#12390;&#12522;&#12502;&#12540;&#12488;&#12375;&#12394;&#12363;&#12387;&#12383;&#26178;&#12289; &#21463;&#12369;&#12383;&#12480;&#12513;&#12540;&#12472;&#12364;&#22855;&#25968;&#12394;&#12425;&#20808;&#38957;&#36554;&#20001;&#12398;&#12391;&#12435;&#12371;&#12398;&#12522;&#12531;&#12463;&#39365;&#25968;&#12395;&#24540;&#12376;&#12390;&#12473;&#12467;&#12450;&#29554;&#24471; &#21463;&#12369;&#12383;&#12480;&#12513;&#12540;&#12472;&#12364;&#20598;&#25968;&#12394;&#12425;&#20808;&#38957;&#36554;&#20001;&#12398;&#12391;&#12435;&#12371;&#12434;&#12522;&#12502;&#12540;&#12488;&#12373;&#12379;&#12289;&#12522;&#12502;&#12540;&#12488;&#26178;&#12395;&#29554;&#24471;&#12377;&#12427;&#12473;&#12467;&#12450;&#12434;0&#12395;&#12377;&#12427; 1&#22238;&#30330;&#21205;&#12391;&#12463;&#12540;&#12523;&#12479;&#12452;&#12512; &#12398;&#12473;&#12461;&#12523;&#12399;&#23550;&#35937;&#22806; &#12358;&#12425;&#12425;</td><td>&#12473;&#12467;&#12450;&#29554;&#24471; 1200</td><td>&#12473;&#12467;&#12450;&#29554;&#24471; 1650</td><td>100%</td><td>15&#20998;</td><td>12&#26178;&#38291;</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:151</td><td>&#31119;&#31070;&#12354;&#12362;&#12397;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>cool</td><td>&#38738;</td><td>&#28113;&#22899;&#12434;&#30446;&#25351;&#12375;&#12390;</td><td>atk_buff_1 (atk_buff)</td><td>label: (1)
+raw: &#19968;&#23450;&#26178;&#38291;&#12289;&#20808;&#38957;&#36554;&#20001;&#12398;&#12391;&#12435;&#12371;&#12364;&#12450;&#12463;&#12475;&#12473;&#12373;&#12428;&#12390;&#12522;&#12502;&#12540;&#12488;&#12375;&#12394;&#12363;&#12387;&#12383;&#26178;&#12289; &#21463;&#12369;&#12383;&#12480;&#12513;&#12540;&#12472;&#12364;&#22855;&#25968;&#12394;&#12425;&#20808;&#38957;&#36554;&#20001;&#12398;&#12391;&#12435;&#12371;&#12398;&#12522;&#12531;&#12463;&#39365;&#25968;&#12395;&#24540;&#12376;&#12390;&#12473;&#12467;&#12450;&#29554;&#24471; &#21463;&#12369;&#12383;&#12480;&#12513;&#12540;&#12472;&#12364;&#20598;&#25968;&#12394;&#12425;&#20808;&#38957;&#36554;&#20001;&#12398;&#12391;&#12435;&#12371;&#12434;&#12522;&#12502;&#12540;&#12488;&#12373;&#12379;&#12289;&#12522;&#12502;&#12540;&#12488;&#26178;&#12395;&#29554;&#24471;&#12377;&#12427;&#12473;&#12467;&#12450;&#12434;0&#12395;&#12377;&#12427; 1&#22238;&#30330;&#21205;&#12391;&#12463;&#12540;&#12523;&#12479;&#12452;&#12512; &#12398;&#12473;&#12461;&#12523;&#12399;&#23550;&#35937;&#22806; &#12358;&#12425;&#12425;</td><td>&#12473;&#12467;&#12450;&#29554;&#24471; 1200</td><td>&#12473;&#12467;&#12450;&#29554;&#24471; 1650</td><td></td><td></td><td></td><td>100%</td><td>15&#20998;</td><td>12&#26178;&#38291;</td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:151</td><td>&#31119;&#31070;&#12354;&#12362;&#12397;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>cool</td><td>&#38738;</td><td>&#28113;&#22899;&#12434;&#30446;&#25351;&#12375;&#12390;</td><td>atk_buff_1 (atk_buff)</td><td>(1)</td><td>default_effect</td><td>atk_buff</td><td>[&quot;team_all&quot;]</td><td>label: (1)
 role: default_effect
 target: [&quot;team_all&quot;]
 filters: {&quot;attribute&quot;: &quot;cool&quot;}
 activation: &#12510;&#12473;&#12479;&#12540;&#12395;&#12362;&#12414;&#12363;&#12379;
-raw: (1)&#33258;&#32232;&#25104;&#12398;&#12391;&#12435;&#12371;&#12364;&#20840;&#12390; &#12398;&#22580;&#21512;&#12289;&#32232;&#25104;&#20869;&#20840;&#21729;&#12398;ATK&#22679;&#21152; cool&#23646;&#24615;</td><td>ATK +12%</td><td>ATK +14%</td><td>100%</td><td>Lv5: 27&#20998;
+raw: (1)&#33258;&#32232;&#25104;&#12398;&#12391;&#12435;&#12371;&#12364;&#20840;&#12390; &#12398;&#22580;&#21512;&#12289;&#32232;&#25104;&#20869;&#20840;&#21729;&#12398;ATK&#22679;&#21152; cool&#23646;&#24615;</td><td>ATK +12%</td><td>ATK +14%</td><td></td><td></td><td></td><td>100%</td><td>Lv5: 27&#20998;
 Lv15: 30&#20998;
 Lv30: 33&#20998;
 Lv50: 36&#20998;
@@ -419,11 +438,12 @@ Lv30: 2&#26178;&#38291;27&#20998;
 Lv50: 2&#26178;&#38291;24&#20998;
 Lv60: 2&#26178;&#38291;21&#20998;
 Lv70: 2&#26178;&#38291;18&#20998;
-Lv80: 2&#26178;&#38291;15&#20998;</td><td>atk_buff_2 (atk_buff)</td><td>label: (2)
+Lv80: 2&#26178;&#38291;15&#20998;</td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:151</td><td>&#31119;&#31070;&#12354;&#12362;&#12397;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>cool</td><td>&#38738;</td><td>&#28113;&#22899;&#12434;&#30446;&#25351;&#12375;&#12390;</td><td>atk_buff_2 (atk_buff)</td><td>(2)</td><td>additional_effect</td><td>atk_buff</td><td>[&quot;team_all&quot;]</td><td>label: (2)
 role: additional_effect
 target: [&quot;team_all&quot;]
 activation: &#12510;&#12473;&#12479;&#12540;&#12395;&#12362;&#12414;&#12363;&#12379;
-raw: (2)&#30330;&#21205;&#20013;&#12398;&#21512;&#35336;&#19982;&#12480;&#12513;&#12540;&#12472;&#20516;&#12395;&#24540;&#12376;&#12390;&#36861;&#21152;&#12391;ATK&#22679;&#21152;</td><td>ATK 0%&#65374;+15%</td><td>ATK 0%&#65374;+17.5%</td><td>100%</td><td>Lv5: 27&#20998;
+raw: (2)&#30330;&#21205;&#20013;&#12398;&#21512;&#35336;&#19982;&#12480;&#12513;&#12540;&#12472;&#20516;&#12395;&#24540;&#12376;&#12390;&#36861;&#21152;&#12391;ATK&#22679;&#21152;</td><td>ATK 0%&#65374;+15%</td><td>ATK 0%&#65374;+17.5%</td><td></td><td></td><td></td><td>100%</td><td>Lv5: 27&#20998;
 Lv15: 30&#20998;
 Lv30: 33&#20998;
 Lv50: 36&#20998;
@@ -435,14 +455,14 @@ Lv30: 2&#26178;&#38291;27&#20998;
 Lv50: 2&#26178;&#38291;24&#20998;
 Lv60: 2&#26178;&#38291;21&#20998;
 Lv70: 2&#26178;&#38291;18&#20998;
-Lv80: 2&#26178;&#38291;15&#20998;</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:152</td><td>&#39740;&#24594;&#24029;&#12395;&#12356;&#12394;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>heat</td><td>&#27225;</td><td>&#31192;&#23494;&#12398;&#12513;&#12452;&#12489;&#12373;&#12435;</td><td>def_buff_1 (def_buff)</td><td>label: (1)
+Lv80: 2&#26178;&#38291;15&#20998;</td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:152</td><td>&#39740;&#24594;&#24029;&#12395;&#12356;&#12394;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>heat</td><td>&#27225;</td><td>&#31192;&#23494;&#12398;&#12513;&#12452;&#12489;&#12373;&#12435;</td><td>def_buff_1 (def_buff)</td><td>(1)</td><td>default_effect</td><td>def_buff</td><td>[&quot;team_all&quot;]</td><td>label: (1)
 role: default_effect
 target: [&quot;team_all&quot;]
 filters: {&quot;attribute&quot;: &quot;heat&quot;}
 trigger: {&quot;access_direction&quot;: &quot;received&quot;, &quot;event_hint&quot;: &quot;accessed&quot;}
 activation: &#12510;&#12473;&#12479;&#12540;&#12395;&#12362;&#12414;&#12363;&#12379;
-raw: &#30330;&#21205;&#26465;&#20214;&#65306;&#32232;&#25104;&#20869;&#12398;&#12391;&#12435;&#12371;&#12364;&#20840;&#12390; heat&#23646;&#24615; / (1)&#65306;&#33258;&#36523;&#20197;&#22806;&#12398;&#34987;&#12450;&#12463;&#12475;&#12473;&#26178;&#12395;DEF&#12364;&#22679;&#21152; /</td><td>DEF +11%</td><td>DEF +14%</td><td>100%</td><td>Lv5: 15&#20998;
+raw: &#30330;&#21205;&#26465;&#20214;&#65306;&#32232;&#25104;&#20869;&#12398;&#12391;&#12435;&#12371;&#12364;&#20840;&#12390; heat&#23646;&#24615; / (1)&#65306;&#33258;&#36523;&#20197;&#22806;&#12398;&#34987;&#12450;&#12463;&#12475;&#12473;&#26178;&#12395;DEF&#12364;&#22679;&#21152;</td><td>DEF +11%</td><td>DEF +14%</td><td></td><td></td><td></td><td>100%</td><td>Lv5: 15&#20998;
 Lv15: 20&#20998;
 Lv30: 25&#20998;
 Lv50: 30&#20998;
@@ -454,13 +474,14 @@ Lv30: 2&#26178;&#38291;35&#20998;
 Lv50: 2&#26178;&#38291;30&#20998;
 Lv60: 2&#26178;&#38291;25&#20998;
 Lv70: 2&#26178;&#38291;20&#20998;
-Lv80: 2&#26178;&#38291;15&#20998;</td><td>def_debuff_2 (def_debuff)</td><td>label: (2)
+Lv80: 2&#26178;&#38291;15&#20998;</td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:152</td><td>&#39740;&#24594;&#24029;&#12395;&#12356;&#12394;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>heat</td><td>&#27225;</td><td>&#31192;&#23494;&#12398;&#12513;&#12452;&#12489;&#12373;&#12435;</td><td>def_debuff_2 (def_debuff)</td><td>(2)</td><td>supplemental_effect</td><td>def_debuff</td><td>[&quot;team_all&quot;]</td><td>label: (2)
 role: supplemental_effect
 target: [&quot;team_all&quot;]
 filters: {&quot;attribute&quot;: &quot;heat&quot;}
 trigger: {&quot;access_direction&quot;: &quot;active&quot;, &quot;event_hint&quot;: &quot;access&quot;}
 activation: &#12510;&#12473;&#12479;&#12540;&#12395;&#12362;&#12414;&#12363;&#12379;
-raw: &#30330;&#21205;&#26465;&#20214;&#65306;&#32232;&#25104;&#20869;&#12398;&#12391;&#12435;&#12371;&#12364;&#20840;&#12390; heat&#23646;&#24615; / (2)&#65306;&#33258;&#36523;&#20197;&#22806;&#12398;&#12450;&#12463;&#12475;&#12473;&#26178;&#12395;&#30456;&#25163;&#12398;DEF&#12364;&#28187;&#23569;</td><td>DEF -11%</td><td>DEF -14%</td><td>100%</td><td>Lv5: 15&#20998;
+raw: &#30330;&#21205;&#26465;&#20214;&#65306;&#32232;&#25104;&#20869;&#12398;&#12391;&#12435;&#12371;&#12364;&#20840;&#12390; heat&#23646;&#24615; / (2)&#65306;&#33258;&#36523;&#20197;&#22806;&#12398;&#12450;&#12463;&#12475;&#12473;&#26178;&#12395;&#30456;&#25163;&#12398;DEF&#12364;&#28187;&#23569;</td><td>DEF -11%</td><td>DEF -14%</td><td></td><td></td><td></td><td>100%</td><td>Lv5: 15&#20998;
 Lv15: 20&#20998;
 Lv30: 25&#20998;
 Lv50: 30&#20998;
@@ -472,98 +493,105 @@ Lv30: 2&#26178;&#38291;35&#20998;
 Lv50: 2&#26178;&#38291;30&#20998;
 Lv60: 2&#26178;&#38291;25&#20998;
 Lv70: 2&#26178;&#38291;20&#20998;
-Lv80: 2&#26178;&#38291;15&#20998;</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:153</td><td>&#22303;&#21512;&#12418;&#12367;&#12426;</td><td>&#12488;&#12522;&#12483;&#12463;&#12473;&#12479;&#12540;</td><td>eco</td><td>&#32209;</td><td>&#12383;&#12414;&#12371;&#12399;&#22823;&#35242;&#21451;</td><td>exp_gain_1 (exp_gain)</td><td>label: (1)
+Lv80: 2&#26178;&#38291;15&#20998;</td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:153</td><td>&#22303;&#21512;&#12418;&#12367;&#12426;</td><td>&#12488;&#12522;&#12483;&#12463;&#12473;&#12479;&#12540;</td><td>eco</td><td>&#32209;</td><td>&#12383;&#12414;&#12371;&#12399;&#22823;&#35242;&#21451;</td><td>exp_gain_1 (exp_gain)</td><td>(1)</td><td>default_effect</td><td>exp_gain</td><td>[&quot;accessing_denko&quot;]</td><td>label: (1)
 role: default_effect
 target: [&quot;accessing_denko&quot;]
 trigger: {&quot;access_direction&quot;: &quot;active&quot;, &quot;event_hint&quot;: &quot;access&quot;}
 activation: &#12356;&#12388;&#12391;&#12418;&#12450;&#12463;&#12486;&#12451;&#12502;
-raw: (1)&#20170;&#26085;&#12398;&#12450;&#12463;&#12475;&#12473;&#39365;&#25968;(&#19978;&#38480;20&#39365;)&#12395;&#24540;&#12376;&#12390;&#32076;&#39443;&#20516;&#20184;&#19982;</td><td>&#32076;&#39443;&#20516;&#20184;&#19982; 0&#65374;120</td><td>&#32076;&#39443;&#20516;&#20184;&#19982; 0&#65374;140</td><td>100%</td><td></td><td></td><td>exp_gain_2 (exp_gain)</td><td>label: (2)
+raw: (1)&#20170;&#26085;&#12398;&#12450;&#12463;&#12475;&#12473;&#39365;&#25968;(&#19978;&#38480;20&#39365;)&#12395;&#24540;&#12376;&#12390;&#32076;&#39443;&#20516;&#20184;&#19982;</td><td>&#32076;&#39443;&#20516;&#20184;&#19982; 0&#65374;120</td><td>&#32076;&#39443;&#20516;&#20184;&#19982; 0&#65374;140</td><td></td><td></td><td></td><td>100%</td><td></td><td></td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:153</td><td>&#22303;&#21512;&#12418;&#12367;&#12426;</td><td>&#12488;&#12522;&#12483;&#12463;&#12473;&#12479;&#12540;</td><td>eco</td><td>&#32209;</td><td>&#12383;&#12414;&#12371;&#12399;&#22823;&#35242;&#21451;</td><td>exp_gain_2 (exp_gain)</td><td>(2)</td><td>supplemental_effect</td><td>exp_gain</td><td>[&quot;team_all&quot;]</td><td>label: (2)
 role: supplemental_effect
 target: [&quot;team_all&quot;]
 trigger: {&quot;access_direction&quot;: &quot;active&quot;, &quot;event_hint&quot;: &quot;access&quot;}
 activation: &#12356;&#12388;&#12391;&#12418;&#12450;&#12463;&#12486;&#12451;&#12502;
-raw: (2)&#12450;&#12463;&#12475;&#12473;&#12375;&#12383;&#39365;&#12398;&#22825;&#27671;&#12364;&#26311;&#12426;&#12398;&#22580;&#21512;&#12289;&#32232;&#25104;&#20869;&#12398;&#12391;&#12435;&#12371;&#12395;&#32076;&#39443;&#20516;&#20184;&#19982;</td><td>&#32076;&#39443;&#20516;&#20184;&#19982; 120</td><td>&#32076;&#39443;&#20516;&#20184;&#19982; 140</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:154</td><td>&#26481;&#30000;&#22338;&#19978;&#12411;&#12394;&#12415;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>cool</td><td>&#38738;</td><td>&#28288;&#36275;&#24230;100%&#12434;&#30446;&#25351;&#12375;&#12390;</td><td>def_buff_1 (def_buff)</td><td>label: (1)
+raw: (2)&#12450;&#12463;&#12475;&#12473;&#12375;&#12383;&#39365;&#12398;&#22825;&#27671;&#12364;&#26311;&#12426;&#12398;&#22580;&#21512;&#12289;&#32232;&#25104;&#20869;&#12398;&#12391;&#12435;&#12371;&#12395;&#32076;&#39443;&#20516;&#20184;&#19982;</td><td>&#32076;&#39443;&#20516;&#20184;&#19982; 120</td><td>&#32076;&#39443;&#20516;&#20184;&#19982; 140</td><td></td><td></td><td></td><td>100%</td><td></td><td></td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:154</td><td>&#26481;&#30000;&#22338;&#19978;&#12411;&#12394;&#12415;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>cool</td><td>&#38738;</td><td>&#28288;&#36275;&#24230;100%&#12434;&#30446;&#25351;&#12375;&#12390;</td><td>def_buff_1 (def_buff)</td><td>(1)</td><td>default_effect</td><td>def_buff</td><td>[&quot;team_all&quot;]</td><td>label: (1)
 role: default_effect
 target: [&quot;team_all&quot;]
 filters: {&quot;attributes&quot;: [&quot;cool&quot;, &quot;eco&quot;], &quot;formation_only&quot;: true}
 activation: &#12356;&#12388;&#12391;&#12418;&#12450;&#12463;&#12486;&#12451;&#12502;
-raw: cool&#12392;eco&#12398;&#20001;&#23646;&#24615;&#12398;&#12391;&#12435;&#12371;&#12398;&#12415;&#32232;&#25104; (1)cool&#23646;&#24615;&#12398;&#12391;&#12435;&#12371;&#12364;&#12522;&#12531;&#12463;&#20013;&#12399;&#32232;&#25104;&#20869;&#20840;&#21729;&#12398;DEF&#22679;&#21152;</td><td>DEF +7%</td><td>DEF +8.5%</td><td>100%</td><td></td><td></td><td>def_buff_2 (def_buff)</td><td>label: (2)
+raw: cool&#12392;eco&#12398;&#20001;&#23646;&#24615;&#12398;&#12391;&#12435;&#12371;&#12398;&#12415;&#32232;&#25104; (1)cool&#23646;&#24615;&#12398;&#12391;&#12435;&#12371;&#12364;&#12522;&#12531;&#12463;&#20013;&#12399;&#32232;&#25104;&#20869;&#20840;&#21729;&#12398;DEF&#22679;&#21152;</td><td>DEF +7%</td><td>DEF +8.5%</td><td></td><td></td><td></td><td>100%</td><td></td><td></td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:154</td><td>&#26481;&#30000;&#22338;&#19978;&#12411;&#12394;&#12415;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>cool</td><td>&#38738;</td><td>&#28288;&#36275;&#24230;100%&#12434;&#30446;&#25351;&#12375;&#12390;</td><td>def_buff_2 (def_buff)</td><td>(2)</td><td>supplemental_effect</td><td>def_buff</td><td>[&quot;team_all&quot;]</td><td>label: (2)
 role: supplemental_effect
 target: [&quot;team_all&quot;]
 filters: {&quot;attributes&quot;: [&quot;cool&quot;, &quot;eco&quot;], &quot;formation_only&quot;: true}
 activation: &#12356;&#12388;&#12391;&#12418;&#12450;&#12463;&#12486;&#12451;&#12502;
-raw: cool&#12392;eco&#12398;&#20001;&#23646;&#24615;&#12398;&#12391;&#12435;&#12371;&#12398;&#12415;&#32232;&#25104; (2)eco&#23646;&#24615;&#12398;&#12391;&#12435;&#12371;&#12364;&#12522;&#12531;&#12463;&#20013;&#12399;&#32232;&#25104;&#20869;&#20840;&#21729;&#12398;DEF&#22679;&#21152;</td><td>DEF +7%</td><td>DEF +8.5%</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:155</td><td>&#35914;&#37326;&#12371;&#12398;&#12399;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>cool</td><td>&#38738;</td><td>&#12362;&#33145;&#12364;&#31354;&#12356;&#12390;&#12418;&#12372;&#23433;&#24515;&#9834;</td><td>def_buff_1 (def_buff)</td><td>label: (1)
+raw: cool&#12392;eco&#12398;&#20001;&#23646;&#24615;&#12398;&#12391;&#12435;&#12371;&#12398;&#12415;&#32232;&#25104; (2)eco&#23646;&#24615;&#12398;&#12391;&#12435;&#12371;&#12364;&#12522;&#12531;&#12463;&#20013;&#12399;&#32232;&#25104;&#20869;&#20840;&#21729;&#12398;DEF&#22679;&#21152;</td><td>DEF +7%</td><td>DEF +8.5%</td><td></td><td></td><td></td><td>100%</td><td></td><td></td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:155</td><td>&#35914;&#37326;&#12371;&#12398;&#12399;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>cool</td><td>&#38738;</td><td>&#12362;&#33145;&#12364;&#31354;&#12356;&#12390;&#12418;&#12372;&#23433;&#24515;&#9834;</td><td>def_buff_1 (def_buff)</td><td>(1)</td><td>default_effect</td><td>def_buff</td><td>[&quot;team_all&quot;]</td><td>label: (1)
 role: default_effect
 target: [&quot;team_all&quot;]
 filters: {&quot;attribute&quot;: &quot;cool&quot;}
 activation: &#12356;&#12388;&#12391;&#12418;&#12450;&#12463;&#12486;&#12451;&#12502;
-raw: (1)&#32232;&#25104;&#20869; &#12398;DEF&#22679;&#21152; cool&#23646;&#24615;&#12391;&#12435;&#12371;</td><td>DEF +6%</td><td>DEF +7%</td><td>100%</td><td></td><td></td><td>def_buff_2 (def_buff)</td><td>label: (2)
+raw: (1)&#32232;&#25104;&#20869; &#12398;DEF&#22679;&#21152; cool&#23646;&#24615;&#12391;&#12435;&#12371;</td><td>DEF +6%</td><td>DEF +7%</td><td></td><td></td><td></td><td>100%</td><td></td><td></td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:155</td><td>&#35914;&#37326;&#12371;&#12398;&#12399;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>cool</td><td>&#38738;</td><td>&#12362;&#33145;&#12364;&#31354;&#12356;&#12390;&#12418;&#12372;&#23433;&#24515;&#9834;</td><td>def_buff_2 (def_buff)</td><td>(2)</td><td>additional_effect</td><td>def_buff</td><td>[&quot;team_all&quot;]</td><td>label: (2)
 role: additional_effect
 target: [&quot;team_all&quot;]
 filters: {&quot;attribute&quot;: &quot;cool&quot;}
 trigger: {&quot;access_direction&quot;: &quot;received&quot;, &quot;event_hint&quot;: &quot;accessed&quot;}
 activation: &#12356;&#12388;&#12391;&#12418;&#12450;&#12463;&#12486;&#12451;&#12502;
-raw: (2)&#12450;&#12463;&#12475;&#12473;&#12373;&#12428;&#12383;&#32232;&#25104;&#20869;cool&#23646;&#24615;&#12391;&#12435;&#12371;&#12395;50&#20998;&#20197;&#19978;&#12522;&#12531;&#12463;&#12375;&#12390;&#12356;&#12427;&#39365;&#12364;&#12354;&#12427;&#22580;&#21512;&#12289;(1)&#12395;&#36861;&#21152;&#12391;DEF&#22679;&#21152;</td><td>DEF +10%</td><td>DEF +12%</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:156</td><td>&#29983;&#23665;&#12411;&#12383;&#12427;</td><td>&#12487;&#12451;&#12501;&#12455;&#12531;&#12480;&#12540;</td><td>heat</td><td>&#27225;</td><td>&#12393;&#12435;&#12368;&#12426;&#12398;&#32972;&#27604;&#12409;</td><td>def_buff_1 (def_buff)</td><td>label: (1)
+raw: (2)&#12450;&#12463;&#12475;&#12473;&#12373;&#12428;&#12383;&#32232;&#25104;&#20869;cool&#23646;&#24615;&#12391;&#12435;&#12371;&#12395;50&#20998;&#20197;&#19978;&#12522;&#12531;&#12463;&#12375;&#12390;&#12356;&#12427;&#39365;&#12364;&#12354;&#12427;&#22580;&#21512;&#12289;(1)&#12395;&#36861;&#21152;&#12391;DEF&#22679;&#21152;</td><td>DEF +10%</td><td>DEF +12%</td><td></td><td></td><td></td><td>100%</td><td></td><td></td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:156</td><td>&#29983;&#23665;&#12411;&#12383;&#12427;</td><td>&#12487;&#12451;&#12501;&#12455;&#12531;&#12480;&#12540;</td><td>heat</td><td>&#27225;</td><td>&#12393;&#12435;&#12368;&#12426;&#12398;&#32972;&#27604;&#12409;</td><td>def_buff_1 (def_buff)</td><td>(1)</td><td>default_effect</td><td>def_buff</td><td>[&quot;team_all&quot;]</td><td>label: (1)
 role: default_effect
 target: [&quot;team_all&quot;]
 filters: {&quot;type&quot;: &quot;defender&quot;}
 activation: &#12356;&#12388;&#12391;&#12418;&#12450;&#12463;&#12486;&#12451;&#12502;
-raw: &#30330;&#21205;&#26465;&#20214;&#65306;&#32232;&#25104;&#20869;&#12398; &#12364;3&#20307;&#20197;&#19978; &#12487;&#12451;&#12501;&#12455;&#12531;&#12480;&#12540; / (1)&#65306;&#32232;&#25104;&#20869;&#12398;ATK&#12539;DEF&#22679;&#21152; /</td><td>DEF +6%</td><td>DEF +7%</td><td>100%</td><td></td><td></td><td>def_buff_2 (def_buff)</td><td>label: (2)
+raw: &#30330;&#21205;&#26465;&#20214;&#65306;&#32232;&#25104;&#20869;&#12398; &#12364;3&#20307;&#20197;&#19978; &#12487;&#12451;&#12501;&#12455;&#12531;&#12480;&#12540; / (1)&#65306;&#32232;&#25104;&#20869;&#12398;ATK&#12539;DEF&#22679;&#21152;</td><td>DEF +6%</td><td>DEF +7%</td><td></td><td></td><td></td><td>100%</td><td></td><td></td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:156</td><td>&#29983;&#23665;&#12411;&#12383;&#12427;</td><td>&#12487;&#12451;&#12501;&#12455;&#12531;&#12480;&#12540;</td><td>heat</td><td>&#27225;</td><td>&#12393;&#12435;&#12368;&#12426;&#12398;&#32972;&#27604;&#12409;</td><td>def_buff_2 (def_buff)</td><td>(2)</td><td>additional_effect</td><td>def_buff</td><td>[&quot;team_all&quot;]</td><td>label: (2)
 role: additional_effect
 target: [&quot;team_all&quot;]
 filters: {&quot;type&quot;: &quot;defender&quot;}
 activation: &#12356;&#12388;&#12391;&#12418;&#12450;&#12463;&#12486;&#12451;&#12502;
-raw: &#30330;&#21205;&#26465;&#20214;&#65306;&#32232;&#25104;&#20869;&#12398; &#12364;3&#20307;&#20197;&#19978; &#12487;&#12451;&#12501;&#12455;&#12531;&#12480;&#12540; / (2)&#65306;&#33258;&#36523;&#12398;&#12522;&#12531;&#12463;&#20013;&#12399;&#32232;&#25104;&#20869;&#12398;DEF&#12364;&#36861;&#21152;&#12391;&#22679;&#21152;</td><td>DEF +9%</td><td>DEF +10.5%</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:157</td><td>&#38463;&#20161;&#21512;&#12395;&#12354;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>heat</td><td>&#36196;</td><td>&#12362;&#22985;&#12385;&#12419;&#12435;&#12395;&#12362;&#20219;&#12379;&#9734;</td><td>fixed_damage_1 (fixed_damage)</td><td>label: (1)
+raw: &#30330;&#21205;&#26465;&#20214;&#65306;&#32232;&#25104;&#20869;&#12398; &#12364;3&#20307;&#20197;&#19978; &#12487;&#12451;&#12501;&#12455;&#12531;&#12480;&#12540; / (2)&#65306;&#33258;&#36523;&#12398;&#12522;&#12531;&#12463;&#20013;&#12399;&#32232;&#25104;&#20869;&#12398;DEF&#12364;&#36861;&#21152;&#12391;&#22679;&#21152;</td><td>DEF +9%</td><td>DEF +10.5%</td><td></td><td></td><td></td><td>100%</td><td></td><td></td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:157</td><td>&#38463;&#20161;&#21512;&#12395;&#12354;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>heat</td><td>&#36196;</td><td>&#12362;&#22985;&#12385;&#12419;&#12435;&#12395;&#12362;&#20219;&#12379;&#9734;</td><td>fixed_damage_1 (fixed_damage)</td><td>(1)</td><td>default_effect</td><td>fixed_damage</td><td></td><td>label: (1)
 role: default_effect
 trigger: {&quot;access_direction&quot;: &quot;active&quot;, &quot;event_hint&quot;: &quot;access&quot;}
 activation: &#12356;&#12388;&#12391;&#12418;&#12450;&#12463;&#12486;&#12451;&#12502;
-raw: (1)&#20808;&#38957;&#12398;&#12450;&#12463;&#12475;&#12473;&#26178;&#30456;&#25163;&#12395;&#22266;&#23450;&#12480;&#12513;&#12540;&#12472;</td><td>&#22266;&#23450;&#12480;&#12513;&#12540;&#12472; 7</td><td>&#22266;&#23450;&#12480;&#12513;&#12540;&#12472; 9</td><td>100%</td><td></td><td></td><td>fixed_damage_2 (fixed_damage)</td><td>label: (2)
+raw: (1)&#20808;&#38957;&#12398;&#12450;&#12463;&#12475;&#12473;&#26178;&#30456;&#25163;&#12395;&#22266;&#23450;&#12480;&#12513;&#12540;&#12472;</td><td>&#22266;&#23450;&#12480;&#12513;&#12540;&#12472; 7</td><td>&#22266;&#23450;&#12480;&#12513;&#12540;&#12472; 9</td><td></td><td></td><td></td><td>100%</td><td></td><td></td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:157</td><td>&#38463;&#20161;&#21512;&#12395;&#12354;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>heat</td><td>&#36196;</td><td>&#12362;&#22985;&#12385;&#12419;&#12435;&#12395;&#12362;&#20219;&#12379;&#9734;</td><td>fixed_damage_2 (fixed_damage)</td><td>(2)</td><td>supplemental_effect</td><td>fixed_damage</td><td></td><td>label: (2)
 role: supplemental_effect
 activation: &#12356;&#12388;&#12391;&#12418;&#12450;&#12463;&#12486;&#12451;&#12502;
-raw: (2)&#20808;&#38957;&#12364;AP&lt;&#26368;&#22823;HP&#12398;&#22580;&#21512;&#12289;&#12381;&#12398;&#24046;&#12395;&#24540;&#12376;&#12390;&#22266;&#23450;&#12480;&#12513;&#12540;&#12472;&#37327;&#22679;&#21152;</td><td>&#22266;&#23450;&#12480;&#12513;&#12540;&#12472; 0&#65374;13</td><td>&#22266;&#23450;&#12480;&#12513;&#12540;&#12472; 0&#65374;16</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:158</td><td>&#20250;&#27941;&#12354;&#12420;&#12363;</td><td>&#12487;&#12451;&#12501;&#12455;&#12531;&#12480;&#12540;</td><td>cool</td><td>&#38738;</td><td>I &#9825; &#12496;&#12483;&#12486;&#12522;&#12540;</td><td>def_buff_1 (def_buff)</td><td>label: (1)
+raw: (2)&#20808;&#38957;&#12364;AP&lt;&#26368;&#22823;HP&#12398;&#22580;&#21512;&#12289;&#12381;&#12398;&#24046;&#12395;&#24540;&#12376;&#12390;&#22266;&#23450;&#12480;&#12513;&#12540;&#12472;&#37327;&#22679;&#21152;</td><td>&#22266;&#23450;&#12480;&#12513;&#12540;&#12472; 0&#65374;13</td><td>&#22266;&#23450;&#12480;&#12513;&#12540;&#12472; 0&#65374;16</td><td></td><td></td><td></td><td>100%</td><td></td><td></td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:158</td><td>&#20250;&#27941;&#12354;&#12420;&#12363;</td><td>&#12487;&#12451;&#12501;&#12455;&#12531;&#12480;&#12540;</td><td>cool</td><td>&#38738;</td><td>I &#9825; &#12496;&#12483;&#12486;&#12522;&#12540;</td><td>def_buff_1 (def_buff)</td><td>(1)</td><td>default_effect</td><td>def_buff</td><td>[&quot;self&quot;]</td><td>label: (1)
 role: default_effect
 target: [&quot;self&quot;]
 filters: {&quot;attributes&quot;: [&quot;cool&quot;, &quot;eco&quot;], &quot;formation_only&quot;: true}
 activation: &#12510;&#12473;&#12479;&#12540;&#12395;&#12362;&#12414;&#12363;&#12379;
-raw: &#30330;&#21205;&#26465;&#20214;&#65306;cool&#12392;eco&#12398;&#12415;&#32232;&#25104; (1)&#33258;&#36523;&#12398;DEF&#12364;&#22679;&#21152;</td><td>DEF +18%</td><td>DEF +21%</td><td>100%</td><td>20&#20998;</td><td>Lv5: 3&#26178;&#38291;30&#20998;
+raw: &#30330;&#21205;&#26465;&#20214;&#65306;cool&#12392;eco&#12398;&#12415;&#32232;&#25104; (1)&#33258;&#36523;&#12398;DEF&#12364;&#22679;&#21152;</td><td>DEF +18%</td><td>DEF +21%</td><td></td><td></td><td></td><td>100%</td><td>20&#20998;</td><td>Lv5: 3&#26178;&#38291;30&#20998;
 Lv15: 3&#26178;&#38291;25&#20998;
 Lv30: 3&#26178;&#38291;20&#20998;
 Lv50: 3&#26178;&#38291;15&#20998;
 Lv60: 3&#26178;&#38291;10&#20998;
 Lv70: 3&#26178;&#38291;5&#20998;
-Lv80: 3&#26178;&#38291;</td><td>def_buff_2 (def_buff)</td><td>label: (2)
+Lv80: 3&#26178;&#38291;</td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:158</td><td>&#20250;&#27941;&#12354;&#12420;&#12363;</td><td>&#12487;&#12451;&#12501;&#12455;&#12531;&#12480;&#12540;</td><td>cool</td><td>&#38738;</td><td>I &#9825; &#12496;&#12483;&#12486;&#12522;&#12540;</td><td>def_buff_2 (def_buff)</td><td>(2)</td><td>additional_effect</td><td>def_buff</td><td>[&quot;team_all&quot;]</td><td>label: (2)
 role: additional_effect
 target: [&quot;team_all&quot;]
 filters: {&quot;attributes&quot;: [&quot;cool&quot;, &quot;eco&quot;], &quot;formation_only&quot;: true}
 activation: &#12510;&#12473;&#12479;&#12540;&#12395;&#12362;&#12414;&#12363;&#12379;
-raw: &#30330;&#21205;&#26465;&#20214;&#65306;cool&#12392;eco&#12398;&#12415;&#32232;&#25104; (2)&#32232;&#25104;&#20869;&#12395;eco&#23646;&#24615;&#12398;&#12391;&#12435;&#12371;&#12364;3&#20307;&#20197;&#19978;&#12356;&#12427;&#22580;&#21512;&#12289;&#36861;&#21152;&#12391;DEF&#22679;&#21152;</td><td>DEF +21%</td><td>DEF +24.5%</td><td>100%</td><td>20&#20998;</td><td>Lv5: 3&#26178;&#38291;30&#20998;
+raw: &#30330;&#21205;&#26465;&#20214;&#65306;cool&#12392;eco&#12398;&#12415;&#32232;&#25104; (2)&#32232;&#25104;&#20869;&#12395;eco&#23646;&#24615;&#12398;&#12391;&#12435;&#12371;&#12364;3&#20307;&#20197;&#19978;&#12356;&#12427;&#22580;&#21512;&#12289;&#36861;&#21152;&#12391;DEF&#22679;&#21152;</td><td>DEF +21%</td><td>DEF +24.5%</td><td></td><td></td><td></td><td>100%</td><td>20&#20998;</td><td>Lv5: 3&#26178;&#38291;30&#20998;
 Lv15: 3&#26178;&#38291;25&#20998;
 Lv30: 3&#26178;&#38291;20&#20998;
 Lv50: 3&#26178;&#38291;15&#20998;
 Lv60: 3&#26178;&#38291;10&#20998;
 Lv70: 3&#26178;&#38291;5&#20998;
-Lv80: 3&#26178;&#38291;</td><td>duration_extension_3 (duration_extension)</td><td>label: (3)
+Lv80: 3&#26178;&#38291;</td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:158</td><td>&#20250;&#27941;&#12354;&#12420;&#12363;</td><td>&#12487;&#12451;&#12501;&#12455;&#12531;&#12480;&#12540;</td><td>cool</td><td>&#38738;</td><td>I &#9825; &#12496;&#12483;&#12486;&#12522;&#12540;</td><td>duration_extension_3 (duration_extension)</td><td>(3)</td><td>supplemental_effect</td><td>duration_extension</td><td>[&quot;self&quot;]</td><td>label: (3)
 role: supplemental_effect
 target: [&quot;self&quot;]
 filters: {&quot;attributes&quot;: [&quot;cool&quot;, &quot;eco&quot;], &quot;formation_only&quot;: true}
 activation: &#12510;&#12473;&#12479;&#12540;&#12395;&#12362;&#12414;&#12363;&#12379;
-raw: &#30330;&#21205;&#26465;&#20214;&#65306;cool&#12392;eco&#12398;&#12415;&#32232;&#25104; (3)&#33258;&#36523;&#12395;&#12496;&#12483;&#12486;&#12522;&#12540;&#20351;&#29992;&#12398;&#24230;&#12395;&#21177;&#26524;&#26178;&#38291;&#24310;&#38263;(&#26368;&#22823;1&#26178;&#38291;&#12414;&#12391;)</td><td>&#21177;&#26524;&#26178;&#38291; &#12496;&#12483;&#12486;&#12522;&#12540;1&#20491;&#12395;&#12388;&#12365;+4&#20998;</td><td>&#21177;&#26524;&#26178;&#38291; &#12496;&#12483;&#12486;&#12522;&#12540;1&#20491;&#12395;&#12388;&#12365;+5&#20998;</td><td>100%</td><td>20&#20998;</td><td>Lv5: 3&#26178;&#38291;30&#20998;
+raw: &#30330;&#21205;&#26465;&#20214;&#65306;cool&#12392;eco&#12398;&#12415;&#32232;&#25104; (3)&#33258;&#36523;&#12395;&#12496;&#12483;&#12486;&#12522;&#12540;&#20351;&#29992;&#12398;&#24230;&#12395;&#21177;&#26524;&#26178;&#38291;&#24310;&#38263;(&#26368;&#22823;1&#26178;&#38291;&#12414;&#12391;)</td><td>&#21177;&#26524;&#26178;&#38291; &#12496;&#12483;&#12486;&#12522;&#12540;1&#20491;&#12395;&#12388;&#12365;+4&#20998;</td><td>&#21177;&#26524;&#26178;&#38291; &#12496;&#12483;&#12486;&#12522;&#12540;1&#20491;&#12395;&#12388;&#12365;+5&#20998;</td><td></td><td></td><td></td><td>100%</td><td>20&#20998;</td><td>Lv5: 3&#26178;&#38291;30&#20998;
 Lv15: 3&#26178;&#38291;25&#20998;
 Lv30: 3&#26178;&#38291;20&#20998;
 Lv50: 3&#26178;&#38291;15&#20998;
 Lv60: 3&#26178;&#38291;10&#20998;
 Lv70: 3&#26178;&#38291;5&#20998;
-Lv80: 3&#26178;&#38291;</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:159</td><td>&#23500;&#22763;&#23665;&#12383;&#12363;&#12394;</td><td>&#12488;&#12522;&#12483;&#12463;&#12473;&#12479;&#12540;</td><td>heat</td><td>&#36196;</td><td>&#12414;&#12392;&#12358;&#12399;&#24515;</td><td>film_series_effect_boost</td><td>target: [&quot;team_all&quot;]
+Lv80: 3&#26178;&#38291;</td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:159</td><td>&#23500;&#22763;&#23665;&#12383;&#12363;&#12394;</td><td>&#12488;&#12522;&#12483;&#12463;&#12473;&#12479;&#12540;</td><td>heat</td><td>&#36196;</td><td>&#12414;&#12392;&#12358;&#12399;&#24515;</td><td>film_series_effect_boost</td><td></td><td></td><td>film_series_effect_boost</td><td>[&quot;team_all&quot;]</td><td>target: [&quot;team_all&quot;]
 scaling: {&quot;max_count&quot;: 7}
 activation: &#12510;&#12473;&#12479;&#12540;&#12395;&#12362;&#12414;&#12363;&#12379;
-raw: &#21516;&#12376;&#12501;&#12451;&#12523;&#12512;&#12471;&#12522;&#12540;&#12474;&#21177;&#26524;&#12398;&#12354;&#12427;&#12501;&#12451;&#12523;&#12512;&#12434;&#30528;&#29992;&#12375;&#12390;&#12356;&#12427;&#12391;&#12435;&#12371;&#12364;2&#20307;&#20197;&#19978;&#12356;&#12427;&#22580;&#21512;&#12395;&#12289;&#12501;&#12451;&#12523;&#12512;&#21177;&#26524;&#12434;&#30528;&#29992;&#25968;+1&#65374;2&#20307;&#20998;&#24375;&#21270;&#65288;&#19978;&#38480;7&#20307;&#65289;</td><td>&#12501;&#12451;&#12523;&#12512;&#12471;&#12522;&#12540;&#12474;&#21177;&#26524;&#12398;&#30528;&#29992;&#25968; +1</td><td>&#12501;&#12451;&#12523;&#12512;&#12471;&#12522;&#12540;&#12474;&#21177;&#26524;&#12398;&#30528;&#29992;&#25968; +1</td><td>100%</td><td>Lv5/Lv15/Lv30/Lv50: 30&#20998;
+raw: &#21516;&#12376;&#12501;&#12451;&#12523;&#12512;&#12471;&#12522;&#12540;&#12474;&#21177;&#26524;&#12398;&#12354;&#12427;&#12501;&#12451;&#12523;&#12512;&#12434;&#30528;&#29992;&#12375;&#12390;&#12356;&#12427;&#12391;&#12435;&#12371;&#12364;2&#20307;&#20197;&#19978;&#12356;&#12427;&#22580;&#21512;&#12395;&#12289;&#12501;&#12451;&#12523;&#12512;&#21177;&#26524;&#12434;&#30528;&#29992;&#25968;+1&#65374;2&#20307;&#20998;&#24375;&#21270;&#65288;&#19978;&#38480;7&#20307;&#65289;</td><td>&#12501;&#12451;&#12523;&#12512;&#12471;&#12522;&#12540;&#12474;&#21177;&#26524;&#12398;&#30528;&#29992;&#25968; +1</td><td>&#12501;&#12451;&#12523;&#12512;&#12471;&#12522;&#12540;&#12474;&#21177;&#26524;&#12398;&#30528;&#29992;&#25968; +1</td><td></td><td></td><td></td><td>100%</td><td>Lv5/Lv15/Lv30/Lv50: 30&#20998;
 Lv60: 1&#26178;&#38291;
 Lv70: 1&#26178;&#38291;30&#20998;
 Lv80: 2&#26178;&#38291;</td><td>Lv5: 5&#26178;&#38291;
@@ -572,21 +600,21 @@ Lv30: 4&#26178;&#38291;
 Lv50: 3&#26178;&#38291;30&#20998;
 Lv60: 3&#26178;&#38291;
 Lv70: 2&#26178;&#38291;30&#20998;
-Lv80: 2&#26178;&#38291;</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:160</td><td>&#26397;&#20489;&#12354;&#12373;&#12415;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>eco</td><td>&#27225;</td><td>&#38651;&#20809;&#25522;&#31034;&#26495;&#12434;&#25345;&#12388;&#12391;&#12435;&#12371;</td><td>def_buff</td><td>target: [&quot;team_all&quot;]
+Lv80: 2&#26178;&#38291;</td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:160</td><td>&#26397;&#20489;&#12354;&#12373;&#12415;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>eco</td><td>&#27225;</td><td>&#38651;&#20809;&#25522;&#31034;&#26495;&#12434;&#25345;&#12388;&#12391;&#12435;&#12371;</td><td>def_buff</td><td></td><td></td><td>def_buff</td><td>[&quot;team_all&quot;]</td><td>target: [&quot;team_all&quot;]
 filters: {&quot;attributes&quot;: [&quot;heat&quot;, &quot;eco&quot;]}
 trigger: {&quot;time_window_raw&quot;: &quot;6:00&#65374;18:00&quot;}
 activation: &#12356;&#12388;&#12391;&#12418;&#12450;&#12463;&#12486;&#12451;&#12502;
-raw: &#30330;&#21205;&#26465;&#20214;&#65306; &#12392; &#12364;&#12381;&#12428;&#12382;&#12428;2&#20307;&#12378;&#12388; heat&#23646;&#24615; eco&#23646;&#24615; / &#21177;&#26524;&#65306;&#26172;&#38291;&#12399;&#32232;&#25104;&#20869;&#12398;DEF&#22679;&#21152; &#26172;&#38291;&#12399;6:00&#65374;18:00</td><td>DEF +12%</td><td>DEF +14%</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:161</td><td>&#20234;&#24029;&#35895;&#12373;&#12392;&#12426;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>eco</td><td>&#32209;</td><td>&#12471;&#12461;&#12397;&#12360;&#12385;&#12419;&#12435;&#12398;&#21161;&#25163;&#12391;&#12377;&#9734;</td><td>atk_buff</td><td>target: [&quot;team_all&quot;]
+raw: &#30330;&#21205;&#26465;&#20214;&#65306; &#12392; &#12364;&#12381;&#12428;&#12382;&#12428;2&#20307;&#12378;&#12388; heat&#23646;&#24615; eco&#23646;&#24615; / &#21177;&#26524;&#65306;&#26172;&#38291;&#12399;&#32232;&#25104;&#20869;&#12398;DEF&#22679;&#21152; &#26172;&#38291;&#12399;6:00&#65374;18:00</td><td>DEF +12%</td><td>DEF +14%</td><td></td><td></td><td></td><td>100%</td><td></td><td></td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:161</td><td>&#20234;&#24029;&#35895;&#12373;&#12392;&#12426;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>eco</td><td>&#32209;</td><td>&#12471;&#12461;&#12397;&#12360;&#12385;&#12419;&#12435;&#12398;&#21161;&#25163;&#12391;&#12377;&#9734;</td><td>atk_buff</td><td></td><td></td><td>atk_buff</td><td>[&quot;team_all&quot;]</td><td>target: [&quot;team_all&quot;]
 activation: &#12356;&#12388;&#12391;&#12418;&#12450;&#12463;&#12486;&#12451;&#12502;
-raw: &#30456;&#25163;&#12398;&#27531;&#12426;HP&#12364;80%&#20197;&#19978;&#12398;&#22580;&#21512;&#12289;&#32232;&#25104;&#20869;&#12398;ATK&#22679;&#21152;</td><td>ATK +8%</td><td>ATK +10%</td><td>100%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:162</td><td>&#31119;&#20303;&#12415;&#12382;&#12428;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>cool</td><td>&#26691;</td><td>&#22799;&#12398;&#27703;&#12415;&#12382;&#12428;&#12539;&#20908;&#12398;&#12415;&#12382;&#12428;&#37707;</td><td>atk_buff_1 (atk_buff)</td><td>label: (1)
+raw: &#30456;&#25163;&#12398;&#27531;&#12426;HP&#12364;80%&#20197;&#19978;&#12398;&#22580;&#21512;&#12289;&#32232;&#25104;&#20869;&#12398;ATK&#22679;&#21152;</td><td>ATK +8%</td><td>ATK +10%</td><td></td><td></td><td></td><td>100%</td><td></td><td></td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:162</td><td>&#31119;&#20303;&#12415;&#12382;&#12428;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>cool</td><td>&#26691;</td><td>&#22799;&#12398;&#27703;&#12415;&#12382;&#12428;&#12539;&#20908;&#12398;&#12415;&#12382;&#12428;&#37707;</td><td>atk_buff_1 (atk_buff)</td><td>(1)</td><td>default_effect</td><td>atk_buff</td><td>[&quot;team_all&quot;]</td><td>label: (1)
 role: default_effect
 target: [&quot;team_all&quot;]
 trigger: {&quot;access_direction&quot;: &quot;active&quot;, &quot;event_hint&quot;: &quot;access&quot;}
 activation: &#12510;&#12473;&#12479;&#12540;&#12395;&#12362;&#12414;&#12363;&#12379;
-raw: &#12450;&#12463;&#12475;&#12473;&#12375;&#12383;&#39365;&#12398;&#27671;&#28201;&#12395;&#24540;&#12376;&#12390;&#32232;&#25104;&#20869;&#12398;ATK&#12539;DEF&#12434;&#22679;&#28187; (1)30&#8451;&#20197;&#19978;</td><td>ATK +24%</td><td>ATK +28%</td><td>100%</td><td>Lv5: 15&#20998;
+raw: &#12450;&#12463;&#12475;&#12473;&#12375;&#12383;&#39365;&#12398;&#27671;&#28201;&#12395;&#24540;&#12376;&#12390;&#32232;&#25104;&#20869;&#12398;ATK&#12539;DEF&#12434;&#22679;&#28187; (1)30&#8451;&#20197;&#19978;</td><td>ATK +24%</td><td>ATK +28%</td><td></td><td></td><td></td><td>100%</td><td>Lv5: 15&#20998;
 Lv15: 20&#20998;
 Lv30: 25&#20998;
 Lv50: 30&#20998;
@@ -598,12 +626,13 @@ Lv30: 2&#26178;&#38291;35&#20998;
 Lv50: 2&#26178;&#38291;30&#20998;
 Lv60: 2&#26178;&#38291;25&#20998;
 Lv70: 2&#26178;&#38291;20&#20998;
-Lv80: 2&#26178;&#38291;15&#20998;</td><td>atk_buff_2 (atk_buff)</td><td>label: (2)
+Lv80: 2&#26178;&#38291;15&#20998;</td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:162</td><td>&#31119;&#20303;&#12415;&#12382;&#12428;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>cool</td><td>&#26691;</td><td>&#22799;&#12398;&#27703;&#12415;&#12382;&#12428;&#12539;&#20908;&#12398;&#12415;&#12382;&#12428;&#37707;</td><td>atk_buff_2 (atk_buff)</td><td>(2)</td><td>supplemental_effect</td><td>atk_buff</td><td>[&quot;team_all&quot;]</td><td>label: (2)
 role: supplemental_effect
 target: [&quot;team_all&quot;]
 trigger: {&quot;access_direction&quot;: &quot;active&quot;, &quot;event_hint&quot;: &quot;access&quot;}
 activation: &#12510;&#12473;&#12479;&#12540;&#12395;&#12362;&#12414;&#12363;&#12379;
-raw: &#12450;&#12463;&#12475;&#12473;&#12375;&#12383;&#39365;&#12398;&#27671;&#28201;&#12395;&#24540;&#12376;&#12390;&#32232;&#25104;&#20869;&#12398;ATK&#12539;DEF&#12434;&#22679;&#28187; (2)15&#8451;&#65374;25&#8451;</td><td>ATK +12%</td><td>ATK +14%</td><td>100%</td><td>Lv5: 15&#20998;
+raw: &#12450;&#12463;&#12475;&#12473;&#12375;&#12383;&#39365;&#12398;&#27671;&#28201;&#12395;&#24540;&#12376;&#12390;&#32232;&#25104;&#20869;&#12398;ATK&#12539;DEF&#12434;&#22679;&#28187; (2)15&#8451;&#65374;25&#8451;</td><td>ATK +12%</td><td>ATK +14%</td><td></td><td></td><td></td><td>100%</td><td>Lv5: 15&#20998;
 Lv15: 20&#20998;
 Lv30: 25&#20998;
 Lv50: 30&#20998;
@@ -615,12 +644,13 @@ Lv30: 2&#26178;&#38291;35&#20998;
 Lv50: 2&#26178;&#38291;30&#20998;
 Lv60: 2&#26178;&#38291;25&#20998;
 Lv70: 2&#26178;&#38291;20&#20998;
-Lv80: 2&#26178;&#38291;15&#20998;</td><td>atk_debuff_3 (atk_debuff)</td><td>label: (3)
+Lv80: 2&#26178;&#38291;15&#20998;</td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:162</td><td>&#31119;&#20303;&#12415;&#12382;&#12428;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>cool</td><td>&#26691;</td><td>&#22799;&#12398;&#27703;&#12415;&#12382;&#12428;&#12539;&#20908;&#12398;&#12415;&#12382;&#12428;&#37707;</td><td>atk_debuff_3 (atk_debuff)</td><td>(3)</td><td>supplemental_effect</td><td>atk_debuff</td><td>[&quot;team_all&quot;]</td><td>label: (3)
 role: supplemental_effect
 target: [&quot;team_all&quot;]
 trigger: {&quot;access_direction&quot;: &quot;active&quot;, &quot;event_hint&quot;: &quot;access&quot;}
 activation: &#12510;&#12473;&#12479;&#12540;&#12395;&#12362;&#12414;&#12363;&#12379;
-raw: &#12450;&#12463;&#12475;&#12473;&#12375;&#12383;&#39365;&#12398;&#27671;&#28201;&#12395;&#24540;&#12376;&#12390;&#32232;&#25104;&#20869;&#12398;ATK&#12539;DEF&#12434;&#22679;&#28187; (3)10&#8451;&#20197;&#19979;</td><td>ATK -20%</td><td>ATK -20%</td><td>100%</td><td>Lv5: 15&#20998;
+raw: &#12450;&#12463;&#12475;&#12473;&#12375;&#12383;&#39365;&#12398;&#27671;&#28201;&#12395;&#24540;&#12376;&#12390;&#32232;&#25104;&#20869;&#12398;ATK&#12539;DEF&#12434;&#22679;&#28187; (3)10&#8451;&#20197;&#19979;</td><td>ATK -20%</td><td>ATK -20%</td><td></td><td></td><td></td><td>100%</td><td>Lv5: 15&#20998;
 Lv15: 20&#20998;
 Lv30: 25&#20998;
 Lv50: 30&#20998;
@@ -632,10 +662,11 @@ Lv30: 2&#26178;&#38291;35&#20998;
 Lv50: 2&#26178;&#38291;30&#20998;
 Lv60: 2&#26178;&#38291;25&#20998;
 Lv70: 2&#26178;&#38291;20&#20998;
-Lv80: 2&#26178;&#38291;15&#20998;</td><td>def_buff</td><td>target: [&quot;team_all&quot;]
+Lv80: 2&#26178;&#38291;15&#20998;</td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:162</td><td>&#31119;&#20303;&#12415;&#12382;&#12428;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>cool</td><td>&#26691;</td><td>&#22799;&#12398;&#27703;&#12415;&#12382;&#12428;&#12539;&#20908;&#12398;&#12415;&#12382;&#12428;&#37707;</td><td>def_buff</td><td></td><td></td><td>def_buff</td><td>[&quot;team_all&quot;]</td><td>target: [&quot;team_all&quot;]
 trigger: {&quot;access_direction&quot;: &quot;active&quot;, &quot;event_hint&quot;: &quot;access&quot;}
 activation: &#12510;&#12473;&#12479;&#12540;&#12395;&#12362;&#12414;&#12363;&#12379;
-raw: &#12450;&#12463;&#12475;&#12473;&#12375;&#12383;&#39365;&#12398;&#27671;&#28201;&#12395;&#24540;&#12376;&#12390;&#32232;&#25104;&#20869;&#12398;ATK&#12539;DEF&#12434;&#22679;&#28187; (1)30&#8451;&#20197;&#19978; / (2)15&#8451;&#65374;25&#8451; / (3)10&#8451;&#20197;&#19979;</td><td>DEF +24%</td><td>DEF +28%</td><td>100%</td><td>Lv5: 15&#20998;
+raw: &#12450;&#12463;&#12475;&#12473;&#12375;&#12383;&#39365;&#12398;&#27671;&#28201;&#12395;&#24540;&#12376;&#12390;&#32232;&#25104;&#20869;&#12398;ATK&#12539;DEF&#12434;&#22679;&#28187; (1)30&#8451;&#20197;&#19978; / (2)15&#8451;&#65374;25&#8451; / (3)10&#8451;&#20197;&#19979;</td><td>DEF +24%</td><td>DEF +28%</td><td></td><td></td><td></td><td>100%</td><td>Lv5: 15&#20998;
 Lv15: 20&#20998;
 Lv30: 25&#20998;
 Lv50: 30&#20998;
@@ -647,10 +678,11 @@ Lv30: 2&#26178;&#38291;35&#20998;
 Lv50: 2&#26178;&#38291;30&#20998;
 Lv60: 2&#26178;&#38291;25&#20998;
 Lv70: 2&#26178;&#38291;20&#20998;
-Lv80: 2&#26178;&#38291;15&#20998;</td><td>def_debuff</td><td>target: [&quot;team_all&quot;]
+Lv80: 2&#26178;&#38291;15&#20998;</td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:162</td><td>&#31119;&#20303;&#12415;&#12382;&#12428;</td><td>&#12469;&#12509;&#12540;&#12479;&#12540;</td><td>cool</td><td>&#26691;</td><td>&#22799;&#12398;&#27703;&#12415;&#12382;&#12428;&#12539;&#20908;&#12398;&#12415;&#12382;&#12428;&#37707;</td><td>def_debuff</td><td></td><td></td><td>def_debuff</td><td>[&quot;team_all&quot;]</td><td>target: [&quot;team_all&quot;]
 trigger: {&quot;access_direction&quot;: &quot;active&quot;, &quot;event_hint&quot;: &quot;access&quot;}
 activation: &#12510;&#12473;&#12479;&#12540;&#12395;&#12362;&#12414;&#12363;&#12379;
-raw: &#12450;&#12463;&#12475;&#12473;&#12375;&#12383;&#39365;&#12398;&#27671;&#28201;&#12395;&#24540;&#12376;&#12390;&#32232;&#25104;&#20869;&#12398;ATK&#12539;DEF&#12434;&#22679;&#28187; (1)30&#8451;&#20197;&#19978; / (2)15&#8451;&#65374;25&#8451; / (3)10&#8451;&#20197;&#19979;</td><td>DEF -20%</td><td>DEF -20%</td><td>100%</td><td>Lv5: 15&#20998;
+raw: &#12450;&#12463;&#12475;&#12473;&#12375;&#12383;&#39365;&#12398;&#27671;&#28201;&#12395;&#24540;&#12376;&#12390;&#32232;&#25104;&#20869;&#12398;ATK&#12539;DEF&#12434;&#22679;&#28187; (1)30&#8451;&#20197;&#19978; / (2)15&#8451;&#65374;25&#8451; / (3)10&#8451;&#20197;&#19979;</td><td>DEF -20%</td><td>DEF -20%</td><td></td><td></td><td></td><td>100%</td><td>Lv5: 15&#20998;
 Lv15: 20&#20998;
 Lv30: 25&#20998;
 Lv50: 30&#20998;
@@ -662,14 +694,14 @@ Lv30: 2&#26178;&#38291;35&#20998;
 Lv50: 2&#26178;&#38291;30&#20998;
 Lv60: 2&#26178;&#38291;25&#20998;
 Lv70: 2&#26178;&#38291;20&#20998;
-Lv80: 2&#26178;&#38291;15&#20998;</td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
-<tr><td>original:163</td><td>&#35914;&#27211;&#12385;&#12431;</td><td>&#12488;&#12522;&#12483;&#12463;&#12473;&#12479;&#12540;</td><td>heat</td><td>&#27225;</td><td>&#12385;&#12367;&#12431;&#12398;&#31348;&#12434;&#35223;&#12356;&#12390;&#12415;&#12428;&#12400;</td><td>score_gain_1 (score_gain)</td><td>label: (1)
+Lv80: 2&#26178;&#38291;15&#20998;</td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:163</td><td>&#35914;&#27211;&#12385;&#12431;</td><td>&#12488;&#12522;&#12483;&#12463;&#12473;&#12479;&#12540;</td><td>heat</td><td>&#27225;</td><td>&#12385;&#12367;&#12431;&#12398;&#31348;&#12434;&#35223;&#12356;&#12390;&#12415;&#12428;&#12400;</td><td>score_gain_1 (score_gain)</td><td>(1)</td><td>default_effect</td><td>score_gain</td><td>[&quot;team_all&quot;]</td><td>label: (1)
 role: default_effect
 target: [&quot;team_all&quot;]
 filters: {&quot;attribute&quot;: &quot;heat&quot;}
 trigger: {&quot;access_direction&quot;: &quot;active&quot;, &quot;event_hint&quot;: &quot;access&quot;}
 activation: &#12510;&#12473;&#12479;&#12540;&#12395;&#12362;&#12414;&#12363;&#12379;
-raw: &#30330;&#21205;&#26465;&#20214;&#65306;&#32232;&#25104;&#20869;&#12398;heat&#23646;&#24615;&#12391;&#12435;&#12371;&#12364;&#12450;&#12463;&#12475;&#12473;&#12375;&#12383; (1)&#21177;&#26524;&#26178;&#38291;&#20869;&#12395;&#19982;&#12360;&#12383;&#21512;&#35336;&#12480;&#12513;&#12540;&#12472;&#12364;&#19968;&#23450;&#20516;&#12395;&#21040;&#36948;&#12377;&#12427;&#12392;&#12473;&#12467;&#12450;&#29554;&#24471;(1&#22238;&#12398;&#12415;)</td><td>&#12473;&#12467;&#12450;&#29554;&#24471; 7000</td><td>&#12473;&#12467;&#12450;&#29554;&#24471; 9000</td><td>100%</td><td>Lv5: 30&#20998;
+raw: &#30330;&#21205;&#26465;&#20214;&#65306;&#32232;&#25104;&#20869;&#12398;heat&#23646;&#24615;&#12391;&#12435;&#12371;&#12364;&#12450;&#12463;&#12475;&#12473;&#12375;&#12383; (1)&#21177;&#26524;&#26178;&#38291;&#20869;&#12395;&#19982;&#12360;&#12383;&#21512;&#35336;&#12480;&#12513;&#12540;&#12472;&#12364;&#19968;&#23450;&#20516;&#12395;&#21040;&#36948;&#12377;&#12427;&#12392;&#12473;&#12467;&#12450;&#29554;&#24471;(1&#22238;&#12398;&#12415;)</td><td>&#12473;&#12467;&#12450;&#29554;&#24471; 7000</td><td>&#12473;&#12467;&#12450;&#29554;&#24471; 9000</td><td></td><td></td><td></td><td>100%</td><td>Lv5: 30&#20998;
 Lv15: 35&#20998;
 Lv30: 40&#20998;
 Lv50: 45&#20998;
@@ -681,13 +713,14 @@ Lv30: 5&#26178;&#38291;20&#20998;
 Lv50: 5&#26178;&#38291;15&#20998;
 Lv60: 5&#26178;&#38291;10&#20998;
 Lv70: 5&#26178;&#38291;5&#20998;
-Lv80: 5&#26178;&#38291;</td><td>additional_score_gain_2 (additional_score_gain)</td><td>label: (2)
+Lv80: 5&#26178;&#38291;</td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
+<tr><td>original:163</td><td>&#35914;&#27211;&#12385;&#12431;</td><td>&#12488;&#12522;&#12483;&#12463;&#12473;&#12479;&#12540;</td><td>heat</td><td>&#27225;</td><td>&#12385;&#12367;&#12431;&#12398;&#31348;&#12434;&#35223;&#12356;&#12390;&#12415;&#12428;&#12400;</td><td>additional_score_gain_2 (additional_score_gain)</td><td>(2)</td><td>additional_effect</td><td>additional_score_gain</td><td>[&quot;team_all&quot;]</td><td>label: (2)
 role: additional_effect
 target: [&quot;team_all&quot;]
 filters: {&quot;attribute&quot;: &quot;heat&quot;}
 trigger: {&quot;access_direction&quot;: &quot;active&quot;, &quot;event_hint&quot;: &quot;access&quot;}
 activation: &#12510;&#12473;&#12479;&#12540;&#12395;&#12362;&#12414;&#12363;&#12379;
-raw: &#30330;&#21205;&#26465;&#20214;&#65306;&#32232;&#25104;&#20869;&#12398;heat&#23646;&#24615;&#12391;&#12435;&#12371;&#12364;&#12450;&#12463;&#12475;&#12473;&#12375;&#12383; (2)(1)&#30330;&#21205;&#24460;&#12289;1000&#12480;&#12513;&#12540;&#12472;&#12372;&#12392;&#12395;&#36861;&#21152;&#12391;&#12473;&#12467;&#12450;&#29554;&#24471; &#30330;&#21205;&#26465;&#20214;&#12434;&#28288;&#12383;&#12377;&#12450;&#12463;&#12475;&#12473;&#12398;&#12415;&#38598;&#35336;&#12373;&#12428;&#12427;</td><td>&#12473;&#12467;&#12450;&#29554;&#24471; 1200</td><td>&#12473;&#12467;&#12450;&#29554;&#24471; 1400</td><td>100%</td><td>Lv5: 30&#20998;
+raw: &#30330;&#21205;&#26465;&#20214;&#65306;&#32232;&#25104;&#20869;&#12398;heat&#23646;&#24615;&#12391;&#12435;&#12371;&#12364;&#12450;&#12463;&#12475;&#12473;&#12375;&#12383; (2)(1)&#30330;&#21205;&#24460;&#12289;1000&#12480;&#12513;&#12540;&#12472;&#12372;&#12392;&#12395;&#36861;&#21152;&#12391;&#12473;&#12467;&#12450;&#29554;&#24471; &#30330;&#21205;&#26465;&#20214;&#12434;&#28288;&#12383;&#12377;&#12450;&#12463;&#12475;&#12473;&#12398;&#12415;&#38598;&#35336;&#12373;&#12428;&#12427;</td><td>&#12473;&#12467;&#12450;&#29554;&#24471; 1200</td><td>&#12473;&#12467;&#12450;&#29554;&#24471; 1400</td><td></td><td></td><td></td><td>100%</td><td>Lv5: 30&#20998;
 Lv15: 35&#20998;
 Lv30: 40&#20998;
 Lv50: 45&#20998;
@@ -699,7 +732,7 @@ Lv30: 5&#26178;&#38291;20&#20998;
 Lv50: 5&#26178;&#38291;15&#20998;
 Lv60: 5&#26178;&#38291;10&#20998;
 Lv70: 5&#26178;&#38291;5&#20998;
-Lv80: 5&#26178;&#38291;</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[&#x27;sample_parse_needs_human_review&#x27;]</td></tr>
+Lv80: 5&#26178;&#38291;</td><td>[&#x27;component_semantics_need_review&#x27;]</td></tr>
 </tbody></table></div>
 <h2>Controller &#21028;&#23450;</h2>
 <ul>
@@ -707,5 +740,5 @@ Lv80: 5&#26178;&#38291;</td><td></td><td></td><td></td><td></td><td></td><td></t
 <li>&#33509;&#21516;&#31867; review reason &#22312;&#21518;&#32493;&#25209;&#27425;&#37325;&#22797;&#20986;&#29616;&#65292;&#24212;&#20248;&#20808;&#35843;&#25972; parser &#35268;&#21017;&#65292;&#20877;&#32771;&#34385; LLM snippet&#12290;</li>
 <li>&#26412;&#25209;&#27425;&#36755;&#20986;&#29992;&#20110; Step1 &#25968;&#25454;&#35835;&#21462;&#65292;&#19981;&#21551;&#21160; solver&#12290;</li>
 </ul>
-<p>generated_at: 2026-06-09T01:21:02.103501+09:00</p>
+<p>generated_at: 2026-06-09T01:37:43.976850+09:00</p>
 </body></html>

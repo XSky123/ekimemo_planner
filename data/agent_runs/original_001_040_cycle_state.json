@@ -1,38 +1,6 @@
 {
   "blocking_items": [],
-  "generated_at": "2026-06-09T01:27:17.639909+09:00",
-  "manual_patch_application": {
-    "applied_at": "2026-06-09T01:27:17.639909+09:00",
-    "applied_patch_ids": [
-      "original_001_040_001_replace_hp_recovery_1",
-      "original_001_040_001_add_probability_boost_2",
-      "original_001_040_007_add_counter_damage_1",
-      "original_001_040_007_merge_atk_buff_2",
-      "original_001_040_007_merge_def_buff_2",
-      "original_001_040_009_merge_hp_recovery_1",
-      "original_001_040_009_add_hp_recovery_bonus_2",
-      "original_001_040_016_add_friend_slot_1",
-      "original_001_040_016_merge_atk_buff_2",
-      "original_001_040_016_merge_def_buff_2",
-      "original_001_040_017_add_footbar_item_1",
-      "original_001_040_017_merge_atk_buff_2",
-      "original_001_040_018_add_survive_hp1_1",
-      "original_001_040_018_merge_damage_reduction_2",
-      "original_001_040_020_replace_exp_distribution_1",
-      "original_001_040_020_add_exp_distribution_bonus_2",
-      "original_001_040_022_replace_skill_disable_1",
-      "original_001_040_022_add_def_debuff_2",
-      "original_001_040_029_replace_hp_zero_1",
-      "original_001_040_029_add_probability_condition_vu",
-      "original_001_040_033_add_skill_disable_1",
-      "original_001_040_033_merge_atk_debuff_2",
-      "original_001_040_035_add_def_buff_1",
-      "original_001_040_035_merge_def_buff_2",
-      "original_001_040_001_fix_hp_recovery_1_condition",
-      "original_001_040_001_fix_probability_boost_2_condition"
-    ],
-    "patch_file": "data\\manual_fills\\original_001_040_semantic_patches.jsonl"
-  },
+  "generated_at": "2026-06-09T01:37:43.921899+09:00",
   "metrics": {
     "blocking_item_count": 0,
     "component_review_reason_counts": {
