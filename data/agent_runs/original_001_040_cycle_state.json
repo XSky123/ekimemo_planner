@@ -1,8 +1,8 @@
 {
   "blocking_items": [],
-  "generated_at": "2026-06-09T01:16:12.517563+09:00",
+  "generated_at": "2026-06-09T01:27:17.639909+09:00",
   "manual_patch_application": {
-    "applied_at": "2026-06-09T01:16:12.517563+09:00",
+    "applied_at": "2026-06-09T01:27:17.639909+09:00",
     "applied_patch_ids": [
       "original_001_040_001_replace_hp_recovery_1",
       "original_001_040_001_add_probability_boost_2",
@@ -27,7 +27,9 @@
       "original_001_040_033_add_skill_disable_1",
       "original_001_040_033_merge_atk_debuff_2",
       "original_001_040_035_add_def_buff_1",
-      "original_001_040_035_merge_def_buff_2"
+      "original_001_040_035_merge_def_buff_2",
+      "original_001_040_001_fix_hp_recovery_1_condition",
+      "original_001_040_001_fix_probability_boost_2_condition"
     ],
     "patch_file": "data\\manual_fills\\original_001_040_semantic_patches.jsonl"
   },
@@ -35,6 +37,7 @@
     "blocking_item_count": 0,
     "component_review_reason_counts": {
       "component_semantics_need_review": 40,
+      "manual_condition_split_fix": 2,
       "manual_semantic_fill": 24,
       "vu_probability_modifier": 1
     },
