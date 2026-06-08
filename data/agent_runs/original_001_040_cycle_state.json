@@ -1,0 +1,70 @@
+{
+  "blocking_items": [],
+  "generated_at": "2026-06-09T01:16:12.517563+09:00",
+  "manual_patch_application": {
+    "applied_at": "2026-06-09T01:16:12.517563+09:00",
+    "applied_patch_ids": [
+      "original_001_040_001_replace_hp_recovery_1",
+      "original_001_040_001_add_probability_boost_2",
+      "original_001_040_007_add_counter_damage_1",
+      "original_001_040_007_merge_atk_buff_2",
+      "original_001_040_007_merge_def_buff_2",
+      "original_001_040_009_merge_hp_recovery_1",
+      "original_001_040_009_add_hp_recovery_bonus_2",
+      "original_001_040_016_add_friend_slot_1",
+      "original_001_040_016_merge_atk_buff_2",
+      "original_001_040_016_merge_def_buff_2",
+      "original_001_040_017_add_footbar_item_1",
+      "original_001_040_017_merge_atk_buff_2",
+      "original_001_040_018_add_survive_hp1_1",
+      "original_001_040_018_merge_damage_reduction_2",
+      "original_001_040_020_replace_exp_distribution_1",
+      "original_001_040_020_add_exp_distribution_bonus_2",
+      "original_001_040_022_replace_skill_disable_1",
+      "original_001_040_022_add_def_debuff_2",
+      "original_001_040_029_replace_hp_zero_1",
+      "original_001_040_029_add_probability_condition_vu",
+      "original_001_040_033_add_skill_disable_1",
+      "original_001_040_033_merge_atk_debuff_2",
+      "original_001_040_035_add_def_buff_1",
+      "original_001_040_035_merge_def_buff_2"
+    ],
+    "patch_file": "data\\manual_fills\\original_001_040_semantic_patches.jsonl"
+  },
+  "metrics": {
+    "blocking_item_count": 0,
+    "component_review_reason_counts": {
+      "component_semantics_need_review": 40,
+      "manual_semantic_fill": 24,
+      "vu_probability_modifier": 1
+    },
+    "skill_records": 40
+  },
+  "next_action": "complete",
+  "parser_version": "detail_html_table_matrix.v8",
+  "paths": {
+    "denko_facts": "data/records/original_001_040_denko_facts.jsonl",
+    "observed_cases": [
+      "data\\observed_cases\\ingestion_cycle_review_rules_2026-06-07.jsonl",
+      "data\\observed_cases\\original_080_119_manual_parser_findings.jsonl",
+      "data\\observed_cases\\original_080_119_parser_resolution_2026-06-07.jsonl",
+      "data\\observed_cases\\original_080_119_parser_resolution_2026-06-07_round2.jsonl",
+      "data\\observed_cases\\original_120_163_manual_parser_findings.jsonl",
+      "data\\observed_cases\\original_120_163_parser_resolution_2026-06-07.jsonl",
+      "data\\observed_cases\\original_120_163_parser_resolution_2026-06-07_round2.jsonl",
+      "data\\observed_cases\\original_120_163_parser_resolution_2026-06-07_round3.jsonl",
+      "data\\observed_cases\\original_120_163_parser_resolution_2026-06-07_round4.jsonl"
+    ],
+    "report": "data\\reports\\original_001_040_batch_review_zh.html",
+    "review_queue": "data/review_queue/original_001_040_review_queue.jsonl",
+    "skill_facts": "data/records/original_001_040_skill_facts.jsonl"
+  },
+  "run_result": null,
+  "schema_version": 1,
+  "scope": {
+    "batch_size": 30,
+    "end": 40,
+    "pool": "original",
+    "start": 1
+  }
+}
