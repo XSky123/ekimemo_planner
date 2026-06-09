@@ -2,6 +2,49 @@
 
 这份清单沉淀用户在多轮人工 review 中指出的问题。用途是让 report review agent、manual semantic fill agent、以及后续接管的 AI 在看 HTML report / JSONL records 时，不只检查 `blocking_item_count`，还要检查报告是否真的适合人读、适合后续配队算法使用。
 
+## 速查表
+
+| No. | 类别 | 校对事项 | 触发/异常表现 | 处理方式 |
+| --- | --- | --- | --- | --- |
+| 1 | 编码 | HTML/JSONL 中日文和中文必须正常显示 | 出现 `????`、`HP?30%`、`銇/銈/鐧/鍔/鏅` | 先用 Python UTF-8 复查；坏数据重跑或重写 patch |
+| 2 | 编码 | 不用 PowerShell literal 写日文 | 手动 patch 里日文变成 `?` | patch 用 UTF-8 文件或 `ensure_ascii=True` 生成 |
+| 3 | 报告结构 | 主表一行一个 `skill_component` | 固定 5-slot 导致大片空白 | 不展开空 slot，改用 component 长表 |
+| 4 | 报告结构 | report 顶部先列可疑项目 | 可疑点藏在大表里 | 顶部列 `denko_id / component / 中文理由` |
+| 5 | 报告结构 | VU-only 不应看起来空白 | Lv30/Lv50 空，用户误以为漏抓 | 显示 `※VU生效`，并列出 Lv92/96/100 |
+| 6 | 等级 | Lv30/Lv50 必须优先可见 | 非 VU component 缺 Lv30 或 Lv50 | 进入可疑项，复查技能等级表 |
+| 7 | 等级 | Lv92/Lv96/Lv100 必须可见 | VU 追加效果无法在 report 看出 | report 加 VU 三列，JSON 标 `vu_only` |
+| 8 | ID | ID 与 wiki 行必须确认 | 列表页合并单元格错位 | 展开 rowspan/colspan；详情页优先 |
+| 9 | 编号拆分 | `(1)/(2)/(3)` 通常拆成独立 component | 检测到编号但只产出一个 component | 可疑；脚本修或 LLM 片段复查 |
+| 10 | 编号顺序 | 第一个编号 component 应是 `(1)` | slot1/第一行直接 `(2)` | 可疑；检查是否漏了主效果 |
+| 11 | 编号一致 | label 与 component_id 编号一致 | `label=(2)` 但 component_id 是 `_1` | 可疑；重排或重建 component |
+| 12 | VU 错位 | `(1)` 主效果不应只 VU 生效 | `_1` 只有 Lv92/96/100 | 通常是基础效果漏抓，必须复查 |
+| 13 | 句中引用 | 不把句中 `(1)` 当新 label | `(2)...(1)の発動率UP` 被拆错 | 只识别段首 label 或按 `/` 分段 |
+| 14 | 概率 | probability 必须按 label 拆分 | `(1)` 组件里同时有 `発動率(1)/(2)` | `(1)` 只留自身概率，`(2)` 独立 |
+| 15 | 概率 | 概率增量是 modifier | `(1)+5%` 被当回復量/效果值 | 建 `activation_probability_boost` |
+| 16 | 概率 | `確定発動` 记录为 100% | VU 追加概率空白 | 填 `activation_probability: 100%` |
+| 17 | 概率 | `(2)` 依赖 `(1)` 时要记录依赖 | `(1)が発動した上で30%` 写成普通 30% | 写 `depends_on_component` |
+| 18 | 对象 | target 与 condition 分开 | 条件词被写进 target_scope | target 写受益/受害对象，条件写 filters/trigger |
+| 19 | 对象 | 自己/全队/访问者/被访问者分清 | “访问中的でんこ”写成 team_all | 复查 raw，修 target_scope |
+| 20 | 对象 | “自己以外”不能写成自己 | `自身を除く` 解析成 `self` | target_filters 写 `exclude_self` |
+| 21 | 位置 | 先头车/前一辆/相邻车要结构化 | `先頭車両`、`前の一両` 丢失 | 写 `front_car` / relative position |
+| 22 | 属性 | 自己队伍属性与对手属性分开 | `相手がeco` 写成 own eco 限制 | 写 `opponent_attribute` |
+| 23 | 方向 | access/accessed 分清 | 被攻击触发写成主动访问 | trigger 写 `access` 或 `accessed` |
+| 24 | 条件 | film/theme/name/weather/time 等保留 | 奇怪条件被省略或硬猜 | 结构化能拆就拆，不能拆保留 raw |
+| 25 | 效果类型 | 不把特殊效果塞进 ATK/DEF | HP0/スキル無効化 变成 DEF modifier | 改 `force_hp_zero` / `skill_disable` |
+| 26 | 效果类型 | EXP 分配不是 EXP gain | `経験値分配` 写成 self exp_gain | 用 `exp_distribution` |
+| 27 | 效果类型 | HP1 生存和固定减伤分开 | `HP1で耐える` 混入 damage_reduction | 用 `survive_hp1` + `damage_reduction` |
+| 28 | 效果类型 | link/随机访问/传送单独建模 | link transfer 被写成 DEF | 用 `link_transfer` / `random_access` |
+| 29 | 数值 | 正负号和单位不能丢 | `DEF -10%` 变 `10` | 保留 `value_raw`、`value_numeric=-10`、unit |
+| 30 | 数值 | scaling 条件必须保留 | `n×%`、`0～+x%`、`最大5駅` 丢失 | 写 `scaling_conditions` |
+| 31 | 时间 | duration/CD 按等级排序 | Lv5/Lv15 被放到底部 | 按关键等级顺序输出 |
+| 32 | 分支 | 属性/季节/星期/时间分支进入可疑项 | 只出一个 component 或 effect_kind 矛盾 | LLM/manual fill 或截图复查 |
+| 33 | fallback | fallback component 必须可疑 | `component_01_*` 出现在 report | 复查原文，替换成语义 component |
+| 34 | 重复 | 两个 component 完全一样要报错 | `(1)/(2)` 值、条件、对象都相同 | 检查错位或重复复制 |
+| 35 | LLM | 只把最小片段交给 LLM | 整页 wiki 丢给模型 | 片段包含条件表、等级表、remarks |
+| 36 | patch | manual patch 必须可追溯 | 无 reason/source 的改动 | 必填 evidence、problem_zh、reason_zh |
+| 37 | 批次复盘 | 每 20～30 个复盘一次 | 同类错反复出现 | 共性问题进 parser/report rule |
+| 38 | 验收 | `blocking_item_count=0` 不等于通过 | report 仍难读或概率混合 | 必须跑本表和自动验收脚本 |
+
 ## 0. 基本原则
 
 - 展示层必须是中文，必要日语游戏术语保留原文。
