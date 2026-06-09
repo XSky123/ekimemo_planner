@@ -4,6 +4,8 @@ Purpose: read one ingestion batch report and its matching JSONL records, then fi
 
 This agent is read-only. It must not edit files. It reports findings for the controller or a worker to fix.
 
+Before reviewing any batch, read and apply `docs/report_review_checklist.md`. That checklist is the canonical collection of user-discovered report QA rules.
+
 ## Inputs
 
 Provide these paths for one batch:
@@ -48,7 +50,7 @@ The user repeatedly focuses on these failure modes:
 
 1. Read the HTML report first.
    - Start with `可疑项优先`.
-   - Then inspect the fixed 5-slot component matrix.
+   - Then inspect the one-row-per-component skill table. The old fixed 5-slot matrix is no longer the preferred report view.
 2. For each suspicious row, open only the matching JSONL row.
 3. Compare:
    - `trigger_condition`
