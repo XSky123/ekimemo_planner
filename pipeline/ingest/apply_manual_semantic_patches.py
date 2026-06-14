@@ -156,6 +156,13 @@ def accept_patches(patches: list[dict[str, Any]]) -> list[dict[str, Any]]:
     return accepted
 
 
+def batch_pool(batch: str) -> str:
+    match = re.fullmatch(r"(original|extra)_\d{3}_\d{3}", batch)
+    if not match:
+        raise ValueError(f"unsupported batch name: {batch}")
+    return match.group(1)
+
+
 def apply_patches(batch: str) -> dict[str, Any]:
     patch_path = MANUAL_FILL_DIR / f"{batch}_semantic_patches.jsonl"
     patches = accept_patches(read_jsonl(patch_path))
@@ -181,9 +188,10 @@ def apply_patches(batch: str) -> dict[str, Any]:
     write_jsonl(skill_path, skill_rows)
     write_jsonl(patch_path, patches)
 
+    pool = batch_pool(batch)
     start, end = batch_range(batch)
-    report_path = range_ingest.write_html_report(start, end, denko_rows, skill_rows, reviews, batch_size=30)
-    state = review_cycle_controller.build_state(start, end, 30, run_result=None)
+    report_path = range_ingest.write_html_report(start, end, denko_rows, skill_rows, reviews, batch_size=30, pool=pool)
+    state = review_cycle_controller.build_state(start, end, 30, run_result=None, pool=pool)
     state["manual_patch_application"] = {
         "applied_at": datetime.now(base.JST).isoformat(),
         "patch_file": str(patch_path.relative_to(base.ROOT)),
@@ -206,7 +214,7 @@ def apply_patches(batch: str) -> dict[str, Any]:
 
 
 def batch_range(batch: str) -> tuple[int, int]:
-    match = re.fullmatch(r"original_(\d{3})_(\d{3})", batch)
+    match = re.fullmatch(r"(?:original|extra)_(\d{3})_(\d{3})", batch)
     if not match:
         raise ValueError(f"unsupported batch name: {batch}")
     return int(match.group(1)), int(match.group(2))
