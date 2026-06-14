@@ -1,10 +1,10 @@
 {
   "blocking_items": [],
-  "generated_at": "2026-06-09T01:37:43.977850+09:00",
+  "generated_at": "2026-06-13T22:55:07.441002+09:00",
   "metrics": {
     "blocking_item_count": 0,
     "component_review_reason_counts": {
-      "component_semantics_need_review": 74,
+      "component_semantics_need_review": 76,
       "condition_only_component_needs_review": 3
     },
     "skill_records": 44

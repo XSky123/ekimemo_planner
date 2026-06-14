@@ -56,6 +56,23 @@ def component_kind_counts(skill_rows: list[dict[str, Any]]) -> Counter[str]:
     return counts
 
 
+def component_review_reason_counts(skill_rows: list[dict[str, Any]]) -> Counter[str]:
+    counts: Counter[str] = Counter()
+    for row in skill_rows:
+        for component in row.get("skill_components") or []:
+            counts.update(component.get("review_reasons") or [])
+    return counts
+
+
+def component_needs_review_count(skill_rows: list[dict[str, Any]]) -> int:
+    return sum(
+        1
+        for row in skill_rows
+        for component in row.get("skill_components") or []
+        if component.get("needs_review") or component.get("review_reasons")
+    )
+
+
 COMPONENT_SLOT_COUNT = 5
 REPORT_LEVEL_ORDER = ("1", "5", "15", "30", "50", "60", "70", "80", "92", "96", "100", "base")
 SUSPICIOUS_REASONS = {
@@ -80,6 +97,10 @@ SUSPICIOUS_REASON_ZH = {
     "vu_label_level_mismatch_needs_review": "原文说明该编号 Lv92+ 生效，但组件等级覆盖不是 VU-only",
     "blank_Lv30": "Lv30 空白但源表存在 Lv30",
     "blank_Lv50": "Lv50 空白但源表存在 Lv50",
+}
+GENERIC_COMPONENT_REVIEW_REASONS = {
+    "component_semantics_need_review",
+    "manual_semantic_fill",
 }
 
 
@@ -277,6 +298,13 @@ def write_html_report(
     for row in skill_rows:
         reason_counts.update(row.get("record_meta", {}).get("review_reasons") or [])
     component_counts = component_kind_counts(skill_rows)
+    component_review_counts = component_review_reason_counts(skill_rows)
+    component_review_total = component_needs_review_count(skill_rows)
+    non_generic_component_reviews = {
+        key: value
+        for key, value in component_review_counts.items()
+        if key not in GENERIC_COMPONENT_REVIEW_REASONS
+    }
     suspicious = suspicious_rows(skill_rows)
 
     lines = [
@@ -296,8 +324,11 @@ def write_html_report(
         f"<tr><th>batch_size</th><td>{batch_size}</td></tr>",
         f"<tr><th>review_queue</th><td>{len(reviews)}</td></tr>",
         f"<tr><th>suspicious_items</th><td>{len(suspicious)}</td></tr>",
+        f"<tr><th>component_review_items</th><td>{component_review_total}</td></tr>",
         f"<tr><th>classification</th><td>{esc(dict(classification))}</td></tr>",
         f"<tr><th>review_reasons</th><td>{esc(dict(reason_counts))}</td></tr>",
+        f"<tr><th>component_review_reasons</th><td>{esc(dict(component_review_counts))}</td></tr>",
+        f"<tr><th>non_generic_component_review_reasons</th><td>{esc(non_generic_component_reviews)}</td></tr>",
         f"<tr><th>component_kinds</th><td>{esc(dict(component_counts))}</td></tr>",
         "</tbody></table>",
     ]
@@ -316,7 +347,10 @@ def write_html_report(
             )
         lines.append("</tbody></table>")
     else:
-        lines.append("<p>本批未检测到高优先级可疑项。</p>")
+        if component_review_total:
+            lines.append("<p>未检测到 blocking 级可疑项；但 component 仍带 review reason，详见批次指标和技能分量表。</p>")
+        else:
+            lines.append("<p>本批未检测到高优先级可疑项。</p>")
 
     lines.append("<h2>分批复盘</h2>")
     for batch in batch_slices(denko_rows, batch_size):

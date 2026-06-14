@@ -28,73 +28,7 @@ Use `.agents/batch_review_expert.md` as the role prompt.
 优先确认这些是否是 parser 共性问题、manual fill、还是报告误报：
 
 ```json
-[
-  {
-    "component_id": "def_buff_1",
-    "condition_label": "(1)",
-    "denko_id": "original:091",
-    "effect_kind": "def_buff",
-    "name": "岩切よしの",
-    "reasons": [
-      "attribute_branch_effect_needs_review"
-    ],
-    "reasons_zh": [
-      "属性分支需要复查"
-    ]
-  },
-  {
-    "component_id": "def_debuff_2",
-    "condition_label": "(2)",
-    "denko_id": "original:091",
-    "effect_kind": "def_debuff",
-    "name": "岩切よしの",
-    "reasons": [
-      "condition_effect_mismatch_needs_review"
-    ],
-    "reasons_zh": [
-      "日文效果词与组件类型矛盾"
-    ]
-  },
-  {
-    "component_id": "damage_reduction_3",
-    "condition_label": "(3)",
-    "denko_id": "original:109",
-    "effect_kind": "damage_reduction",
-    "name": "小涌谷あすか",
-    "reasons": [
-      "attribute_branch_effect_needs_review"
-    ],
-    "reasons_zh": [
-      "属性分支需要复查"
-    ]
-  },
-  {
-    "component_id": "seasonal_damage_reduction_winter",
-    "condition_label": null,
-    "denko_id": "original:111",
-    "effect_kind": "damage_reduction",
-    "name": "糸魚川せつか",
-    "reasons": [
-      "condition_effect_mismatch_needs_review"
-    ],
-    "reasons_zh": [
-      "日文效果词与组件类型矛盾"
-    ]
-  },
-  {
-    "component_id": "seasonal_fixed_damage_summer",
-    "condition_label": null,
-    "denko_id": "original:111",
-    "effect_kind": "fixed_damage",
-    "name": "糸魚川せつか",
-    "reasons": [
-      "condition_effect_mismatch_needs_review"
-    ],
-    "reasons_zh": [
-      "日文效果词与组件类型矛盾"
-    ]
-  }
-]
+[]
 ```
 
 ## Required Output

@@ -705,6 +705,7 @@ def build_skill_components(
                 },
             )
             adjust_component_semantics(component, common_text)
+            enrich_component_context_fields(component)
             enrich_component_from_value_text(component, parsed["value"].get("source_text"))
             component["values_by_denko_level"][denko_level] = parsed["value"]
     add_condition_only_components(components, condition_context, activation_type, values_by_denko_level)
@@ -734,6 +735,7 @@ def build_skill_components(
             },
         )
         adjust_component_semantics(component, common_text)
+        enrich_component_context_fields(component)
         enrich_component_from_value_text(component, parsed["value"].get("source_text"))
         component["values_by_denko_level"][parsed["denko_level"]] = parsed["value"]
     if components:
@@ -1411,6 +1413,29 @@ def adjust_component_semantics(component: dict[str, Any], common_text: str) -> N
         filters.pop("attribute", None)
 
 
+def enrich_component_context_fields(component: dict[str, Any]) -> None:
+    text = join_unique_text([component.get("condition_raw"), component.get("remarks_raw")])
+    if "相手" in text:
+        filters = component.setdefault("target_filters", {})
+        trigger = component.setdefault("trigger_conditions", {})
+        if not any("opponent" in key for key in filters) and not any("opponent" in key for key in trigger):
+            trigger["opponent_context_raw"] = compact_context_text(text, "相手")
+    if "リブートしなかった" in text:
+        component.setdefault("trigger_conditions", {})["not_rebooted"] = True
+    if "効果を発動して" in text and "HPが0" in text and "クールタイム" in text:
+        component.setdefault("trigger_conditions", {})["cooldown_on_hp_zero_after_effect"] = True
+
+
+def compact_context_text(text: str, keyword: str, max_len: int = 220) -> str:
+    normalized = " ".join(str(text).split())
+    index = normalized.find(keyword)
+    if index < 0 or len(normalized) <= max_len:
+        return normalized
+    start = max(0, index - max_len // 3)
+    end = min(len(normalized), start + max_len)
+    return normalized[start:end].strip()
+
+
 def component_value(
     effect_kind: str,
     row_fact: dict[str, Any],
@@ -1476,6 +1501,9 @@ def probability_for_label(probability: dict[str, str], label: str | None) -> dic
     out: dict[str, str] = {}
     label_number = label.strip("()")
     for key, value in probability.items():
+        key_labels = re.findall(r"[\(（](\d+)[\)）]", str(key))
+        if key_labels and label_number not in key_labels:
+            continue
         extracted = extract_labeled_probability(value, label_number)
         out[key] = extracted or value
     return out
@@ -1484,15 +1512,26 @@ def probability_for_label(probability: dict[str, str], label: str | None) -> dic
 def extract_labeled_probability(value: str, label_number: str) -> str | None:
     text = normalize_numeric_text(value)
     # Handles both "(1)75%" and combined labels like "(1)(2)100%".
-    pattern = re.compile(r"((?:\(\d+\))+)\s*([+＋-]?\d+(?:\.\d+)?(?:\s*[～〜~\-]\s*[+＋-]?\d+(?:\.\d+)?)?\s*[％%])")
+    percent_value = r"[+＋-]?(?:\d+(?:\.\d+)?|x|\?)(?:\s*[～〜~\-]\s*[+＋-]?(?:\d+(?:\.\d+)?|x|\?))?\s*[％%]"
+    pattern = re.compile(rf"((?:\(\d+\))+)\s*({percent_value})")
     for match in pattern.finditer(text):
         labels = re.findall(r"\((\d+)\)", match.group(1))
         if label_number in labels:
             return normalize_numeric_text(match.group(2))
     segment = extract_labeled_condition_text(text, f"({label_number})")
-    percent_match = re.search(r"([+＋-]?\d+(?:\.\d+)?(?:\s*[～〜~\-]\s*[+＋-]?\d+(?:\.\d+)?)?\s*[％%])", segment)
+    percent_match = re.search(rf"({percent_value})", segment)
     if percent_match:
         return normalize_numeric_text(percent_match.group(1))
+    marker = f"({label_number})"
+    marker_index = text.find(marker)
+    if marker_index >= 0:
+        tail = text[marker_index + len(marker) :]
+        trimmed_tail = re.split(r"\s\(\d+\)", tail, maxsplit=1)[0]
+        matches = re.findall(rf"({percent_value})", trimmed_tail)
+        if not matches:
+            matches = re.findall(rf"({percent_value})", tail)
+        if matches:
+            return normalize_numeric_text(matches[-1])
     return None
 
 
@@ -1584,6 +1623,7 @@ def add_condition_only_components(
             "needs_review": True,
             "review_reasons": ["condition_only_component_needs_review"],
         }
+        enrich_component_context_fields(component)
         for denko_level, row_fact in values_by_denko_level.items():
             component["values_by_denko_level"][denko_level] = {
                 "value_raw": effect_kind,
@@ -1664,6 +1704,8 @@ def infer_effect_kind_for_bare_value(text: str, label: str | None) -> str | None
     segment = component_condition_text(text, {"condition_label": label}) if label else text
     if "効果時間" in segment or "スキル発動時間" in segment:
         return "duration_extension"
+    if "経験値" in segment and "分配" in segment:
+        return "exp_distribution"
     if "経験値" in segment:
         return "exp_gain"
     if "スコア" in segment:
@@ -1779,14 +1821,18 @@ def has_condition_effect_mismatch(component: dict[str, Any]) -> bool:
         return False
     if effect_kind == "fixed_damage" and ("固定ダメージ" in text or "軽減不能なダメージ" in text):
         return False
+    if effect_kind == "exp_distribution" and "経験値" in text and "分配" in text:
+        return False
     if effect_kind == "exp_gain" and "経験値" in text:
         return False
     if effect_kind in {"hp_recovery", "def_debuff", "atk_debuff"} and (
         "HP回復" in text or "HPを回復" in text
     ):
         return effect_kind != "hp_recovery"
-    if ("経験値" in text or "スコア" in text) and effect_kind not in {"exp_gain", "score_gain", "additional_score_gain"}:
+    if ("経験値" in text or "スコア" in text) and effect_kind not in {"exp_gain", "exp_distribution", "score_gain", "additional_score_gain"}:
         return True
+    if "リブート" in text and "クールタイム" in text:
+        return False
     if "リブート" in text and effect_kind != "reboot" and "しなかった" not in text:
         return True
     return False
@@ -1917,17 +1963,18 @@ def skill_disable_value_raw(text: str) -> str:
 
 
 def infer_target_scope(text: str, effect_kind: str) -> list[str]:
-    if "相手" in text and effect_kind in {"exp_gain", "hp_recovery", "def_debuff", "atk_debuff", "fixed_damage", "damage_reduction"}:
+    if "相手" in text and effect_kind in {"exp_gain", "hp_recovery", "def_debuff", "atk_debuff", "fixed_damage", "additional_fixed_damage", "damage_reduction"}:
         return ["opponent_denko"]
     if any(phrase in text for phrase in ["自分以外", "自身以外", "自身を除く"]) and effect_kind in {
         "atk_buff",
         "def_buff",
         "exp_gain",
+        "exp_distribution",
         "score_gain",
         "damage_reduction",
     }:
         return ["team_all"]
-    if effect_kind in {"exp_gain", "score_gain"} and any(phrase in text for phrase in ["ほかのでんこ", "他のでんこ"]):
+    if effect_kind in {"exp_gain", "exp_distribution", "score_gain"} and any(phrase in text for phrase in ["ほかのでんこ", "他のでんこ"]):
         return ["team_all"]
     if "自身のATK" in text or "自身のDEF" in text or "自分のATK" in text or "自分のDEF" in text:
         return ["self"]
@@ -1947,7 +1994,7 @@ def infer_target_scope(text: str, effect_kind: str) -> list[str]:
         return ["opponent_denko"]
     if "メロ自身" in text or "自身" in text:
         return ["self"]
-    if effect_kind in {"atk_buff", "def_buff", "fixed_damage", "score_gain", "exp_gain", "damage_reduction"}:
+    if effect_kind in {"atk_buff", "def_buff", "fixed_damage", "additional_fixed_damage", "score_gain", "exp_gain", "exp_distribution", "damage_reduction"}:
         return ["self"]
     if effect_kind in {"memory_access_station_count", "memory_access_time"}:
         return ["team_all"]
@@ -2028,7 +2075,10 @@ def infer_target_filters(text: str, effect_kind: str) -> dict[str, Any]:
     }
     for raw_type, normalized_type in type_map.items():
         if raw_type in text:
-            filters["type"] = normalized_type
+            if "相手" in text:
+                filters["opponent_type"] = normalized_type
+            else:
+                filters["type"] = normalized_type
             break
     if effect_kind == "skill_disable":
         filters["disabled_skill_target"] = skill_disable_value_raw(text)
@@ -2053,7 +2103,7 @@ def infer_trigger_conditions(text: str, effect_kind: str | None = None) -> dict[
     if hp_threshold:
         trigger["hp_threshold_percent"] = int(hp_threshold.group(1))
         trigger["operator"] = "lte"
-    if "被アクセス" in text or "アクセスされた" in text:
+    if "被アクセス" in text or "アクセスされた" in text or "アクセスされて" in text:
         trigger["event_hint"] = "accessed"
         trigger["access_direction"] = "received"
     elif "アクセス" in text:
@@ -2166,6 +2216,7 @@ def build_summary_zh(
         "extra_access": "追加访问",
         "skill_disable": "技能无效化",
         "exp_gain": "经验值获得",
+        "exp_distribution": "经验值分配",
         "fixed_damage": "固定伤害",
         "damage_reduction": "伤害减轻",
         "memory_access_boost": "思い出しアクセス强化",
@@ -2202,6 +2253,7 @@ def component_summary_zh(index: int, component: dict[str, Any]) -> str:
         "extra_access": "追加访问",
         "skill_disable": "技能无效化",
         "exp_gain": "经验值获得",
+        "exp_distribution": "经验值分配",
         "fixed_damage": "固定伤害",
         "damage_reduction": "伤害减轻",
         "memory_access_station_count": "思い出しアクセス駅数",
@@ -2220,7 +2272,7 @@ def component_summary_zh(index: int, component: dict[str, Any]) -> str:
     value_text = ""
     if preferred_level:
         value = values[preferred_level]
-        value_text = compact_component_value_zh(preferred_level, value)
+        value_text = compact_component_value_zh(preferred_level, value, component)
     targets = "、".join(target_labels.get(target, target) for target in component.get("target_scope", []))
     prefix = f"技能分量{index}：{effect_labels.get(component.get('effect_kind'), component.get('effect_kind'))}"
     if targets:
@@ -2230,11 +2282,11 @@ def component_summary_zh(index: int, component: dict[str, Any]) -> str:
     return prefix
 
 
-def compact_component_value_zh(level: str, value: dict[str, Any]) -> str:
+def compact_component_value_zh(level: str, value: dict[str, Any], component: dict[str, Any] | None = None) -> str:
     parts = [f"Lv{level}" if level != "base" else "基础"]
     if value.get("value_raw"):
         parts.append(value["value_raw"])
-    probability = value.get("probability") or {}
+    probability = summary_probability_for_component(component, value.get("probability") or {})
     if probability:
         parts.append("，".join(f"{key} {item}" for key, item in probability.items()))
     if value.get("duration"):
@@ -2242,6 +2294,12 @@ def compact_component_value_zh(level: str, value: dict[str, Any]) -> str:
     if value.get("cooldown"):
         parts.append(f"CD {value['cooldown']}")
     return "，".join(parts)
+
+
+def summary_probability_for_component(component: dict[str, Any] | None, probability: dict[str, str]) -> dict[str, str]:
+    if not component or not probability:
+        return probability
+    return probability_for_label(probability, component.get("condition_label"))
 
 
 def skill_level_cell(values: dict[str, dict[str, Any]], lv: str) -> str:
