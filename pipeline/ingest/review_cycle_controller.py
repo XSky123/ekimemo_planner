@@ -51,10 +51,12 @@ def write_json(path: Path, value: dict[str, Any]) -> None:
     path.write_text(json.dumps(value, ensure_ascii=False, indent=2, sort_keys=True), encoding="utf-8")
 
 
-def run_ingestion(start: int, end: int, batch_size: int) -> dict[str, Any]:
+def run_ingestion(pool: str, start: int, end: int, batch_size: int) -> dict[str, Any]:
     command = [
         sys.executable,
         str(Path(__file__).with_name("original_range_ingest.py")),
+        "--pool",
+        pool,
         "--start",
         str(start),
         "--end",
@@ -161,8 +163,8 @@ def write_batch_review_prompt(stem: str, state: dict[str, Any]) -> Path:
     return prompt_path
 
 
-def build_state(start: int, end: int, batch_size: int, run_result: dict[str, Any] | None) -> dict[str, Any]:
-    stem = range_ingest.output_stem(start, end)
+def build_state(start: int, end: int, batch_size: int, run_result: dict[str, Any] | None, pool: str = "original") -> dict[str, Any]:
+    stem = range_ingest.output_stem(start, end, pool)
     paths = {
         "report": f"data/reports/{stem}_batch_review_zh.html",
         "skill_facts": f"data/records/{stem}_skill_facts.jsonl",
@@ -176,7 +178,7 @@ def build_state(start: int, end: int, batch_size: int, run_result: dict[str, Any
     state = {
         "schema_version": 1,
         "generated_at": datetime.now(base.JST).isoformat(),
-        "scope": {"pool": "original", "start": start, "end": end, "batch_size": batch_size},
+        "scope": {"pool": pool, "start": start, "end": end, "batch_size": batch_size},
         "parser_version": base.PARSER_VERSION,
         "run_result": run_result,
         "paths": paths,
@@ -193,6 +195,7 @@ def build_state(start: int, end: int, batch_size: int, run_result: dict[str, Any
 
 def main() -> int:
     parser = argparse.ArgumentParser()
+    parser.add_argument("--pool", choices=sorted(base.LIST_PAGES), default="original")
     parser.add_argument("--start", type=int, required=True)
     parser.add_argument("--end", type=int, required=True)
     parser.add_argument("--batch-size", type=int, default=30)
@@ -200,17 +203,17 @@ def main() -> int:
     args = parser.parse_args()
 
     AGENT_RUN_DIR.mkdir(parents=True, exist_ok=True)
-    run_result = None if args.no_run else run_ingestion(args.start, args.end, args.batch_size)
+    run_result = None if args.no_run else run_ingestion(args.pool, args.start, args.end, args.batch_size)
     if run_result and run_result["returncode"] != 0:
-        state = build_state(args.start, args.end, args.batch_size, run_result)
+        state = build_state(args.start, args.end, args.batch_size, run_result, args.pool)
         state["next_action"] = "fix_ingestion_command"
-        state_path = AGENT_RUN_DIR / f"{range_ingest.output_stem(args.start, args.end)}_cycle_state.json"
+        state_path = AGENT_RUN_DIR / f"{range_ingest.output_stem(args.start, args.end, args.pool)}_cycle_state.json"
         write_json(state_path, state)
         print(json.dumps({"state": str(state_path.relative_to(base.ROOT)), "next_action": state["next_action"]}, ensure_ascii=False))
         return run_result["returncode"]
 
-    state = build_state(args.start, args.end, args.batch_size, run_result)
-    stem = range_ingest.output_stem(args.start, args.end)
+    state = build_state(args.start, args.end, args.batch_size, run_result, args.pool)
+    stem = range_ingest.output_stem(args.start, args.end, args.pool)
     state_path = AGENT_RUN_DIR / f"{stem}_cycle_state.json"
     write_json(state_path, state)
     prompt_path = write_batch_review_prompt(stem, state)

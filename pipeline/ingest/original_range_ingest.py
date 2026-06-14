@@ -12,21 +12,25 @@ from typing import Any
 import parse as base
 
 
-def output_stem(start: int, end: int) -> str:
-    return f"original_{start:03d}_{end:03d}"
+def output_stem(start: int, end: int, pool: str = "original") -> str:
+    return f"{pool}_{start:03d}_{end:03d}"
 
 
-def read_original_records(start: int, end: int) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
-    raw_path = base.RAW_DIR / "sample_original_list.html"
-    html_text = base.fetch(base.LIST_PAGES["original"], raw_path)
+def read_pool_records(pool: str, start: int, end: int) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    raw_path = base.RAW_DIR / f"sample_{pool}_list.html"
+    html_text = base.fetch(base.LIST_PAGES[pool], raw_path)
     return base.parse_list_page(
-        "original",
-        base.LIST_PAGES["original"],
+        pool,
+        base.LIST_PAGES[pool],
         html_text,
         limit=None,
         id_min=start,
         id_max=end,
     )
+
+
+def read_original_records(start: int, end: int) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    return read_pool_records("original", start, end)
 
 
 def classify_skill_row(row: dict[str, Any]) -> str:
@@ -288,6 +292,7 @@ def write_html_report(
     skill_rows: list[dict[str, Any]],
     reviews: list[dict[str, Any]],
     batch_size: int,
+    pool: str = "original",
 ) -> Path:
     def esc(value: Any) -> str:
         return html.escape("" if value is None else str(value))
@@ -312,14 +317,14 @@ def write_html_report(
         '<html lang="zh-CN">',
         "<head>",
         '<meta charset="utf-8">',
-        f"<title>Original {start}-{end} Ingestion Review</title>",
+        f"<title>{pool.title()} {start}-{end} Ingestion Review</title>",
         "<style>body{font-family:system-ui,sans-serif;line-height:1.5;margin:24px}table{border-collapse:collapse;width:100%;margin:12px 0 24px}th,td{border:1px solid #ccc;padding:6px 8px;vertical-align:top}th{background:#f5f5f5}code{background:#f6f8fa;padding:1px 4px}.table-scroll{overflow-x:auto}.component-table{font-size:12px;min-width:1800px}.component-table th,.component-table td{white-space:pre-wrap;min-width:90px;max-width:300px}.component-table .condition-col{min-width:260px;max-width:380px}.component-table .value-col{min-width:150px;max-width:240px}</style>",
         "</head><body>",
-        f"<h1>Original {start}-{end} 数据读取报告</h1>",
+        f"<h1>{pool.title()} {start}-{end} 数据读取报告</h1>",
         "<p>controller-first 执行：本批只使用脚本、缓存与确定性 parser；未调用 LLM。</p>",
         "<h2>批次指标</h2>",
         "<table><tbody>",
-        f"<tr><th>范围</th><td>original:{start:03d} - original:{end:03d}</td></tr>",
+        f"<tr><th>范围</th><td>{pool}:{start:03d} - {pool}:{end:03d}</td></tr>",
         f"<tr><th>record_count</th><td>{len(denko_rows)}</td></tr>",
         f"<tr><th>batch_size</th><td>{batch_size}</td></tr>",
         f"<tr><th>review_queue</th><td>{len(reviews)}</td></tr>",
@@ -444,13 +449,14 @@ def write_html_report(
         ]
     )
     base.REPORT_DIR.mkdir(parents=True, exist_ok=True)
-    path = base.REPORT_DIR / f"{output_stem(start, end)}_batch_review_zh.html"
+    path = base.REPORT_DIR / f"{output_stem(start, end, pool)}_batch_review_zh.html"
     write_html_entity_report(path, lines)
     return path
 
 
 def main() -> int:
     parser = argparse.ArgumentParser()
+    parser.add_argument("--pool", choices=sorted(base.LIST_PAGES), default="original")
     parser.add_argument("--start", type=int, required=True)
     parser.add_argument("--end", type=int, required=True)
     parser.add_argument("--batch-size", type=int, default=30)
@@ -462,12 +468,12 @@ def main() -> int:
     base.REVIEW_DIR.mkdir(parents=True, exist_ok=True)
     base.REPORT_DIR.mkdir(parents=True, exist_ok=True)
 
-    denko_rows, reviews = read_original_records(args.start, args.end)
+    denko_rows, reviews = read_pool_records(args.pool, args.start, args.end)
     base.enrich_details(denko_rows, reviews)
     skill_rows = base.build_skill_fact_records(denko_rows)
     reviews.extend(base.build_skill_review_items(skill_rows))
 
-    stem = output_stem(args.start, args.end)
+    stem = output_stem(args.start, args.end, args.pool)
     base.write_jsonl(base.RECORD_DIR / f"{stem}_denko_facts.jsonl", denko_rows)
     base.write_jsonl(base.RECORD_DIR / f"{stem}_skill_facts.jsonl", skill_rows)
     base.write_jsonl(base.REVIEW_DIR / f"{stem}_review_queue.jsonl", reviews)
@@ -475,7 +481,7 @@ def main() -> int:
         "schema_version": 1,
         "parser_version": base.PARSER_VERSION,
         "generated_at": datetime.now(base.JST).isoformat(),
-        "scope": {"pool": "original", "start": args.start, "end": args.end},
+        "scope": {"pool": args.pool, "start": args.start, "end": args.end},
         "records": [
             {
                 "denko_id": row["identity"]["denko_id"],
@@ -490,7 +496,7 @@ def main() -> int:
         json.dumps(index, ensure_ascii=False, indent=2, sort_keys=True),
         encoding="utf-8",
     )
-    report_path = write_html_report(args.start, args.end, denko_rows, skill_rows, reviews, args.batch_size)
+    report_path = write_html_report(args.start, args.end, denko_rows, skill_rows, reviews, args.batch_size, args.pool)
     print(
         json.dumps(
             {
