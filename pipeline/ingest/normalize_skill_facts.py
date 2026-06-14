@@ -47,14 +47,123 @@ def normalize_value_raw(component: dict[str, Any], value: dict[str, Any]) -> boo
     return value["value_raw"] != original
 
 
+def inferred_probability_label(component: dict[str, Any]) -> str | None:
+    label = component.get("condition_label")
+    if label:
+        return label
+    text = " ".join(
+        str(component.get(key) or "")
+        for key in ("condition_raw", "effect_role", "component_id", "effect_kind")
+    )
+    if "(1)" in text and "(2)" not in text:
+        return "(1)"
+    if "(2)" in text and "(1)" not in text:
+        return "(2)"
+    if "primary_effect" in text or "base_effect" in text:
+        return "(1)"
+    return None
+
+
+def inferred_probability_label_for_value(component: dict[str, Any], value: dict[str, Any]) -> str | None:
+    label = inferred_probability_label(component)
+    if label:
+        return label
+    raw_row = value.get("raw_row") or {}
+    value_raw = str(value.get("value_raw") or "")
+    for key, cell in raw_row.items():
+        key_labels = re.findall(r"[\(\uff08](\d+)[\)\uff09]", str(key))
+        if len(key_labels) != 1:
+            continue
+        if value_raw and value_raw in str(cell):
+            return f"({key_labels[0]})"
+    return None
+
+
+def infer_unit(effect_kind: str, value_raw: str) -> str:
+    if "～" in value_raw or "~" in value_raw or "〜" in value_raw:
+        if "%" in value_raw or "％" in value_raw:
+            return "percent_range"
+        return "range"
+    if "倍" in value_raw:
+        return "multiplier"
+    if "exp" in value_raw or "経験値" in value_raw:
+        return "flat_exp"
+    if "%" in value_raw or "％" in value_raw:
+        return "percent"
+    if "時間" in value_raw or "分" in value_raw:
+        return "duration"
+    if effect_kind in {"score_gain", "additional_score_gain"}:
+        return "score"
+    return "raw"
+
+
+def value_from_row_fact(component: dict[str, Any], row_fact: dict[str, Any]) -> dict[str, Any] | None:
+    value_raw = row_fact.get("effect")
+    if not value_raw:
+        return None
+    effect_kind = str(component.get("effect_kind") or "")
+    probability_label = inferred_probability_label(component)
+    value = {
+        "value_raw": value_raw,
+        "value_numeric": base.parse_signed_number(value_raw),
+        "unit": infer_unit(effect_kind, value_raw),
+        "probability": base.probability_for_label(row_fact.get("probability") or {}, probability_label),
+        "duration": row_fact.get("duration"),
+        "cooldown": row_fact.get("cooldown"),
+        "skill_level": row_fact.get("skill_level"),
+        "source_text": row_fact.get("special_explanation"),
+        "raw_row": row_fact.get("raw_row"),
+    }
+    value.update(base.range_value_fields(value_raw))
+    return value
+
+
+def normalize_fallback_component(component: dict[str, Any], row: dict[str, Any]) -> int:
+    if not str(component.get("component_id") or "").startswith("component_"):
+        return 0
+    values = component.setdefault("values_by_denko_level", {})
+    changed = 0
+    for level, row_fact in (row.get("values_by_denko_level") or {}).items():
+        if level in values:
+            continue
+        value = value_from_row_fact(component, row_fact)
+        if value:
+            values[level] = value
+            changed += 1
+    if changed:
+        reasons = component.setdefault("review_reasons", [])
+        component["review_reasons"] = [reason for reason in reasons if reason != "component_values_not_parsed"]
+        component["confidence"] = "medium"
+        component["needs_review"] = True
+    return changed
+
+
+def normalize_fallback_component_id(component: dict[str, Any], used_ids: set[str]) -> bool:
+    component_id = str(component.get("component_id") or "")
+    if not component_id.startswith("component_"):
+        used_ids.add(component_id)
+        return False
+    effect_kind = str(component.get("effect_kind") or "")
+    if not effect_kind or effect_kind in used_ids:
+        used_ids.add(component_id)
+        return False
+    component["component_id"] = effect_kind
+    used_ids.add(effect_kind)
+    return True
+
+
 def normalize_skill_rows(rows: list[dict[str, Any]]) -> int:
     changed = 0
     for row in rows:
+        used_ids: set[str] = set()
         for component in row.get("skill_components") or []:
-            label = component.get("condition_label")
+            changed += normalize_fallback_component(component, row)
+            if normalize_fallback_component_id(component, used_ids):
+                changed += 1
             for value in (component.get("values_by_denko_level") or {}).values():
                 before = json.dumps(value, ensure_ascii=False, sort_keys=True)
                 probability = value.get("probability")
+                label = inferred_probability_label_for_value(component, value)
                 if isinstance(probability, dict) and label:
                     value["probability"] = base.probability_for_label(probability, label)
                 normalize_value_raw(component, value)

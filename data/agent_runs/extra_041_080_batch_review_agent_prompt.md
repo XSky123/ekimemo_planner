@@ -43,23 +43,10 @@ Use `.agents/batch_review_expert.md` as the role prompt.
     ]
   },
   {
-    "component_id": "component_01_exp_gain",
-    "condition_label": null,
-    "denko_id": "extra:046",
-    "effect_kind": "exp_gain",
-    "name": "五葉あこ",
-    "reasons": [
-      "component_values_not_parsed"
-    ],
-    "reasons_zh": [
-      "组件值未解析"
-    ]
-  },
-  {
-    "component_id": "atk_buff_3",
-    "condition_label": "(3)",
+    "component_id": "score_gain_1",
+    "condition_label": "(1)",
     "denko_id": "extra:048",
-    "effect_kind": "atk_buff",
+    "effect_kind": "score_gain",
     "name": "エマ・ノアイユ",
     "reasons": [
       "labeled_component_count_mismatch"
@@ -69,24 +56,11 @@ Use `.agents/batch_review_expert.md` as the role prompt.
     ]
   },
   {
-    "component_id": "def_buff_1",
-    "condition_label": "(1)",
-    "denko_id": "extra:058",
-    "effect_kind": "def_buff",
-    "name": "ピン・ユートン",
-    "reasons": [
-      "labeled_component_count_mismatch"
-    ],
-    "reasons_zh": [
-      "编号标签与组件不匹配"
-    ]
-  },
-  {
-    "component_id": "hp_recovery",
-    "condition_label": null,
-    "denko_id": "extra:058",
-    "effect_kind": "hp_recovery",
-    "name": "ピン・ユートン",
+    "component_id": "atk_buff_3",
+    "condition_label": "(3)",
+    "denko_id": "extra:048",
+    "effect_kind": "atk_buff",
+    "name": "エマ・ノアイユ",
     "reasons": [
       "labeled_component_count_mismatch"
     ],
@@ -169,6 +143,19 @@ Use `.agents/batch_review_expert.md` as the role prompt.
     "denko_id": "extra:073",
     "effect_kind": "reboot",
     "name": "アチャラ・メークローン",
+    "reasons": [
+      "condition_effect_mismatch_needs_review"
+    ],
+    "reasons_zh": [
+      "日文效果词与组件类型矛盾"
+    ]
+  },
+  {
+    "component_id": "skill_force_end_3",
+    "condition_label": "(3)",
+    "denko_id": "extra:074",
+    "effect_kind": "skill_force_end",
+    "name": "スワイ・サイアム",
     "reasons": [
       "condition_effect_mismatch_needs_review"
     ],

@@ -66,6 +66,14 @@ def has_labeled_text(value: Any, min_count: int = 2) -> bool:
     return len(labels) >= min_count
 
 
+def has_mixed_labeled_probability_text(text: str) -> bool:
+    for match in re.finditer(r"発動率[^；;、,，]*", text):
+        labels = set(re.findall(r"[\(\uff08](\d+)[\)\uff09]", match.group(0)))
+        if len(labels) >= 2:
+            return True
+    return False
+
+
 def source_has_level(row: dict[str, Any], level: str) -> bool:
     return bool((row.get("values_by_denko_level") or {}).get(level))
 
@@ -155,7 +163,7 @@ def audit_skill_row(batch: str, row: dict[str, Any], issues: list[dict[str, Any]
     first_label = next((label for label in labels if label), None)
     if first_label and first_label != "(1)":
         add_issue(issues, batch, denko_id, name, "high", "label", "first_label_not_1", "第一个带编号 component 不是 (1)，疑似主效果漏抓或排序错位。", evidence=labels, fix_hint_zh="复查条件表，补齐 (1) 或重排 component。")
-    if has_labeled_text(row.get("summary_zh") or ""):
+    if has_mixed_labeled_probability_text(row.get("summary_zh") or ""):
         add_issue(issues, batch, denko_id, name, "medium", "summary", "summary_mixed_labeled_probability", "summary_zh 里仍混有多个编号效果/概率，可能没有复用 component 级拆分结果。", evidence=(row.get("summary_zh") or "")[:300], fix_hint_zh="重建 summary_zh，并按 component label 过滤概率。")
 
     signatures: Counter[str] = Counter()

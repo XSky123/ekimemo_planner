@@ -69,6 +69,19 @@ Use `.agents/batch_review_expert.md` as the role prompt.
     ]
   },
   {
+    "component_id": "hp_recovery_1",
+    "condition_label": "(1)",
+    "denko_id": "extra:011",
+    "effect_kind": "hp_recovery",
+    "name": "木屋はかり",
+    "reasons": [
+      "labeled_component_count_mismatch"
+    ],
+    "reasons_zh": [
+      "编号标签与组件不匹配"
+    ]
+  },
+  {
     "component_id": "duration_extension_3",
     "condition_label": "(3)",
     "denko_id": "extra:011",
@@ -87,19 +100,6 @@ Use `.agents/batch_review_expert.md` as the role prompt.
     "denko_id": "extra:013",
     "effect_kind": "exp_gain",
     "name": "花形ひかる",
-    "reasons": [
-      "labeled_component_count_mismatch"
-    ],
-    "reasons_zh": [
-      "编号标签与组件不匹配"
-    ]
-  },
-  {
-    "component_id": "activation_probability_boost",
-    "condition_label": "(2)",
-    "denko_id": "extra:014",
-    "effect_kind": "activation_probability_boost",
-    "name": "汐留いちご",
     "reasons": [
       "labeled_component_count_mismatch"
     ],
@@ -179,58 +179,6 @@ Use `.agents/batch_review_expert.md` as the role prompt.
     ]
   },
   {
-    "component_id": "atk_buff_2",
-    "condition_label": "(2)",
-    "denko_id": "extra:022",
-    "effect_kind": "atk_buff",
-    "name": "レイラ・スコッツマン",
-    "reasons": [
-      "labeled_component_count_mismatch"
-    ],
-    "reasons_zh": [
-      "编号标签与组件不匹配"
-    ]
-  },
-  {
-    "component_id": "def_debuff_2",
-    "condition_label": "(2)",
-    "denko_id": "extra:024",
-    "effect_kind": "def_debuff",
-    "name": "アメリア・パウエル",
-    "reasons": [
-      "labeled_component_count_mismatch"
-    ],
-    "reasons_zh": [
-      "编号标签与组件不匹配"
-    ]
-  },
-  {
-    "component_id": "component_01_exp_gain",
-    "condition_label": null,
-    "denko_id": "extra:025",
-    "effect_kind": "exp_gain",
-    "name": "ルース・ブルックリン",
-    "reasons": [
-      "component_values_not_parsed"
-    ],
-    "reasons_zh": [
-      "组件值未解析"
-    ]
-  },
-  {
-    "component_id": "component_01_exp_gain",
-    "condition_label": null,
-    "denko_id": "extra:026",
-    "effect_kind": "exp_gain",
-    "name": "ジン・ティエン",
-    "reasons": [
-      "component_values_not_parsed"
-    ],
-    "reasons_zh": [
-      "组件值未解析"
-    ]
-  },
-  {
     "component_id": "atk_buff_1",
     "condition_label": "(1)",
     "denko_id": "extra:028",
@@ -241,19 +189,6 @@ Use `.agents/batch_review_expert.md` as the role prompt.
     ],
     "reasons_zh": [
       "编号标签与组件不匹配"
-    ]
-  },
-  {
-    "component_id": "component_01_def_modifier",
-    "condition_label": null,
-    "denko_id": "extra:030",
-    "effect_kind": "def_modifier",
-    "name": "ハリシャ・チャトラパティ",
-    "reasons": [
-      "component_values_not_parsed"
-    ],
-    "reasons_zh": [
-      "组件值未解析"
     ]
   }
 ]

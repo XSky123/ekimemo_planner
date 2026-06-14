@@ -1107,6 +1107,15 @@ def parse_level_components(common_text: str, row_fact: dict[str, Any]) -> list[d
     if "フットバーすことがある" in text or "フットバーします" in text:
         components.append(component_value("footbar", row_fact, "相手をフットバーすことがある", None, "boolean"))
 
+    mile_match = re.search(r"(\d+)\s*マイル", text)
+    if mile_match:
+        parsed = component_value("mile_gain", row_fact, f"{mile_match.group(1)}マイル", int(mile_match.group(1)), "mile")
+        activation_count = raw_row.get("回数")
+        if activation_count:
+            parsed["value"]["activation_count_limit"] = parse_signed_number(activation_count)
+            parsed["value"]["activation_count_limit_raw"] = activation_count
+        append_component_once(components, parsed)
+
     if "スキル無効化" in text or "スキルを無効化" in text:
         components.append(component_value("skill_disable", row_fact, skill_disable_value_raw(text), None, "boolean"))
 
@@ -1653,6 +1662,28 @@ def drop_unlabeled_duplicates_when_labeled_exists(components: dict[str, dict[str
 
 
 def condition_only_effect_kind(segment: str) -> str | None:
+    if "HPを回復" in segment or "HP回復" in segment:
+        return "hp_recovery"
+    if "リンクを継続" in segment or "リンク継続" in segment:
+        return "link_continue"
+    if "スキルの強制終了" in segment or "スキルを強制終了" in segment or "スキル強制終了" in segment:
+        return "skill_force_end"
+    if "ダメージの最大値" in segment or "受けるダメージの最大値" in segment:
+        return "damage_cap"
+    if "スコア獲得" in segment or "獲得スコア" in segment:
+        return "score_gain"
+    if "マイル" in segment:
+        return "mile_gain"
+    if "経験値付与" in segment or "経験値を付与" in segment:
+        return "exp_gain"
+    if "DEF増加" in segment or "DEF上昇" in segment:
+        return "def_buff"
+    if "DEF減少" in segment:
+        return "def_debuff"
+    if "ATK増加" in segment or "ATK上昇" in segment:
+        return "atk_buff"
+    if "ATK減少" in segment:
+        return "atk_debuff"
     if "スキル無効化" in segment or "スキルを無効化" in segment:
         return "skill_disable"
     if "効果時間延長" in segment or ("効果時間" in segment and "延長" in segment):
@@ -1689,6 +1720,8 @@ def infer_condition_label_for_effect(text: str, effect_kind: str) -> str | None:
         "duration_extension": "効果時間",
         "activation_probability_boost": "発動率",
         "skill_disable": "スキル無効化",
+        "skill_force_end": "強制終了",
+        "mile_gain": "マイル",
     }
     keyword = keyword_by_kind.get(effect_kind)
     if not keyword:
@@ -2299,7 +2332,8 @@ def compact_component_value_zh(level: str, value: dict[str, Any], component: dic
 def summary_probability_for_component(component: dict[str, Any] | None, probability: dict[str, str]) -> dict[str, str]:
     if not component or not probability:
         return probability
-    return probability_for_label(probability, component.get("condition_label"))
+    filtered = probability_for_label(probability, component.get("condition_label"))
+    return {re.sub(r"[\(（]\d+[\)）]", "", key).strip() or key: value for key, value in filtered.items()}
 
 
 def skill_level_cell(values: dict[str, dict[str, Any]], lv: str) -> str:

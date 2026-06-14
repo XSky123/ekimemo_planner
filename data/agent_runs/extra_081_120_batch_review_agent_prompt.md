@@ -69,8 +69,21 @@ Use `.agents/batch_review_expert.md` as the role prompt.
     ]
   },
   {
-    "component_id": "score_gain",
-    "condition_label": null,
+    "component_id": "score_gain_1",
+    "condition_label": "(1)",
+    "denko_id": "extra:090",
+    "effect_kind": "score_gain",
+    "name": "キャシー・ナイアガラ",
+    "reasons": [
+      "labeled_component_count_mismatch"
+    ],
+    "reasons_zh": [
+      "编号标签与组件不匹配"
+    ]
+  },
+  {
+    "component_id": "score_gain_1",
+    "condition_label": "(1)",
     "denko_id": "extra:091",
     "effect_kind": "score_gain",
     "name": "ルーシー・ユニオン",
@@ -82,94 +95,81 @@ Use `.agents/batch_review_expert.md` as the role prompt.
     ]
   },
   {
-    "component_id": "fixed_damage_2",
+    "component_id": "exp_gain_2",
     "condition_label": "(2)",
-    "denko_id": "extra:092",
-    "effect_kind": "fixed_damage",
-    "name": "アリアナ・ジャスパー",
-    "reasons": [
-      "labeled_component_count_mismatch"
-    ],
-    "reasons_zh": [
-      "编号标签与组件不匹配"
-    ]
-  },
-  {
-    "component_id": "component_01_def_modifier",
-    "condition_label": null,
-    "denko_id": "extra:097",
-    "effect_kind": "def_modifier",
-    "name": "殿ふじこ",
-    "reasons": [
-      "component_values_not_parsed"
-    ],
-    "reasons_zh": [
-      "组件值未解析"
-    ]
-  },
-  {
-    "component_id": "atk_buff_1",
-    "condition_label": "(1)",
-    "denko_id": "extra:103",
-    "effect_kind": "atk_buff",
-    "name": "アイラ・ヒューストン",
-    "reasons": [
-      "labeled_component_count_mismatch"
-    ],
-    "reasons_zh": [
-      "编号标签与组件不匹配"
-    ]
-  },
-  {
-    "component_id": "exp_gain_1",
-    "condition_label": "(1)",
     "denko_id": "extra:110",
     "effect_kind": "exp_gain",
     "name": "ヨンサン・ソウ",
     "reasons": [
-      "labeled_component_count_mismatch"
+      "duplicate_labeled_component_values_need_review"
     ],
     "reasons_zh": [
-      "编号标签与组件不匹配"
+      "多个编号组件值重复，疑似错位"
     ]
   },
   {
-    "component_id": "exp_gain_1",
-    "condition_label": "(1)",
+    "component_id": "exp_gain_3",
+    "condition_label": "(3)",
+    "denko_id": "extra:110",
+    "effect_kind": "exp_gain",
+    "name": "ヨンサン・ソウ",
+    "reasons": [
+      "duplicate_labeled_component_values_need_review"
+    ],
+    "reasons_zh": [
+      "多个编号组件值重复，疑似错位"
+    ]
+  },
+  {
+    "component_id": "exp_gain_2",
+    "condition_label": "(2)",
     "denko_id": "extra:111",
     "effect_kind": "exp_gain",
     "name": "トンタン・チェリン",
     "reasons": [
-      "labeled_component_count_mismatch"
+      "duplicate_labeled_component_values_need_review"
     ],
     "reasons_zh": [
-      "编号标签与组件不匹配"
+      "多个编号组件值重复，疑似错位"
     ]
   },
   {
-    "component_id": "exp_gain_1",
-    "condition_label": "(1)",
+    "component_id": "exp_gain_3",
+    "condition_label": "(3)",
+    "denko_id": "extra:111",
+    "effect_kind": "exp_gain",
+    "name": "トンタン・チェリン",
+    "reasons": [
+      "duplicate_labeled_component_values_need_review"
+    ],
+    "reasons_zh": [
+      "多个编号组件值重复，疑似错位"
+    ]
+  },
+  {
+    "component_id": "exp_gain_2",
+    "condition_label": "(2)",
     "denko_id": "extra:112",
     "effect_kind": "exp_gain",
     "name": "ソウル・マウム",
     "reasons": [
-      "labeled_component_count_mismatch"
+      "duplicate_labeled_component_values_need_review"
     ],
     "reasons_zh": [
-      "编号标签与组件不匹配"
+      "多个编号组件值重复，疑似错位"
     ]
   },
   {
-    "component_id": "additional_score_gain_2",
-    "condition_label": "(2)",
-    "denko_id": "extra:115",
-    "effect_kind": "additional_score_gain",
-    "name": "アーイダ・ブルジュマーン",
+    "component_id": "exp_gain_3",
+    "condition_label": "(3)",
+    "denko_id": "extra:112",
+    "effect_kind": "exp_gain",
+    "name": "ソウル・マウム",
     "reasons": [
-      "labeled_component_count_mismatch"
+      "duplicate_labeled_component_values_need_review"
     ],
     "reasons_zh": [
-      "编号标签与组件不匹配"
+      "多个编号组件值重复，疑似错位"
     ]
   },
   {

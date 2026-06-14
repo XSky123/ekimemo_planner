@@ -30,35 +30,31 @@ Use `.agents/batch_review_expert.md` as the role prompt.
 ```json
 [
   {
-    "component_id": "score_gain_1",
-    "condition_label": "(1)",
+    "component_id": "score_gain_2",
+    "condition_label": "(2)",
     "denko_id": "extra:121",
     "effect_kind": "score_gain",
     "name": "コニー・クラークデール",
     "reasons": [
-      "compound_labeled_effect_needs_manual_review",
-      "labeled_component_count_mismatch"
+      "duplicate_labeled_component_values_need_review"
     ],
     "reasons_zh": [
-      "复合编号需要片段复查",
-      "编号标签与组件不匹配"
+      "多个编号组件值重复，疑似错位"
     ]
   },
   {
-    "component_id": "reboot_3",
+    "component_id": "score_gain_3",
     "condition_label": "(3)",
     "denko_id": "extra:121",
-    "effect_kind": "reboot",
+    "effect_kind": "score_gain",
     "name": "コニー・クラークデール",
     "reasons": [
-      "compound_labeled_effect_needs_manual_review",
       "condition_effect_mismatch_needs_review",
-      "labeled_component_count_mismatch"
+      "duplicate_labeled_component_values_need_review"
     ],
     "reasons_zh": [
-      "复合编号需要片段复查",
       "日文效果词与组件类型矛盾",
-      "编号标签与组件不匹配"
+      "多个编号组件值重复，疑似错位"
     ]
   },
   {
@@ -89,19 +85,6 @@ Use `.agents/batch_review_expert.md` as the role prompt.
     "reasons_zh": [
       "复合编号需要片段复查",
       "编号标签与组件不匹配"
-    ]
-  },
-  {
-    "component_id": "component_01_hp_recovery",
-    "condition_label": null,
-    "denko_id": "extra:123",
-    "effect_kind": "hp_recovery",
-    "name": "サブリナ・サンタバーバラ",
-    "reasons": [
-      "component_values_not_parsed"
-    ],
-    "reasons_zh": [
-      "组件值未解析"
     ]
   }
 ]
