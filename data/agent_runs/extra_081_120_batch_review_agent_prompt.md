@@ -30,19 +30,6 @@ Use `.agents/batch_review_expert.md` as the role prompt.
 ```json
 [
   {
-    "component_id": "score_gain",
-    "condition_label": null,
-    "denko_id": "extra:081",
-    "effect_kind": "score_gain",
-    "name": "ロッサ・ローマ",
-    "reasons": [
-      "condition_effect_mismatch_needs_review"
-    ],
-    "reasons_zh": [
-      "日文效果词与组件类型矛盾"
-    ]
-  },
-  {
     "component_id": "def_buff_1",
     "condition_label": "(1)",
     "denko_id": "extra:084",

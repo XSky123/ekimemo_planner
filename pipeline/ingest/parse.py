@@ -1848,6 +1848,20 @@ def has_explicit_target_phrase(text: str) -> bool:
 def has_condition_effect_mismatch(component: dict[str, Any]) -> bool:
     text = component.get("condition_raw") or ""
     effect_kind = component.get("effect_kind") or ""
+    value_text = " ".join(
+        str(value.get("value_raw") or "")
+        for value in (component.get("values_by_denko_level") or {}).values()
+    )
+    if effect_kind in {"atk_buff", "atk_debuff"} and "ATK" in value_text:
+        return False
+    if effect_kind in {"def_buff", "def_debuff"} and "DEF" in value_text:
+        return False
+    if effect_kind in {"score_gain", "additional_score_gain"} and "スコア" in value_text:
+        return False
+    if effect_kind == "damage_reduction" and ("ダメージ軽減" in value_text or "ダメージ" in value_text):
+        return False
+    if effect_kind == "skill_force_end" and "強制終了" in text:
+        return False
     if effect_kind == "activation_probability_boost" and "発動率" in text:
         return False
     if effect_kind == "duration_extension" and "効果時間" in text:
@@ -1864,6 +1878,8 @@ def has_condition_effect_mismatch(component: dict[str, Any]) -> bool:
         return effect_kind != "hp_recovery"
     if ("経験値" in text or "スコア" in text) and effect_kind not in {"exp_gain", "exp_distribution", "score_gain", "additional_score_gain"}:
         return True
+    if effect_kind == "reboot" and "リブート" in text:
+        return False
     if "リブート" in text and "クールタイム" in text:
         return False
     if "リブート" in text and effect_kind != "reboot" and "しなかった" not in text:

@@ -1,48 +1,6 @@
 {
-  "generated_at": "2026-06-14T23:53:43.836463+09:00",
+  "generated_at": "2026-06-14T23:55:21.803649+09:00",
   "issues": [
-    {
-      "batch": "extra_001_040",
-      "category": "blocking_reason",
-      "component_id": "damage_reduction",
-      "denko_id": "extra:007",
-      "detail_zh": "component 仍带阻塞级 review reason。",
-      "evidence": [
-        "condition_effect_mismatch_needs_review"
-      ],
-      "fix_hint_zh": "优先判断是否是共性 parser rule；无法共性化再走语义 patch。",
-      "issue": "component_has_blocking_reason",
-      "name": "仰図まや",
-      "severity": "high"
-    },
-    {
-      "batch": "extra_001_040",
-      "category": "blocking_reason",
-      "component_id": "atk_debuff_1",
-      "denko_id": "extra:008",
-      "detail_zh": "component 仍带阻塞级 review reason。",
-      "evidence": [
-        "condition_effect_mismatch_needs_review"
-      ],
-      "fix_hint_zh": "优先判断是否是共性 parser rule；无法共性化再走语义 patch。",
-      "issue": "component_has_blocking_reason",
-      "name": "阿下喜ケイ",
-      "severity": "high"
-    },
-    {
-      "batch": "extra_001_040",
-      "category": "blocking_reason",
-      "component_id": "def_debuff_1",
-      "denko_id": "extra:008",
-      "detail_zh": "component 仍带阻塞级 review reason。",
-      "evidence": [
-        "condition_effect_mismatch_needs_review"
-      ],
-      "fix_hint_zh": "优先判断是否是共性 parser rule；无法共性化再走语义 patch。",
-      "issue": "component_has_blocking_reason",
-      "name": "阿下喜ケイ",
-      "severity": "high"
-    },
     {
       "batch": "extra_001_040",
       "category": "blocking_reason",
@@ -92,7 +50,6 @@
       "denko_id": "extra:016",
       "detail_zh": "component 仍带阻塞级 review reason。",
       "evidence": [
-        "condition_effect_mismatch_needs_review",
         "labeled_component_count_mismatch"
       ],
       "fix_hint_zh": "优先判断是否是共性 parser rule；无法共性化再走语义 patch。",
@@ -107,7 +64,6 @@
       "denko_id": "extra:016",
       "detail_zh": "component 仍带阻塞级 review reason。",
       "evidence": [
-        "condition_effect_mismatch_needs_review",
         "labeled_component_count_mismatch"
       ],
       "fix_hint_zh": "优先判断是否是共性 parser rule；无法共性化再走语义 patch。",
@@ -276,34 +232,6 @@
     {
       "batch": "extra_041_080",
       "category": "blocking_reason",
-      "component_id": "score_gain",
-      "denko_id": "extra:068",
-      "detail_zh": "component 仍带阻塞级 review reason。",
-      "evidence": [
-        "condition_effect_mismatch_needs_review"
-      ],
-      "fix_hint_zh": "优先判断是否是共性 parser rule；无法共性化再走语义 patch。",
-      "issue": "component_has_blocking_reason",
-      "name": "アダリヤ・ビクトリア",
-      "severity": "high"
-    },
-    {
-      "batch": "extra_041_080",
-      "category": "blocking_reason",
-      "component_id": "def_debuff_1",
-      "denko_id": "extra:073",
-      "detail_zh": "component 仍带阻塞级 review reason。",
-      "evidence": [
-        "condition_effect_mismatch_needs_review"
-      ],
-      "fix_hint_zh": "优先判断是否是共性 parser rule；无法共性化再走语义 patch。",
-      "issue": "component_has_blocking_reason",
-      "name": "アチャラ・メークローン",
-      "severity": "high"
-    },
-    {
-      "batch": "extra_041_080",
-      "category": "blocking_reason",
       "component_id": "reboot_3",
       "denko_id": "extra:073",
       "detail_zh": "component 仍带阻塞级 review reason。",
@@ -313,34 +241,6 @@
       "fix_hint_zh": "优先判断是否是共性 parser rule；无法共性化再走语义 patch。",
       "issue": "component_has_blocking_reason",
       "name": "アチャラ・メークローン",
-      "severity": "high"
-    },
-    {
-      "batch": "extra_041_080",
-      "category": "blocking_reason",
-      "component_id": "skill_force_end_3",
-      "denko_id": "extra:074",
-      "detail_zh": "component 仍带阻塞级 review reason。",
-      "evidence": [
-        "condition_effect_mismatch_needs_review"
-      ],
-      "fix_hint_zh": "优先判断是否是共性 parser rule；无法共性化再走语义 patch。",
-      "issue": "component_has_blocking_reason",
-      "name": "スワイ・サイアム",
-      "severity": "high"
-    },
-    {
-      "batch": "extra_081_120",
-      "category": "blocking_reason",
-      "component_id": "score_gain",
-      "denko_id": "extra:081",
-      "detail_zh": "component 仍带阻塞级 review reason。",
-      "evidence": [
-        "condition_effect_mismatch_needs_review"
-      ],
-      "fix_hint_zh": "优先判断是否是共性 parser rule；无法共性化再走语义 patch。",
-      "issue": "component_has_blocking_reason",
-      "name": "ロッサ・ローマ",
       "severity": "high"
     },
     {
@@ -602,12 +502,12 @@
   ],
   "metrics": {
     "category_counts": {
-      "blocking_reason": 40,
+      "blocking_reason": 33,
       "label": 2
     },
-    "issue_count": 42,
+    "issue_count": 35,
     "severity_counts": {
-      "high": 42
+      "high": 35
     },
     "skill_file_count": 4,
     "skill_record_count": 127

@@ -112,50 +112,11 @@ Use `.agents/batch_review_expert.md` as the role prompt.
     ]
   },
   {
-    "component_id": "score_gain",
-    "condition_label": null,
-    "denko_id": "extra:068",
-    "effect_kind": "score_gain",
-    "name": "アダリヤ・ビクトリア",
-    "reasons": [
-      "condition_effect_mismatch_needs_review"
-    ],
-    "reasons_zh": [
-      "日文效果词与组件类型矛盾"
-    ]
-  },
-  {
-    "component_id": "def_debuff_1",
-    "condition_label": "(1)",
-    "denko_id": "extra:073",
-    "effect_kind": "def_debuff",
-    "name": "アチャラ・メークローン",
-    "reasons": [
-      "condition_effect_mismatch_needs_review"
-    ],
-    "reasons_zh": [
-      "日文效果词与组件类型矛盾"
-    ]
-  },
-  {
     "component_id": "reboot_3",
     "condition_label": "(3)",
     "denko_id": "extra:073",
     "effect_kind": "reboot",
     "name": "アチャラ・メークローン",
-    "reasons": [
-      "condition_effect_mismatch_needs_review"
-    ],
-    "reasons_zh": [
-      "日文效果词与组件类型矛盾"
-    ]
-  },
-  {
-    "component_id": "skill_force_end_3",
-    "condition_label": "(3)",
-    "denko_id": "extra:074",
-    "effect_kind": "skill_force_end",
-    "name": "スワイ・サイアム",
     "reasons": [
       "condition_effect_mismatch_needs_review"
     ],

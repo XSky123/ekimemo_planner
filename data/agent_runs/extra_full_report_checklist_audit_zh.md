@@ -1,18 +1,15 @@
 # extra 全量报告校对审计
 
-- generated_at: `2026-06-14T23:53:43.836463+09:00`
-- issue_count: `42`
+- generated_at: `2026-06-14T23:55:21.803649+09:00`
+- issue_count: `35`
 - skill_records: `127`
-- severity_counts: `{'high': 42}`
-- category_counts: `{'blocking_reason': 40, 'label': 2}`
+- severity_counts: `{'high': 35}`
+- category_counts: `{'blocking_reason': 33, 'label': 2}`
 
 ## 可疑项目
 
 | severity | batch | denko | component | issue | 理由 |
 |---|---|---|---|---|---|
-| high | extra_001_040 | extra:007 仰図まや | damage_reduction | component_has_blocking_reason | component 仍带阻塞级 review reason。 |
-| high | extra_001_040 | extra:008 阿下喜ケイ | atk_debuff_1 | component_has_blocking_reason | component 仍带阻塞级 review reason。 |
-| high | extra_001_040 | extra:008 阿下喜ケイ | def_debuff_1 | component_has_blocking_reason | component 仍带阻塞级 review reason。 |
 | high | extra_001_040 | extra:011 木屋はかり | hp_recovery_1 | component_has_blocking_reason | component 仍带阻塞级 review reason。 |
 | high | extra_001_040 | extra:011 木屋はかり | duration_extension_3 | component_has_blocking_reason | component 仍带阻塞级 review reason。 |
 | high | extra_001_040 | extra:013 花形ひかる | exp_gain_1 | component_has_blocking_reason | component 仍带阻塞级 review reason。 |
@@ -29,11 +26,7 @@
 | high | extra_041_080 | extra:062 笛吹エイル | damage_reduction_2 | component_has_blocking_reason | component 仍带阻塞级 review reason。 |
 | high | extra_041_080 | extra:062 笛吹エイル | damage_reduction_3 | component_has_blocking_reason | component 仍带阻塞级 review reason。 |
 | high | extra_041_080 | extra:067 エドウィナ・プレトリア | atk_buff_1 | component_has_blocking_reason | component 仍带阻塞级 review reason。 |
-| high | extra_041_080 | extra:068 アダリヤ・ビクトリア | score_gain | component_has_blocking_reason | component 仍带阻塞级 review reason。 |
-| high | extra_041_080 | extra:073 アチャラ・メークローン | def_debuff_1 | component_has_blocking_reason | component 仍带阻塞级 review reason。 |
 | high | extra_041_080 | extra:073 アチャラ・メークローン | reboot_3 | component_has_blocking_reason | component 仍带阻塞级 review reason。 |
-| high | extra_041_080 | extra:074 スワイ・サイアム | skill_force_end_3 | component_has_blocking_reason | component 仍带阻塞级 review reason。 |
-| high | extra_081_120 | extra:081 ロッサ・ローマ | score_gain | component_has_blocking_reason | component 仍带阻塞级 review reason。 |
 | high | extra_081_120 | extra:084 ネラ・クライストチャーチ | def_buff_1 | component_has_blocking_reason | component 仍带阻塞级 review reason。 |
 | high | extra_081_120 | extra:084 ネラ・クライストチャーチ | def_buff_2 | component_has_blocking_reason | component 仍带阻塞级 review reason。 |
 | high | extra_081_120 | extra:090 キャシー・ナイアガラ | score_gain_1 | component_has_blocking_reason | component 仍带阻塞级 review reason。 |

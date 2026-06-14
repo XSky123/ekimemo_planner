@@ -1,19 +1,6 @@
 {
   "blocking_items": [
     {
-      "component_id": "score_gain",
-      "condition_label": null,
-      "denko_id": "extra:081",
-      "effect_kind": "score_gain",
-      "name": "ロッサ・ローマ",
-      "reasons": [
-        "condition_effect_mismatch_needs_review"
-      ],
-      "reasons_zh": [
-        "日文效果词与组件类型矛盾"
-      ]
-    },
-    {
       "component_id": "def_buff_1",
       "condition_label": "(1)",
       "denko_id": "extra:084",
@@ -183,12 +170,11 @@
       ]
     }
   ],
-  "generated_at": "2026-06-14T23:53:29.141632+09:00",
+  "generated_at": "2026-06-14T23:55:21.550117+09:00",
   "metrics": {
-    "blocking_item_count": 14,
+    "blocking_item_count": 13,
     "component_review_reason_counts": {
       "component_semantics_need_review": 45,
-      "condition_effect_mismatch_needs_review": 1,
       "condition_only_component_needs_review": 16,
       "duplicate_labeled_component_values_need_review": 8,
       "labeled_component_count_mismatch": 5

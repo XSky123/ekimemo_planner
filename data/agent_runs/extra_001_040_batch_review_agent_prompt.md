@@ -30,45 +30,6 @@ Use `.agents/batch_review_expert.md` as the role prompt.
 ```json
 [
   {
-    "component_id": "damage_reduction",
-    "condition_label": null,
-    "denko_id": "extra:007",
-    "effect_kind": "damage_reduction",
-    "name": "仰図まや",
-    "reasons": [
-      "condition_effect_mismatch_needs_review"
-    ],
-    "reasons_zh": [
-      "日文效果词与组件类型矛盾"
-    ]
-  },
-  {
-    "component_id": "atk_debuff_1",
-    "condition_label": "(1)",
-    "denko_id": "extra:008",
-    "effect_kind": "atk_debuff",
-    "name": "阿下喜ケイ",
-    "reasons": [
-      "condition_effect_mismatch_needs_review"
-    ],
-    "reasons_zh": [
-      "日文效果词与组件类型矛盾"
-    ]
-  },
-  {
-    "component_id": "def_debuff_1",
-    "condition_label": "(1)",
-    "denko_id": "extra:008",
-    "effect_kind": "def_debuff",
-    "name": "阿下喜ケイ",
-    "reasons": [
-      "condition_effect_mismatch_needs_review"
-    ],
-    "reasons_zh": [
-      "日文效果词与组件类型矛盾"
-    ]
-  },
-  {
     "component_id": "hp_recovery_1",
     "condition_label": "(1)",
     "denko_id": "extra:011",
@@ -114,11 +75,9 @@ Use `.agents/batch_review_expert.md` as the role prompt.
     "effect_kind": "atk_buff",
     "name": "天台ヤコ",
     "reasons": [
-      "condition_effect_mismatch_needs_review",
       "labeled_component_count_mismatch"
     ],
     "reasons_zh": [
-      "日文效果词与组件类型矛盾",
       "编号标签与组件不匹配"
     ]
   },
@@ -129,11 +88,9 @@ Use `.agents/batch_review_expert.md` as the role prompt.
     "effect_kind": "def_buff",
     "name": "天台ヤコ",
     "reasons": [
-      "condition_effect_mismatch_needs_review",
       "labeled_component_count_mismatch"
     ],
     "reasons_zh": [
-      "日文效果词与组件类型矛盾",
       "编号标签与组件不匹配"
     ]
   },
