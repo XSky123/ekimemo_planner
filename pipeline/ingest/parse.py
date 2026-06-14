@@ -885,6 +885,23 @@ def parse_level_components(common_text: str, row_fact: dict[str, Any]) -> list[d
                 effect_role=effect_role_from_label(label, common_text),
             )
         )
+    for hp_match in re.finditer(rf"(?:{label_pattern}\s*)?(?:HP\s*({number})\s*回復|追加\s*({number})\s*回復)", effect_text):
+        label = f"({hp_match.group(1)})" if hp_match.group(1) else None
+        value_number = hp_match.group(2) or hp_match.group(3)
+        value_raw = normalize_numeric_text(
+            f"{'追加' if hp_match.group(3) else ''}HP回復 {value_number}"
+        )
+        components.append(
+            component_value(
+                "hp_recovery",
+                row_fact,
+                value_raw,
+                parse_signed_number(value_number),
+                "flat_hp",
+                condition_label=label,
+                effect_role=effect_role_from_label(label, common_text),
+            )
+        )
 
     radar_match = re.search(r"レーダー(?:最大検知数|範囲)\s*\+?\s*(\d+)", text)
     if radar_match:
@@ -1076,6 +1093,23 @@ def parse_level_components(common_text: str, row_fact: dict[str, Any]) -> list[d
                     effect_role=effect_role_from_label(label, common_text),
                 ),
             )
+
+    multiplier_pattern = re.compile(rf"(?:{label_pattern}\s*)?効果量\s*({number})\s*倍")
+    for multiplier_match in multiplier_pattern.finditer(effect_text):
+        label = f"({multiplier_match.group(1)})" if multiplier_match.group(1) else None
+        value_raw = normalize_numeric_text(f"効果量 {multiplier_match.group(2)}倍")
+        append_component_once(
+            components,
+            component_value(
+                "effect_multiplier",
+                row_fact,
+                value_raw,
+                parse_signed_number(multiplier_match.group(2)),
+                "multiplier",
+                condition_label=label,
+                effect_role=effect_role_from_label(label, common_text),
+            ),
+        )
 
     score_value = rf"(?:[+＋]?\d+|x)(?:\s*[～〜~\-]\s*(?:[+＋]?\d+|x))?"
     score_pattern = re.compile(rf"(?:{label_pattern}\s*)?(?:合計ダメージが\s*(\d+)\s*→\s*)?スコア獲得\s*({score_value})(?:/駅)?")
@@ -1634,6 +1668,8 @@ def add_condition_only_components(
         }
         enrich_component_context_fields(component)
         for denko_level, row_fact in values_by_denko_level.items():
+            if label_declared_vu_only(component, condition_text) and denko_level not in VU_LEVELS:
+                continue
             component["values_by_denko_level"][denko_level] = {
                 "value_raw": effect_kind,
                 "value_numeric": None,
@@ -1662,6 +1698,8 @@ def drop_unlabeled_duplicates_when_labeled_exists(components: dict[str, dict[str
 
 
 def condition_only_effect_kind(segment: str) -> str | None:
+    if "HPを0" in segment:
+        return "force_hp_zero"
     if "HPを回復" in segment or "HP回復" in segment:
         return "hp_recovery"
     if "リンクを継続" in segment or "リンク継続" in segment:
@@ -1670,20 +1708,30 @@ def condition_only_effect_kind(segment: str) -> str | None:
         return "skill_force_end"
     if "ダメージの最大値" in segment or "受けるダメージの最大値" in segment:
         return "damage_cap"
+    if "ダメージを無効" in segment:
+        return "damage_nullification"
+    if "ダメージ増加効果を減少" in segment:
+        return "damage_reduction"
+    if ("もう1回" in segment or "もう1度" in segment) and "アクセス" in segment:
+        return "extra_access"
     if "スコア獲得" in segment or "獲得スコア" in segment:
+        return "score_gain"
+    if "スコア" in segment and ("増加" in segment or "変動" in segment):
         return "score_gain"
     if "マイル" in segment:
         return "mile_gain"
     if "経験値付与" in segment or "経験値を付与" in segment:
         return "exp_gain"
-    if "DEF増加" in segment or "DEF上昇" in segment:
+    if "DEF増加" in segment or "DEF上昇" in segment or re.search(r"DEF\s*[+＋]\s*\d", segment):
         return "def_buff"
-    if "DEF減少" in segment:
+    if "DEF減少" in segment or re.search(r"DEF\s*[-－]\s*\d", segment):
         return "def_debuff"
-    if "ATK増加" in segment or "ATK上昇" in segment:
+    if "ATK増加" in segment or "ATK上昇" in segment or re.search(r"ATK\s*[+＋]\s*\d", segment):
         return "atk_buff"
-    if "ATK減少" in segment:
+    if "ATK減少" in segment or re.search(r"ATK\s*[-－]\s*\d", segment):
         return "atk_debuff"
+    if "効果量" in segment and "倍" in segment:
+        return "effect_multiplier"
     if "スキル無効化" in segment or "スキルを無効化" in segment:
         return "skill_disable"
     if "効果時間延長" in segment or ("効果時間" in segment and "延長" in segment):
@@ -1722,6 +1770,10 @@ def infer_condition_label_for_effect(text: str, effect_kind: str) -> str | None:
         "skill_disable": "スキル無効化",
         "skill_force_end": "強制終了",
         "mile_gain": "マイル",
+        "extra_access": "アクセス",
+        "force_hp_zero": "HPを0",
+        "damage_nullification": "ダメージを無効",
+        "effect_multiplier": "効果量",
     }
     keyword = keyword_by_kind.get(effect_kind)
     if not keyword:
@@ -1876,6 +1928,8 @@ def has_condition_effect_mismatch(component: dict[str, Any]) -> bool:
         "HP回復" in text or "HPを回復" in text
     ):
         return effect_kind != "hp_recovery"
+    if effect_kind == "effect_multiplier" and "効果量" in text:
+        return False
     if ("経験値" in text or "スコア" in text) and effect_kind not in {"exp_gain", "exp_distribution", "score_gain", "additional_score_gain"}:
         return True
     if effect_kind == "reboot" and "リブート" in text:
@@ -1909,6 +1963,8 @@ def component_duplicate_signatures(components: list[dict[str, Any]]) -> set[str]
         values = component.get("values_by_denko_level") or {}
         signature = (
             component.get("effect_kind"),
+            component.get("condition_label"),
+            component.get("condition_raw"),
             tuple(
                 sorted(
                     (
@@ -2012,7 +2068,7 @@ def skill_disable_value_raw(text: str) -> str:
 
 
 def infer_target_scope(text: str, effect_kind: str) -> list[str]:
-    if "相手" in text and effect_kind in {"exp_gain", "hp_recovery", "def_debuff", "atk_debuff", "fixed_damage", "additional_fixed_damage", "damage_reduction"}:
+    if "相手" in text and effect_kind in {"exp_gain", "hp_recovery", "def_debuff", "atk_debuff", "fixed_damage", "additional_fixed_damage", "damage_reduction", "force_hp_zero"}:
         return ["opponent_denko"]
     if any(phrase in text for phrase in ["自分以外", "自身以外", "自身を除く"]) and effect_kind in {
         "atk_buff",
@@ -2307,6 +2363,13 @@ def component_summary_zh(index: int, component: dict[str, Any]) -> str:
         "damage_reduction": "伤害减轻",
         "memory_access_station_count": "思い出しアクセス駅数",
         "memory_access_time": "思い出しアクセス时间",
+        "effect_multiplier": "効果量倍率",
+        "force_hp_zero": "HPを0にする",
+        "damage_nullification": "ダメージ無効化",
+        "link_continue": "リンク継続",
+        "skill_force_end": "技能强制结束",
+        "damage_cap": "伤害上限",
+        "mile_gain": "マイル获得",
     }
     target_labels = {
         "team_all": "编成内全员",

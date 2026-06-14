@@ -28,66 +28,7 @@ Use `.agents/batch_review_expert.md` as the role prompt.
 优先确认这些是否是 parser 共性问题、manual fill、还是报告误报：
 
 ```json
-[
-  {
-    "component_id": "score_gain_2",
-    "condition_label": "(2)",
-    "denko_id": "extra:121",
-    "effect_kind": "score_gain",
-    "name": "コニー・クラークデール",
-    "reasons": [
-      "duplicate_labeled_component_values_need_review"
-    ],
-    "reasons_zh": [
-      "多个编号组件值重复，疑似错位"
-    ]
-  },
-  {
-    "component_id": "score_gain_3",
-    "condition_label": "(3)",
-    "denko_id": "extra:121",
-    "effect_kind": "score_gain",
-    "name": "コニー・クラークデール",
-    "reasons": [
-      "condition_effect_mismatch_needs_review",
-      "duplicate_labeled_component_values_need_review"
-    ],
-    "reasons_zh": [
-      "日文效果词与组件类型矛盾",
-      "多个编号组件值重复，疑似错位"
-    ]
-  },
-  {
-    "component_id": "hp_recovery_2",
-    "condition_label": "(2)",
-    "denko_id": "extra:122",
-    "effect_kind": "hp_recovery",
-    "name": "マリリン・マクリーン",
-    "reasons": [
-      "compound_labeled_effect_needs_manual_review",
-      "labeled_component_count_mismatch"
-    ],
-    "reasons_zh": [
-      "复合编号需要片段复查",
-      "编号标签与组件不匹配"
-    ]
-  },
-  {
-    "component_id": "reboot_4",
-    "condition_label": "(4)",
-    "denko_id": "extra:122",
-    "effect_kind": "reboot",
-    "name": "マリリン・マクリーン",
-    "reasons": [
-      "compound_labeled_effect_needs_manual_review",
-      "labeled_component_count_mismatch"
-    ],
-    "reasons_zh": [
-      "复合编号需要片段复查",
-      "编号标签与组件不匹配"
-    ]
-  }
-]
+[]
 ```
 
 ## Required Output

@@ -1,78 +1,15 @@
 {
-  "blocking_items": [
-    {
-      "component_id": "score_gain_2",
-      "condition_label": "(2)",
-      "denko_id": "extra:121",
-      "effect_kind": "score_gain",
-      "name": "コニー・クラークデール",
-      "reasons": [
-        "duplicate_labeled_component_values_need_review"
-      ],
-      "reasons_zh": [
-        "多个编号组件值重复，疑似错位"
-      ]
-    },
-    {
-      "component_id": "score_gain_3",
-      "condition_label": "(3)",
-      "denko_id": "extra:121",
-      "effect_kind": "score_gain",
-      "name": "コニー・クラークデール",
-      "reasons": [
-        "condition_effect_mismatch_needs_review",
-        "duplicate_labeled_component_values_need_review"
-      ],
-      "reasons_zh": [
-        "日文效果词与组件类型矛盾",
-        "多个编号组件值重复，疑似错位"
-      ]
-    },
-    {
-      "component_id": "hp_recovery_2",
-      "condition_label": "(2)",
-      "denko_id": "extra:122",
-      "effect_kind": "hp_recovery",
-      "name": "マリリン・マクリーン",
-      "reasons": [
-        "compound_labeled_effect_needs_manual_review",
-        "labeled_component_count_mismatch"
-      ],
-      "reasons_zh": [
-        "复合编号需要片段复查",
-        "编号标签与组件不匹配"
-      ]
-    },
-    {
-      "component_id": "reboot_4",
-      "condition_label": "(4)",
-      "denko_id": "extra:122",
-      "effect_kind": "reboot",
-      "name": "マリリン・マクリーン",
-      "reasons": [
-        "compound_labeled_effect_needs_manual_review",
-        "labeled_component_count_mismatch"
-      ],
-      "reasons_zh": [
-        "复合编号需要片段复查",
-        "编号标签与组件不匹配"
-      ]
-    }
-  ],
-  "generated_at": "2026-06-14T23:55:21.610725+09:00",
+  "blocking_items": [],
+  "generated_at": "2026-06-15T00:02:47.411891+09:00",
   "metrics": {
-    "blocking_item_count": 4,
+    "blocking_item_count": 0,
     "component_review_reason_counts": {
-      "component_semantics_need_review": 4,
-      "compound_labeled_effect_needs_manual_review": 2,
-      "condition_effect_mismatch_needs_review": 1,
-      "condition_only_component_needs_review": 3,
-      "duplicate_labeled_component_values_need_review": 2,
-      "labeled_component_count_mismatch": 2
+      "component_semantics_need_review": 5,
+      "condition_only_component_needs_review": 5
     },
     "skill_records": 7
   },
-  "next_action": "spawn_batch_review_expert",
+  "next_action": "complete",
   "parser_version": "detail_html_table_matrix.v8",
   "paths": {
     "denko_facts": "data/records/extra_121_127_denko_facts.jsonl",

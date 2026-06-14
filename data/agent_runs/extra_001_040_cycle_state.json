@@ -1,138 +1,16 @@
 {
-  "blocking_items": [
-    {
-      "component_id": "hp_recovery_1",
-      "condition_label": "(1)",
-      "denko_id": "extra:011",
-      "effect_kind": "hp_recovery",
-      "name": "木屋はかり",
-      "reasons": [
-        "labeled_component_count_mismatch"
-      ],
-      "reasons_zh": [
-        "编号标签与组件不匹配"
-      ]
-    },
-    {
-      "component_id": "duration_extension_3",
-      "condition_label": "(3)",
-      "denko_id": "extra:011",
-      "effect_kind": "duration_extension",
-      "name": "木屋はかり",
-      "reasons": [
-        "labeled_component_count_mismatch"
-      ],
-      "reasons_zh": [
-        "编号标签与组件不匹配"
-      ]
-    },
-    {
-      "component_id": "exp_gain_1",
-      "condition_label": "(1)",
-      "denko_id": "extra:013",
-      "effect_kind": "exp_gain",
-      "name": "花形ひかる",
-      "reasons": [
-        "labeled_component_count_mismatch"
-      ],
-      "reasons_zh": [
-        "编号标签与组件不匹配"
-      ]
-    },
-    {
-      "component_id": "atk_buff_1",
-      "condition_label": "(1)",
-      "denko_id": "extra:016",
-      "effect_kind": "atk_buff",
-      "name": "天台ヤコ",
-      "reasons": [
-        "labeled_component_count_mismatch"
-      ],
-      "reasons_zh": [
-        "编号标签与组件不匹配"
-      ]
-    },
-    {
-      "component_id": "def_buff_1",
-      "condition_label": "(1)",
-      "denko_id": "extra:016",
-      "effect_kind": "def_buff",
-      "name": "天台ヤコ",
-      "reasons": [
-        "labeled_component_count_mismatch"
-      ],
-      "reasons_zh": [
-        "编号标签与组件不匹配"
-      ]
-    },
-    {
-      "component_id": "score_gain",
-      "condition_label": null,
-      "denko_id": "extra:016",
-      "effect_kind": "score_gain",
-      "name": "天台ヤコ",
-      "reasons": [
-        "labeled_component_count_mismatch"
-      ],
-      "reasons_zh": [
-        "编号标签与组件不匹配"
-      ]
-    },
-    {
-      "component_id": "extra_access",
-      "condition_label": null,
-      "denko_id": "extra:020",
-      "effect_kind": "extra_access",
-      "name": "エステル・サラ・パンクラス",
-      "reasons": [
-        "compound_labeled_effect_needs_manual_review",
-        "labeled_component_count_mismatch"
-      ],
-      "reasons_zh": [
-        "复合编号需要片段复查",
-        "编号标签与组件不匹配"
-      ]
-    },
-    {
-      "component_id": "atk_buff_1",
-      "condition_label": "(1)",
-      "denko_id": "extra:021",
-      "effect_kind": "atk_buff",
-      "name": "アンナ・チェルトナム",
-      "reasons": [
-        "labeled_component_count_mismatch"
-      ],
-      "reasons_zh": [
-        "编号标签与组件不匹配"
-      ]
-    },
-    {
-      "component_id": "atk_buff_1",
-      "condition_label": "(1)",
-      "denko_id": "extra:028",
-      "effect_kind": "atk_buff",
-      "name": "ロン・リンファ",
-      "reasons": [
-        "labeled_component_count_mismatch"
-      ],
-      "reasons_zh": [
-        "编号标签与组件不匹配"
-      ]
-    }
-  ],
-  "generated_at": "2026-06-14T23:55:21.395290+09:00",
+  "blocking_items": [],
+  "generated_at": "2026-06-15T00:02:47.171789+09:00",
   "metrics": {
-    "blocking_item_count": 9,
+    "blocking_item_count": 0,
     "component_review_reason_counts": {
-      "component_semantics_need_review": 52,
-      "compound_labeled_effect_needs_manual_review": 1,
-      "condition_only_component_needs_review": 6,
-      "labeled_component_count_mismatch": 9,
+      "component_semantics_need_review": 55,
+      "condition_only_component_needs_review": 7,
       "vu_probability_modifier": 1
     },
     "skill_records": 40
   },
-  "next_action": "spawn_batch_review_expert",
+  "next_action": "complete",
   "parser_version": "detail_html_table_matrix.v8",
   "paths": {
     "denko_facts": "data/records/extra_001_040_denko_facts.jsonl",

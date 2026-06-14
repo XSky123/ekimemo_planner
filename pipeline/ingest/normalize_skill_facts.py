@@ -118,6 +118,44 @@ def value_from_row_fact(component: dict[str, Any], row_fact: dict[str, Any]) -> 
     return value
 
 
+def labeled_effect_value(component: dict[str, Any], row_fact: dict[str, Any]) -> str | None:
+    label = component.get("condition_label")
+    if not label:
+        return None
+    label_number = str(label).strip("()")
+    raw_row = row_fact.get("raw_row") or {}
+    for key, cell in raw_row.items():
+        key_labels = re.findall(r"[\(\uff08](\d+)[\)\uff09]", str(key))
+        if len(key_labels) == 1 and key_labels[0] == label_number and cell:
+            return str(cell).strip()
+    effect = row_fact.get("effect")
+    if isinstance(effect, str):
+        segment = base.extract_labeled_condition_text(effect, f"({label_number})")
+        if segment and segment != effect:
+            return segment.strip()
+    return None
+
+
+def normalize_condition_only_value(component: dict[str, Any], value: dict[str, Any]) -> bool:
+    effect_kind = component.get("effect_kind")
+    raw = value.get("value_raw")
+    row_fact = value.get("raw_row")
+    if raw != effect_kind or not isinstance(row_fact, dict):
+        return False
+    source_row = {
+        "effect": row_fact.get("効果") or " ".join(str(v) for k, v in row_fact.items() if "効果" in str(k) and v),
+        "raw_row": row_fact,
+    }
+    labeled = labeled_effect_value(component, source_row)
+    if not labeled:
+        return False
+    value["value_raw"] = labeled
+    value["value_numeric"] = base.parse_signed_number(labeled)
+    value["unit"] = infer_unit(str(effect_kind or ""), labeled)
+    value.update(base.range_value_fields(labeled))
+    return True
+
+
 def normalize_fallback_component(component: dict[str, Any], row: dict[str, Any]) -> int:
     if not str(component.get("component_id") or "").startswith("component_"):
         return 0
@@ -152,6 +190,38 @@ def normalize_fallback_component_id(component: dict[str, Any], used_ids: set[str
     return True
 
 
+def refresh_component_review_reasons(row: dict[str, Any]) -> int:
+    components = row.get("skill_components") or []
+    condition_text = " ".join(str(component.get("condition_raw") or "") for component in components)
+    expected_labels = {label.strip("()") for label, _segment in base.labeled_condition_segments(condition_text)}
+    emitted_labels = {
+        str(component.get("condition_label")).strip("()")
+        for component in components
+        if component.get("condition_label")
+    }
+    duplicate_ids = base.component_duplicate_signatures(components)
+    changed = 0
+    for component in components:
+        before = list(component.get("review_reasons") or [])
+        after = list(before)
+        component_id = component.get("component_id") or ""
+        if expected_labels and expected_labels.issubset(emitted_labels):
+            after = [reason for reason in after if reason != "labeled_component_count_mismatch"]
+        if component_id not in duplicate_ids:
+            after = [reason for reason in after if reason != "duplicate_labeled_component_values_need_review"]
+        if not base.has_condition_effect_mismatch(component):
+            after = [reason for reason in after if reason != "condition_effect_mismatch_needs_review"]
+        if not (
+            base.label_declared_vu_only(component, condition_text)
+            and not base.component_has_only_vu_values(component)
+        ):
+            after = [reason for reason in after if reason != "vu_label_level_mismatch_needs_review"]
+        if after != before:
+            component["review_reasons"] = after
+            changed += 1
+    return changed
+
+
 def normalize_skill_rows(rows: list[dict[str, Any]]) -> int:
     changed = 0
     for row in rows:
@@ -166,6 +236,7 @@ def normalize_skill_rows(rows: list[dict[str, Any]]) -> int:
                 label = inferred_probability_label_for_value(component, value)
                 if isinstance(probability, dict) and label:
                     value["probability"] = base.probability_for_label(probability, label)
+                normalize_condition_only_value(component, value)
                 normalize_value_raw(component, value)
                 after = json.dumps(value, ensure_ascii=False, sort_keys=True)
                 if before != after:
@@ -176,6 +247,7 @@ def normalize_skill_rows(rows: list[dict[str, Any]]) -> int:
             (row.get("values_by_denko_level") or {}).get("50"),
             row.get("values_by_denko_level"),
         )
+        changed += refresh_component_review_reasons(row)
     return changed
 
 
