@@ -1,0 +1,1261 @@
+{
+  "generated_at": "2026-06-14T23:44:53.973912+09:00",
+  "issues": [
+    {
+      "batch": "extra_001_040",
+      "category": "blocking_reason",
+      "component_id": "damage_reduction",
+      "denko_id": "extra:007",
+      "detail_zh": "component 仍带阻塞级 review reason。",
+      "evidence": [
+        "condition_effect_mismatch_needs_review"
+      ],
+      "fix_hint_zh": "优先判断是否是共性 parser rule；无法共性化再走语义 patch。",
+      "issue": "component_has_blocking_reason",
+      "name": "仰図まや",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_001_040",
+      "category": "blocking_reason",
+      "component_id": "atk_debuff_1",
+      "denko_id": "extra:008",
+      "detail_zh": "component 仍带阻塞级 review reason。",
+      "evidence": [
+        "condition_effect_mismatch_needs_review"
+      ],
+      "fix_hint_zh": "优先判断是否是共性 parser rule；无法共性化再走语义 patch。",
+      "issue": "component_has_blocking_reason",
+      "name": "阿下喜ケイ",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_001_040",
+      "category": "blocking_reason",
+      "component_id": "def_debuff_1",
+      "denko_id": "extra:008",
+      "detail_zh": "component 仍带阻塞级 review reason。",
+      "evidence": [
+        "condition_effect_mismatch_needs_review"
+      ],
+      "fix_hint_zh": "优先判断是否是共性 parser rule；无法共性化再走语义 patch。",
+      "issue": "component_has_blocking_reason",
+      "name": "阿下喜ケイ",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_001_040",
+      "category": "label",
+      "component_id": null,
+      "denko_id": "extra:011",
+      "detail_zh": "第一个带编号 component 不是 (1)，疑似主效果漏抓或排序错位。",
+      "evidence": [
+        "(3)"
+      ],
+      "fix_hint_zh": "复查条件表，补齐 (1) 或重排 component。",
+      "issue": "first_label_not_1",
+      "name": "木屋はかり",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_001_040",
+      "category": "summary",
+      "component_id": null,
+      "denko_id": "extra:011",
+      "detail_zh": "summary_zh 里仍混有多个编号效果/概率，可能没有复用 component 级拆分结果。",
+      "evidence": "技能分量1：duration_extension / Lv50，duration_extension，発動率 100%，(1)(2)30分，CD 4時間30分",
+      "fix_hint_zh": "重建 summary_zh，并按 component label 过滤概率。",
+      "issue": "summary_mixed_labeled_probability",
+      "name": "木屋はかり",
+      "severity": "medium"
+    },
+    {
+      "batch": "extra_001_040",
+      "category": "blocking_reason",
+      "component_id": "duration_extension_3",
+      "denko_id": "extra:011",
+      "detail_zh": "component 仍带阻塞级 review reason。",
+      "evidence": [
+        "labeled_component_count_mismatch"
+      ],
+      "fix_hint_zh": "优先判断是否是共性 parser rule；无法共性化再走语义 patch。",
+      "issue": "component_has_blocking_reason",
+      "name": "木屋はかり",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_001_040",
+      "category": "blocking_reason",
+      "component_id": "exp_gain_1",
+      "denko_id": "extra:013",
+      "detail_zh": "component 仍带阻塞级 review reason。",
+      "evidence": [
+        "labeled_component_count_mismatch"
+      ],
+      "fix_hint_zh": "优先判断是否是共性 parser rule；无法共性化再走语义 patch。",
+      "issue": "component_has_blocking_reason",
+      "name": "花形ひかる",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_001_040",
+      "category": "label",
+      "component_id": null,
+      "denko_id": "extra:014",
+      "detail_zh": "第一个带编号 component 不是 (1)，疑似主效果漏抓或排序错位。",
+      "evidence": [
+        "(2)"
+      ],
+      "fix_hint_zh": "复查条件表，补齐 (1) 或重排 component。",
+      "issue": "first_label_not_1",
+      "name": "汐留いちご",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_001_040",
+      "category": "blocking_reason",
+      "component_id": "activation_probability_boost",
+      "denko_id": "extra:014",
+      "detail_zh": "component 仍带阻塞级 review reason。",
+      "evidence": [
+        "labeled_component_count_mismatch"
+      ],
+      "fix_hint_zh": "优先判断是否是共性 parser rule；无法共性化再走语义 patch。",
+      "issue": "component_has_blocking_reason",
+      "name": "汐留いちご",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_001_040",
+      "category": "summary",
+      "component_id": null,
+      "denko_id": "extra:016",
+      "detail_zh": "summary_zh 里仍混有多个编号效果/概率，可能没有复用 component 级拆分结果。",
+      "evidence": "技能分量1：ATK增加 / 对象：自身 / Lv50，ATK +21%，発動率 100%；技能分量2：DEF增加 / 对象：自身 / Lv50，DEF +21%，発動率 100%；技能分量3：score_gain / 对象：自身 / Lv50，スコア獲得 350，発動率 (1)100% (2)21%",
+      "fix_hint_zh": "重建 summary_zh，并按 component label 过滤概率。",
+      "issue": "summary_mixed_labeled_probability",
+      "name": "天台ヤコ",
+      "severity": "medium"
+    },
+    {
+      "batch": "extra_001_040",
+      "category": "blocking_reason",
+      "component_id": "atk_buff_1",
+      "denko_id": "extra:016",
+      "detail_zh": "component 仍带阻塞级 review reason。",
+      "evidence": [
+        "condition_effect_mismatch_needs_review",
+        "labeled_component_count_mismatch"
+      ],
+      "fix_hint_zh": "优先判断是否是共性 parser rule；无法共性化再走语义 patch。",
+      "issue": "component_has_blocking_reason",
+      "name": "天台ヤコ",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_001_040",
+      "category": "blocking_reason",
+      "component_id": "def_buff_1",
+      "denko_id": "extra:016",
+      "detail_zh": "component 仍带阻塞级 review reason。",
+      "evidence": [
+        "condition_effect_mismatch_needs_review",
+        "labeled_component_count_mismatch"
+      ],
+      "fix_hint_zh": "优先判断是否是共性 parser rule；无法共性化再走语义 patch。",
+      "issue": "component_has_blocking_reason",
+      "name": "天台ヤコ",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_001_040",
+      "category": "probability",
+      "component_id": "score_gain",
+      "denko_id": "extra:016",
+      "detail_zh": "probability 中仍混有多个 label。",
+      "evidence": {
+        "level": "15",
+        "probability": {
+          "発動率": "(1)100% (2)15%"
+        }
+      },
+      "fix_hint_zh": "按 component label 拆成独立 activation_probability。",
+      "issue": "mixed_labeled_probability",
+      "name": "天台ヤコ",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_001_040",
+      "category": "probability",
+      "component_id": "score_gain",
+      "denko_id": "extra:016",
+      "detail_zh": "probability 中仍混有多个 label。",
+      "evidence": {
+        "level": "30",
+        "probability": {
+          "発動率": "(1)100% (2)18%"
+        }
+      },
+      "fix_hint_zh": "按 component label 拆成独立 activation_probability。",
+      "issue": "mixed_labeled_probability",
+      "name": "天台ヤコ",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_001_040",
+      "category": "probability",
+      "component_id": "score_gain",
+      "denko_id": "extra:016",
+      "detail_zh": "probability 中仍混有多个 label。",
+      "evidence": {
+        "level": "5",
+        "probability": {
+          "発動率": "(1)100% (2)12%"
+        }
+      },
+      "fix_hint_zh": "按 component label 拆成独立 activation_probability。",
+      "issue": "mixed_labeled_probability",
+      "name": "天台ヤコ",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_001_040",
+      "category": "probability",
+      "component_id": "score_gain",
+      "denko_id": "extra:016",
+      "detail_zh": "probability 中仍混有多个 label。",
+      "evidence": {
+        "level": "50",
+        "probability": {
+          "発動率": "(1)100% (2)21%"
+        }
+      },
+      "fix_hint_zh": "按 component label 拆成独立 activation_probability。",
+      "issue": "mixed_labeled_probability",
+      "name": "天台ヤコ",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_001_040",
+      "category": "probability",
+      "component_id": "score_gain",
+      "denko_id": "extra:016",
+      "detail_zh": "probability 中仍混有多个 label。",
+      "evidence": {
+        "level": "60",
+        "probability": {
+          "発動率": "(1)100% (2)24%"
+        }
+      },
+      "fix_hint_zh": "按 component label 拆成独立 activation_probability。",
+      "issue": "mixed_labeled_probability",
+      "name": "天台ヤコ",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_001_040",
+      "category": "probability",
+      "component_id": "score_gain",
+      "denko_id": "extra:016",
+      "detail_zh": "probability 中仍混有多个 label。",
+      "evidence": {
+        "level": "70",
+        "probability": {
+          "発動率": "(1)100% (2)27%"
+        }
+      },
+      "fix_hint_zh": "按 component label 拆成独立 activation_probability。",
+      "issue": "mixed_labeled_probability",
+      "name": "天台ヤコ",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_001_040",
+      "category": "probability",
+      "component_id": "score_gain",
+      "denko_id": "extra:016",
+      "detail_zh": "probability 中仍混有多个 label。",
+      "evidence": {
+        "level": "80",
+        "probability": {
+          "発動率": "(1)100% (2)30%"
+        }
+      },
+      "fix_hint_zh": "按 component label 拆成独立 activation_probability。",
+      "issue": "mixed_labeled_probability",
+      "name": "天台ヤコ",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_001_040",
+      "category": "blocking_reason",
+      "component_id": "score_gain",
+      "denko_id": "extra:016",
+      "detail_zh": "component 仍带阻塞级 review reason。",
+      "evidence": [
+        "labeled_component_count_mismatch"
+      ],
+      "fix_hint_zh": "优先判断是否是共性 parser rule；无法共性化再走语义 patch。",
+      "issue": "component_has_blocking_reason",
+      "name": "天台ヤコ",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_001_040",
+      "category": "blocking_reason",
+      "component_id": "extra_access",
+      "denko_id": "extra:020",
+      "detail_zh": "component 仍带阻塞级 review reason。",
+      "evidence": [
+        "compound_labeled_effect_needs_manual_review",
+        "labeled_component_count_mismatch"
+      ],
+      "fix_hint_zh": "优先判断是否是共性 parser rule；无法共性化再走语义 patch。",
+      "issue": "component_has_blocking_reason",
+      "name": "エステル・サラ・パンクラス",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_001_040",
+      "category": "blocking_reason",
+      "component_id": "atk_buff_1",
+      "denko_id": "extra:021",
+      "detail_zh": "component 仍带阻塞级 review reason。",
+      "evidence": [
+        "labeled_component_count_mismatch"
+      ],
+      "fix_hint_zh": "优先判断是否是共性 parser rule；无法共性化再走语义 patch。",
+      "issue": "component_has_blocking_reason",
+      "name": "アンナ・チェルトナム",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_001_040",
+      "category": "label",
+      "component_id": null,
+      "denko_id": "extra:022",
+      "detail_zh": "第一个带编号 component 不是 (1)，疑似主效果漏抓或排序错位。",
+      "evidence": [
+        "(2)"
+      ],
+      "fix_hint_zh": "复查条件表，补齐 (1) 或重排 component。",
+      "issue": "first_label_not_1",
+      "name": "レイラ・スコッツマン",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_001_040",
+      "category": "blocking_reason",
+      "component_id": "atk_buff_2",
+      "denko_id": "extra:022",
+      "detail_zh": "component 仍带阻塞级 review reason。",
+      "evidence": [
+        "labeled_component_count_mismatch"
+      ],
+      "fix_hint_zh": "优先判断是否是共性 parser rule；无法共性化再走语义 patch。",
+      "issue": "component_has_blocking_reason",
+      "name": "レイラ・スコッツマン",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_001_040",
+      "category": "label",
+      "component_id": null,
+      "denko_id": "extra:024",
+      "detail_zh": "第一个带编号 component 不是 (1)，疑似主效果漏抓或排序错位。",
+      "evidence": [
+        "(2)"
+      ],
+      "fix_hint_zh": "复查条件表，补齐 (1) 或重排 component。",
+      "issue": "first_label_not_1",
+      "name": "アメリア・パウエル",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_001_040",
+      "category": "blocking_reason",
+      "component_id": "def_debuff_2",
+      "denko_id": "extra:024",
+      "detail_zh": "component 仍带阻塞级 review reason。",
+      "evidence": [
+        "labeled_component_count_mismatch"
+      ],
+      "fix_hint_zh": "优先判断是否是共性 parser rule；无法共性化再走语义 patch。",
+      "issue": "component_has_blocking_reason",
+      "name": "アメリア・パウエル",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_001_040",
+      "category": "level",
+      "component_id": "component_01_exp_gain",
+      "denko_id": "extra:025",
+      "detail_zh": "非 VU component 缺 Lv30。",
+      "evidence": null,
+      "fix_hint_zh": "复查技能等级表，或确认该 component 应标为 vu_only。",
+      "issue": "non_vu_missing_lv30",
+      "name": "ルース・ブルックリン",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_001_040",
+      "category": "level",
+      "component_id": "component_01_exp_gain",
+      "denko_id": "extra:025",
+      "detail_zh": "非 VU component 缺 Lv50。",
+      "evidence": null,
+      "fix_hint_zh": "复查技能等级表，或确认该 component 应标为 vu_only。",
+      "issue": "non_vu_missing_lv50",
+      "name": "ルース・ブルックリン",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_001_040",
+      "category": "blocking_reason",
+      "component_id": "component_01_exp_gain",
+      "denko_id": "extra:025",
+      "detail_zh": "component 仍带阻塞级 review reason。",
+      "evidence": [
+        "component_values_not_parsed"
+      ],
+      "fix_hint_zh": "优先判断是否是共性 parser rule；无法共性化再走语义 patch。",
+      "issue": "component_has_blocking_reason",
+      "name": "ルース・ブルックリン",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_001_040",
+      "category": "fallback",
+      "component_id": "component_01_exp_gain",
+      "denko_id": "extra:025",
+      "detail_zh": "出现 fallback component，语义不稳定。",
+      "evidence": null,
+      "fix_hint_zh": "复查原文并替换为语义 effect_kind。",
+      "issue": "fallback_component",
+      "name": "ルース・ブルックリン",
+      "severity": "medium"
+    },
+    {
+      "batch": "extra_001_040",
+      "category": "level",
+      "component_id": "component_01_exp_gain",
+      "denko_id": "extra:026",
+      "detail_zh": "非 VU component 缺 Lv30。",
+      "evidence": null,
+      "fix_hint_zh": "复查技能等级表，或确认该 component 应标为 vu_only。",
+      "issue": "non_vu_missing_lv30",
+      "name": "ジン・ティエン",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_001_040",
+      "category": "level",
+      "component_id": "component_01_exp_gain",
+      "denko_id": "extra:026",
+      "detail_zh": "非 VU component 缺 Lv50。",
+      "evidence": null,
+      "fix_hint_zh": "复查技能等级表，或确认该 component 应标为 vu_only。",
+      "issue": "non_vu_missing_lv50",
+      "name": "ジン・ティエン",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_001_040",
+      "category": "blocking_reason",
+      "component_id": "component_01_exp_gain",
+      "denko_id": "extra:026",
+      "detail_zh": "component 仍带阻塞级 review reason。",
+      "evidence": [
+        "component_values_not_parsed"
+      ],
+      "fix_hint_zh": "优先判断是否是共性 parser rule；无法共性化再走语义 patch。",
+      "issue": "component_has_blocking_reason",
+      "name": "ジン・ティエン",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_001_040",
+      "category": "fallback",
+      "component_id": "component_01_exp_gain",
+      "denko_id": "extra:026",
+      "detail_zh": "出现 fallback component，语义不稳定。",
+      "evidence": null,
+      "fix_hint_zh": "复查原文并替换为语义 effect_kind。",
+      "issue": "fallback_component",
+      "name": "ジン・ティエン",
+      "severity": "medium"
+    },
+    {
+      "batch": "extra_001_040",
+      "category": "blocking_reason",
+      "component_id": "atk_buff_1",
+      "denko_id": "extra:028",
+      "detail_zh": "component 仍带阻塞级 review reason。",
+      "evidence": [
+        "labeled_component_count_mismatch"
+      ],
+      "fix_hint_zh": "优先判断是否是共性 parser rule；无法共性化再走语义 patch。",
+      "issue": "component_has_blocking_reason",
+      "name": "ロン・リンファ",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_001_040",
+      "category": "level",
+      "component_id": "component_01_def_modifier",
+      "denko_id": "extra:030",
+      "detail_zh": "非 VU component 缺 Lv30。",
+      "evidence": null,
+      "fix_hint_zh": "复查技能等级表，或确认该 component 应标为 vu_only。",
+      "issue": "non_vu_missing_lv30",
+      "name": "ハリシャ・チャトラパティ",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_001_040",
+      "category": "level",
+      "component_id": "component_01_def_modifier",
+      "denko_id": "extra:030",
+      "detail_zh": "非 VU component 缺 Lv50。",
+      "evidence": null,
+      "fix_hint_zh": "复查技能等级表，或确认该 component 应标为 vu_only。",
+      "issue": "non_vu_missing_lv50",
+      "name": "ハリシャ・チャトラパティ",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_001_040",
+      "category": "blocking_reason",
+      "component_id": "component_01_def_modifier",
+      "denko_id": "extra:030",
+      "detail_zh": "component 仍带阻塞级 review reason。",
+      "evidence": [
+        "component_values_not_parsed"
+      ],
+      "fix_hint_zh": "优先判断是否是共性 parser rule；无法共性化再走语义 patch。",
+      "issue": "component_has_blocking_reason",
+      "name": "ハリシャ・チャトラパティ",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_001_040",
+      "category": "fallback",
+      "component_id": "component_01_def_modifier",
+      "denko_id": "extra:030",
+      "detail_zh": "出现 fallback component，语义不稳定。",
+      "evidence": null,
+      "fix_hint_zh": "复查原文并替换为语义 effect_kind。",
+      "issue": "fallback_component",
+      "name": "ハリシャ・チャトラパティ",
+      "severity": "medium"
+    },
+    {
+      "batch": "extra_041_080",
+      "category": "blocking_reason",
+      "component_id": "reboot_2",
+      "denko_id": "extra:041",
+      "detail_zh": "component 仍带阻塞级 review reason。",
+      "evidence": [
+        "vu_label_level_mismatch_needs_review"
+      ],
+      "fix_hint_zh": "优先判断是否是共性 parser rule；无法共性化再走语义 patch。",
+      "issue": "component_has_blocking_reason",
+      "name": "レニャ・サンモリッツ",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_041_080",
+      "category": "level",
+      "component_id": "component_01_exp_gain",
+      "denko_id": "extra:046",
+      "detail_zh": "非 VU component 缺 Lv30。",
+      "evidence": null,
+      "fix_hint_zh": "复查技能等级表，或确认该 component 应标为 vu_only。",
+      "issue": "non_vu_missing_lv30",
+      "name": "五葉あこ",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_041_080",
+      "category": "level",
+      "component_id": "component_01_exp_gain",
+      "denko_id": "extra:046",
+      "detail_zh": "非 VU component 缺 Lv50。",
+      "evidence": null,
+      "fix_hint_zh": "复查技能等级表，或确认该 component 应标为 vu_only。",
+      "issue": "non_vu_missing_lv50",
+      "name": "五葉あこ",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_041_080",
+      "category": "blocking_reason",
+      "component_id": "component_01_exp_gain",
+      "denko_id": "extra:046",
+      "detail_zh": "component 仍带阻塞级 review reason。",
+      "evidence": [
+        "component_values_not_parsed"
+      ],
+      "fix_hint_zh": "优先判断是否是共性 parser rule；无法共性化再走语义 patch。",
+      "issue": "component_has_blocking_reason",
+      "name": "五葉あこ",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_041_080",
+      "category": "fallback",
+      "component_id": "component_01_exp_gain",
+      "denko_id": "extra:046",
+      "detail_zh": "出现 fallback component，语义不稳定。",
+      "evidence": null,
+      "fix_hint_zh": "复查原文并替换为语义 effect_kind。",
+      "issue": "fallback_component",
+      "name": "五葉あこ",
+      "severity": "medium"
+    },
+    {
+      "batch": "extra_041_080",
+      "category": "label",
+      "component_id": null,
+      "denko_id": "extra:048",
+      "detail_zh": "第一个带编号 component 不是 (1)，疑似主效果漏抓或排序错位。",
+      "evidence": [
+        "(3)"
+      ],
+      "fix_hint_zh": "复查条件表，补齐 (1) 或重排 component。",
+      "issue": "first_label_not_1",
+      "name": "エマ・ノアイユ",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_041_080",
+      "category": "blocking_reason",
+      "component_id": "atk_buff_3",
+      "denko_id": "extra:048",
+      "detail_zh": "component 仍带阻塞级 review reason。",
+      "evidence": [
+        "labeled_component_count_mismatch"
+      ],
+      "fix_hint_zh": "优先判断是否是共性 parser rule；无法共性化再走语义 patch。",
+      "issue": "component_has_blocking_reason",
+      "name": "エマ・ノアイユ",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_041_080",
+      "category": "blocking_reason",
+      "component_id": "def_buff_1",
+      "denko_id": "extra:058",
+      "detail_zh": "component 仍带阻塞级 review reason。",
+      "evidence": [
+        "labeled_component_count_mismatch"
+      ],
+      "fix_hint_zh": "优先判断是否是共性 parser rule；无法共性化再走语义 patch。",
+      "issue": "component_has_blocking_reason",
+      "name": "ピン・ユートン",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_041_080",
+      "category": "blocking_reason",
+      "component_id": "hp_recovery",
+      "denko_id": "extra:058",
+      "detail_zh": "component 仍带阻塞级 review reason。",
+      "evidence": [
+        "labeled_component_count_mismatch"
+      ],
+      "fix_hint_zh": "优先判断是否是共性 parser rule；无法共性化再走语义 patch。",
+      "issue": "component_has_blocking_reason",
+      "name": "ピン・ユートン",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_041_080",
+      "category": "label",
+      "component_id": null,
+      "denko_id": "extra:062",
+      "detail_zh": "第一个带编号 component 不是 (1)，疑似主效果漏抓或排序错位。",
+      "evidence": [
+        "(2)",
+        "(3)"
+      ],
+      "fix_hint_zh": "复查条件表，补齐 (1) 或重排 component。",
+      "issue": "first_label_not_1",
+      "name": "笛吹エイル",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_041_080",
+      "category": "blocking_reason",
+      "component_id": "damage_reduction_2",
+      "denko_id": "extra:062",
+      "detail_zh": "component 仍带阻塞级 review reason。",
+      "evidence": [
+        "compound_labeled_effect_needs_manual_review",
+        "labeled_component_count_mismatch"
+      ],
+      "fix_hint_zh": "优先判断是否是共性 parser rule；无法共性化再走语义 patch。",
+      "issue": "component_has_blocking_reason",
+      "name": "笛吹エイル",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_041_080",
+      "category": "blocking_reason",
+      "component_id": "damage_reduction_3",
+      "denko_id": "extra:062",
+      "detail_zh": "component 仍带阻塞级 review reason。",
+      "evidence": [
+        "compound_labeled_effect_needs_manual_review",
+        "labeled_component_count_mismatch"
+      ],
+      "fix_hint_zh": "优先判断是否是共性 parser rule；无法共性化再走语义 patch。",
+      "issue": "component_has_blocking_reason",
+      "name": "笛吹エイル",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_041_080",
+      "category": "blocking_reason",
+      "component_id": "atk_buff_1",
+      "denko_id": "extra:067",
+      "detail_zh": "component 仍带阻塞级 review reason。",
+      "evidence": [
+        "labeled_component_count_mismatch"
+      ],
+      "fix_hint_zh": "优先判断是否是共性 parser rule；无法共性化再走语义 patch。",
+      "issue": "component_has_blocking_reason",
+      "name": "エドウィナ・プレトリア",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_041_080",
+      "category": "blocking_reason",
+      "component_id": "score_gain",
+      "denko_id": "extra:068",
+      "detail_zh": "component 仍带阻塞级 review reason。",
+      "evidence": [
+        "condition_effect_mismatch_needs_review"
+      ],
+      "fix_hint_zh": "优先判断是否是共性 parser rule；无法共性化再走语义 patch。",
+      "issue": "component_has_blocking_reason",
+      "name": "アダリヤ・ビクトリア",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_041_080",
+      "category": "blocking_reason",
+      "component_id": "def_debuff_1",
+      "denko_id": "extra:073",
+      "detail_zh": "component 仍带阻塞级 review reason。",
+      "evidence": [
+        "condition_effect_mismatch_needs_review"
+      ],
+      "fix_hint_zh": "优先判断是否是共性 parser rule；无法共性化再走语义 patch。",
+      "issue": "component_has_blocking_reason",
+      "name": "アチャラ・メークローン",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_041_080",
+      "category": "blocking_reason",
+      "component_id": "reboot_3",
+      "denko_id": "extra:073",
+      "detail_zh": "component 仍带阻塞级 review reason。",
+      "evidence": [
+        "condition_effect_mismatch_needs_review"
+      ],
+      "fix_hint_zh": "优先判断是否是共性 parser rule；无法共性化再走语义 patch。",
+      "issue": "component_has_blocking_reason",
+      "name": "アチャラ・メークローン",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_081_120",
+      "category": "blocking_reason",
+      "component_id": "score_gain",
+      "denko_id": "extra:081",
+      "detail_zh": "component 仍带阻塞级 review reason。",
+      "evidence": [
+        "condition_effect_mismatch_needs_review"
+      ],
+      "fix_hint_zh": "优先判断是否是共性 parser rule；无法共性化再走语义 patch。",
+      "issue": "component_has_blocking_reason",
+      "name": "ロッサ・ローマ",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_081_120",
+      "category": "blocking_reason",
+      "component_id": "def_buff_1",
+      "denko_id": "extra:084",
+      "detail_zh": "component 仍带阻塞级 review reason。",
+      "evidence": [
+        "duplicate_labeled_component_values_need_review"
+      ],
+      "fix_hint_zh": "优先判断是否是共性 parser rule；无法共性化再走语义 patch。",
+      "issue": "component_has_blocking_reason",
+      "name": "ネラ・クライストチャーチ",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_081_120",
+      "category": "blocking_reason",
+      "component_id": "def_buff_2",
+      "denko_id": "extra:084",
+      "detail_zh": "component 仍带阻塞级 review reason。",
+      "evidence": [
+        "duplicate_labeled_component_values_need_review"
+      ],
+      "fix_hint_zh": "优先判断是否是共性 parser rule；无法共性化再走语义 patch。",
+      "issue": "component_has_blocking_reason",
+      "name": "ネラ・クライストチャーチ",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_081_120",
+      "category": "blocking_reason",
+      "component_id": "score_gain",
+      "denko_id": "extra:091",
+      "detail_zh": "component 仍带阻塞级 review reason。",
+      "evidence": [
+        "labeled_component_count_mismatch"
+      ],
+      "fix_hint_zh": "优先判断是否是共性 parser rule；无法共性化再走语义 patch。",
+      "issue": "component_has_blocking_reason",
+      "name": "ルーシー・ユニオン",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_081_120",
+      "category": "label",
+      "component_id": null,
+      "denko_id": "extra:092",
+      "detail_zh": "第一个带编号 component 不是 (1)，疑似主效果漏抓或排序错位。",
+      "evidence": [
+        "(2)"
+      ],
+      "fix_hint_zh": "复查条件表，补齐 (1) 或重排 component。",
+      "issue": "first_label_not_1",
+      "name": "アリアナ・ジャスパー",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_081_120",
+      "category": "blocking_reason",
+      "component_id": "fixed_damage_2",
+      "denko_id": "extra:092",
+      "detail_zh": "component 仍带阻塞级 review reason。",
+      "evidence": [
+        "labeled_component_count_mismatch"
+      ],
+      "fix_hint_zh": "优先判断是否是共性 parser rule；无法共性化再走语义 patch。",
+      "issue": "component_has_blocking_reason",
+      "name": "アリアナ・ジャスパー",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_081_120",
+      "category": "level",
+      "component_id": "component_01_def_modifier",
+      "denko_id": "extra:097",
+      "detail_zh": "非 VU component 缺 Lv30。",
+      "evidence": null,
+      "fix_hint_zh": "复查技能等级表，或确认该 component 应标为 vu_only。",
+      "issue": "non_vu_missing_lv30",
+      "name": "殿ふじこ",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_081_120",
+      "category": "level",
+      "component_id": "component_01_def_modifier",
+      "denko_id": "extra:097",
+      "detail_zh": "非 VU component 缺 Lv50。",
+      "evidence": null,
+      "fix_hint_zh": "复查技能等级表，或确认该 component 应标为 vu_only。",
+      "issue": "non_vu_missing_lv50",
+      "name": "殿ふじこ",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_081_120",
+      "category": "blocking_reason",
+      "component_id": "component_01_def_modifier",
+      "denko_id": "extra:097",
+      "detail_zh": "component 仍带阻塞级 review reason。",
+      "evidence": [
+        "component_values_not_parsed"
+      ],
+      "fix_hint_zh": "优先判断是否是共性 parser rule；无法共性化再走语义 patch。",
+      "issue": "component_has_blocking_reason",
+      "name": "殿ふじこ",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_081_120",
+      "category": "fallback",
+      "component_id": "component_01_def_modifier",
+      "denko_id": "extra:097",
+      "detail_zh": "出现 fallback component，语义不稳定。",
+      "evidence": null,
+      "fix_hint_zh": "复查原文并替换为语义 effect_kind。",
+      "issue": "fallback_component",
+      "name": "殿ふじこ",
+      "severity": "medium"
+    },
+    {
+      "batch": "extra_081_120",
+      "category": "blocking_reason",
+      "component_id": "atk_buff_1",
+      "denko_id": "extra:103",
+      "detail_zh": "component 仍带阻塞级 review reason。",
+      "evidence": [
+        "labeled_component_count_mismatch"
+      ],
+      "fix_hint_zh": "优先判断是否是共性 parser rule；无法共性化再走语义 patch。",
+      "issue": "component_has_blocking_reason",
+      "name": "アイラ・ヒューストン",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_081_120",
+      "category": "summary",
+      "component_id": null,
+      "denko_id": "extra:107",
+      "detail_zh": "summary_zh 里仍混有多个编号效果/概率，可能没有复用 component 级拆分结果。",
+      "evidence": "技能分量1：DEF增加 / 对象：编成内全员 / Lv50，DEF +7%，発動率(1) 100%；技能分量2：技能无效化 / Lv50，skill_disable，発動率(2) 55%",
+      "fix_hint_zh": "重建 summary_zh，并按 component label 过滤概率。",
+      "issue": "summary_mixed_labeled_probability",
+      "name": "ガブリエラ・アントワープ",
+      "severity": "medium"
+    },
+    {
+      "batch": "extra_081_120",
+      "category": "summary",
+      "component_id": null,
+      "denko_id": "extra:108",
+      "detail_zh": "summary_zh 里仍混有多个编号效果/概率，可能没有复用 component 级拆分结果。",
+      "evidence": "技能分量1：DEF增加 / 对象：编成内全员 / Lv50，DEF +7%，発動率(1) 100%；技能分量2：技能无效化 / Lv50，skill_disable，発動率(2) 55%",
+      "fix_hint_zh": "重建 summary_zh，并按 component label 过滤概率。",
+      "issue": "summary_mixed_labeled_probability",
+      "name": "ジュリエット・ブリュッセル",
+      "severity": "medium"
+    },
+    {
+      "batch": "extra_081_120",
+      "category": "summary",
+      "component_id": null,
+      "denko_id": "extra:109",
+      "detail_zh": "summary_zh 里仍混有多个编号效果/概率，可能没有复用 component 级拆分结果。",
+      "evidence": "技能分量1：DEF增加 / 对象：编成内全员 / Lv50，DEF +7%，発動率(1) 100%；技能分量2：技能无效化 / Lv50，skill_disable，発動率(2) 55%",
+      "fix_hint_zh": "重建 summary_zh，并按 component label 过滤概率。",
+      "issue": "summary_mixed_labeled_probability",
+      "name": "アンバー・デパンネ",
+      "severity": "medium"
+    },
+    {
+      "batch": "extra_081_120",
+      "category": "blocking_reason",
+      "component_id": "exp_gain_1",
+      "denko_id": "extra:110",
+      "detail_zh": "component 仍带阻塞级 review reason。",
+      "evidence": [
+        "labeled_component_count_mismatch"
+      ],
+      "fix_hint_zh": "优先判断是否是共性 parser rule；无法共性化再走语义 patch。",
+      "issue": "component_has_blocking_reason",
+      "name": "ヨンサン・ソウ",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_081_120",
+      "category": "blocking_reason",
+      "component_id": "exp_gain_1",
+      "denko_id": "extra:111",
+      "detail_zh": "component 仍带阻塞级 review reason。",
+      "evidence": [
+        "labeled_component_count_mismatch"
+      ],
+      "fix_hint_zh": "优先判断是否是共性 parser rule；无法共性化再走语义 patch。",
+      "issue": "component_has_blocking_reason",
+      "name": "トンタン・チェリン",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_081_120",
+      "category": "blocking_reason",
+      "component_id": "exp_gain_1",
+      "denko_id": "extra:112",
+      "detail_zh": "component 仍带阻塞级 review reason。",
+      "evidence": [
+        "labeled_component_count_mismatch"
+      ],
+      "fix_hint_zh": "优先判断是否是共性 parser rule；无法共性化再走语义 patch。",
+      "issue": "component_has_blocking_reason",
+      "name": "ソウル・マウム",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_081_120",
+      "category": "summary",
+      "component_id": null,
+      "denko_id": "extra:113",
+      "detail_zh": "summary_zh 里仍混有多个编号效果/概率，可能没有复用 component 级拆分结果。",
+      "evidence": "Lv50：発動率 (1)55% (2)100%，1時間15分，CD 10時間45分；Lv60：発動率 (1)65% (2)100%，1時間20分，CD 10時間40分",
+      "fix_hint_zh": "重建 summary_zh，并按 component label 过滤概率。",
+      "issue": "summary_mixed_labeled_probability",
+      "name": "北乃ささら",
+      "severity": "medium"
+    },
+    {
+      "batch": "extra_081_120",
+      "category": "label",
+      "component_id": null,
+      "denko_id": "extra:115",
+      "detail_zh": "第一个带编号 component 不是 (1)，疑似主效果漏抓或排序错位。",
+      "evidence": [
+        "(2)"
+      ],
+      "fix_hint_zh": "复查条件表，补齐 (1) 或重排 component。",
+      "issue": "first_label_not_1",
+      "name": "アーイダ・ブルジュマーン",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_081_120",
+      "category": "blocking_reason",
+      "component_id": "additional_score_gain_2",
+      "denko_id": "extra:115",
+      "detail_zh": "component 仍带阻塞级 review reason。",
+      "evidence": [
+        "labeled_component_count_mismatch"
+      ],
+      "fix_hint_zh": "优先判断是否是共性 parser rule；无法共性化再走语义 patch。",
+      "issue": "component_has_blocking_reason",
+      "name": "アーイダ・ブルジュマーン",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_081_120",
+      "category": "blocking_reason",
+      "component_id": "def_buff_1",
+      "denko_id": "extra:118",
+      "detail_zh": "component 仍带阻塞级 review reason。",
+      "evidence": [
+        "labeled_component_count_mismatch"
+      ],
+      "fix_hint_zh": "优先判断是否是共性 parser rule；无法共性化再走语义 patch。",
+      "issue": "component_has_blocking_reason",
+      "name": "リーガ・イマンタ",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_081_120",
+      "category": "blocking_reason",
+      "component_id": "atk_buff_1",
+      "denko_id": "extra:119",
+      "detail_zh": "component 仍带阻塞级 review reason。",
+      "evidence": [
+        "labeled_component_count_mismatch"
+      ],
+      "fix_hint_zh": "优先判断是否是共性 parser rule；无法共性化再走语义 patch。",
+      "issue": "component_has_blocking_reason",
+      "name": "アニカ・タルトゥ",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_081_120",
+      "category": "blocking_reason",
+      "component_id": "exp_gain_1",
+      "denko_id": "extra:120",
+      "detail_zh": "component 仍带阻塞级 review reason。",
+      "evidence": [
+        "labeled_component_count_mismatch"
+      ],
+      "fix_hint_zh": "优先判断是否是共性 parser rule；无法共性化再走语义 patch。",
+      "issue": "component_has_blocking_reason",
+      "name": "マルティナ・ヴィリニュス",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_121_127",
+      "category": "blocking_reason",
+      "component_id": "score_gain_1",
+      "denko_id": "extra:121",
+      "detail_zh": "component 仍带阻塞级 review reason。",
+      "evidence": [
+        "compound_labeled_effect_needs_manual_review",
+        "labeled_component_count_mismatch"
+      ],
+      "fix_hint_zh": "优先判断是否是共性 parser rule；无法共性化再走语义 patch。",
+      "issue": "component_has_blocking_reason",
+      "name": "コニー・クラークデール",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_121_127",
+      "category": "blocking_reason",
+      "component_id": "reboot_3",
+      "denko_id": "extra:121",
+      "detail_zh": "component 仍带阻塞级 review reason。",
+      "evidence": [
+        "compound_labeled_effect_needs_manual_review",
+        "condition_effect_mismatch_needs_review",
+        "labeled_component_count_mismatch"
+      ],
+      "fix_hint_zh": "优先判断是否是共性 parser rule；无法共性化再走语义 patch。",
+      "issue": "component_has_blocking_reason",
+      "name": "コニー・クラークデール",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_121_127",
+      "category": "label",
+      "component_id": null,
+      "denko_id": "extra:122",
+      "detail_zh": "第一个带编号 component 不是 (1)，疑似主效果漏抓或排序错位。",
+      "evidence": [
+        "(2)",
+        "(4)"
+      ],
+      "fix_hint_zh": "复查条件表，补齐 (1) 或重排 component。",
+      "issue": "first_label_not_1",
+      "name": "マリリン・マクリーン",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_121_127",
+      "category": "blocking_reason",
+      "component_id": "hp_recovery_2",
+      "denko_id": "extra:122",
+      "detail_zh": "component 仍带阻塞级 review reason。",
+      "evidence": [
+        "compound_labeled_effect_needs_manual_review",
+        "labeled_component_count_mismatch"
+      ],
+      "fix_hint_zh": "优先判断是否是共性 parser rule；无法共性化再走语义 patch。",
+      "issue": "component_has_blocking_reason",
+      "name": "マリリン・マクリーン",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_121_127",
+      "category": "blocking_reason",
+      "component_id": "reboot_4",
+      "denko_id": "extra:122",
+      "detail_zh": "component 仍带阻塞级 review reason。",
+      "evidence": [
+        "compound_labeled_effect_needs_manual_review",
+        "labeled_component_count_mismatch"
+      ],
+      "fix_hint_zh": "优先判断是否是共性 parser rule；无法共性化再走语义 patch。",
+      "issue": "component_has_blocking_reason",
+      "name": "マリリン・マクリーン",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_121_127",
+      "category": "level",
+      "component_id": "component_01_hp_recovery",
+      "denko_id": "extra:123",
+      "detail_zh": "非 VU component 缺 Lv30。",
+      "evidence": null,
+      "fix_hint_zh": "复查技能等级表，或确认该 component 应标为 vu_only。",
+      "issue": "non_vu_missing_lv30",
+      "name": "サブリナ・サンタバーバラ",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_121_127",
+      "category": "level",
+      "component_id": "component_01_hp_recovery",
+      "denko_id": "extra:123",
+      "detail_zh": "非 VU component 缺 Lv50。",
+      "evidence": null,
+      "fix_hint_zh": "复查技能等级表，或确认该 component 应标为 vu_only。",
+      "issue": "non_vu_missing_lv50",
+      "name": "サブリナ・サンタバーバラ",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_121_127",
+      "category": "blocking_reason",
+      "component_id": "component_01_hp_recovery",
+      "denko_id": "extra:123",
+      "detail_zh": "component 仍带阻塞级 review reason。",
+      "evidence": [
+        "component_values_not_parsed"
+      ],
+      "fix_hint_zh": "优先判断是否是共性 parser rule；无法共性化再走语义 patch。",
+      "issue": "component_has_blocking_reason",
+      "name": "サブリナ・サンタバーバラ",
+      "severity": "high"
+    },
+    {
+      "batch": "extra_121_127",
+      "category": "fallback",
+      "component_id": "component_01_hp_recovery",
+      "denko_id": "extra:123",
+      "detail_zh": "出现 fallback component，语义不稳定。",
+      "evidence": null,
+      "fix_hint_zh": "复查原文并替换为语义 effect_kind。",
+      "issue": "fallback_component",
+      "name": "サブリナ・サンタバーバラ",
+      "severity": "medium"
+    }
+  ],
+  "metrics": {
+    "category_counts": {
+      "blocking_reason": 47,
+      "fallback": 6,
+      "label": 9,
+      "level": 12,
+      "probability": 7,
+      "summary": 6
+    },
+    "issue_count": 87,
+    "severity_counts": {
+      "high": 75,
+      "medium": 12
+    },
+    "skill_file_count": 4,
+    "skill_record_count": 127
+  },
+  "report_checks": {
+    "extra_001_040": {
+      "ascii_only": true,
+      "double_question_count": 0,
+      "has_component_table": true,
+      "has_old_slot_matrix": false,
+      "has_vu_columns": true,
+      "mojibake_hits": {}
+    },
+    "extra_041_080": {
+      "ascii_only": true,
+      "double_question_count": 0,
+      "has_component_table": true,
+      "has_old_slot_matrix": false,
+      "has_vu_columns": true,
+      "mojibake_hits": {}
+    },
+    "extra_081_120": {
+      "ascii_only": true,
+      "double_question_count": 0,
+      "has_component_table": true,
+      "has_old_slot_matrix": false,
+      "has_vu_columns": true,
+      "mojibake_hits": {}
+    },
+    "extra_121_127": {
+      "ascii_only": true,
+      "double_question_count": 0,
+      "has_component_table": true,
+      "has_old_slot_matrix": false,
+      "has_vu_columns": true,
+      "mojibake_hits": {}
+    }
+  },
+  "schema_version": 1,
+  "scope": "extra"
+}

@@ -1,0 +1,192 @@
+{
+  "blocking_items": [
+    {
+      "component_id": "reboot_2",
+      "condition_label": "(2)",
+      "denko_id": "extra:041",
+      "effect_kind": "reboot",
+      "name": "レニャ・サンモリッツ",
+      "reasons": [
+        "vu_label_level_mismatch_needs_review"
+      ],
+      "reasons_zh": [
+        "原文声明该编号 Lv92+ 生效，但组件等级不是 VU-only"
+      ]
+    },
+    {
+      "component_id": "component_01_exp_gain",
+      "condition_label": null,
+      "denko_id": "extra:046",
+      "effect_kind": "exp_gain",
+      "name": "五葉あこ",
+      "reasons": [
+        "component_values_not_parsed"
+      ],
+      "reasons_zh": [
+        "组件值未解析"
+      ]
+    },
+    {
+      "component_id": "atk_buff_3",
+      "condition_label": "(3)",
+      "denko_id": "extra:048",
+      "effect_kind": "atk_buff",
+      "name": "エマ・ノアイユ",
+      "reasons": [
+        "labeled_component_count_mismatch"
+      ],
+      "reasons_zh": [
+        "编号标签与组件不匹配"
+      ]
+    },
+    {
+      "component_id": "def_buff_1",
+      "condition_label": "(1)",
+      "denko_id": "extra:058",
+      "effect_kind": "def_buff",
+      "name": "ピン・ユートン",
+      "reasons": [
+        "labeled_component_count_mismatch"
+      ],
+      "reasons_zh": [
+        "编号标签与组件不匹配"
+      ]
+    },
+    {
+      "component_id": "hp_recovery",
+      "condition_label": null,
+      "denko_id": "extra:058",
+      "effect_kind": "hp_recovery",
+      "name": "ピン・ユートン",
+      "reasons": [
+        "labeled_component_count_mismatch"
+      ],
+      "reasons_zh": [
+        "编号标签与组件不匹配"
+      ]
+    },
+    {
+      "component_id": "damage_reduction_2",
+      "condition_label": "(2)",
+      "denko_id": "extra:062",
+      "effect_kind": "damage_reduction",
+      "name": "笛吹エイル",
+      "reasons": [
+        "compound_labeled_effect_needs_manual_review",
+        "labeled_component_count_mismatch"
+      ],
+      "reasons_zh": [
+        "复合编号需要片段复查",
+        "编号标签与组件不匹配"
+      ]
+    },
+    {
+      "component_id": "damage_reduction_3",
+      "condition_label": "(3)",
+      "denko_id": "extra:062",
+      "effect_kind": "damage_reduction",
+      "name": "笛吹エイル",
+      "reasons": [
+        "compound_labeled_effect_needs_manual_review",
+        "labeled_component_count_mismatch"
+      ],
+      "reasons_zh": [
+        "复合编号需要片段复查",
+        "编号标签与组件不匹配"
+      ]
+    },
+    {
+      "component_id": "atk_buff_1",
+      "condition_label": "(1)",
+      "denko_id": "extra:067",
+      "effect_kind": "atk_buff",
+      "name": "エドウィナ・プレトリア",
+      "reasons": [
+        "labeled_component_count_mismatch"
+      ],
+      "reasons_zh": [
+        "编号标签与组件不匹配"
+      ]
+    },
+    {
+      "component_id": "score_gain",
+      "condition_label": null,
+      "denko_id": "extra:068",
+      "effect_kind": "score_gain",
+      "name": "アダリヤ・ビクトリア",
+      "reasons": [
+        "condition_effect_mismatch_needs_review"
+      ],
+      "reasons_zh": [
+        "日文效果词与组件类型矛盾"
+      ]
+    },
+    {
+      "component_id": "def_debuff_1",
+      "condition_label": "(1)",
+      "denko_id": "extra:073",
+      "effect_kind": "def_debuff",
+      "name": "アチャラ・メークローン",
+      "reasons": [
+        "condition_effect_mismatch_needs_review"
+      ],
+      "reasons_zh": [
+        "日文效果词与组件类型矛盾"
+      ]
+    },
+    {
+      "component_id": "reboot_3",
+      "condition_label": "(3)",
+      "denko_id": "extra:073",
+      "effect_kind": "reboot",
+      "name": "アチャラ・メークローン",
+      "reasons": [
+        "condition_effect_mismatch_needs_review"
+      ],
+      "reasons_zh": [
+        "日文效果词与组件类型矛盾"
+      ]
+    }
+  ],
+  "generated_at": "2026-06-14T23:43:46.983331+09:00",
+  "metrics": {
+    "blocking_item_count": 11,
+    "component_review_reason_counts": {
+      "component_semantics_need_review": 58,
+      "component_values_not_parsed": 1,
+      "compound_labeled_effect_needs_manual_review": 2,
+      "condition_effect_mismatch_needs_review": 3,
+      "condition_only_component_needs_review": 3,
+      "labeled_component_count_mismatch": 6,
+      "vu_label_level_mismatch_needs_review": 1
+    },
+    "skill_records": 40
+  },
+  "next_action": "spawn_batch_review_expert",
+  "parser_version": "detail_html_table_matrix.v8",
+  "paths": {
+    "denko_facts": "data/records/extra_041_080_denko_facts.jsonl",
+    "observed_cases": [
+      "data\\observed_cases\\ingestion_cycle_review_rules_2026-06-07.jsonl",
+      "data\\observed_cases\\original_080_119_manual_parser_findings.jsonl",
+      "data\\observed_cases\\original_080_119_parser_resolution_2026-06-07.jsonl",
+      "data\\observed_cases\\original_080_119_parser_resolution_2026-06-07_round2.jsonl",
+      "data\\observed_cases\\original_120_163_manual_parser_findings.jsonl",
+      "data\\observed_cases\\original_120_163_parser_resolution_2026-06-07.jsonl",
+      "data\\observed_cases\\original_120_163_parser_resolution_2026-06-07_round2.jsonl",
+      "data\\observed_cases\\original_120_163_parser_resolution_2026-06-07_round3.jsonl",
+      "data\\observed_cases\\original_120_163_parser_resolution_2026-06-07_round4.jsonl"
+    ],
+    "report": "data\\reports\\extra_041_080_batch_review_zh.html",
+    "review_queue": "data/review_queue/extra_041_080_review_queue.jsonl",
+    "skill_facts": "data/records/extra_041_080_skill_facts.jsonl"
+  },
+  "run_result": null,
+  "schema_version": 1,
+  "scope": {
+    "batch_size": 30,
+    "end": 80,
+    "pool": "extra",
+    "start": 41
+  }
+}

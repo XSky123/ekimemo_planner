@@ -1,33 +1,16 @@
 {
-  "batches": {
-    "original_001_040": {
-      "path": "data\\records\\original_001_040_skill_facts.jsonl",
-      "skill_records": 40
-    },
-    "original_040_080": {
-      "path": "data\\records\\original_040_080_skill_facts.jsonl",
-      "skill_records": 41
-    },
-    "original_080_119": {
-      "path": "data\\records\\original_080_119_skill_facts.jsonl",
-      "skill_records": 40
-    },
-    "original_120_163": {
-      "path": "data\\records\\original_120_163_skill_facts.jsonl",
-      "skill_records": 44
-    }
-  },
-  "generated_at": "2026-06-14T23:37:47.632721+09:00",
+  "generated_at": "2026-06-14T23:44:54.047251+09:00",
   "issues": [],
   "metrics": {
     "category_counts": {},
     "issue_count": 0,
-    "severity_counts": {}
+    "severity_counts": {},
+    "skill_file_count": 4,
+    "skill_record_count": 165
   },
   "report_checks": {
     "original_001_040": {
       "ascii_only": true,
-      "bad_hp_pattern": false,
       "double_question_count": 0,
       "has_component_table": true,
       "has_old_slot_matrix": false,
@@ -36,7 +19,6 @@
     },
     "original_040_080": {
       "ascii_only": true,
-      "bad_hp_pattern": false,
       "double_question_count": 0,
       "has_component_table": true,
       "has_old_slot_matrix": false,
@@ -45,7 +27,6 @@
     },
     "original_080_119": {
       "ascii_only": true,
-      "bad_hp_pattern": false,
       "double_question_count": 0,
       "has_component_table": true,
       "has_old_slot_matrix": false,
@@ -54,7 +35,6 @@
     },
     "original_120_163": {
       "ascii_only": true,
-      "bad_hp_pattern": false,
       "double_question_count": 0,
       "has_component_table": true,
       "has_old_slot_matrix": false,
@@ -63,5 +43,5 @@
     }
   },
   "schema_version": 1,
-  "scope": "original_001_163_existing_batches"
+  "scope": "original"
 }
