@@ -1,6 +1,6 @@
 # Step 1: Data Reading
 
-Status: prepared.
+Status: complete.
 
 Read order for this step:
 
@@ -38,11 +38,15 @@ Important rules:
 
 Outputs:
 
-- `data/records/denko_facts.jsonl`
-- `data/records/skill_facts.jsonl`
+- `data/step1_db/denko_facts.jsonl`
+- `data/step1_db/skill_facts.jsonl`
+- `data/step1_db/denko_index.json`
+- `data/step1_db/manifest.json`
+- `data/step1_db/validation.json`
+- Batch/intermediate records remain under `data/records/`.
+- Batch/intermediate indexes remain under `data/indexes/`.
+- Batch/intermediate review queues remain under `data/review_queue/`.
 - `data/records/recommendation_priors.jsonl`
 - `data/records/reverse_skill_lookup_candidates.jsonl`
 - `data/records/observed_team_cases.jsonl`
-- `data/indexes/denko_index.json`
-- `data/review_queue/review_queue.jsonl`
 - `data/reports/*.html`

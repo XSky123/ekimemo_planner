@@ -3,9 +3,9 @@
   "step": "step1_data_reading",
   "status": {
     "prepared": true,
-    "fetch_started": false,
-    "parse_started": false,
-    "complete": false
+    "fetch_started": true,
+    "parse_started": true,
+    "complete": true
   },
   "rules": {
     "controller_ingestion": "docs/controller_ingestion.md",
@@ -25,5 +25,13 @@
   "scope": {
     "pools": ["original", "extra"],
     "excluded": ["special", "collaboration", "excel_import", "solver"]
+  },
+  "outputs": {
+    "canonical_step1_dir": "data/step1_db",
+    "denko_facts": "data/step1_db/denko_facts.jsonl",
+    "skill_facts": "data/step1_db/skill_facts.jsonl",
+    "denko_index": "data/step1_db/denko_index.json",
+    "manifest": "data/step1_db/manifest.json",
+    "validation": "data/step1_db/validation.json"
   }
 }

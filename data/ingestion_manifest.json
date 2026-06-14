@@ -37,11 +37,14 @@
     ]
   },
   "outputs": {
-    "denko_facts": "data/records/denko_facts.jsonl",
-    "skill_facts": "data/records/skill_facts.jsonl",
+    "canonical_step1_dir": "data/step1_db",
+    "denko_facts": "data/step1_db/denko_facts.jsonl",
+    "skill_facts": "data/step1_db/skill_facts.jsonl",
+    "denko_index": "data/step1_db/denko_index.json",
+    "manifest": "data/step1_db/manifest.json",
+    "validation": "data/step1_db/validation.json",
     "recommendation_priors": "data/records/recommendation_priors.jsonl",
     "observed_team_cases": "data/records/observed_team_cases.jsonl",
-    "denko_index": "data/indexes/denko_index.json",
     "review_queue": "data/review_queue/review_queue.jsonl",
     "reports_dir": "data/reports"
   },
@@ -83,8 +86,9 @@
   },
   "status": {
     "prepared": true,
-    "fetch_started": false,
-    "parse_started": false,
+    "fetch_started": true,
+    "parse_started": true,
+    "step1_db_built": true,
     "solver_started": false
   }
 }
