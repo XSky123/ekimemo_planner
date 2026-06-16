@@ -173,6 +173,14 @@ def validate(denko_rows: list[dict[str, Any]], skill_rows: list[dict[str, Any]])
             )
     review_blockers = []
     for row in skill_rows:
+        if not row.get("skill_components"):
+            review_blockers.append(
+                {
+                    "denko_id": row.get("denko_id"),
+                    "component_id": None,
+                    "review_reasons": ["skill_components_empty"],
+                }
+            )
         for component in row.get("skill_components") or []:
             reasons = component.get("review_reasons") or []
             blockers = [
@@ -186,6 +194,7 @@ def validate(denko_rows: list[dict[str, Any]], skill_rows: list[dict[str, Any]])
                     "condition_effect_mismatch_needs_review",
                     "vu_label_level_mismatch_needs_review",
                     "component_values_not_parsed",
+                    "skill_components_empty",
                 }
             ]
             if blockers:

@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>Ekimemo Step1 最终报告</title>
+  <style>
+    body { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; margin: 32px; line-height: 1.55; color: #20242a; }
+    h1, h2 { line-height: 1.2; }
+    h1 { font-size: 28px; }
+    h2 { margin-top: 28px; font-size: 20px; }
+    table { border-collapse: collapse; width: 100%; margin: 12px 0 20px; }
+    th, td { border: 1px solid #d6d9de; padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { background: #f3f5f7; }
+    code { background: #f3f5f7; padding: 1px 4px; border-radius: 3px; }
+    .ok { color: #0b6b3a; font-weight: 700; }
+    .info { color: #6b5200; font-weight: 700; }
+  </style>
+</head>
+<body>
+  <h1>Ekimemo Step1 最终报告</h1>
+  <p>生成日期：2026-06-16。展示层使用中文；DB 原文事实保留日语；结构化 key 使用英语。</p>
+
+  <h2>结论</h2>
+  <table>
+    <tr><th>项目</th><th>结果</th></tr>
+    <tr><td>Step1 状态</td><td class="ok">完成</td></tr>
+    <tr><td>denko 总数</td><td>290（original 163 / extra 127）</td></tr>
+    <tr><td>skill 总数</td><td>290</td></tr>
+    <tr><td>Step1 validation</td><td class="ok">issue_count = 0</td></tr>
+    <tr><td>original checklist audit</td><td class="ok">issue_count = 0</td></tr>
+    <tr><td>extra checklist audit</td><td class="ok">issue_count = 0</td></tr>
+    <tr><td>recommendation prior audit</td><td class="info">288 checked / 2 info / 0 warn</td></tr>
+  </table>
+
+  <h2>保留的 Canonical 产物</h2>
+  <table>
+    <tr><th>文件</th><th>用途</th></tr>
+    <tr><td><code>data/step1_db/denko_facts.jsonl</code></td><td>最终 denko 事实表。</td></tr>
+    <tr><td><code>data/step1_db/skill_facts.jsonl</code></td><td>最终技能事实表。</td></tr>
+    <tr><td><code>data/step1_db/denko_index.json</code></td><td>ID / name / URL 索引。</td></tr>
+    <tr><td><code>data/step1_db/manifest.json</code></td><td>Step1 manifest 与统计摘要。</td></tr>
+    <tr><td><code>data/step1_db/validation.json</code></td><td>最终 validation 结果。</td></tr>
+    <tr><td><code>data/records/*_skill_facts.jsonl</code></td><td>按批次保留的中间技能事实，便于追溯 normalization。</td></tr>
+    <tr><td><code>data/agent_runs/recommendation_prior_full_audit.json</code></td><td>推荐页 prior 全量审计明细。</td></tr>
+  </table>
+
+  <h2>剩余 Info 项</h2>
+  <table>
+    <tr><th>denko</th><th>说明</th><th>处理</th></tr>
+    <tr><td><code>extra:118</code> リーガ・イマンタ</td><td>推荐页 prior 提到 <code>atk_buff</code>，详情页事实未确认。</td><td>不覆盖 DB。</td></tr>
+    <tr><td><code>extra:125</code> ベルナデット・ヴィルパント</td><td>推荐页 prior 提到 <code>def_buff</code>，详情页事实未确认。</td><td>不覆盖 DB。</td></tr>
+  </table>
+
+  <h2>本阶段固化的经验</h2>
+  <table>
+    <tr><th>类别</th><th>注意点</th></tr>
+    <tr><td>括号拆分</td><td>检测到 <code>(1)/(2)/(3)</code> 时，必须检查组件数量、首个 label、概率和值是否按 label 对齐。</td></tr>
+    <tr><td>合并单元格</td><td>属性经常后置，例如 <code>編成内の の数 ... cool属性でんこ</code>，需要 normalize 成可读条件。</td></tr>
+    <tr><td>对象/条件</td><td>区分 own team、opponent、active access、passive accessed，不能把对手属性挂到己方条件上。</td></tr>
+    <tr><td>负面效果</td><td>排除语句不是负收益效果；只有明确 <code>リンクボーナスが0</code> 才建立 <code>link_bonus_zero</code>。</td></tr>
+    <tr><td>CD</td><td>CD 缩短不是一律 <code>-5%</code>；必须看详情页原文和值字段。</td></tr>
+    <tr><td>文字编码</td><td>PowerShell 日文显示乱码时，不以终端显示为准；用 Python UTF-8 或直接 UTF-8 读取。</td></tr>
+  </table>
+</body>
+</html>
