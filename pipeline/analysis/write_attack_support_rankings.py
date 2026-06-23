@@ -60,6 +60,7 @@ SCOPE_LABELS = {
     "opponent_denko": "对手でんこ",
     "own_front_car": "自己队伍先头",
     "opponent_front_car": "对手队伍先头",
+    "accessing_denko": "访问中的でんこ",
 }
 
 
@@ -67,14 +68,31 @@ def read_jsonl(path: Path) -> list[dict[str, Any]]:
     return [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
 
 
-def denko_attributes() -> dict[str, str]:
-    attrs = {}
+def type_key(type_raw: str) -> str:
+    if "\u30b5\u30dd" in type_raw:
+        return "supporter"
+    if "\u30a2\u30bf" in type_raw:
+        return "attacker"
+    if "\u30c7\u30a3" in type_raw:
+        return "defender"
+    if "\u30c8\u30ea" in type_raw:
+        return "trickster"
+    return "unknown"
+
+
+def denko_metadata() -> dict[str, dict[str, str]]:
+    metadata = {}
     for row in read_jsonl(DENKO_PATH):
         identity = row.get("identity") or {}
         denko_id = identity.get("denko_id") or row.get("denko_id")
         if denko_id:
-            attrs[str(denko_id)] = str(identity.get("attribute") or "-")
-    return attrs
+            type_raw = str(identity.get("type") or "-")
+            metadata[str(denko_id)] = {
+                "attribute": str(identity.get("attribute") or "-"),
+                "type": type_raw,
+                "type_key": type_key(type_raw),
+            }
+    return metadata
 
 
 def esc(value: Any) -> str:
@@ -312,7 +330,7 @@ def support_judgement(component: dict[str, Any]) -> str:
     scope = set(component.get("target_scope") or [])
     condition = str(component.get("condition_raw") or "")
     filters = component.get("target_filters") or {}
-    if "team_all" in scope or filters.get("exclude_self"):
+    if "team_all" in scope or "accessing_denko" in scope or filters.get("exclude_self"):
         return "可辅助主攻"
     if "編成内" in condition and "自身の" not in condition:
         return "可辅助主攻"
@@ -331,7 +349,7 @@ def is_opponent_def_debuff(component: dict[str, Any]) -> bool:
     return bool(re.search(r"相手(?:のでんこ|でんこ)?のDEF|相手でんこのDEF", condition))
 
 
-def build_candidates(category: str, rows: list[dict[str, Any]], attrs: dict[str, str]) -> list[dict[str, Any]]:
+def build_candidates(category: str, rows: list[dict[str, Any]], metadata: dict[str, dict[str, str]]) -> list[dict[str, Any]]:
     wanted = CATEGORIES[category]["kinds"]
     candidates = []
     for row in rows:
@@ -352,6 +370,7 @@ def build_candidates(category: str, rows: list[dict[str, Any]], attrs: dict[str,
             support = "偏自用" if category == "self_atk_result" else support_judgement(component)
             group_id, group_label = activation_group(row, component)
             denko_id = str(row.get("denko_id") or "")
+            denko_meta = metadata.get(denko_id, {})
             target = "对手でんこ" if category == "def_debuff" else target_text(component)
             vu_only = is_vu_only(component, basis)
             candidates.append(
@@ -360,7 +379,9 @@ def build_candidates(category: str, rows: list[dict[str, Any]], attrs: dict[str,
                     "basis": basis,
                     "denko_id": denko_id,
                     "name": row.get("name"),
-                    "attribute": attrs.get(denko_id, "-"),
+                    "attribute": denko_meta.get("attribute", "-"),
+                    "type": denko_meta.get("type", "-"),
+                    "type_key": denko_meta.get("type_key", "unknown"),
                     "result_detail": result_detail,
                     "pool": row.get("pool"),
                     "kind": component.get("effect_kind"),
@@ -414,10 +435,11 @@ def render_table(category: str, candidates: list[dict[str, Any]]) -> str:
             body.append(
                 "\n".join(
                     [
-                        f'<tr data-support="{esc(item["support"])}" data-activation="{esc(item["activation_group"])}" data-attr="{esc(item["attribute"])}" data-vu-only="{str(item["vu_only"]).lower()}">',
+                        f'<tr data-support="{esc(item["support"])}" data-activation="{esc(item["activation_group"])}" data-attr="{esc(item["attribute"])}" data-type="{esc(item["type_key"])}" data-vu-only="{str(item["vu_only"]).lower()}">',
                         f'<td class="rank">{rank}</td>',
                         f"<td><strong>{esc(item['denko_id'])}</strong><br><a href=\"{esc(item['url'])}\">{esc(item['name'])}</a></td>",
                         f"<td>{esc(item['attribute'])}</td>",
+                        f"<td>{esc(item['type'])}</td>",
                         f"<td>{esc(EFFECT_LABELS.get(item['kind'], item['kind']))}<br><span class=\"muted\">{esc(item['component_id'])}</span></td>",
                         f"<td><strong>{esc(score)}</strong><br><span class=\"muted\">{esc(score_detail)}</span></td>",
                         f"<td>{esc(item['activation_label'])}<br><span class=\"muted\">{esc(item['activation_type'])}</span></td>",
@@ -440,6 +462,7 @@ def render_table(category: str, candidates: list[dict[str, Any]]) -> str:
             <th>排行</th>
             <th>でんこ</th>
             <th>属性</th>
+            <th>类型</th>
             <th>效果</th>
             <th>{esc(score_label)}</th>
             <th>发动方式</th>
@@ -465,11 +488,11 @@ def render_table(category: str, candidates: list[dict[str, Any]]) -> str:
 
 def main() -> None:
     rows = read_jsonl(SKILL_PATH)
-    attrs = denko_attributes()
+    metadata = denko_metadata()
     sections = []
     counts = {}
     for category in CATEGORIES:
-        candidates = build_candidates(category, rows, attrs)
+        candidates = build_candidates(category, rows, metadata)
         counts[category] = len(candidates)
         sections.append(render_table(category, candidates))
 
