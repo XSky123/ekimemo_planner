@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>駅メモ 分场景角色推荐表 v0</title>
+  <style>
+    :root {
+      --bg:#0f172a; --panel:#111827; --panel2:#172033; --text:#e5e7eb; --muted:#9ca3af;
+      --line:#2d3748; --accent:#60a5fa; --good:#22c55e; --warn:#f59e0b; --bad:#ef4444; --chip:#243244;
+      --table:#0b1220; --hover:#172554;
+    }
+    * { box-sizing: border-box; }
+    body { margin:0; background:linear-gradient(180deg,#0b1020,#111827); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans SC","Hiragino Sans","Yu Gothic",sa[...]
+    a { color:#93c5fd; text-decoration:none; } a:hover { text-decoration:underline; }
+    header { padding:28px 24px 18px; border-bottom:1px solid var(--line); background:rgba(15,23,42,.86); position:sticky; top:0; z-index:10; backdrop-filter: blur(8px); }
+    h1 { margin:0 0 8px; font-size:24px; letter-spacing:.02em; }
+    .sub { color:var(--muted); line-height:1.55; max-width:1100px; }
+    .wrap { padding:18px 24px 36px; max-width:1600px; margin:0 auto; }
+    .cards { display:grid; grid-template-columns:repeat(4,minmax(160px,1fr)); gap:12px; margin:16px 0; }
+    .card { background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:12px 14px; }
+    .card .num { font-size:22px; font-weight:700; } .card .label { color:var(--muted); font-size:12px; margin-top:4px; }
+    .controls { display:grid; grid-template-columns: 2fr repeat(4, minmax(130px,1fr)); gap:10px; margin:16px 0; align-items:center; }
+    input, select, button { background:#0b1220; color:var(--text); border:1px solid var(--line); border-radius:10px; padding:9px 10px; font-size:14px; }
+    button { cursor:pointer; } button:hover { border-color:var(--accent); }
+    .legend { display:flex; flex-wrap:wrap; gap:8px; margin:10px 0 16px; color:var(--muted); font-size:13px; }
+    .pill { background:var(--chip); border:1px solid var(--line); border-radius:999px; padding:4px 8px; white-space:nowrap; }
+    .table-wrap { overflow:auto; background:var(--table); border:1px solid var(--line); border-radius:16px; }
+    table { width:100%; border-collapse:separate; border-spacing:0; min-width:1500px; }
+    thead th { position:sticky; top:112px; background:#111827; z-index:4; border-bottom:1px solid var(--line); padding:10px 8px; font-size:12px; text-align:left; white-space:nowrap; cursor:pointer; }
+    tbody td { border-bottom:1px solid rgba(45,55,72,.75); padding:9px 8px; vertical-align:top; font-size:13px; line-height:1.45; }
+    tbody tr:hover { background:rgba(30,64,175,.18); }
+    .name { font-weight:700; white-space:nowrap; } .meta { color:var(--muted); font-size:12px; }
+    .score { font-weight:700; text-align:center; border-radius:6px; display:inline-block; min-width:28px; padding:2px 4px; }
+    .r-◎ { background:rgba(34,197,94,.18); color:#86efac; border:1px solid rgba(34,197,94,.45); }
+    .r-○ { background:rgba(96,165,250,.15); color:#bfdbfe; border:1px solid rgba(96,165,250,.45); }
+    .r-△ { background:rgba(245,158,11,.13); color:#fcd34d; border:1px solid rgba(245,158,11,.45); }
+    .r-※ { background:rgba(168,85,247,.18); color:#d8b4fe; border:1px solid rgba(168,85,247,.48); }
+    .r-× { background:rgba(239,68,68,.12); color:#fca5a5; border:1px solid rgba(239,68,68,.35); }
+    .tag { display:inline-block; background:#1f2937; border:1px solid #374151; color:#d1d5db; border-radius:999px; padding:2px 6px; margin:1px 2px 1px 0; font-size:11px; white-space:nowrap; }
+    .tag.attr-heat { color:#fecaca; border-color:#7f1d1d; } .tag.attr-cool { color:#bfdbfe; border-color:#1e3a8a; } .tag.attr-eco { color:#bbf7d0; border-color:#14532d; }
+    .review { color:#fbbf24; font-weight:600; }
+    .muted { color:var(--muted); }
+    details { margin:16px 0; background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:10px 14px; }
+    summary { cursor:pointer; font-weight:700; }
+    .note { color:var(--muted); line-height:1.65; }
+    .hidden { display:none !important; }
+    @media(max-width:900px) { .cards { grid-template-columns:repeat(2,1fr); } .controls { grid-template-columns:1fr 1fr; } header { position:static; } thead th { top:0; } }
+  </style>
+</head>
+<body>
+<header>
+  <h1>駅メモ 分场景角色推荐表 v0</h1>
+  <div class="sub">纯角色自然评价，不结合任何个人持有等级。以 <b>PT/スコア</b> 为最终目标，把打站、守站、新駅、リンク循环、育成都当作手段。评价�[...]
+</header>
+<div class="wrap">
+  <div class="cards" id="statsCards"></div>
+  <details open>
+    <summary>评价口径 / Rating guide</summary>
+    <div class="note">
+      记号沿用 wiki 推荐页风格：<b>◎</b> 核心推荐，<b>○</b> 推荐，<b>△</b> 有条件，<b>※</b> 特化/条件重，<b>×</b> 当前场景不推荐。<br>
+      场景列：打站/初伤、新駅/远征PT、守站保持、リンク循环PT、育成效率、低操作日常。<br>
+      自动评价会把属性统一、时间/天气、站点、リンク前提、相手依存等条件计入限制成本；条件不成立时实战收益应按 0 处理。
+    </div>
+  </details>
+
+  <div class="controls">
+    <input id="q" type="search" placeholder="搜索：名字 / No / 技能 / 效果 / 推荐语 / 限制…" />
+    <select id="pool"><option value="">全部池</option><option>Original</option><option>EX</option></select>
+    <select id="attr"><option value="">全部属性</option><option>heat</option><option>cool</option><option>eco</option></select>
+    <select id="type"><option value="">全部タイプ</option><option>アタッカー</option><option>ディフェンダー</option><option>サポーター</option><option>トリックスター</opti[...]
+    <select id="scene"><option value="">按场景筛选：全部</option><option value="attack">打站/初伤 ≥ ○</option><option value="newTrip">新駅/远征PT ≥ ○</option><option value="def[...]
+  </div>
+  <div class="controls" style="grid-template-columns:repeat(6,minmax(120px,1fr));">
+    <select id="overall"><option value="">综合：全部</option><option value="◎">综合 ◎</option><option value="○">综合 ○以上</option><option value="△">综合 △以上</option><opti[...]
+    <select id="effect"><option value="">效果：全部</option></select>
+    <select id="restriction"><option value="">限制：全部</option></select>
+    <select id="review"><option value="">复核状态：全部</option><option value="needs">needs_review</option><option value="ok">低风险/已填充</option></select>
+    <button id="reset">重置筛选</button>
+    <button id="downloadCsv">下载CSV</button>
+  </div>
+  <div class="legend">
+    <span class="pill">当前显示 <b id="count">0</b> / <span id="total">0</span></span>
+    <span class="pill"><span class="score r-◎">◎</span> 核心</span>
+    <span class="pill"><span class="score r-○">○</span> 推荐</span>
+    <span class="pill"><span class="score r-△">△</span> 有条件</span>
+    <span class="pill"><span class="score r-※">※</span> 特化</span>
+    <span class="pill"><span class="score r-×">×</span> 不适合该场景</span>
+  </div>
+
+  <div class="table-wrap">
+    <table id="tbl">
+      <thead>
+        <tr>
+          <th data-sort="sortNo">No</th><th data-sort="name">でんこ</th><th data-sort="pool">池</th><th data-sort="attribute">属性</th><th data-sort="type">タイプ</th><th data-sort="skill">��[...]
+          <th data-sort="overall">综合</th><th data-sort="attack">打站/初伤</th><th data-sort="newTrip">新駅/远征PT</th><th data-sort="defense">守站保持</th><th data-sort="linkCycle">リ[...]
+          <th data-sort="primary">主场景</th><th>效果标签</th><th>主要限制</th><th>Lv50/技能メモ</th><th>推荐语</th><th data-sort="needsReview">复核</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+</div>
+<script id="rows-data" type="application/json">[{"denko_id":"original:001","sortNo":1,"no":"No.1","name":"黄陽セリア","pool":"Original","attribute":"eco","type":"サポーター","skill":"検測�[...]
+<script id="stats-data" type="application/json">{"total":290,"by_pool":{"Original":163,"EX":127},"by_attr":{"eco":87,"cool":103,"heat":100},"by_type":{"サポーター":118,"アタッカー":36,"デ��[...]
+<script>
+const rows = JSON.parse(document.getElementById('rows-data').textContent);
+const stats = JSON.parse(document.getElementById('stats-data').textContent);
+const tbody = document.getElementById('tbody');
+let sortKey = 'overall', sortDir = -1;
+const ratingRank = {'×':0,'△':1,'※':2.5,'○':3,'◎':4};
+const sceneKeys = ['attack','newTrip','defense','linkCycle','growth','lowOp'];
+function esc(s) { return String(s??'').replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+function scoreSpan(label) { return `<span class="score r-${label}">${label}</span>`; }
+function scoreCell(r,k) { return `<td data-num="${r.scores[k]}">${scoreSpan(r.ratings[k])}</td>`; }
+function renderStats() {
+  const cards=[['角色数', stats.total],['Original', stats.by_pool.Original||0],['EX', stats.by_pool.EX||0],['DB validation issue', stats.validation_issue_count]];
+  document.getElementById('statsCards').innerHTML = cards.map(c=>`<div class="card"><div class="num">${c[1]}</div><div class="label">${c[0]}</div></div>`).join('');
+  document.getElementById('total').textContent=rows.length;
+}
+function initFilters() {
+  const effects = new Set(), restrictions = new Set();
+  rows.forEach(r=>{ r.effects.forEach(e=>effects.add(e)); (r.condition_tags||[]).forEach(t=>restrictions.add(t)); });
+  const ef=document.getElementById('effect'); [...effects].sort().forEach(e=>ef.insertAdjacentHTML('beforeend',`<option>${esc(e)}</option>`));
+  const rf=document.getElementById('restriction'); [...restrictions].sort().forEach(e=>rf.insertAdjacentHTML('beforeend',`<option>${esc(e)}</option>`));
+}
+function passOverall(r, val) {
+  if(!val) return true;
+  const lab=r.ratings.overall;
+  if(val==='※') return lab==='※';
+  if(val==='×') return lab==='×';
+  return ratingRank[lab] >= ratingRank[val];
+}
+function filtered() {
+  const q=document.getElementById('q').value.trim().toLowerCase();
+  const pool=document.getElementById('pool').value;
+  const attr=document.getElementById('attr').value;
+  const type=document.getElementById('type').value;
+  const scene=document.getElementById('scene').value;
+  const overall=document.getElementById('overall').value;
+  const effect=document.getElementById('effect').value;
+  const restriction=document.getElementById('restriction').value;
+  const review=document.getElementById('review').value;
+  return rows.filter(r=>{
+    if(pool && r.pool!==pool) return false;
+    if(attr && r.attribute!==attr) return false;
+    if(type && r.type!==type) return false;
+    if(scene && ratingRank[r.ratings[scene]] < 3) return false;
+    if(!passOverall(r, overall)) return false;
+    if(effect && !r.effects.includes(effect)) return false;
+    if(restriction && !(r.condition_tags||[]).includes(restriction)) return false;
+    if(review==='needs' && !r.needsReview) return false;
+    if(review==='ok' && r.needsReview) return false;
+    if(q) {
+      const blob=[r.no,r.name,r.pool,r.attribute,r.type,r.skill,r.primary,r.effects.join(' '),r.restrictions,r.lv50,r.recommendation,r.denko_id].join(' ').toLowerCase();
+      if(!blob.includes(q)) return false;
+    }
+    return true;
+  });
+}
+function sortRows(arr) {
+  return arr.sort((a,b)=>{
+    let av,bv;
+    if(sceneKeys.includes(sortKey) || sortKey==='overall') { av=a.scores[sortKey]; bv=b.scores[sortKey]; }
+    else if(sortKey==='needsReview') { av=a.needsReview?1:0; bv=b.needsReview?1:0; }
+    else { av=a[sortKey]; bv=b[sortKey]; }
+    if(typeof av==='string') av=av.toLowerCase(); if(typeof bv==='string') bv=bv.toLowerCase();
+    if(av<bv) return -1*sortDir; if(av>bv) return 1*sortDir; return (a.sortNo-b.sortNo);
+  });
+}
+function render() {
+  const arr=sortRows(filtered());
+  document.getElementById('count').textContent=arr.length;
+  tbody.innerHTML=arr.map(r=>`
+    <tr>
+      <td><span class="meta">${esc(r.no)}</span></td>
+      <td><div class="name"><a href="${esc(r.detail_url)}" target="_blank" rel="noopener">${esc(r.name)}</a></div><div class="meta">${esc(r.denko_id)}</div></td>
+      <td>${esc(r.pool)}</td>
+      <td><span class="tag attr-${esc(r.attribute)}">${esc(r.attribute)}</span></td>
+      <td>${esc(r.type)}</td>
+      <td>${esc(r.skill)}</td>
+      ${scoreCell(r,'overall')}${scoreCell(r,'attack')}${scoreCell(r,'newTrip')}${scoreCell(r,'defense')}${scoreCell(r,'linkCycle')}${scoreCell(r,'growth')}${scoreCell(r,'lowOp')}
+      <td>${esc(r.primary)}</td>
+      <td>${r.effects.map(e=>`<span class="tag">${esc(e)}</span>`).join('')}</td>
+      <td>${esc(r.restrictions)}</td>
+      <td class="muted">${esc(r.lv50)}</td>
+      <td>${esc(r.recommendation)}</td>
+      <td>${r.needsReview?'<span class="review">needs_review</span>':'OK-ish'}</td>
+    </tr>`).join('');
+}
+function downloadCSV() { window.location.href='ekimemo_scene_recommendations.csv'; }
+renderStats(); initFilters(); render();
+document.querySelectorAll('input,select').forEach(el=>el.addEventListener('input', render));
+document.getElementById('reset').addEventListener('click',()=>{ ['q','pool','attr','type','scene','overall','effect','restriction','review'].forEach(id=>document.getElementById(id).value=''); render()[...]
+document.getElementById('downloadCsv').addEventListener('click', downloadCSV);
+document.querySelectorAll('thead th[data-sort]').forEach(th=>th.addEventListener('click',()=>{ const k=th.dataset.sort; if(sortKey===k) sortDir*=-1; else { sortKey=k; sortDir=(sceneKeys.includes(k)||k[...]
+</script>
+</body>
+</html>
