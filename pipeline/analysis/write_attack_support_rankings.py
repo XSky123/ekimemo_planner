@@ -28,7 +28,7 @@ CATEGORIES = {
     },
     "def_debuff": {
         "title": "降低对手DEF",
-        "description": "看谁能让对手 DEF 下降。排序用下降幅度，例如 DEF -35% 记作 35%。",
+        "description": "只看能让对手 DEF 下降的技能。排序用下降幅度，例如 DEF -35% 记作 35%。自降DEF、队友降DEF不列入这个维度。",
         "kinds": {"def_debuff"},
         "score_label": "DEF下降",
     },
@@ -59,6 +59,16 @@ SCOPE_LABELS = {
 
 def read_jsonl(path: Path) -> list[dict[str, Any]]:
     return [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
+
+
+def denko_attributes() -> dict[str, str]:
+    attrs = {}
+    for row in read_jsonl(DENKO_PATH):
+        identity = row.get("identity") or {}
+        denko_id = identity.get("denko_id") or row.get("denko_id")
+        if denko_id:
+            attrs[str(denko_id)] = str(identity.get("attribute") or "-")
+    return attrs
 
 
 def esc(value: Any) -> str:
@@ -259,27 +269,40 @@ def row_note(component: dict[str, Any]) -> str:
     return "；".join(notes) if notes else "-"
 
 
-def build_candidates(category: str, rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
+def is_opponent_def_debuff(component: dict[str, Any]) -> bool:
+    scope = set(component.get("target_scope") or [])
+    condition = str(component.get("condition_raw") or "")
+    if "opponent_denko" in scope:
+        return True
+    return bool(re.search(r"相手(?:のでんこ|でんこ)?のDEF|相手でんこのDEF", condition))
+
+
+def build_candidates(category: str, rows: list[dict[str, Any]], attrs: dict[str, str]) -> list[dict[str, Any]]:
     wanted = CATEGORIES[category]["kinds"]
     candidates = []
     for row in rows:
         for component in row.get("skill_components") or []:
             if component.get("effect_kind") not in wanted:
                 continue
+            if category == "def_debuff" and not is_opponent_def_debuff(component):
+                continue
             score, basis = primary_score(category, component)
             support = support_judgement(component)
             group_id, group_label = activation_group(row, component)
+            denko_id = str(row.get("denko_id") or "")
+            target = "对手でんこ" if category == "def_debuff" else target_text(component)
             candidates.append(
                 {
                     "score": score,
                     "basis": basis,
-                    "denko_id": row.get("denko_id"),
+                    "denko_id": denko_id,
                     "name": row.get("name"),
+                    "attribute": attrs.get(denko_id, "-"),
                     "pool": row.get("pool"),
                     "kind": component.get("effect_kind"),
                     "component_id": component.get("component_id"),
                     "condition": component.get("condition_raw") or "",
-                    "target": target_text(component),
+                    "target": target,
                     "filters": compact_filter_text(component),
                     "support": support,
                     "activation_group": group_id,
@@ -287,7 +310,6 @@ def build_candidates(category: str, rows: list[dict[str, Any]]) -> list[dict[str
                     "activation_type": component.get("activation_type") or row.get("activation_type") or "",
                     "lv30": value_text(component, "30"),
                     "lv50": value_text(component, "50"),
-                    "note": row_note(component),
                     "url": row.get("detail_url") or "",
                 }
             )
@@ -319,6 +341,7 @@ def render_table(category: str, candidates: list[dict[str, Any]]) -> str:
                         f'<tr data-support="{esc(item["support"])}" data-activation="{esc(item["activation_group"])}">',
                         f"<td>{rank}</td>",
                         f"<td><strong>{esc(item['denko_id'])}</strong><br><a href=\"{esc(item['url'])}\">{esc(item['name'])}</a></td>",
+                        f"<td>{esc(item['attribute'])}</td>",
                         f"<td>{esc(EFFECT_LABELS.get(item['kind'], item['kind']))}<br><span class=\"muted\">{esc(item['component_id'])}</span></td>",
                         f"<td><strong>{esc(score)}</strong><br><span class=\"muted\">{esc(item['basis'])}</span></td>",
                         f"<td>{esc(item['activation_label'])}<br><span class=\"muted\">{esc(item['activation_type'])}</span></td>",
@@ -327,7 +350,6 @@ def render_table(category: str, candidates: list[dict[str, Any]]) -> str:
                         f"<td>{esc(item['condition'])}</td>",
                         f"<td>{esc(item['lv30'])}</td>",
                         f"<td>{esc(item['lv50'])}</td>",
-                        f"<td>{esc(item['note'])}</td>",
                         "</tr>",
                     ]
                 )
@@ -341,6 +363,7 @@ def render_table(category: str, candidates: list[dict[str, Any]]) -> str:
           <tr>
             <th>排行</th>
             <th>でんこ</th>
+            <th>属性</th>
             <th>效果</th>
             <th>{esc(score_label)}</th>
             <th>发动方式</th>
@@ -349,7 +372,6 @@ def render_table(category: str, candidates: list[dict[str, Any]]) -> str:
             <th>触发与条件</th>
             <th>Lv30</th>
             <th>Lv50</th>
-            <th>备注</th>
           </tr>
         </thead>
         <tbody>{''.join(body)}</tbody>
@@ -367,10 +389,11 @@ def render_table(category: str, candidates: list[dict[str, Any]]) -> str:
 
 def main() -> None:
     rows = read_jsonl(SKILL_PATH)
+    attrs = denko_attributes()
     sections = []
     counts = {}
     for category in CATEGORIES:
-        candidates = build_candidates(category, rows)
+        candidates = build_candidates(category, rows, attrs)
         counts[category] = len(candidates)
         sections.append(render_table(category, candidates))
 
