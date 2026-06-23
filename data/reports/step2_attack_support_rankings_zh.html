@@ -1,0 +1,1998 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>Ekimemo Step2 攻击辅助排行</title>
+  <style>
+    body { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; margin: 24px; color: #1f2328; line-height: 1.45; }
+    h1 { margin-bottom: 6px; }
+    h2 { margin-top: 30px; border-bottom: 1px solid #d8dee4; padding-bottom: 6px; }
+    .muted { color: #68707c; font-size: 12px; }
+    .toolbar { position: sticky; top: 0; z-index: 2; background: white; border-bottom: 1px solid #d8dee4; padding: 12px 0; display: flex; gap: 8px; flex-wrap: wrap; }
+    input, select { padding: 7px 9px; border: 1px solid #c9d1d9; border-radius: 4px; font-size: 14px; }
+    table { border-collapse: collapse; width: 100%; font-size: 13px; margin-top: 12px; }
+    th, td { border: 1px solid #d8dee4; padding: 7px 8px; vertical-align: top; }
+    th { background: #f6f8fa; position: sticky; top: 53px; z-index: 1; }
+    td:nth-child(7) { min-width: 300px; }
+    a { color: #0969da; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <h1>Ekimemo Step2 攻击辅助排行</h1>
+  <p>从 Step1 DB 自动整理。三类分别看 ATK百分比、固定伤害、降低对手DEF。排序先看“可辅助主攻”，再按 Lv50 实用值，其次 Lv30、VU/其他等级。偏自用技能仍保留在表内，方便比较主攻自身能力。</p>
+  <div class="toolbar">
+    <input id="q" placeholder="搜索ID、名字、条件、效果" size="36">
+    <select id="support">
+      <option value="">全部</option>
+      <option value="可辅助主攻">只看可辅助主攻</option>
+      <option value="偏自用">只看偏自用</option>
+      <option value="看触发者">只看触发者</option>
+    </select>
+    <span class="muted">ATK 126 / 固定伤害 29 / DEF下降 16</span>
+  </div>
+  
+    <section id="atk_percent">
+      <h2>ATK百分比增加</h2>
+      <p>看谁能给主攻或自己提供 ATK +%。默认按 Lv50 的最大百分比排序。</p>
+      <table>
+        <thead>
+          <tr>
+            <th>排行</th>
+            <th>でんこ</th>
+            <th>效果</th>
+            <th>ATK增加</th>
+            <th>辅助判断</th>
+            <th>对象/限制</th>
+            <th>触发与条件</th>
+            <th>Lv30</th>
+            <th>Lv50</th>
+            <th>备注</th>
+          </tr>
+        </thead>
+        <tbody><tr data-support="可辅助主攻">
+<td>1</td>
+<td><strong>extra:067</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E3%82%A8%E3%83%89%E3%82%A6%E3%82%A3%E3%83%8A%E3%83%BB%E3%83%97%E3%83%AC%E3%83%88%E3%83%AA%E3%82%A2">エドウィナ・プレトリア</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_1</span></td>
+<td><strong>45</strong><br><span class="muted">Lv50</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">主动访问；队伍全cool；cool对象</span></td>
+<td>発動条件：編成内がすべて cool属性 (1)編成内のATK増加</td>
+<td>ATK +40%，発動率 100%，持续 11分，CD 1時間39分</td>
+<td>ATK +45%，発動率 100%，持续 11分，CD 1時間39分</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>2</td>
+<td><strong>extra:103</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E3%82%A2%E3%82%A4%E3%83%A9%E3%83%BB%E3%83%92%E3%83%A5%E3%83%BC%E3%82%B9%E3%83%88%E3%83%B3">アイラ・ヒューストン</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_1</span></td>
+<td><strong>44</strong><br><span class="muted">Lv50</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">-</span></td>
+<td>(1)編成内の「マスターにおまかせ」のスキルを発動しているでんこの数に応じてATK増加(上限4体)</td>
+<td>ATK +9%～+36%，発動率 100%，持续 30分，CD 2時間30分</td>
+<td>ATK +11%～+44%，発動率 100%，持续 30分，CD 2時間30分</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>3</td>
+<td><strong>extra:010</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E5%A4%95%E9%99%BD%E3%82%B1%E4%B8%98%E3%82%A6%E3%82%B7%E3%82%AA">夕陽ケ丘ウシオ</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_1</span></td>
+<td><strong>35</strong><br><span class="muted">Lv50</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">不含自己</span></td>
+<td>(1)ATK上昇[自身を除く先頭から1両目]</td>
+<td>ATK +32%，発動率 100%，持续 5分，CD 8時間</td>
+<td>ATK +35%，発動率 100%，持续 5分，CD 8時間</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>4</td>
+<td><strong>original:096</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E8%8D%BB%E7%AA%AA%E3%82%A2%E3%83%A4">荻窪アヤ</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_1</span></td>
+<td><strong>34</strong><br><span class="muted">Lv50</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">不含自己</span></td>
+<td>(1)相手編成内の「いつでもアクティブ」スキル持ちでんこ数により自身以外のATK増加</td>
+<td>ATK 0%～+27%，発動率 100%，持续 40分，CD 2時間20分</td>
+<td>ATK 0%～+34%，発動率 100%，持续 45分，CD 2時間15分</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>5</td>
+<td><strong>original:162</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E7%A6%8F%E4%BD%8F%E3%81%BF%E3%81%9E%E3%82%8C">福住みぞれ</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_1</span></td>
+<td><strong>28</strong><br><span class="muted">Lv50</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">主动访问</span></td>
+<td>アクセスした駅の気温に応じて編成内のATK・DEFを増減 (1)30℃以上</td>
+<td>ATK +24%，発動率 100%，持续 25分，CD 2時間35分</td>
+<td>ATK +28%，発動率 100%，持续 30分，CD 2時間30分</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>6</td>
+<td><strong>original:005</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E9%BB%84%E9%99%BD%E3%83%AC%E3%82%A4%E3%82%AB">黄陽レイカ</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_1</span></td>
+<td><strong>25</strong><br><span class="muted">Lv50</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">-</span></td>
+<td>(1)編成内のでんこ全員のATKが増加する</td>
+<td>ATK +20%，発動率 100%，持续 15分，CD 1時間30分</td>
+<td>ATK +25%，発動率 100%，持续 15分，CD 1時間30分</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>7</td>
+<td><strong>original:136</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E4%BD%86%E9%A6%AC%E3%81%B2%E3%82%87%E3%81%86%E3%81%93">但馬ひょうこ</a></td>
+<td>ATK增加<br><span class="muted">atk_buff</span></td>
+<td><strong>23</strong><br><span class="muted">Lv50</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">link时</span></td>
+<td>発動条件：編成内の誰かがリンクした / 効果：編成内のでんこのATKとDEFが増加 効果発動したうえで編成内でんこのHPが0になった場合クールタイムに</td>
+<td>ATK +20%，発動率 100%，持续 20分，CD 1時間30分</td>
+<td>ATK +23%，発動率 100%，持续 20分，CD 1時間30分</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>8</td>
+<td><strong>extra:051</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E3%82%A8%E3%83%AC%E3%83%8A%E3%83%BB%E3%82%AA%E3%83%AA%E3%83%A3%E3%83%B3%E3%82%BF%E3%82%A4%E3%82%BF%E3%83%B3%E3%83%9C">エレナ・オリャンタイタンボ</a></td>
+<td>ATK增加<br><span class="muted">atk_buff</span></td>
+<td><strong>22</strong><br><span class="muted">Lv50</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">主动访问；队伍全cool；cool对象；不含自己</span></td>
+<td>編成全員がcool属性の時、自身以外のATK増加 編成内のでんこがアクセスしてリンクできなかった時クールタイム入り</td>
+<td>ATK +18%，発動率 100%，CD 40分</td>
+<td>ATK +22%，発動率 100%，CD 35分</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>9</td>
+<td><strong>extra:022</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E3%83%AC%E3%82%A4%E3%83%A9%E3%83%BB%E3%82%B9%E3%82%B3%E3%83%83%E3%83%84%E3%83%9E%E3%83%B3">レイラ・スコッツマン</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_2</span></td>
+<td><strong>21</strong><br><span class="muted">Lv50</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">-</span></td>
+<td>(2)クールダウン状態のでんこのATK上昇 時限制のスキルを発動しているでんこが編成内にいない場合は発動不可</td>
+<td>ATK +19%，持续 30分，CD 2時間10分</td>
+<td>ATK +21%，持续 30分，CD 2時間</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>10</td>
+<td><strong>original:126</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E7%99%BD%E5%85%8E%E3%82%82%E3%82%82%E3%81%AA">白兎ももな</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_2</span></td>
+<td><strong>19</strong><br><span class="muted">Lv50</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">按对手队伍eco数量上限5体</span></td>
+<td>(2)相手の編成のeco属性のでんこの数(上限5体)に応じてATK増加</td>
+<td>ATK 0%～+17%，発動率 100%，持续 45分，CD 2時間15分</td>
+<td>ATK 0%～+19%，発動率 100%，持续 45分，CD 2時間15分</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>11</td>
+<td><strong>original:134</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E7%A6%8F%E5%88%86%E3%81%8A%E3%81%A8%E3%81%AF">福分おとは</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_1</span></td>
+<td><strong>19</strong><br><span class="muted">Lv50</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">-</span></td>
+<td>(1)残り効果時間(上限20分)に応じて編成内ATK増加</td>
+<td>ATK +1%～+17%，発動率 100%，持续 30分，CD 1時間30分</td>
+<td>ATK +1%～+19%，発動率 100%，持续 30分，CD 1時間30分</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>12</td>
+<td><strong>original:118</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E5%BE%B3%E5%B3%B6%E3%82%8B%E3%81%A8">徳島ると</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_2</span></td>
+<td><strong>18</strong><br><span class="muted">Lv50</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">-</span></td>
+<td>(2)編成内のでんこがリンクする度に追加でATK増加</td>
+<td>ATK 0%～+16%，発動率 100%，持续 33分，CD 3時間12分</td>
+<td>ATK 0%～+18%，発動率 100%，持续 36分，CD 3時間9分</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>13</td>
+<td><strong>extra:015</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E5%AE%89%E9%80%94%E3%81%B5%E3%81%9F%E3%81%B0">安途ふたば</a></td>
+<td>ATK增加<br><span class="muted">atk_buff</span></td>
+<td><strong>18</strong><br><span class="muted">Lv50</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">eco对象</span></td>
+<td>自身がリンク中、編成内のeco属性でんこのATKもしくはDEFが増加</td>
+<td>ATK +15%，発動率 100%</td>
+<td>ATK +18%，発動率 100%</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>14</td>
+<td><strong>original:151</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E7%A6%8F%E7%A5%9E%E3%81%82%E3%81%8A%E3%81%AD">福神あおね</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_2</span></td>
+<td><strong>17.5</strong><br><span class="muted">Lv50</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">队伍全cool；cool对象</span></td>
+<td>(2)発動中の合計与ダメージ値に応じて追加でATK増加</td>
+<td>ATK 0%～+15%，発動率 100%，持续 33分，CD 2時間27分</td>
+<td>ATK 0%～+17.5%，発動率 100%，持续 36分，CD 2時間24分</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>15</td>
+<td><strong>extra:042</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E3%82%A2%E3%83%9F%E3%83%BC%E3%83%A9%E3%83%BB%E3%83%A9%E3%83%A0%E3%82%BB%E3%82%B9">アミーラ・ラムセス</a></td>
+<td>ATK增加<br><span class="muted">atk_buff</span></td>
+<td><strong>17.5</strong><br><span class="muted">Lv50</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">队伍全heat；heat对象</span></td>
+<td>heat属性のみ編成時に誰かがリンクする度に編成内のATKとDEF増加 リンク上限5回</td>
+<td>ATK 0%～+15%，発動率 100%，持续 30分，CD 3時間15分</td>
+<td>ATK 0%～+17.5%，発動率 100%，持续 30分，CD 3時間15分</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>16</td>
+<td><strong>extra:050</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E3%83%AB%E3%82%A4%E3%82%B6%E3%83%BB%E3%83%99%E3%83%AD%E3%83%BB%E3%82%AA%E3%83%AA%E3%82%BE%E3%83%B3%E3%83%86">ルイザ・ベロ・オリゾンテ</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_1</span></td>
+<td><strong>17.5</strong><br><span class="muted">Lv50</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">-</span></td>
+<td>編成内の属性数が２つで発動 (1)自身のATK増加</td>
+<td>ATK +15%，発動率 100%</td>
+<td>ATK +17.5%，発動率 100%</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>17</td>
+<td><strong>original:092</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E8%AB%B8%E6%98%9F%E3%81%99%E3%81%B0%E3%82%8B">諸星すばる</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_1</span></td>
+<td><strong>16</strong><br><span class="muted">Lv50</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">不含自己</span></td>
+<td>(1)自身を除く先頭車両のでんこのタイプに応じてATK・DEF増加</td>
+<td>ATK +14%，発動率 34%</td>
+<td>ATK +16%，発動率 38%</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>18</td>
+<td><strong>extra:125</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E3%83%99%E3%83%AB%E3%83%8A%E3%83%87%E3%83%83%E3%83%88%E3%83%BB%E3%83%B4%E3%82%A3%E3%83%AB%E3%83%91%E3%83%B3%E3%83%88">ベルナデット・ヴィルパント</a></td>
+<td>ATK增加<br><span class="muted">atk_buff</span></td>
+<td><strong>15.5</strong><br><span class="muted">Lv50</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">对象属性 heat/cool/eco</span></td>
+<td>発動条件：編成内にheat・cool・eco属性のみ、かつ1～3両目の属性が全て異なる / 効果：編成内のATK増加</td>
+<td>ATK +13%，発動率 100%，持续 40分，CD 2時間20分</td>
+<td>ATK +15.5%，発動率 100%，持续 45分，CD 2時間15分</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>19</td>
+<td><strong>original:045</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E9%98%BF%E4%BD%90%E3%83%B6%E8%B0%B7%E3%82%AB%E3%83%8E%E3%83%B3">阿佐ヶ谷カノン</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_1</span></td>
+<td><strong>15</strong><br><span class="muted">Lv50</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">不含自己</span></td>
+<td>(1)自身を除く先頭から1両目のATK増加</td>
+<td>ATK +15%，発動率 100%，持续 50分，CD 2時間</td>
+<td>ATK +15%，発動率 100%，持续 1時間，CD 2時間</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>20</td>
+<td><strong>original:071</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E5%A4%A7%E9%9B%84%E5%B1%B1%E3%82%8B%E3%82%8A">大雄山るり</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_1</span></td>
+<td><strong>14</strong><br><span class="muted">Lv50</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">-</span></td>
+<td>(1)平日の07:00～10:00、17:00～20:00に編成内のすべてのでんこのATK上昇</td>
+<td>ATK +12%，発動率 70%</td>
+<td>ATK +14%，発動率 75%</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>21</td>
+<td><strong>original:079</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E5%94%90%E6%B4%A5%E3%82%B7%E3%82%BA">唐津シズ</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_1</span></td>
+<td><strong>14</strong><br><span class="muted">Lv50</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">队伍全heat；heat对象</span></td>
+<td>(1)自編成のでんこが全てheat属性のとき、編成内のheat属性でんこのATKが増加</td>
+<td>ATK +12%，発動率 100%，持续 30分，CD 2時間30分</td>
+<td>ATK +14%，発動率 100%，持续 30分，CD 2時間30分</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>22</td>
+<td><strong>original:122</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E5%B0%8F%E6%B5%9C%E3%81%BE%E3%81%84">小浜まい</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_1</span></td>
+<td><strong>14</strong><br><span class="muted">Lv50</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">eco对象</span></td>
+<td>(1)編成内eco属性でんこのATK増加</td>
+<td>ATK +12%，発動率 100%，持续 45分，CD 2時間15分</td>
+<td>ATK +14%，発動率 100%，持续 45分，CD 2時間15分</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>23</td>
+<td><strong>original:123</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E8%AB%AB%E6%97%A9%E3%81%A1%E3%81%A9%E3%82%8A">諫早ちどり</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_2</span></td>
+<td><strong>14</strong><br><span class="muted">Lv50</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">heat对象</span></td>
+<td>(2)発動中の最大与ダメージ値に応じて追加でATK増加</td>
+<td>ATK 0%～+12%，発動率 100%，持续 40分，CD 2時間20分</td>
+<td>ATK 0%～+14%，発動率 100%，持续 45分，CD 2時間15分</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>24</td>
+<td><strong>original:126</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E7%99%BD%E5%85%8E%E3%82%82%E3%82%82%E3%81%AA">白兎ももな</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_1</span></td>
+<td><strong>14</strong><br><span class="muted">Lv50</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">按对手队伍eco数量上限5体</span></td>
+<td>(1)編成内のeco属性のでんこの数(上限5体)に応じてATK増加</td>
+<td>ATK +1%～+12%，発動率 100%，持续 45分，CD 2時間15分</td>
+<td>ATK +1%～+14%，発動率 100%，持续 45分，CD 2時間15分</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>25</td>
+<td><strong>original:151</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E7%A6%8F%E7%A5%9E%E3%81%82%E3%81%8A%E3%81%AD">福神あおね</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_1</span></td>
+<td><strong>14</strong><br><span class="muted">Lv50</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">队伍全cool；cool对象</span></td>
+<td>(1)自編成のでんこが全てcool属性の場合、編成内全員のATK増加</td>
+<td>ATK +12%，発動率 100%，持续 33分，CD 2時間27分</td>
+<td>ATK +14%，発動率 100%，持续 36分，CD 2時間24分</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>26</td>
+<td><strong>original:162</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E7%A6%8F%E4%BD%8F%E3%81%BF%E3%81%9E%E3%82%8C">福住みぞれ</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_2</span></td>
+<td><strong>14</strong><br><span class="muted">Lv50</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">主动访问</span></td>
+<td>アクセスした駅の気温に応じて編成内のATK・DEFを増減 (2)15℃～25℃</td>
+<td>ATK +12%，発動率 100%，持续 25分，CD 2時間35分</td>
+<td>ATK +14%，発動率 100%，持续 30分，CD 2時間30分</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>27</td>
+<td><strong>extra:069</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E3%83%A2%E3%83%8A%E3%83%BB%E3%83%8F%E3%83%83%E3%83%88%E3%83%95%E3%82%A3%E3%83%BC%E3%83%AB%E3%83%89">モナ・ハットフィールド</a></td>
+<td>ATK增加<br><span class="muted">atk_buff</span></td>
+<td><strong>13</strong><br><span class="muted">Lv50</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">主动访问；队伍全heat；heat对象</span></td>
+<td>heat属性のみの編成時、移動距離に応じて編成内のATK増加(上限100km) 発動率は今日のアクセス駅数に応じて増加(上限50駅)</td>
+<td>ATK 0%〜+11%，発動率 0%～100%</td>
+<td>ATK 0%～+13%，発動率 0%～100%</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>28</td>
+<td><strong>original:057</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E5%B2%A9%E5%9B%BD%E3%81%BF%E3%81%A5%E3%81%BB">岩国みづほ</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_1</span></td>
+<td><strong>12.5</strong><br><span class="muted">Lv50</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">-</span></td>
+<td>(1)自身を含む編成内のでんこのATKとDEF増加</td>
+<td>ATK +10%，発動率 100%，持续 30分，CD 3時間</td>
+<td>ATK +12.5%，発動率 100%，持续 30分，CD 3時間</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>29</td>
+<td><strong>original:148</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E5%80%89%E6%95%B7%E3%82%8C%E3%81%8A">倉敷れお</a></td>
+<td>ATK增加<br><span class="muted">atk_buff</span></td>
+<td><strong>12</strong><br><span class="muted">Lv50</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">主动访问；heat对象；不含自己</span></td>
+<td>アクセスした駅の天気が晴れの場合、自身を除く編成内のheat属性でんこの数に応じて、自身を除く編成内のでんこのATK上昇（上限4体） 天気はアクセス結果の記載に依存</td>
+<td>ATK 0%～+10%，発動率 100%</td>
+<td>ATK 0%～+12%，発動率 100%</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>30</td>
+<td><strong>extra:095</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E3%82%AF%E3%83%A9%E3%83%A9%E3%83%BB%E3%83%B4%E3%83%83%E3%83%91%E3%83%BC%E3%83%95%E3%82%A7%E3%83%AB%E3%83%88">クララ・ヴッパーフェルト</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_1</span></td>
+<td><strong>11</strong><br><span class="muted">Lv50</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">主动访问；队伍全eco；eco对象；不含自己</span></td>
+<td>発動条件：eco属性のみの編成で自身以外がアクセス (1)：そのでんこのATK増加</td>
+<td>ATK +9%，発動率 100%，持续 15分，CD 2時間45分</td>
+<td>ATK +11%，発動率 100%，持续 15分，CD 2時間45分</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>31</td>
+<td><strong>original:100</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E6%81%8B%E5%B1%B1%E5%BD%A2%E3%81%A1%E3%81%A5">恋山形ちづ</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_1</span></td>
+<td><strong>10.5</strong><br><span class="muted">Lv50</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">-</span></td>
+<td>(1)編成内のでんこのマイレージクラスの合計数(上限20クラス)によってATK/DEF増加</td>
+<td>ATK +0.45%～+9%，発動率 100%，持续 30分，CD 3時間</td>
+<td>ATK +0.525%～+10.5%，発動率 100%，持续 30分，CD 3時間</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>32</td>
+<td><strong>original:052</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E6%B5%A6%E4%BD%90%E3%83%8E%E3%82%A2">浦佐ノア</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_1</span></td>
+<td><strong>10</strong><br><span class="muted">Lv50</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">不含自己</span></td>
+<td>(1)編成内の自身を除くでんこのタイプの数に応じ自身のATK増加</td>
+<td>ATK +n×10%，発動率 38%</td>
+<td>ATK +n×10%，発動率 46%</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>33</td>
+<td><strong>original:161</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E4%BC%8A%E5%B7%9D%E8%B0%B7%E3%81%95%E3%81%A8%E3%82%8A">伊川谷さとり</a></td>
+<td>ATK增加<br><span class="muted">atk_buff</span></td>
+<td><strong>10</strong><br><span class="muted">Lv50</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">主动访问</span></td>
+<td>相手の残りHPが80%以上の場合、編成内のATK増加</td>
+<td>ATK +8%，発動率 100%</td>
+<td>ATK +10%，発動率 100%</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>34</td>
+<td><strong>original:088</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E5%A4%A9%E7%8E%8B%E5%AF%BA%E3%81%9F%E3%81%BE%E3%81%8D">天王寺たまき</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_1</span></td>
+<td><strong>9</strong><br><span class="muted">Lv50</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">不含自己</span></td>
+<td>(1)編成内の自身以外のATKが増加</td>
+<td>ATK +9%，発動率 100%，持续 15分，CD 1時間30分</td>
+<td>ATK +9%，発動率 100%，持续 15分，CD 1時間30分</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>35</td>
+<td><strong>extra:066</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E3%82%B3%E3%83%BC%E3%83%A9%E3%83%BB%E3%83%9F%E3%83%AA%E3%82%A8%E3%82%B9">コーラ・ミリエス</a></td>
+<td>ATK增加<br><span class="muted">atk_buff</span></td>
+<td><strong>9</strong><br><span class="muted">Lv50</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">主动访问；队伍全cool；cool对象</span></td>
+<td>[発動条件] cool属性のみの編成 [効果] 昨日と今日のアクセス回数合計(上限40回)に応じ編成内のATK増加</td>
+<td>ATK 0%～+8%，発動率 100%</td>
+<td>ATK 0%～+9%，発動率 100%</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>36</td>
+<td><strong>extra:114</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E5%8D%97%E4%B9%83%E3%82%8C%E3%81%84%E3%82%8B">南乃れいる</a></td>
+<td>ATK增加<br><span class="muted">atk_buff</span></td>
+<td><strong>9</strong><br><span class="muted">Lv50</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">不含自己；对象类型 supporter</span></td>
+<td>編成内の のマイレージクラスの合計数（上限20クラス）によって、編成内の自身以外のATK/DEF増加 サポーター</td>
+<td>ATK +0.4%～+8%，発動率 100%</td>
+<td>ATK +0.45%～+9%，発動率 100%</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>37</td>
+<td><strong>original:064</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E8%A7%92%E9%A4%A8%E3%81%82%E3%81%91%E3%81%B2">角館あけひ</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_2</span></td>
+<td><strong>7</strong><br><span class="muted">Lv50</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">-</span></td>
+<td>(2)今日の移動距離が100km以上のとき編成内でんこのATK増加</td>
+<td>ATK +6%，発動率 100%</td>
+<td>ATK +7%，発動率 100%</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>38</td>
+<td><strong>original:084</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E6%B1%90%E5%85%A5%E3%81%BF%E3%81%9D%E3%82%89">汐入みそら</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_1</span></td>
+<td><strong>7</strong><br><span class="muted">Lv50</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">-</span></td>
+<td>(1)編成内で名前に「ドレミファソラシ」のいずれかを、ひらがなかカタカナで含むでんこのATKとDEF増加</td>
+<td>ATK +6%，発動率 100%</td>
+<td>ATK +7%，発動率 100%</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>39</td>
+<td><strong>original:122</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E5%B0%8F%E6%B5%9C%E3%81%BE%E3%81%84">小浜まい</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_2</span></td>
+<td><strong>7</strong><br><span class="muted">Lv50</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">eco对象</span></td>
+<td>(2)相手が の場合は(1)に追加でATK増加 ディフェンダー</td>
+<td>ATK +6%，発動率 100%，持续 45分，CD 2時間15分</td>
+<td>ATK +7%，発動率 100%，持续 45分，CD 2時間15分</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>40</td>
+<td><strong>original:123</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E8%AB%AB%E6%97%A9%E3%81%A1%E3%81%A9%E3%82%8A">諫早ちどり</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_1</span></td>
+<td><strong>7</strong><br><span class="muted">Lv50</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">heat对象</span></td>
+<td>(1)編成内heat属性のATK増加</td>
+<td>ATK +6%，発動率 100%，持续 40分，CD 2時間20分</td>
+<td>ATK +7%，発動率 100%，持续 45分，CD 2時間15分</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>41</td>
+<td><strong>original:156</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E7%94%9F%E5%B1%B1%E3%81%BB%E3%81%9F%E3%82%8B">生山ほたる</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_1</span></td>
+<td><strong>7</strong><br><span class="muted">Lv50</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">对象类型 defender</span></td>
+<td>発動条件：編成内の が3体以上 ディフェンダー / (1)：編成内のATK・DEF増加 /</td>
+<td>ATK +6%，発動率 100%</td>
+<td>ATK +7%，発動率 100%</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>42</td>
+<td><strong>extra:064</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E3%83%AA%E3%82%BF%E3%83%BB%E3%83%9E%E3%83%89%E3%83%AA%E3%83%BC%E3%83%89">リタ・マドリード</a></td>
+<td>ATK增加<br><span class="muted">atk_buff</span></td>
+<td><strong>6</strong><br><span class="muted">Lv50</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">主动访问；队伍全eco；eco对象</span></td>
+<td>[発動条件] eco属性のみの編成 [効果] 昨日と今日のアクセス回数合計(上限40回)に応じ編成内のATKとDEF増加</td>
+<td>ATK 0%～+5%，発動率 100%</td>
+<td>ATK 0%～+6%，発動率 100%</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>43</td>
+<td><strong>original:118</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E5%BE%B3%E5%B3%B6%E3%82%8B%E3%81%A8">徳島ると</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_1</span></td>
+<td><strong>5.5</strong><br><span class="muted">Lv50</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">-</span></td>
+<td>(1)編成内のでんこのATK増加</td>
+<td>ATK +4%，発動率 100%，持续 33分，CD 3時間12分</td>
+<td>ATK +5.5%，発動率 100%，持续 36分，CD 3時間9分</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>44</td>
+<td><strong>original:063</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E6%A0%B9%E9%9B%A8%E3%81%A4%E3%82%80%E3%81%8E">根雨つむぎ</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_1</span></td>
+<td><strong>4</strong><br><span class="muted">Lv50</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">-</span></td>
+<td>(1)クールダウン中のでんこの数に応じて編成内の全てのでんこのATKとDEFが増加</td>
+<td>ATK +3.5×n%，発動率 100%，持续 40分，CD 3時間</td>
+<td>ATK +4.0×n%，発動率 100%，持续 45分，CD 3時間</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>45</td>
+<td><strong>original:051</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E6%95%B7%E5%B3%B6%E3%83%92%E3%83%A1%E3%82%AE">敷島ヒメギ</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_1</span></td>
+<td><strong>3</strong><br><span class="muted">Lv50</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">不含自己；对象类型 attacker</span></td>
+<td>(1)編成のアタッカーとディフェンダーの数に応じ、自分以外のATK、DEF増加</td>
+<td>ATK +2.5×n%，発動率 100%，持续 30分，CD 4時間40分</td>
+<td>ATK +3.0×n%，発動率 100%，持续 30分，CD 4時間</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>46</td>
+<td><strong>extra:119</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E3%82%A2%E3%83%8B%E3%82%AB%E3%83%BB%E3%82%BF%E3%83%AB%E3%83%88%E3%82%A5">アニカ・タルトゥ</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_1</span></td>
+<td><strong>3</strong><br><span class="muted">Lv50</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">-</span></td>
+<td>(1)編成内のATK増加</td>
+<td>ATK +2.5%，発動率 100%</td>
+<td>ATK +3%，発動率 100%</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>47</td>
+<td><strong>original:051</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E6%95%B7%E5%B3%B6%E3%83%92%E3%83%A1%E3%82%AE">敷島ヒメギ</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_2</span></td>
+<td><strong>20</strong><br><span class="muted">Lv100</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">不含自己；对象类型 attacker</span></td>
+<td>(2)編成内のアタッカーが3体以上で自身以外のATK増加</td>
+<td>-</td>
+<td>-</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>48</td>
+<td><strong>original:052</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E6%B5%A6%E4%BD%90%E3%83%8E%E3%82%A2">浦佐ノア</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_2</span></td>
+<td><strong>15</strong><br><span class="muted">Lv100</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">不含自己</span></td>
+<td>(2)編成内の自身を除くでんこのタイプ数が3つ以上なら追加でATK増加</td>
+<td>-</td>
+<td>-</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>49</td>
+<td><strong>original:015</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E9%B9%BF%E6%B2%BC%E3%82%8A%E3%82%93%E3%81%94">鹿沼りんご</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_2</span></td>
+<td><strong>7</strong><br><span class="muted">Lv92</span></td>
+<td>可辅助主攻</td>
+<td>自己<br><span class="muted">-</span></td>
+<td>(2)(1)に追加で編成内のいつでもアクティブスキルを持つでんこ数に応じATK増加 昼間は6:00～18:00 夜間18:00～翌朝6:00は常時DEF-30% /</td>
+<td>-</td>
+<td>-</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>50</td>
+<td><strong>original:064</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E8%A7%92%E9%A4%A8%E3%81%82%E3%81%91%E3%81%B2">角館あけひ</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_3</span></td>
+<td><strong>6</strong><br><span class="muted">Lv100</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">-</span></td>
+<td>(3)今日の移動距離が100km以上でリンク時間が10分未満の駅があるとき(2)に追加で編成内でんこのATK増加</td>
+<td>-</td>
+<td>-</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>51</td>
+<td><strong>original:063</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E6%A0%B9%E9%9B%A8%E3%81%A4%E3%82%80%E3%81%8E">根雨つむぎ</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_2</span></td>
+<td><strong>5</strong><br><span class="muted">Lv92</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">主动访问</span></td>
+<td>(2)編成内のでんこがアクセスしたときとされたとき、該当でんこがクールダウン状態の場合、追加でATKとDEFが増加</td>
+<td>-</td>
+<td>-</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>52</td>
+<td><strong>original:084</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E6%B1%90%E5%85%A5%E3%81%BF%E3%81%9D%E3%82%89">汐入みそら</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_2</span></td>
+<td><strong>3.5</strong><br><span class="muted">Lv92</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">-</span></td>
+<td>(2)(1)を満たす編成内でんこの数に応じて追加でATKとDEF増加(上限7体)</td>
+<td>-</td>
+<td>-</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>53</td>
+<td><strong>original:081</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E9%83%A1%E5%85%83%E3%82%86%E3%81%86">郡元ゆう</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_3</span></td>
+<td><strong>3</strong><br><span class="muted">Lv92</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">主动访问；heat对象</span></td>
+<td>(3)編成内のheat属性が今日の新駅にアクセス時ATK増加 フットバーす場合は発動せず</td>
+<td>-</td>
+<td>-</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>54</td>
+<td><strong>original:096</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E8%8D%BB%E7%AA%AA%E3%82%A2%E3%83%A4">荻窪アヤ</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_2</span></td>
+<td><strong>2.5</strong><br><span class="muted">Lv92</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">不含自己</span></td>
+<td>(2)相手編成内の「いつでもアクティブ」スキル持ちのでんこが4体以上で(1)に追加でATK増加 スキル未習得のでんこはカウントされない</td>
+<td>-</td>
+<td>-</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>55</td>
+<td><strong>original:071</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E5%A4%A7%E9%9B%84%E5%B1%B1%E3%82%8B%E3%82%8A">大雄山るり</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_2</span></td>
+<td><strong>2</strong><br><span class="muted">Lv92</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">-</span></td>
+<td>(2)(1)発動時、今日の新駅でない場合に追加でATK増加</td>
+<td>-</td>
+<td>-</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>56</td>
+<td><strong>original:092</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E8%AB%B8%E6%98%9F%E3%81%99%E3%81%B0%E3%82%8B">諸星すばる</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_2</span></td>
+<td><strong>2</strong><br><span class="muted">Lv92</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">不含自己</span></td>
+<td>(2)(1)が未発動の時に、低効果量のATK・DEF増加スキル発動 確率発動</td>
+<td>-</td>
+<td>-</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>57</td>
+<td><strong>original:057</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E5%B2%A9%E5%9B%BD%E3%81%BF%E3%81%A5%E3%81%BB">岩国みづほ</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_2</span></td>
+<td><strong>1.5</strong><br><span class="muted">Lv92</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">不含自己</span></td>
+<td>(2)自身と同じテーマのラッピングを着ているでんこが自身以外で2体以上の時(1)に追加でATKとDEF増加 同じテーマのラッピングのでんこにのみ有効 (ラッピング無し時はラッピング無しのでんこに有効)</td>
+<td>-</td>
+<td>-</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>58</td>
+<td><strong>original:098</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E6%96%B0%E9%B6%B4%E3%81%BE%E3%81%B5%E3%82%86">新鶴まふゆ</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_2</span></td>
+<td><strong>1.5</strong><br><span class="muted">Lv92</span></td>
+<td>可辅助主攻</td>
+<td>自己<br><span class="muted">队伍全eco；eco对象</span></td>
+<td>(2)編成内でんこがすべてeco属性の時、追加でATK増加</td>
+<td>-</td>
+<td>-</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>59</td>
+<td><strong>original:045</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E9%98%BF%E4%BD%90%E3%83%B6%E8%B0%B7%E3%82%AB%E3%83%8E%E3%83%B3">阿佐ヶ谷カノン</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_2</span></td>
+<td><strong>1</strong><br><span class="muted">Lv92</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">不含自己</span></td>
+<td>(2)編成内の『マスターにおまかせ』のスキルを覚えているでんこの数が4体以上の時に追加でATK増加</td>
+<td>-</td>
+<td>-</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>60</td>
+<td><strong>original:088</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E5%A4%A9%E7%8E%8B%E5%AF%BA%E3%81%9F%E3%81%BE%E3%81%8D">天王寺たまき</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_3</span></td>
+<td><strong>1</strong><br><span class="muted">Lv92</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">不含自己</span></td>
+<td>(3)(2)発動から5分間、自身以外のATKが追加で増加</td>
+<td>-</td>
+<td>-</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>61</td>
+<td><strong>original:100</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E6%81%8B%E5%B1%B1%E5%BD%A2%E3%81%A1%E3%81%A5">恋山形ちづ</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_2</span></td>
+<td><strong>1</strong><br><span class="muted">Lv92</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">-</span></td>
+<td>(2)編成内のでんこのマイレージクラスの合計数が35以上の場合、追加でATK/DEF増加</td>
+<td>-</td>
+<td>-</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>62</td>
+<td><strong>original:108</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E5%8B%9D%E5%B1%B1%E3%81%A6%E3%81%84%E3%82%89">勝山ていら</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_2</span></td>
+<td><strong>1</strong><br><span class="muted">Lv92</span></td>
+<td>可辅助主攻</td>
+<td>relative_car<br><span class="muted">-</span></td>
+<td>(2)編成内の「いつでもアクティブ」のスキルを覚えているでんこの数が4体以上の場合、追加でATK増加</td>
+<td>-</td>
+<td>-</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>63</td>
+<td><strong>extra:048</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E3%82%A8%E3%83%9E%E3%83%BB%E3%83%8E%E3%82%A2%E3%82%A4%E3%83%A6">エマ・ノアイユ</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_3</span></td>
+<td><strong>0</strong><br><span class="muted">Lv92</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">主动访问</span></td>
+<td>(3)スキルタグが「編成内のリンク獲得を強化する」のでんこの数に応じてアクセスしたでんこのATK増加(上限4体)</td>
+<td>-</td>
+<td>-</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>64</td>
+<td><strong>original:102</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E5%85%AB%E6%88%B8%E3%81%BE%E3%81%97%E3%82%8D">八戸ましろ</a></td>
+<td>ATK增加<br><span class="muted">weekday_atk_sunday</span></td>
+<td><strong>-</strong><br><span class="muted">-</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">主动访问</span></td>
+<td>一定時間、曜日に応じて様々な効果 / ※Lv.92以降、発動時間帯によって追加効果付与 （昼：効果時間延長、夜：効果量増大） 効果は発動時の曜日に依存 （日を跨いだ場合は前日曜日の効果） / 昼：6:00～18:00 夜：18:00～翌6:00</td>
+<td>曜日変化: 日曜日 ATK増加，発動率 100%，持续 30分，CD 2時間30分</td>
+<td>曜日変化: 日曜日 ATK増加，発動率 100%，持续 30分，CD 2時間30分</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>65</td>
+<td><strong>original:102</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E5%85%AB%E6%88%B8%E3%81%BE%E3%81%97%E3%82%8D">八戸ましろ</a></td>
+<td>ATK增加<br><span class="muted">weekday_atk_tuesday</span></td>
+<td><strong>-</strong><br><span class="muted">-</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">主动访问</span></td>
+<td>一定時間、曜日に応じて様々な効果 / ※Lv.92以降、発動時間帯によって追加効果付与 （昼：効果時間延長、夜：効果量増大） 効果は発動時の曜日に依存 （日を跨いだ場合は前日曜日の効果） / 昼：6:00～18:00 夜：18:00～翌6:00</td>
+<td>曜日変化: 火曜日 ATK増加，発動率 100%，持续 30分，CD 2時間30分</td>
+<td>曜日変化: 火曜日 ATK増加，発動率 100%，持续 30分，CD 2時間30分</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="需人工判断">
+<td>66</td>
+<td><strong>original:108</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E5%8B%9D%E5%B1%B1%E3%81%A6%E3%81%84%E3%82%89">勝山ていら</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_1</span></td>
+<td><strong>7.5</strong><br><span class="muted">Lv50</span></td>
+<td>需人工判断</td>
+<td>relative_car<br><span class="muted">-</span></td>
+<td>(1)自身の1両前のでんこのATK増加</td>
+<td>ATK +6%，発動率 100%</td>
+<td>ATK +7.5%，発動率 100%</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="偏自用">
+<td>67</td>
+<td><strong>original:044</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E6%9C%A8%E5%8F%A4%E5%86%85%E3%81%95%E3%81%84%E3%81%8B">木古内さいか</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_2</span></td>
+<td><strong>100</strong><br><span class="muted">Lv50</span></td>
+<td>偏自用</td>
+<td>自己<br><span class="muted">-</span></td>
+<td>(2)その日の移動距離に応じてATKが増加する(100km～360km)</td>
+<td>ATK +0.1×(移動距離(km)-100)%，発動率 100%</td>
+<td>ATK +0.1×(移動距離(km)-100)%，発動率 100%</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="偏自用">
+<td>68</td>
+<td><strong>extra:023</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E3%83%99%E3%83%86%E3%82%A3%E3%83%BC%E3%83%BB%E3%82%A6%E3%82%A3%E3%83%AA%E3%82%A2%E3%83%A0%E3%82%B9">ベティー・ウィリアムス</a></td>
+<td>ATK增加<br><span class="muted">atk_buff</span></td>
+<td><strong>90</strong><br><span class="muted">Lv50</span></td>
+<td>偏自用</td>
+<td>自己<br><span class="muted">-</span></td>
+<td>自身のATK増加</td>
+<td>ATK +80%，発動率 10%</td>
+<td>ATK +90%，発動率 10%</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="偏自用">
+<td>69</td>
+<td><strong>original:085</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E5%93%81%E5%B7%9D%E3%82%81%E3%81%90%E3%82%8B">品川めぐる</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_1</span></td>
+<td><strong>70</strong><br><span class="muted">Lv50</span></td>
+<td>偏自用</td>
+<td>自己<br><span class="muted">-</span></td>
+<td>(1)リンクする度にATK増加</td>
+<td>ATK +0~60%，発動率 100%，持续 1時間，CD 2時間</td>
+<td>ATK +0~70%，発動率 100%，持续 1時間，CD 2時間</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="偏自用">
+<td>70</td>
+<td><strong>original:028</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E4%BA%AC%E6%A9%8B%E3%83%AA%E3%82%AA%E3%83%8A">京橋リオナ</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_1</span></td>
+<td><strong>55</strong><br><span class="muted">Lv50</span></td>
+<td>偏自用</td>
+<td>自己<br><span class="muted">主动访问</span></td>
+<td>(1)駅へのアクセス数の差に応じてATK上昇</td>
+<td>ATK +0%～+55%，発動率 100%，持续 20分，CD 2時間</td>
+<td>ATK +0%～+55%，発動率 100%，持续 25分，CD 2時間</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="偏自用">
+<td>71</td>
+<td><strong>extra:040</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E3%83%AC%E3%82%AA%E3%83%8B%E3%83%BC%E3%83%BB%E3%82%B7%E3%83%A5%E3%83%88%E3%83%BC%E3%82%B9">レオニー・シュトース</a></td>
+<td>ATK增加<br><span class="muted">atk_buff</span></td>
+<td><strong>54</strong><br><span class="muted">Lv50</span></td>
+<td>偏自用</td>
+<td>自己<br><span class="muted">主动访问</span></td>
+<td>自身のATK増加</td>
+<td>ATK増加，発動率 100%，持续 30分，CD 3時間30分</td>
+<td>ATK増加，発動率 100%，持续 30分，CD 3時間30分</td>
+<td>需复查：supplemental_component_from_source_text</td>
+</tr><tr data-support="偏自用">
+<td>72</td>
+<td><strong>original:032</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E7%A5%9E%E5%B1%85%E3%82%B3%E3%82%BF%E3%83%B3">神居コタン</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_1</span></td>
+<td><strong>50</strong><br><span class="muted">Lv50</span></td>
+<td>偏自用</td>
+<td>自己<br><span class="muted">主动访问</span></td>
+<td>(1)その日にアクセスした駅数に応じて自身のATK増加</td>
+<td>ATK +0%～+40%，発動率 100%</td>
+<td>ATK +0%～+50%，発動率 100%</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="偏自用">
+<td>73</td>
+<td><strong>original:030</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E5%85%AB%E9%9B%B2%E3%83%AC%E3%83%BC%E3%83%8E">八雲レーノ</a></td>
+<td>ATK增加<br><span class="muted">atk_buff</span></td>
+<td><strong>45</strong><br><span class="muted">Lv50</span></td>
+<td>偏自用</td>
+<td>自己<br><span class="muted">主动访问</span></td>
+<td>夜の間はATKが増加、昼の間はDEFが減少 （Lv.92以降、リンクしてから12分間アクセス時に固定ダメージ付加） 夜間は18:00～翌朝6:00 昼間6:00～18:00は常時DEF-30%</td>
+<td>ATK +40%，発動率 100%</td>
+<td>ATK +45%，発動率 100%</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="偏自用">
+<td>74</td>
+<td><strong>original:149</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E6%97%A5%E6%9A%AE%E9%87%8C%E3%83%8F%E3%83%AB%E3%82%AB%E3%82%BC">日暮里ハルカゼ</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_1</span></td>
+<td><strong>44</strong><br><span class="muted">Lv50</span></td>
+<td>偏自用</td>
+<td>自己<br><span class="muted">-</span></td>
+<td>(1)一定時間ATK増加</td>
+<td>ATK +37%，発動率 100%，持续 40分，CD 2時間20分</td>
+<td>ATK +44%，発動率 100%，持续 45分，CD 2時間15分</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="偏自用">
+<td>75</td>
+<td><strong>extra:078</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E3%83%95%E3%83%A9%E3%83%B3%E3%82%B7%E3%82%B9%E3%82%AB%E3%83%BB%E3%83%86%E3%82%AD%E3%83%BC%E3%83%A9">フランシスカ・テキーラ</a></td>
+<td>ATK增加<br><span class="muted">atk_buff</span></td>
+<td><strong>44</strong><br><span class="muted">Lv50</span></td>
+<td>偏自用</td>
+<td>自己<br><span class="muted">-</span></td>
+<td>自身のATK増加(相手編成内のリンクしているでんこ数が2体以上の場合、発動率100%)</td>
+<td>ATK +41%，発動率 24%</td>
+<td>ATK +44%，発動率 26%</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="偏自用">
+<td>76</td>
+<td><strong>original:026</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E6%96%B0%E7%99%BE%E5%90%88%E3%81%BB%E3%81%93%E3%81%AD">新百合ほこね</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_1</span></td>
+<td><strong>42</strong><br><span class="muted">Lv50</span></td>
+<td>偏自用</td>
+<td>自己<br><span class="muted">-</span></td>
+<td>(1)自身のATK上昇</td>
+<td>ATK +38%，発動率 100%，持续 20分，CD 2時間</td>
+<td>ATK +42%，発動率 100%，持续 20分，CD 2時間</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="偏自用">
+<td>77</td>
+<td><strong>original:042</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E9%9D%92%E7%A0%A5%E3%81%9D%E3%82%89">青砥そら</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_1</span></td>
+<td><strong>40</strong><br><span class="muted">Lv50</span></td>
+<td>偏自用</td>
+<td>自己<br><span class="muted">-</span></td>
+<td>(1)平日の10:00～17:00に自身のATK上昇</td>
+<td>ATK +35%，発動率 70%</td>
+<td>ATK +40%，発動率 70%</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="偏自用">
+<td>78</td>
+<td><strong>original:087</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E8%A6%B3%E9%9F%B3%E7%94%BA%E3%81%B2%E3%82%81">観音町ひめ</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_2</span></td>
+<td><strong>40</strong><br><span class="muted">Lv50</span></td>
+<td>偏自用</td>
+<td>自己<br><span class="muted">-</span></td>
+<td>(2)相手のでんこがeco属性の場合追加でATK上昇</td>
+<td>ATK +35%，発動率 100%，持续 15分，CD 1時間30分</td>
+<td>ATK +40%，発動率 100%，持续 15分，CD 1時間30分</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="偏自用">
+<td>79</td>
+<td><strong>original:119</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E9%9D%92%E6%A3%AE%E3%81%9B%E3%81%84%E3%82%89%E3%82%93">青森せいらん</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_3</span></td>
+<td><strong>40</strong><br><span class="muted">Lv50</span></td>
+<td>偏自用</td>
+<td>自己<br><span class="muted">-</span></td>
+<td>(3)確率で追加でATK増加</td>
+<td>ATK +35%，発動率 5%，持续 45分，CD 2時間30分</td>
+<td>ATK +40%，発動率 5%，持续 45分，CD 2時間30分</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="偏自用">
+<td>80</td>
+<td><strong>original:076</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E4%B8%8A%E3%83%8E%E5%B1%B1%E3%82%86%E3%81%AE%E3%81%8B">上ノ山ゆのか</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_1</span></td>
+<td><strong>39</strong><br><span class="muted">Lv50</span></td>
+<td>偏自用</td>
+<td>自己<br><span class="muted">-</span></td>
+<td>(1)自身のATK上昇</td>
+<td>ATK +32%，発動率 100%，持续 15分，CD 1時間30分</td>
+<td>ATK +39%，発動率 100%，持续 15分，CD 1時間30分</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="偏自用">
+<td>81</td>
+<td><strong>original:107</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E9%A7%92%E3%83%B6%E6%9E%97%E3%82%B7%E3%82%AD%E3%83%8D">駒ヶ林シキネ</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_1</span></td>
+<td><strong>39</strong><br><span class="muted">Lv50</span></td>
+<td>偏自用</td>
+<td>自己<br><span class="muted">-</span></td>
+<td>(1)相手のHPが高いほどATK増加</td>
+<td>ATK +1%～+32%，発動率 100%，持续 32分，CD 3時間28分</td>
+<td>ATK +1%～+39%，発動率 100%，持续 39分，CD 3時間21分</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="偏自用">
+<td>82</td>
+<td><strong>extra:034</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E3%82%B5%E3%83%8B%E3%83%BC%E3%83%BB%E3%83%90%E3%82%A4%E3%83%AD%E3%83%B3">サニー・バイロン</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_1</span></td>
+<td><strong>36</strong><br><span class="muted">Lv50</span></td>
+<td>偏自用</td>
+<td>自己<br><span class="muted">被访问</span></td>
+<td>(1)ATK増加</td>
+<td>ATK +30%，発動率 100%，持续 20分，CD 2時間30分</td>
+<td>ATK +36%，発動率 100%，持续 20分，CD 2時間30分</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="偏自用">
+<td>83</td>
+<td><strong>original:019</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E7%BE%8E%E5%94%84%E3%82%A4%E3%83%A0%E3%83%A9">美唄イムラ</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_1</span></td>
+<td><strong>35</strong><br><span class="muted">Lv50</span></td>
+<td>偏自用</td>
+<td>自己<br><span class="muted">主动访问</span></td>
+<td>(1)HPが半減するがチェックイン時に自身のATK上昇</td>
+<td>ATK +30%，発動率 100%，持续 15分，CD 1時間</td>
+<td>ATK +35%，発動率 100%，持续 15分，CD 1時間</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="偏自用">
+<td>84</td>
+<td><strong>extra:049</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E3%83%AC%E3%82%A2%E3%83%BB%E3%83%91%E3%83%AA%E3%83%BB%E3%83%8E%E3%83%BC%E3%83%AB">レア・パリ・ノール</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_2</span></td>
+<td><strong>35</strong><br><span class="muted">Lv50</span></td>
+<td>偏自用</td>
+<td>自己<br><span class="muted">主动访问</span></td>
+<td>(2)前回の自身のアクセスから3分以内のアクセス時(1)に追加でATK増加</td>
+<td>ATK +30%，発動率 100%，持续 40分，CD 2時間20分</td>
+<td>ATK +35%，発動率 100%，持续 45分，CD 2時間15分</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="偏自用">
+<td>85</td>
+<td><strong>original:068</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E4%B8%83%E8%80%80%E3%81%BF%E3%81%A4%E3%82%8B">七耀みつる</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_2</span></td>
+<td><strong>33</strong><br><span class="muted">Lv50</span></td>
+<td>偏自用</td>
+<td>自己<br><span class="muted">-</span></td>
+<td>(3)はLv.92以上で発動</td>
+<td>ATK +27%，発動率 100%，持续 30分，CD 2時間</td>
+<td>ATK +33%，発動率 100%，持续 30分，CD 2時間</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="偏自用">
+<td>86</td>
+<td><strong>original:097</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E5%AE%89%E6%9D%A5%E3%81%82%E3%81%BE%E3%81%AD">安来あまね</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_1</span></td>
+<td><strong>32</strong><br><span class="muted">Lv50</span></td>
+<td>偏自用</td>
+<td>自己<br><span class="muted">-</span></td>
+<td>(1)自身のATK上昇</td>
+<td>ATK +26%，発動率 100%，持续 15分，CD 3時間</td>
+<td>ATK +32%，発動率 100%，持续 15分，CD 3時間</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="偏自用">
+<td>87</td>
+<td><strong>original:075</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E9%98%BF%E4%B8%8B%E5%96%9C%E3%83%8B%E3%83%8A">阿下喜ニナ</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_1</span></td>
+<td><strong>30</strong><br><span class="muted">Lv50</span></td>
+<td>偏自用</td>
+<td>自己<br><span class="muted">-</span></td>
+<td>(1)自身のATK増加</td>
+<td>ATK +25%，発動率 100%，持续 45分，CD 2時間30分</td>
+<td>ATK +30%，発動率 100%，持续 45分，CD 2時間30分</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="偏自用">
+<td>88</td>
+<td><strong>original:119</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E9%9D%92%E6%A3%AE%E3%81%9B%E3%81%84%E3%82%89%E3%82%93">青森せいらん</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_1</span></td>
+<td><strong>30</strong><br><span class="muted">Lv50</span></td>
+<td>偏自用</td>
+<td>自己<br><span class="muted">-</span></td>
+<td>(1)ATK増加</td>
+<td>ATK +25%，発動率 100%，持续 45分，CD 2時間30分</td>
+<td>ATK +30%，発動率 100%，持续 45分，CD 2時間30分</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="偏自用">
+<td>89</td>
+<td><strong>original:083</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E4%BF%A1%E6%A5%BD%E3%81%8F%E3%82%8D%E3%81%8C%E3%81%AD">信楽くろがね</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_1</span></td>
+<td><strong>28</strong><br><span class="muted">Lv50</span></td>
+<td>偏自用</td>
+<td>自己<br><span class="muted">link时</span></td>
+<td>自身が駅にリンクした駅の属性に変更。 (1)heat：ATK増加</td>
+<td>ATK +24%，発動率 100%，持续 30分，CD 20分</td>
+<td>ATK +28%，発動率 100%，持续 30分，CD 15分</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="偏自用">
+<td>90</td>
+<td><strong>original:135</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E5%AF%BF%E3%82%80%E3%81%A4%E3%81%BF">寿むつみ</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_2</span></td>
+<td><strong>28</strong><br><span class="muted">Lv50</span></td>
+<td>偏自用</td>
+<td>自己<br><span class="muted">主动访问</span></td>
+<td>(2)でんこ毎のリンク駅数(上限2駅)に応じて追加でATK増加</td>
+<td>ATK 0%～+24%，発動率 100%，持续 30分，CD 2時間</td>
+<td>ATK 0%～+28%，発動率 100%，持续 30分，CD 2時間</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="偏自用">
+<td>91</td>
+<td><strong>original:015</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E9%B9%BF%E6%B2%BC%E3%82%8A%E3%82%93%E3%81%94">鹿沼りんご</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_1</span></td>
+<td><strong>23</strong><br><span class="muted">Lv50</span></td>
+<td>偏自用</td>
+<td>自己<br><span class="muted">-</span></td>
+<td>(1)昼間はATKが増加、夜間はDEFが減少</td>
+<td>ATK +18%，発動率 100%</td>
+<td>ATK +23%，発動率 100%</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="偏自用">
+<td>92</td>
+<td><strong>extra:016</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E5%A4%A9%E5%8F%B0%E3%83%A4%E3%82%B3">天台ヤコ</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_1</span></td>
+<td><strong>21</strong><br><span class="muted">Lv50</span></td>
+<td>偏自用</td>
+<td>自己<br><span class="muted">主动访问</span></td>
+<td>(1)夜間はATKとDEFが上昇＆スコア獲得</td>
+<td>ATK +19%，発動率 100%</td>
+<td>ATK +21%，発動率 100%</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="偏自用">
+<td>93</td>
+<td><strong>extra:063</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E6%B5%9C%E6%9D%BE%E3%81%BF%E3%81%A1%E3%81%BB">浜松みちほ</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_1</span></td>
+<td><strong>17.5</strong><br><span class="muted">Lv50</span></td>
+<td>偏自用</td>
+<td>自己<br><span class="muted">主动访问</span></td>
+<td>条件：相手がその駅での貢献ランキング上のメモリーが自身より大きい、かつ自身の貢献ランキング上のメモリーが0ではない (1)相手とのメモリー差に応じてATK増加</td>
+<td>ATK 0%～+15%，発動率 100%，持续 1時間，CD 2時間30分</td>
+<td>ATK 0%～+17.5%，発動率 100%，持续 1時間，CD 2時間30分</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="偏自用">
+<td>94</td>
+<td><strong>original:068</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E4%B8%83%E8%80%80%E3%81%BF%E3%81%A4%E3%82%8B">七耀みつる</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_1</span></td>
+<td><strong>16</strong><br><span class="muted">Lv50</span></td>
+<td>偏自用</td>
+<td>自己<br><span class="muted">-</span></td>
+<td>(3)はLv.92以上で発動</td>
+<td>ATK +14%，発動率 100%，持续 30分，CD 2時間</td>
+<td>ATK +16%，発動率 100%，持续 30分，CD 2時間</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="偏自用">
+<td>95</td>
+<td><strong>original:087</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E8%A6%B3%E9%9F%B3%E7%94%BA%E3%81%B2%E3%82%81">観音町ひめ</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_1</span></td>
+<td><strong>16</strong><br><span class="muted">Lv50</span></td>
+<td>偏自用</td>
+<td>自己<br><span class="muted">-</span></td>
+<td>(1)ATK上昇</td>
+<td>ATK +13%，発動率 100%，持续 15分，CD 1時間30分</td>
+<td>ATK +16%，発動率 100%，持续 15分，CD 1時間30分</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="偏自用">
+<td>96</td>
+<td><strong>original:059</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E5%B5%AF%E5%B3%A8%E9%87%8E%E3%82%82%E3%81%BF%E3%81%98">嵯峨野もみじ</a></td>
+<td>ATK增加<br><span class="muted">atk_buff</span></td>
+<td><strong>15</strong><br><span class="muted">Lv50</span></td>
+<td>偏自用</td>
+<td>自己<br><span class="muted">-</span></td>
+<td>相手の編成内のでんこのタイプの数に応じ自身のATK上昇</td>
+<td>ATK +15%，発動率 50%</td>
+<td>ATK +15%，発動率 55%</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="偏自用">
+<td>97</td>
+<td><strong>original:083</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E4%BF%A1%E6%A5%BD%E3%81%8F%E3%82%8D%E3%81%8C%E3%81%AD">信楽くろがね</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_2</span></td>
+<td><strong>14</strong><br><span class="muted">Lv50</span></td>
+<td>偏自用</td>
+<td>自己<br><span class="muted">link时</span></td>
+<td>自身が駅にリンクした駅の属性に変更。 (2)cool：ATK・DEF増加</td>
+<td>ATK +12%，発動率 100%，持续 30分，CD 20分</td>
+<td>ATK +14%，発動率 100%，持续 30分，CD 15分</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="偏自用">
+<td>98</td>
+<td><strong>original:098</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E6%96%B0%E9%B6%B4%E3%81%BE%E3%81%B5%E3%82%86">新鶴まふゆ</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_1</span></td>
+<td><strong>14</strong><br><span class="muted">Lv50</span></td>
+<td>偏自用</td>
+<td>自己<br><span class="muted">eco对象</span></td>
+<td>(1)自身より前の車両のeco属性でんこのATK増加</td>
+<td>ATK +12%，発動率 100%，持续 1時間，CD 2時間30分</td>
+<td>ATK +14%，発動率 100%，持续 1時間，CD 2時間30分</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="偏自用">
+<td>99</td>
+<td><strong>original:037</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E7%BE%8E%E8%AB%87%E3%81%BF%E3%81%93%E3%81%A8">美談みこと</a></td>
+<td>ATK增加<br><span class="muted">atk_buff</span></td>
+<td><strong>12</strong><br><span class="muted">Lv50</span></td>
+<td>偏自用</td>
+<td>自己<br><span class="muted">对象类型 defender</span></td>
+<td>ディフェンダーのATK増加</td>
+<td>ATK +10%，発動率 70%</td>
+<td>ATK +12%，発動率 70%</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="偏自用">
+<td>100</td>
+<td><strong>extra:049</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E3%83%AC%E3%82%A2%E3%83%BB%E3%83%91%E3%83%AA%E3%83%BB%E3%83%8E%E3%83%BC%E3%83%AB">レア・パリ・ノール</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_1</span></td>
+<td><strong>11</strong><br><span class="muted">Lv50</span></td>
+<td>偏自用</td>
+<td>自己<br><span class="muted">-</span></td>
+<td>(1)自身のATK増加</td>
+<td>ATK +8%，発動率 100%，持续 40分，CD 2時間20分</td>
+<td>ATK +11%，発動率 100%，持续 45分，CD 2時間15分</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="偏自用">
+<td>101</td>
+<td><strong>original:053</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E7%99%BD%E6%B5%9C%E3%83%9E%E3%83%AA%E3%83%B3">白浜マリン</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_1</span></td>
+<td><strong>10</strong><br><span class="muted">Lv50</span></td>
+<td>偏自用</td>
+<td>自己<br><span class="muted">对象类型 attacker</span></td>
+<td>(1)編成のアタッカーとディフェンダーの数に応じ、自分のATK・DEF増加</td>
+<td>ATK +n×10%，発動率 23%</td>
+<td>ATK +n×10%，発動率 25%</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="偏自用">
+<td>102</td>
+<td><strong>extra:075</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E3%82%BB%E3%83%BC%E3%83%AA%E3%83%BC%E3%83%BB%E3%83%81%E3%82%A7%E3%83%B3%E3%83%9E%E3%82%A4">セーリー・チェンマイ</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_1</span></td>
+<td><strong>9</strong><br><span class="muted">Lv50</span></td>
+<td>偏自用</td>
+<td>自己<br><span class="muted">队伍全cool；cool对象</span></td>
+<td>編成しているでんこがすべてcool属性で (1)リンクしているでんこが0体の時、ATK増加</td>
+<td>ATK +8%，発動率 100%，持续 40分，CD 2時間20分</td>
+<td>ATK +9%，発動率 100%，持续 45分，CD 2時間15分</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="偏自用">
+<td>103</td>
+<td><strong>extra:086</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E3%82%A2%E3%83%93%E3%83%BC%E3%83%BB%E3%82%B9%E3%83%97%E3%83%AA%E3%83%B3%E3%82%B0%E3%83%95%E3%82%A3%E3%83%BC%E3%83%AB%E3%83%89">アビー・スプリングフィールド</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_1</span></td>
+<td><strong>9</strong><br><span class="muted">Lv50</span></td>
+<td>偏自用</td>
+<td>自己<br><span class="muted">-</span></td>
+<td>発動条件： と のみの編成 (1)：自身より1つ前の車両位置でんこのATK増加</td>
+<td>ATK +8%，発動率 100%，持续 40分，CD 2時間20分</td>
+<td>ATK +9%，発動率 100%，持续 45分，CD 2時間15分</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="偏自用">
+<td>104</td>
+<td><strong>original:135</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E5%AF%BF%E3%82%80%E3%81%A4%E3%81%BF">寿むつみ</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_1</span></td>
+<td><strong>7</strong><br><span class="muted">Lv50</span></td>
+<td>偏自用</td>
+<td>自己<br><span class="muted">主动访问</span></td>
+<td>(1)ATK増加</td>
+<td>ATK +6%，発動率 100%，持续 30分，CD 2時間</td>
+<td>ATK +7%，発動率 100%，持续 30分，CD 2時間</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="偏自用">
+<td>105</td>
+<td><strong>extra:021</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E3%82%A2%E3%83%B3%E3%83%8A%E3%83%BB%E3%83%81%E3%82%A7%E3%83%AB%E3%83%88%E3%83%8A%E3%83%A0">アンナ・チェルトナム</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_1</span></td>
+<td><strong>7</strong><br><span class="muted">Lv50</span></td>
+<td>偏自用</td>
+<td>自己<br><span class="muted">-</span></td>
+<td>(1)クールダウン状態のでんこのATK増加</td>
+<td>ATK +6%，発動率 100%</td>
+<td>ATK +7%，発動率 100%</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="偏自用">
+<td>106</td>
+<td><strong>extra:075</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E3%82%BB%E3%83%BC%E3%83%AA%E3%83%BC%E3%83%BB%E3%83%81%E3%82%A7%E3%83%B3%E3%83%9E%E3%82%A4">セーリー・チェンマイ</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_2</span></td>
+<td><strong>6</strong><br><span class="muted">Lv50</span></td>
+<td>偏自用</td>
+<td>自己<br><span class="muted">队伍全cool；cool对象</span></td>
+<td>編成しているでんこがすべてcool属性で (2)リンクしているでんこが1体の時、ATKとDEF増加</td>
+<td>ATK +5%，発動率 100%，持续 40分，CD 2時間20分</td>
+<td>ATK +6%，発動率 100%，持续 45分，CD 2時間15分</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="偏自用">
+<td>107</td>
+<td><strong>original:078</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E6%B5%B7%E9%83%A8%E3%81%AA%E3%82%8B">海部なる</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_2</span></td>
+<td><strong>5</strong><br><span class="muted">Lv50</span></td>
+<td>偏自用</td>
+<td>自己<br><span class="muted">主动访问</span></td>
+<td>(1)でスコア減少時、ATK増加</td>
+<td>ATK +5%，発動率 100%，持续 1時間，CD 3時間</td>
+<td>ATK +5%，発動率 100%，持续 1時間，CD 3時間</td>
+<td>需复查：manual_semantic_fill,dependent_effect</td>
+</tr><tr data-support="偏自用">
+<td>108</td>
+<td><strong>original:046</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E9%BB%92%E5%B4%8E%E3%81%82%E3%81%9F%E3%82%8B">黒崎あたる</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_1</span></td>
+<td><strong>3</strong><br><span class="muted">Lv50</span></td>
+<td>偏自用</td>
+<td>自己<br><span class="muted">-</span></td>
+<td>(1)攻撃を受ければ受けるほどATKが上昇する</td>
+<td>ATK +n×2.5%，発動率 100%，持续 2時間40分，CD 1時間</td>
+<td>ATK +n×3.0%，発動率 100%，持续 3時間，CD 1時間</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="偏自用">
+<td>109</td>
+<td><strong>original:044</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E6%9C%A8%E5%8F%A4%E5%86%85%E3%81%95%E3%81%84%E3%81%8B">木古内さいか</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_1</span></td>
+<td><strong>0.28</strong><br><span class="muted">Lv50</span></td>
+<td>偏自用</td>
+<td>自己<br><span class="muted">-</span></td>
+<td>(1)その日の移動距離に応じてATKが増加する(上限100km)</td>
+<td>ATK +0.24×移動距離(km)%，発動率 100%</td>
+<td>ATK +0.28×移動距離(km)%，発動率 100%</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="偏自用">
+<td>110</td>
+<td><strong>original:064</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E8%A7%92%E9%A4%A8%E3%81%82%E3%81%91%E3%81%B2">角館あけひ</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_1</span></td>
+<td><strong>0.21</strong><br><span class="muted">Lv50</span></td>
+<td>偏自用</td>
+<td>自己<br><span class="muted">-</span></td>
+<td>(1)今日の移動距離(上限100km)に応じて自身のATK増加</td>
+<td>ATK +0.18×移動距離(km)%，発動率 100%</td>
+<td>ATK +0.21×移動距離(km)%，発動率 100%</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="偏自用">
+<td>111</td>
+<td><strong>extra:028</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E3%83%AD%E3%83%B3%E3%83%BB%E3%83%AA%E3%83%B3%E3%83%95%E3%82%A1">ロン・リンファ</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_1</span></td>
+<td><strong>0</strong><br><span class="muted">Lv50</span></td>
+<td>偏自用</td>
+<td>自己<br><span class="muted">队伍全eco</span></td>
+<td>(1) その日の移動距離に応じてATKとDEFが増加[自身]</td>
+<td>0%，発動率 100%</td>
+<td>0%，発動率 100%</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="偏自用">
+<td>112</td>
+<td><strong>original:017</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E3%83%80%E3%83%83%E3%83%81%E3%83%A5%E3%83%BC">ダッチュー</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_2</span></td>
+<td><strong>75</strong><br><span class="muted">Lv92</span></td>
+<td>偏自用</td>
+<td>自己<br><span class="muted">-</span></td>
+<td>(2)相手がニャッシュの場合自身のATK増加 Lv10でスキル取得</td>
+<td>-</td>
+<td>-</td>
+<td>含VU/Lv92+；需复查：manual_semantic_fill</td>
+</tr><tr data-support="偏自用">
+<td>113</td>
+<td><strong>original:068</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E4%B8%83%E8%80%80%E3%81%BF%E3%81%A4%E3%82%8B">七耀みつる</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_3</span></td>
+<td><strong>10</strong><br><span class="muted">Lv100</span></td>
+<td>偏自用</td>
+<td>自己<br><span class="muted">-</span></td>
+<td>(3)はLv.92以上で発動</td>
+<td>-</td>
+<td>-</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="偏自用">
+<td>114</td>
+<td><strong>original:016</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E3%83%8B%E3%83%A3%E3%83%83%E3%82%B7%E3%83%A5">ニャッシュ</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_2</span></td>
+<td><strong>7</strong><br><span class="muted">Lv92</span></td>
+<td>偏自用</td>
+<td>自己<br><span class="muted">-</span></td>
+<td>(2)電友の数に応じて自身のATKとDEFが増加</td>
+<td>-</td>
+<td>-</td>
+<td>含VU/Lv92+；需复查：manual_semantic_fill</td>
+</tr><tr data-support="偏自用">
+<td>115</td>
+<td><strong>original:058</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E5%A6%B9%E5%B0%BE%E3%81%BE%E3%82%8A%E3%81%8B">妹尾まりか</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_2</span></td>
+<td><strong>5</strong><br><span class="muted">Lv92</span></td>
+<td>偏自用</td>
+<td>自己<br><span class="muted">-</span></td>
+<td>(2)自身のATK増加・DEF減少</td>
+<td>-</td>
+<td>-</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="偏自用">
+<td>116</td>
+<td><strong>original:087</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E8%A6%B3%E9%9F%B3%E7%94%BA%E3%81%B2%E3%82%81">観音町ひめ</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_3</span></td>
+<td><strong>5</strong><br><span class="muted">Lv92</span></td>
+<td>偏自用</td>
+<td>自己<br><span class="muted">-</span></td>
+<td>(3)相手のでんこがeco属性かつ相手編成に4体以上eco属性がいる場合追加でATK上昇</td>
+<td>-</td>
+<td>-</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="偏自用">
+<td>117</td>
+<td><strong>original:019</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E7%BE%8E%E5%94%84%E3%82%A4%E3%83%A0%E3%83%A9">美唄イムラ</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_2</span></td>
+<td><strong>4</strong><br><span class="muted">Lv92</span></td>
+<td>偏自用</td>
+<td>自己<br><span class="muted">-</span></td>
+<td>(2)スキル発動中の消費HP(上限値500)に応じて追加でATK上昇</td>
+<td>-</td>
+<td>-</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="偏自用">
+<td>118</td>
+<td><strong>original:044</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E6%9C%A8%E5%8F%A4%E5%86%85%E3%81%95%E3%81%84%E3%81%8B">木古内さいか</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_3</span></td>
+<td><strong>4</strong><br><span class="muted">Lv92</span></td>
+<td>偏自用</td>
+<td>自己<br><span class="muted">-</span></td>
+<td>(3)その日の移動距離が100km超でATK増加</td>
+<td>-</td>
+<td>-</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="偏自用">
+<td>119</td>
+<td><strong>original:007</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E5%A4%A7%E6%9C%88%E3%82%B7%E3%83%BC%E3%83%8A">大月シーナ</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_2</span></td>
+<td><strong>3</strong><br><span class="muted">Lv92</span></td>
+<td>偏自用</td>
+<td>自己<br><span class="muted">-</span></td>
+<td>(2)カウンターをしてから10分間、自身のATKとDEFが増加</td>
+<td>-</td>
+<td>-</td>
+<td>含VU/Lv92+；需复查：manual_semantic_fill</td>
+</tr><tr data-support="偏自用">
+<td>120</td>
+<td><strong>original:028</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E4%BA%AC%E6%A9%8B%E3%83%AA%E3%82%AA%E3%83%8A">京橋リオナ</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_2</span></td>
+<td><strong>3</strong><br><span class="muted">Lv92</span></td>
+<td>偏自用</td>
+<td>自己<br><span class="muted">主动访问</span></td>
+<td>(2)アクセスした駅への相手のアクセス回数が、自身のアクセス回数より150回以上多い場合、追加でATK増加 相手の駅へのアクセス回数と自身の駅へのアクセス回数の差によって効果量変動</td>
+<td>-</td>
+<td>-</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="偏自用">
+<td>121</td>
+<td><strong>original:032</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E7%A5%9E%E5%B1%85%E3%82%B3%E3%82%BF%E3%83%B3">神居コタン</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_2</span></td>
+<td><strong>3</strong><br><span class="muted">Lv92</span></td>
+<td>偏自用</td>
+<td>自己<br><span class="muted">主动访问</span></td>
+<td>(2)その日にアクセスした駅数が18駅以上の場合、追加で自身のATK増加 駅数は50駅が上限 詳細は下記計算式を参照</td>
+<td>-</td>
+<td>-</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="偏自用">
+<td>122</td>
+<td><strong>original:107</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E9%A7%92%E3%83%B6%E6%9E%97%E3%82%B7%E3%82%AD%E3%83%8D">駒ヶ林シキネ</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_2</span></td>
+<td><strong>3</strong><br><span class="muted">Lv92</span></td>
+<td>偏自用</td>
+<td>自己<br><span class="muted">-</span></td>
+<td>(2)相手のHPが90%以上の場合、追加でATK増加</td>
+<td>-</td>
+<td>-</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="偏自用">
+<td>123</td>
+<td><strong>original:023</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E5%85%AB%E6%BD%AE%E3%81%BF%E3%82%89%E3%81%84">八潮みらい</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_2</span></td>
+<td><strong>0</strong><br><span class="muted">Lv92</span></td>
+<td>偏自用</td>
+<td>自己<br><span class="muted">-</span></td>
+<td>(2)</td>
+<td>-</td>
+<td>-</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="偏自用">
+<td>124</td>
+<td><strong>extra:029</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E9%80%94%E6%9D%A5%E3%81%82%E3%82%8B%E3%81%AF">途来あるは</a></td>
+<td>ATK增加<br><span class="muted">atk_buff_2</span></td>
+<td><strong>0</strong><br><span class="muted">Lv92</span></td>
+<td>偏自用</td>
+<td>自己<br><span class="muted">-</span></td>
+<td>(2)カウンター時、相手のランクに応じてATK増加</td>
+<td>-</td>
+<td>-</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="偏自用">
+<td>125</td>
+<td><strong>extra:013</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E8%8A%B1%E5%BD%A2%E3%81%B2%E3%81%8B%E3%82%8B">花形ひかる</a></td>
+<td>ATK增加<br><span class="muted">atk_buff</span></td>
+<td><strong>-</strong><br><span class="muted">-</span></td>
+<td>偏自用</td>
+<td>自己<br><span class="muted">主动访问；队伍全eco</span></td>
+<td>自身のATK増加</td>
+<td>ATK増加，発動率 100％，持续 25分，CD 5時間35分</td>
+<td>ATK増加，発動率 100％，持续 30分，CD 5時間30分</td>
+<td>需复查：supplemental_component_from_source_text</td>
+</tr><tr data-support="偏自用">
+<td>126</td>
+<td><strong>extra:030</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E3%83%8F%E3%83%AA%E3%82%B7%E3%83%A3%E3%83%BB%E3%83%81%E3%83%A3%E3%83%88%E3%83%A9%E3%83%91%E3%83%86%E3%82%A3">ハリシャ・チャトラパティ</a></td>
+<td>ATK增加<br><span class="muted">atk_buff</span></td>
+<td><strong>-</strong><br><span class="muted">-</span></td>
+<td>偏自用</td>
+<td>自己<br><span class="muted">-</span></td>
+<td>自身のATK増加</td>
+<td>ATK増加，発動率 100％，持续 30分，CD 2時間30分</td>
+<td>ATK増加，発動率 100％，持续 40分，CD 2時間20分</td>
+<td>需复查：supplemental_component_from_source_text</td>
+</tr></tbody>
+      </table>
+    </section>
+    
+    <section id="fixed_damage">
+      <h2>固定伤害</h2>
+      <p>看谁能追加轻减不能/固定伤害。范围值按上限排序，例如 1～210 记作 210。</p>
+      <table>
+        <thead>
+          <tr>
+            <th>排行</th>
+            <th>でんこ</th>
+            <th>效果</th>
+            <th>固定伤害</th>
+            <th>辅助判断</th>
+            <th>对象/限制</th>
+            <th>触发与条件</th>
+            <th>Lv30</th>
+            <th>Lv50</th>
+            <th>备注</th>
+          </tr>
+        </thead>
+        <tbody><tr data-support="可辅助主攻">
+<td>1</td>
+<td><strong>original:110</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E8%8C%85%E6%B2%BC%E3%81%BF%E3%82%86%E3%81%8D">茅沼みゆき</a></td>
+<td>固定伤害<br><span class="muted">fixed_damage_1</span></td>
+<td><strong>55</strong><br><span class="muted">Lv50</span></td>
+<td>可辅助主攻</td>
+<td>对手でんこ<br><span class="muted">主动访问</span></td>
+<td>(1)編成内でんこのアクセス時、相手のDEF上昇率に応じて固定ダメージを与える(上限100%)</td>
+<td>固定ダメージ 0～40，発動率 100%，持续 25分，CD 3時間5分</td>
+<td>固定ダメージ 0～55，発動率 100%，持续 30分，CD 3時間</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>2</td>
+<td><strong>original:062</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E4%BD%9C%E8%8D%89%E9%83%A8%E3%83%9E%E3%82%B3">作草部マコ</a></td>
+<td>固定伤害<br><span class="muted">fixed_damage</span></td>
+<td><strong>50</strong><br><span class="muted">Lv50</span></td>
+<td>可辅助主攻</td>
+<td>对手でんこ<br><span class="muted">主动访问；不含自己</span></td>
+<td>相手に軽減不能なダメージと経験値を与える 自分以外のアクセスしたでんこの属性と駅の属性が同じ場合にのみ発動</td>
+<td>固定ダメージ +40，発動率 100%，持续 20分，CD 3時間</td>
+<td>固定ダメージ +50，発動率 100%，持续 20分，CD 3時間</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>3</td>
+<td><strong>extra:101</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E3%82%B8%E3%83%A3%E3%83%8B%E3%82%B9%E3%83%BB%E3%82%B4%E3%82%AC%E3%83%BC%E3%83%90%E3%83%BC%E3%83%B3">ジャニス・ゴガーバーン</a></td>
+<td>固定伤害<br><span class="muted">fixed_damage</span></td>
+<td><strong>44</strong><br><span class="muted">Lv50</span></td>
+<td>可辅助主攻</td>
+<td>对手でんこ<br><span class="muted">主动访问；队伍全cool；cool对象</span></td>
+<td>発動条件：編成内のでんこが全て cool属性 / 効果：ジャニスよりAPの低い編成内でんこがアクセスした時に、ジャニスとアクセスしたでんこのAPの差（上限55）に応じて相手に軽減されないダメージ</td>
+<td>固定ダメージ 0～44，発動率 100%，持续 40分，CD 2時間20分</td>
+<td>固定ダメージ 0～44，発動率 100%，持续 45分，CD 2時間15分</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>4</td>
+<td><strong>original:129</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E4%BA%94%E6%89%80%E5%B7%9D%E5%8E%9F%E3%81%B9%E3%81%AB%E3%81%8B">五所川原べにか</a></td>
+<td>固定伤害<br><span class="muted">fixed_damage</span></td>
+<td><strong>40</strong><br><span class="muted">Lv50</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">主动访问</span></td>
+<td>【発動条件】編成内のでんこがアクセスしたとき / 【効果】アクセスしたでんこのATK増加量の合計（上限100%）によって変動</td>
+<td>固定ダメージ 0～30，発動率 100%，持续 40分，CD 2時間20分</td>
+<td>固定ダメージ 0～40，発動率 100%，持续 45分，CD 2時間15分</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>5</td>
+<td><strong>extra:095</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E3%82%AF%E3%83%A9%E3%83%A9%E3%83%BB%E3%83%B4%E3%83%83%E3%83%91%E3%83%BC%E3%83%95%E3%82%A7%E3%83%AB%E3%83%88">クララ・ヴッパーフェルト</a></td>
+<td>固定伤害<br><span class="muted">fixed_damage_2</span></td>
+<td><strong>38</strong><br><span class="muted">Lv50</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">主动访问；队伍全eco；不含自己</span></td>
+<td>発動条件：eco属性のみの編成で自身以外がアクセス (2)：アクセスしたでんこのATK増加量合計が120%以上で相手に追加で軽減不能なダメージ</td>
+<td>固定ダメージ 31，発動率 100%，持续 15分，CD 2時間45分</td>
+<td>固定ダメージ 38，発動率 100%，持续 15分，CD 2時間45分</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>6</td>
+<td><strong>original:137</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E7%8E%8B%E5%AD%90%E4%BF%9D%E3%81%93%E3%81%AF%E3%81%AA">王子保こはな</a></td>
+<td>固定伤害<br><span class="muted">fixed_damage_1</span></td>
+<td><strong>21</strong><br><span class="muted">Lv50</span></td>
+<td>可辅助主攻</td>
+<td>对手でんこ<br><span class="muted">主动访问</span></td>
+<td>(1)編成内 のアクセス時、相手に軽減不能なダメージ追加 トリックスター</td>
+<td>固定ダメージ +18，発動率 100%</td>
+<td>固定ダメージ +21，発動率 100%</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>7</td>
+<td><strong>extra:005</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E6%9E%9C%E9%B3%B4%E3%83%84%E3%83%85%E3%82%AD">果鳴ツヅキ</a></td>
+<td>固定伤害<br><span class="muted">fixed_damage</span></td>
+<td><strong>21</strong><br><span class="muted">Lv50</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">主动访问；cool对象</span></td>
+<td>編成内のcool属性でんこがcool属性の駅にアクセスした</td>
+<td>固定ダメージ 18，発動率 100%</td>
+<td>固定ダメージ 21，発動率 100%</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>8</td>
+<td><strong>extra:006</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E3%83%81%E3%82%A7%E3%83%AB%E3%83%BB%E3%82%AB%E3%83%BC%E3%83%AC">チェル・カーレ</a></td>
+<td>固定伤害<br><span class="muted">fixed_damage</span></td>
+<td><strong>21</strong><br><span class="muted">Lv50</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">主动访问；eco对象</span></td>
+<td>編成内のeco属性でんこがeco属性の駅にアクセスした</td>
+<td>固定ダメージ 18，発動率 100%</td>
+<td>固定ダメージ 21，発動率 100%</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>9</td>
+<td><strong>extra:007</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E4%BB%B0%E5%9B%B3%E3%81%BE%E3%82%84">仰図まや</a></td>
+<td>固定伤害<br><span class="muted">fixed_damage_1</span></td>
+<td><strong>21</strong><br><span class="muted">Lv50</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">主动访问；heat对象</span></td>
+<td>(1)編成内のheat属性でんこがheat属性の駅にアクセスした時に固定ダメージ追加と経験値付与、heat属性の駅で受けるダメージを固定値で軽減</td>
+<td>固定ダメージ 18，発動率 100%</td>
+<td>固定ダメージ 21，発動率 100%</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>10</td>
+<td><strong>extra:032</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E3%82%B7%E3%83%A3%E3%83%B3%E3%83%86%E3%82%A3%E3%83%BB%E3%83%80%E3%83%BC%E3%82%B8%E3%83%AA%E3%83%B3">シャンティ・ダージリン</a></td>
+<td>固定伤害<br><span class="muted">fixed_damage_1</span></td>
+<td><strong>20</strong><br><span class="muted">Lv50</span></td>
+<td>可辅助主攻</td>
+<td>对手でんこ<br><span class="muted">主动访问；不含自己</span></td>
+<td>(1)自身を除く編成内のでんこがアクセスした際に相手の編成に複数の属性がいた場合軽減不能なダメージ</td>
+<td>固定ダメージ 15，発動率 100%，持续 40分，CD 2時間20分</td>
+<td>固定ダメージ 20，発動率 100%，持续 45分，CD 2時間15分</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>11</td>
+<td><strong>extra:092</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E3%82%A2%E3%83%AA%E3%82%A2%E3%83%8A%E3%83%BB%E3%82%B8%E3%83%A3%E3%82%B9%E3%83%91%E3%83%BC">アリアナ・ジャスパー</a></td>
+<td>固定伤害<br><span class="muted">fixed_damage_2</span></td>
+<td><strong>15</strong><br><span class="muted">Lv50</span></td>
+<td>可辅助主攻</td>
+<td>对手でんこ<br><span class="muted">主动访问；对象属性 heat/cool</span></td>
+<td>発動条件： と のみの編成 (2)：編成内でんこがリブート後7分間、そのでんこのアクセス時相手に軽減不能なダメージを追加付与 heat属性 cool属性</td>
+<td>固定ダメージ 13，発動率 100%</td>
+<td>固定ダメージ 15，発動率 100%</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>12</td>
+<td><strong>original:131</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E5%8B%9D%E7%94%B0%E3%83%9F%E3%82%AD">勝田ミキ</a></td>
+<td>固定伤害<br><span class="muted">fixed_damage_1</span></td>
+<td><strong>14</strong><br><span class="muted">Lv50</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">主动访问；对象属性 cool/eco</span></td>
+<td>coolとecoのみ編成 (1)編成内のでんこがアクセス時に固定ダメージ</td>
+<td>固定ダメージ 12，発動率 100%</td>
+<td>固定ダメージ 14，発動率 100%</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>13</td>
+<td><strong>original:137</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E7%8E%8B%E5%AD%90%E4%BF%9D%E3%81%93%E3%81%AF%E3%81%AA">王子保こはな</a></td>
+<td>追加固定伤害<br><span class="muted">additional_fixed_damage_2</span></td>
+<td><strong>9</strong><br><span class="muted">Lv50</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">主动访问；eco对象；对象类型 trickster</span></td>
+<td>(2)編成内トリックスターが の場合、(1)に追加で軽減不能なダメージ eco属性</td>
+<td>追加固定ダメージ +7，発動率 100%</td>
+<td>追加固定ダメージ +9，発動率 100%</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>14</td>
+<td><strong>original:066</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E8%9B%8D%E8%8C%B6%E5%B1%8B%E3%81%BF%E3%81%AA%E3%82%82">蛍茶屋みなも</a></td>
+<td>追加固定伤害<br><span class="muted">additional_fixed_damage_2</span></td>
+<td><strong>10</strong><br><span class="muted">Lv92</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">不含自己</span></td>
+<td>(2)自身を除く編成内でんこがリンクする度に最大1時間まで効果時間延長 延長効果が1回でも発動した時固定ダメージを追加 発動条件：自身以外の編成内でんこが2体リンクする</td>
+<td>-</td>
+<td>-</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>15</td>
+<td><strong>original:102</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E5%85%AB%E6%88%B8%E3%81%BE%E3%81%97%E3%82%8D">八戸ましろ</a></td>
+<td>固定伤害<br><span class="muted">weekday_fixed_damage_wednesday</span></td>
+<td><strong>-</strong><br><span class="muted">-</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">主动访问</span></td>
+<td>一定時間、曜日に応じて様々な効果 / ※Lv.92以降、発動時間帯によって追加効果付与 （昼：効果時間延長、夜：効果量増大） 効果は発動時の曜日に依存 （日を跨いだ場合は前日曜日の効果） / 昼：6:00～18:00 夜：18:00～翌6:00</td>
+<td>曜日変化: 水曜日 追加固定ダメージ，発動率 100%，持续 30分，CD 2時間30分</td>
+<td>曜日変化: 水曜日 追加固定ダメージ，発動率 100%，持续 30分，CD 2時間30分</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="看触发者">
+<td>16</td>
+<td><strong>original:072</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E8%93%AE%E5%8F%B0%E5%AF%BA%E3%83%8A%E3%82%AE%E3%82%B5">蓮台寺ナギサ</a></td>
+<td>固定伤害<br><span class="muted">fixed_damage_1</span></td>
+<td><strong>210</strong><br><span class="muted">Lv50</span></td>
+<td>看触发者</td>
+<td>对手でんこ<br><span class="muted">主动访问；按自己+对手队伍cool数量上限14体</span></td>
+<td>固定ダメージ[相手のでんこ] 効果量：(1)相手と自身の編成内のcool属性でんこの数(上限14体)によって変動 / (2)編成しているでんこがすべてcoolのとき(1)に追加で固定ダメージ (2)はLv.92以上で発動</td>
+<td>固定ダメージ 1～180，発動率 100%</td>
+<td>固定ダメージ 1～210，発動率 100%</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="看触发者">
+<td>17</td>
+<td><strong>original:101</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E7%94%B0%E5%8E%9F%E7%94%BA%E3%81%A4%E3%81%B0%E3%81%95">田原町つばさ</a></td>
+<td>固定伤害<br><span class="muted">fixed_damage</span></td>
+<td><strong>155</strong><br><span class="muted">Lv50</span></td>
+<td>看触发者</td>
+<td>对手でんこ<br><span class="muted">主动访问</span></td>
+<td>リンク失敗後、一定時間相手に軽減不能なダメージを与える 発動時にリンクするとクールタイムに</td>
+<td>固定ダメージ 130，発動率 100%，持续 30分，CD 30分</td>
+<td>固定ダメージ 155，発動率 100%，持续 30分，CD 30分</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="看触发者">
+<td>18</td>
+<td><strong>original:080</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E9%82%A3%E7%8F%82%E6%B9%8A%E3%81%AD%E3%82%82">那珂湊ねも</a></td>
+<td>固定伤害<br><span class="muted">fixed_damage_1</span></td>
+<td><strong>140</strong><br><span class="muted">Lv50</span></td>
+<td>看触发者</td>
+<td>对手でんこ<br><span class="muted">-</span></td>
+<td>(1)相手に軽減不能なダメージを与える リンク時、クールタイムに入る</td>
+<td>固定ダメージ +120，CD 3時間</td>
+<td>固定ダメージ +140，CD 3時間</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="看触发者">
+<td>19</td>
+<td><strong>original:066</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E8%9B%8D%E8%8C%B6%E5%B1%8B%E3%81%BF%E3%81%AA%E3%82%82">蛍茶屋みなも</a></td>
+<td>固定伤害<br><span class="muted">fixed_damage_1</span></td>
+<td><strong>75</strong><br><span class="muted">Lv50</span></td>
+<td>看触发者</td>
+<td>对手でんこ<br><span class="muted">主动访问</span></td>
+<td>(1)自身のアクセス時相手に軽減不能なダメージを与える</td>
+<td>固定ダメージ +60，発動率 100%，持续 30分</td>
+<td>固定ダメージ +75，発動率 100%，持续 30分</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="看触发者">
+<td>20</td>
+<td><strong>original:111</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E7%B3%B8%E9%AD%9A%E5%B7%9D%E3%81%9B%E3%81%A4%E3%81%8B">糸魚川せつか</a></td>
+<td>固定伤害<br><span class="muted">seasonal_fixed_damage_summer</span></td>
+<td><strong>28</strong><br><span class="muted">Lv50</span></td>
+<td>看触发者</td>
+<td>对手でんこ<br><span class="muted">-</span></td>
+<td>経験値付与(3～5月)／固定ダメージ(6～8月) スコア獲得(9～11月)／ダメージ軽減(12～2月) ※Lv.92以降、1・4・7・10月は効果量増加</td>
+<td>固定ダメージ 24，発動率 100%，持续 40分，CD 2時間20分</td>
+<td>固定ダメージ 28，発動率 100%，持续 45分，CD 2時間15分</td>
+<td>含VU/Lv92+；需复查：manual_semantic_fill</td>
+</tr><tr data-support="看触发者">
+<td>21</td>
+<td><strong>original:157</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E9%98%BF%E4%BB%81%E5%90%88%E3%81%AB%E3%81%82">阿仁合にあ</a></td>
+<td>固定伤害<br><span class="muted">fixed_damage_1</span></td>
+<td><strong>9</strong><br><span class="muted">Lv50</span></td>
+<td>看触发者</td>
+<td>对手でんこ<br><span class="muted">主动访问</span></td>
+<td>(1)先頭のアクセス時相手に固定ダメージ</td>
+<td>固定ダメージ 7，発動率 100%</td>
+<td>固定ダメージ 9，発動率 100%</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="看触发者">
+<td>22</td>
+<td><strong>original:072</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E8%93%AE%E5%8F%B0%E5%AF%BA%E3%83%8A%E3%82%AE%E3%82%B5">蓮台寺ナギサ</a></td>
+<td>追加固定伤害<br><span class="muted">additional_fixed_damage_2</span></td>
+<td><strong>10</strong><br><span class="muted">Lv92</span></td>
+<td>看触发者</td>
+<td>对手でんこ<br><span class="muted">按自己+对手队伍cool数量上限14体</span></td>
+<td>固定ダメージ[相手のでんこ] 効果量：(1)相手と自身の編成内のcool属性でんこの数(上限14体)によって変動 (2)編成しているでんこがすべてcoolのとき(1)に追加で固定ダメージ</td>
+<td>-</td>
+<td>-</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="看触发者">
+<td>23</td>
+<td><strong>original:110</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E8%8C%85%E6%B2%BC%E3%81%BF%E3%82%86%E3%81%8D">茅沼みゆき</a></td>
+<td>追加固定伤害<br><span class="muted">additional_fixed_damage_2</span></td>
+<td><strong>10</strong><br><span class="muted">Lv92</span></td>
+<td>看触发者</td>
+<td>对手でんこ<br><span class="muted">-</span></td>
+<td>(2)相手のDEFの増加量が100%を超えている場合、相手のDEFの増加量に応じて軽減されないダメージを追加(上限160%)</td>
+<td>-</td>
+<td>-</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="看触发者">
+<td>24</td>
+<td><strong>original:026</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E6%96%B0%E7%99%BE%E5%90%88%E3%81%BB%E3%81%93%E3%81%AD">新百合ほこね</a></td>
+<td>固定伤害<br><span class="muted">fixed_damage_3</span></td>
+<td><strong>8</strong><br><span class="muted">Lv92</span></td>
+<td>看触发者</td>
+<td>对手でんこ<br><span class="muted">-</span></td>
+<td>(3)自身のATK増加量合計が180%以上で(2)に追加で 相手に軽減不能なダメージ 相手がうららの場合HPを回復 回復量はうららの最大HPの40% (経験値1取得)</td>
+<td>-</td>
+<td>-</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="看触发者">
+<td>25</td>
+<td><strong>original:026</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E6%96%B0%E7%99%BE%E5%90%88%E3%81%BB%E3%81%93%E3%81%AD">新百合ほこね</a></td>
+<td>固定伤害<br><span class="muted">fixed_damage_2</span></td>
+<td><strong>5</strong><br><span class="muted">Lv92</span></td>
+<td>看触发者</td>
+<td>对手でんこ<br><span class="muted">-</span></td>
+<td>(2)自身のATK増加量合計が120%以上で 相手に軽減不能なダメージ</td>
+<td>-</td>
+<td>-</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="偏自用">
+<td>26</td>
+<td><strong>original:157</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E9%98%BF%E4%BB%81%E5%90%88%E3%81%AB%E3%81%82">阿仁合にあ</a></td>
+<td>固定伤害<br><span class="muted">fixed_damage_2</span></td>
+<td><strong>16</strong><br><span class="muted">Lv50</span></td>
+<td>偏自用</td>
+<td>自己<br><span class="muted">主动访问</span></td>
+<td>(2)先頭がAP&lt;最大HPの場合、その差に応じて固定ダメージ量増加</td>
+<td>固定ダメージ 0～13，発動率 100%</td>
+<td>固定ダメージ 0～16，発動率 100%</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="偏自用">
+<td>27</td>
+<td><strong>original:050</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E8%B1%8A%E6%A0%84%E3%81%AA%E3%81%BB">豊栄なほ</a></td>
+<td>固定伤害<br><span class="muted">fixed_damage</span></td>
+<td><strong>11</strong><br><span class="muted">Lv92</span></td>
+<td>偏自用</td>
+<td>自己<br><span class="muted">-</span></td>
+<td>(1)自身のDEF増加 / (2)被ダメージが一定値以下のときにダメージ無効化 効果時間内バッテリー使用不可 / (2)はLv.92以上で発動</td>
+<td>-</td>
+<td>-</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="偏自用">
+<td>28</td>
+<td><strong>original:030</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E5%85%AB%E9%9B%B2%E3%83%AC%E3%83%BC%E3%83%8E">八雲レーノ</a></td>
+<td>固定伤害<br><span class="muted">fixed_damage</span></td>
+<td><strong>8</strong><br><span class="muted">Lv92</span></td>
+<td>偏自用</td>
+<td>自己<br><span class="muted">主动访问</span></td>
+<td>夜の間はATKが増加、昼の間はDEFが減少 （Lv.92以降、リンクしてから12分間アクセス時に固定ダメージ付加） 夜間は18:00～翌朝6:00 昼間6:00～18:00は常時DEF-30%</td>
+<td>-</td>
+<td>-</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="偏自用">
+<td>29</td>
+<td><strong>extra:032</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E3%82%B7%E3%83%A3%E3%83%B3%E3%83%86%E3%82%A3%E3%83%BB%E3%83%80%E3%83%BC%E3%82%B8%E3%83%AA%E3%83%B3">シャンティ・ダージリン</a></td>
+<td>追加固定伤害<br><span class="muted">additional_fixed_damage_2</span></td>
+<td><strong>8</strong><br><span class="muted">Lv92</span></td>
+<td>偏自用</td>
+<td>自己<br><span class="muted">-</span></td>
+<td>(2)スキル(1)の発動回数に応じて追加で軽減不能なダメージ(上限4回)</td>
+<td>-</td>
+<td>-</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr></tbody>
+      </table>
+    </section>
+    
+    <section id="def_debuff">
+      <h2>降低对手DEF</h2>
+      <p>看谁能让对手 DEF 下降。排序用下降幅度，例如 DEF -35% 记作 35%。</p>
+      <table>
+        <thead>
+          <tr>
+            <th>排行</th>
+            <th>でんこ</th>
+            <th>效果</th>
+            <th>DEF下降</th>
+            <th>辅助判断</th>
+            <th>对象/限制</th>
+            <th>触发与条件</th>
+            <th>Lv30</th>
+            <th>Lv50</th>
+            <th>备注</th>
+          </tr>
+        </thead>
+        <tbody><tr data-support="可辅助主攻">
+<td>1</td>
+<td><strong>extra:008</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E9%98%BF%E4%B8%8B%E5%96%9C%E3%82%B1%E3%82%A4">阿下喜ケイ</a></td>
+<td>DEF下降<br><span class="muted">def_debuff_1</span></td>
+<td><strong>65</strong><br><span class="muted">Lv50</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">不含自己</span></td>
+<td>(1)自分以外の編成内でんこのATK/DEF減少、獲得経験値増加</td>
+<td>DEF -70%，発動率 100%，持续 45分，CD 4時間</td>
+<td>DEF -65%，発動率 100%，持续 45分，CD 4時間</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>2</td>
+<td><strong>extra:024</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E3%82%A2%E3%83%A1%E3%83%AA%E3%82%A2%E3%83%BB%E3%83%91%E3%82%A6%E3%82%A8%E3%83%AB">アメリア・パウエル</a></td>
+<td>DEF下降<br><span class="muted">def_debuff_2</span></td>
+<td><strong>40</strong><br><span class="muted">Lv50</span></td>
+<td>可辅助主攻</td>
+<td>对手でんこ<br><span class="muted">队伍全eco；eco对象</span></td>
+<td>編成しているでんこがすべてeco属性で相手の編成内に (2)1つの属性のみがいるとDEF減少</td>
+<td>DEF -40%，発動率 100%，持续 25分，CD 5時間35分</td>
+<td>DEF -40%，発動率 100%，持续 30分，CD 5時間30分</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>3</td>
+<td><strong>original:079</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E5%94%90%E6%B4%A5%E3%82%B7%E3%82%BA">唐津シズ</a></td>
+<td>DEF下降<br><span class="muted">def_debuff_2</span></td>
+<td><strong>22</strong><br><span class="muted">Lv50</span></td>
+<td>可辅助主攻</td>
+<td>对手でんこ<br><span class="muted">队伍全heat</span></td>
+<td>(2)相手編成内のでんこの属性の数に応じて相手でんこのDEFが減少(ATKと同時発動)</td>
+<td>DEF -5～-20%，発動率 100%，持续 30分，CD 2時間30分</td>
+<td>DEF -5.5～-22%，発動率 100%，持续 30分，CD 2時間30分</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>4</td>
+<td><strong>extra:035</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E3%83%9F%E3%82%A2%E3%83%BB%E3%82%B8%E3%82%A7%E3%83%A0%E3%83%96%E3%83%AB%E3%83%83%E3%82%AF">ミア・ジェムブルック</a></td>
+<td>DEF下降<br><span class="muted">def_debuff</span></td>
+<td><strong>22</strong><br><span class="muted">Lv50</span></td>
+<td>可辅助主攻</td>
+<td>对手でんこ<br><span class="muted">主动访问；队伍全eco；eco对象；不含自己</span></td>
+<td>自編成のでんこが全員eco属性のとき、自身以外のアクセス時に相手でんこのDEF減少</td>
+<td>DEF -18%，発動率 100%，持续 30分，CD 2時間30分</td>
+<td>DEF -22%，発動率 100%，持续 30分，CD 2時間30分</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>5</td>
+<td><strong>extra:094</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E3%82%AF%E3%83%A9%E3%82%A6%E3%83%87%E3%82%A3%E3%82%A2%E3%83%BB%E3%83%99%E3%83%AB%E3%83%AA%E3%83%B3">クラウディア・ベルリン</a></td>
+<td>DEF下降<br><span class="muted">def_debuff</span></td>
+<td><strong>22</strong><br><span class="muted">Lv50</span></td>
+<td>可辅助主攻</td>
+<td>对手でんこ<br><span class="muted">主动访问；不含自己</span></td>
+<td>発動条件：自身以外のheat属性でんこのアクセス時、相手編成内にサポーターが3体以上 / 効果：相手でんこのDEF減少</td>
+<td>DEF -18%，発動率 100%，持续 15分，CD 2時間45分</td>
+<td>DEF -22%，発動率 100%，持续 15分，CD 2時間45分</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>6</td>
+<td><strong>original:162</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E7%A6%8F%E4%BD%8F%E3%81%BF%E3%81%9E%E3%82%8C">福住みぞれ</a></td>
+<td>DEF下降<br><span class="muted">def_debuff_1</span></td>
+<td><strong>20</strong><br><span class="muted">Lv50</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">主动访问</span></td>
+<td>アクセスした駅の気温に応じて編成内のATK・DEFを増減 (1)30℃以上</td>
+<td>DEF -20%，発動率 100%，持续 25分，CD 2時間35分</td>
+<td>DEF -20%，発動率 100%，持续 30分，CD 2時間30分</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>7</td>
+<td><strong>original:152</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E9%AC%BC%E6%80%92%E5%B7%9D%E3%81%AB%E3%81%84%E3%81%AA">鬼怒川にいな</a></td>
+<td>DEF下降<br><span class="muted">def_debuff_2</span></td>
+<td><strong>14</strong><br><span class="muted">Lv50</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">主动访问；队伍全heat；heat对象；不含自己</span></td>
+<td>発動条件：編成内のでんこが全て heat属性 / (2)：自身以外のアクセス時に相手のDEFが減少</td>
+<td>DEF -11%，発動率 100%，持续 25分，CD 2時間35分</td>
+<td>DEF -14%，発動率 100%，持续 30分，CD 2時間30分</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="可辅助主攻">
+<td>8</td>
+<td><strong>extra:074</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E3%82%B9%E3%83%AF%E3%82%A4%E3%83%BB%E3%82%B5%E3%82%A4%E3%82%A2%E3%83%A0">スワイ・サイアム</a></td>
+<td>DEF下降<br><span class="muted">def_debuff_2</span></td>
+<td><strong>4</strong><br><span class="muted">Lv50</span></td>
+<td>可辅助主攻</td>
+<td>编成内全员<br><span class="muted">队伍全heat；heat对象</span></td>
+<td>編成しているでんこがすべてheat属性で (2)編成内のでんこがダメージを受けるとダメージに応じてDEF減少、リンクするとDEF増加</td>
+<td>DEF -4%～+32.5%，発動率 100%，持续 40分，CD 1時間20分</td>
+<td>DEF -4%～+35%，発動率 100%，持续 45分，CD 1時間15分</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="看触发者">
+<td>9</td>
+<td><strong>extra:010</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E5%A4%95%E9%99%BD%E3%82%B1%E4%B8%98%E3%82%A6%E3%82%B7%E3%82%AA">夕陽ケ丘ウシオ</a></td>
+<td>DEF下降<br><span class="muted">def_debuff_2</span></td>
+<td><strong>35</strong><br><span class="muted">Lv50</span></td>
+<td>看触发者</td>
+<td>对手でんこ<br><span class="muted">-</span></td>
+<td>(2)DEF減少[相手のでんこ]</td>
+<td>DEF -32%，発動率 100%，持续 5分，CD 8時間</td>
+<td>DEF -35%，発動率 100%，持续 5分，CD 8時間</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="看触发者">
+<td>10</td>
+<td><strong>original:076</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E4%B8%8A%E3%83%8E%E5%B1%B1%E3%82%86%E3%81%AE%E3%81%8B">上ノ山ゆのか</a></td>
+<td>DEF下降<br><span class="muted">def_debuff_3</span></td>
+<td><strong>4</strong><br><span class="muted">Lv92</span></td>
+<td>看触发者</td>
+<td>对手でんこ<br><span class="muted">-</span></td>
+<td>(3)相手のDEF減少</td>
+<td>-</td>
+<td>-</td>
+<td>含VU/Lv92+；需复查：manual_semantic_fill,raw_label_conflict_resolved</td>
+</tr><tr data-support="看触发者">
+<td>11</td>
+<td><strong>original:022</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E5%B7%BD%E3%83%AC%E3%83%B3">巽レン</a></td>
+<td>DEF下降<br><span class="muted">def_debuff_2</span></td>
+<td><strong>3</strong><br><span class="muted">Lv92</span></td>
+<td>看触发者</td>
+<td>对手でんこ<br><span class="muted">-</span></td>
+<td>(2)相手のDEF減少</td>
+<td>-</td>
+<td>-</td>
+<td>含VU/Lv92+；需复查：manual_semantic_fill</td>
+</tr><tr data-support="需人工判断">
+<td>12</td>
+<td><strong>original:119</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E9%9D%92%E6%A3%AE%E3%81%9B%E3%81%84%E3%82%89%E3%82%93">青森せいらん</a></td>
+<td>DEF下降<br><span class="muted">def_debuff_2</span></td>
+<td><strong>30</strong><br><span class="muted">Lv50</span></td>
+<td>需人工判断</td>
+<td>对象未明<br><span class="muted">-</span></td>
+<td>(2)DEF減少</td>
+<td>DEF -30%，発動率 100%，持续 45分，CD 2時間30分</td>
+<td>DEF -30%，発動率 100%，持续 45分，CD 2時間30分</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="偏自用">
+<td>13</td>
+<td><strong>extra:073</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E3%82%A2%E3%83%81%E3%83%A3%E3%83%A9%E3%83%BB%E3%83%A1%E3%83%BC%E3%82%AF%E3%83%AD%E3%83%BC%E3%83%B3">アチャラ・メークローン</a></td>
+<td>DEF下降<br><span class="muted">def_debuff_1</span></td>
+<td><strong>20</strong><br><span class="muted">Lv50</span></td>
+<td>偏自用</td>
+<td>自己<br><span class="muted">被访问</span></td>
+<td>(1)自身のDEF -20% (2)発動時間中にリブートした時、獲得スコア -50%</td>
+<td>DEF -20%，発動率 100%，持续 20分，CD 8時間</td>
+<td>DEF -20%，発動率 100%，持续 20分，CD 8時間</td>
+<td>需复查：component_semantics_need_review</td>
+</tr><tr data-support="偏自用">
+<td>14</td>
+<td><strong>original:091</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E5%B2%A9%E5%88%87%E3%82%88%E3%81%97%E3%81%AE">岩切よしの</a></td>
+<td>DEF下降<br><span class="muted">def_debuff_1_heat</span></td>
+<td><strong>10</strong><br><span class="muted">Lv50</span></td>
+<td>偏自用</td>
+<td>自己<br><span class="muted">被访问</span></td>
+<td>(1)相手が ならDEF+15%、 ならDEF-10% cool属性 heat属性</td>
+<td>DEF -10%，activation_probability 100%，持续 40分，CD 2時間20分</td>
+<td>DEF -10%，activation_probability 100%，持续 45分，CD 2時間15分</td>
+<td>需复查：manual_semantic_fill</td>
+</tr><tr data-support="偏自用">
+<td>15</td>
+<td><strong>original:058</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E5%A6%B9%E5%B0%BE%E3%81%BE%E3%82%8A%E3%81%8B">妹尾まりか</a></td>
+<td>DEF下降<br><span class="muted">def_debuff_2</span></td>
+<td><strong>5</strong><br><span class="muted">Lv92</span></td>
+<td>偏自用</td>
+<td>自己<br><span class="muted">-</span></td>
+<td>(2)自身のATK増加・DEF減少</td>
+<td>-</td>
+<td>-</td>
+<td>含VU/Lv92+；需复查：component_semantics_need_review</td>
+</tr><tr data-support="偏自用">
+<td>16</td>
+<td><strong>extra:122</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E3%83%9E%E3%83%AA%E3%83%AA%E3%83%B3%E3%83%BB%E3%83%9E%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3">マリリン・マクリーン</a></td>
+<td>DEF下降<br><span class="muted">def_debuff_1</span></td>
+<td><strong>-</strong><br><span class="muted">-</span></td>
+<td>偏自用</td>
+<td>自己<br><span class="muted">被访问；队伍全cool</span></td>
+<td>発動条件：編成内がすべてcool属性 (1)自身のDEF-10%</td>
+<td>def_debuff，発動率 100%，CD 1時間40分</td>
+<td>def_debuff，発動率 100%，CD 1時間30分</td>
+<td>需复查：condition_only_component_needs_review</td>
+</tr></tbody>
+      </table>
+    </section>
+    
+  <script>
+    const q = document.getElementById('q');
+    const support = document.getElementById('support');
+    const rows = [...document.querySelectorAll('tbody tr')];
+    function applyFilter() {
+      const needle = q.value.trim().toLowerCase();
+      for (const row of rows) {
+        const okText = !needle || row.innerText.toLowerCase().includes(needle);
+        const okSupport = !support.value || row.dataset.support === support.value;
+        row.style.display = okText && okSupport ? '' : 'none';
+      }
+    }
+    q.addEventListener('input', applyFilter);
+    support.addEventListener('input', applyFilter);
+  </script>
+</body>
+</html>
