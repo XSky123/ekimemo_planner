@@ -34,6 +34,12 @@ CATEGORIES = {
     },
 }
 
+ACTIVATION_GROUPS = [
+    ("always", "常驻技能", "基本不需要按技能按钮；适合作为稳定底盘。"),
+    ("manual", "手动触发技能", "需要开技能，重点看持续时间和CD。"),
+    ("probability", "概率/自动触发技能", "发动不完全稳定，重点看概率、触发条件和是否能接受波动。"),
+]
+
 
 EFFECT_LABELS = {
     "atk_buff": "ATK增加",
@@ -71,6 +77,45 @@ def probability_text(value: dict[str, Any]) -> str:
     if isinstance(probability, dict):
         return " / ".join(f"{k} {v}" for k, v in probability.items() if v not in {None, "", "-"})
     return str(probability)
+
+
+def probability_numbers(value: dict[str, Any]) -> list[float]:
+    probability = value.get("probability")
+    if not probability:
+        return []
+    text = json.dumps(probability, ensure_ascii=False) if isinstance(probability, dict) else str(probability)
+    numbers = []
+    for raw in re.findall(r"\d+(?:\.\d+)?\s*[％%]", text):
+        try:
+            numbers.append(float(re.search(r"\d+(?:\.\d+)?", raw).group(0)))
+        except (AttributeError, ValueError):
+            pass
+    return numbers
+
+
+def is_probability_trigger(component: dict[str, Any]) -> bool:
+    values = component.get("values_by_denko_level") or {}
+    for level in ("50", "30"):
+        nums = probability_numbers(values.get(level) or {})
+        if nums and any(number < 100 for number in nums):
+            return True
+    for _, value in all_level_values(component):
+        nums = probability_numbers(value)
+        if nums and any(number < 100 for number in nums):
+            return True
+    return False
+
+
+def activation_group(row: dict[str, Any], component: dict[str, Any]) -> tuple[str, str]:
+    activation_type = str(component.get("activation_type") or row.get("activation_type") or "")
+    activation_mode = str((row.get("normalized_skill") or {}).get("activation_mode") or "")
+    if is_probability_trigger(component) or activation_type == "でんこにおまかせ":
+        return "probability", "概率/自动触发"
+    if activation_type == "マスターにおまかせ" or activation_mode == "passive_auto":
+        return "manual", "手动触发"
+    if activation_type == "いつでもアクティブ" or activation_mode == "always_active":
+        return "always", "常驻"
+    return "probability", "发动方式需确认"
 
 
 def value_text(component: dict[str, Any], level: str) -> str:
@@ -223,6 +268,7 @@ def build_candidates(category: str, rows: list[dict[str, Any]]) -> list[dict[str
                 continue
             score, basis = primary_score(category, component)
             support = support_judgement(component)
+            group_id, group_label = activation_group(row, component)
             candidates.append(
                 {
                     "score": score,
@@ -236,6 +282,9 @@ def build_candidates(category: str, rows: list[dict[str, Any]]) -> list[dict[str
                     "target": target_text(component),
                     "filters": compact_filter_text(component),
                     "support": support,
+                    "activation_group": group_id,
+                    "activation_label": group_label,
+                    "activation_type": component.get("activation_type") or row.get("activation_type") or "",
                     "lv30": value_text(component, "30"),
                     "lv50": value_text(component, "50"),
                     "note": row_note(component),
@@ -258,31 +307,35 @@ def build_candidates(category: str, rows: list[dict[str, Any]]) -> list[dict[str
 def render_table(category: str, candidates: list[dict[str, Any]]) -> str:
     title = CATEGORIES[category]["title"]
     score_label = CATEGORIES[category]["score_label"]
-    body = []
-    for rank, item in enumerate(candidates, 1):
-        score = "-" if item["score"] is None else f"{item['score']:g}"
-        body.append(
-            "\n".join(
-                [
-                    f'<tr data-support="{esc(item["support"])}">',
-                    f"<td>{rank}</td>",
-                    f"<td><strong>{esc(item['denko_id'])}</strong><br><a href=\"{esc(item['url'])}\">{esc(item['name'])}</a></td>",
-                    f"<td>{esc(EFFECT_LABELS.get(item['kind'], item['kind']))}<br><span class=\"muted\">{esc(item['component_id'])}</span></td>",
-                    f"<td><strong>{esc(score)}</strong><br><span class=\"muted\">{esc(item['basis'])}</span></td>",
-                    f"<td>{esc(item['support'])}</td>",
-                    f"<td>{esc(item['target'])}<br><span class=\"muted\">{esc(item['filters'])}</span></td>",
-                    f"<td>{esc(item['condition'])}</td>",
-                    f"<td>{esc(item['lv30'])}</td>",
-                    f"<td>{esc(item['lv50'])}</td>",
-                    f"<td>{esc(item['note'])}</td>",
-                    "</tr>",
-                ]
+    grouped_html = []
+    for group_id, group_title, group_description in ACTIVATION_GROUPS:
+        group_items = [item for item in candidates if item["activation_group"] == group_id]
+        body = []
+        for rank, item in enumerate(group_items, 1):
+            score = "-" if item["score"] is None else f"{item['score']:g}"
+            body.append(
+                "\n".join(
+                    [
+                        f'<tr data-support="{esc(item["support"])}" data-activation="{esc(item["activation_group"])}">',
+                        f"<td>{rank}</td>",
+                        f"<td><strong>{esc(item['denko_id'])}</strong><br><a href=\"{esc(item['url'])}\">{esc(item['name'])}</a></td>",
+                        f"<td>{esc(EFFECT_LABELS.get(item['kind'], item['kind']))}<br><span class=\"muted\">{esc(item['component_id'])}</span></td>",
+                        f"<td><strong>{esc(score)}</strong><br><span class=\"muted\">{esc(item['basis'])}</span></td>",
+                        f"<td>{esc(item['activation_label'])}<br><span class=\"muted\">{esc(item['activation_type'])}</span></td>",
+                        f"<td>{esc(item['support'])}</td>",
+                        f"<td>{esc(item['target'])}<br><span class=\"muted\">{esc(item['filters'])}</span></td>",
+                        f"<td>{esc(item['condition'])}</td>",
+                        f"<td>{esc(item['lv30'])}</td>",
+                        f"<td>{esc(item['lv50'])}</td>",
+                        f"<td>{esc(item['note'])}</td>",
+                        "</tr>",
+                    ]
+                )
             )
-        )
-    return f"""
-    <section id="{esc(category)}">
-      <h2>{esc(title)}</h2>
-      <p>{esc(CATEGORIES[category]["description"])}</p>
+        grouped_html.append(
+            f"""
+      <h3>{esc(group_title)} <span class="muted">({len(group_items)})</span></h3>
+      <p class="muted">{esc(group_description)}</p>
       <table>
         <thead>
           <tr>
@@ -290,6 +343,7 @@ def render_table(category: str, candidates: list[dict[str, Any]]) -> str:
             <th>でんこ</th>
             <th>效果</th>
             <th>{esc(score_label)}</th>
+            <th>发动方式</th>
             <th>辅助判断</th>
             <th>对象/限制</th>
             <th>触发与条件</th>
@@ -300,6 +354,13 @@ def render_table(category: str, candidates: list[dict[str, Any]]) -> str:
         </thead>
         <tbody>{''.join(body)}</tbody>
       </table>
+            """
+        )
+    return f"""
+    <section id="{esc(category)}">
+      <h2>{esc(title)}</h2>
+      <p>{esc(CATEGORIES[category]["description"])}</p>
+      {''.join(grouped_html)}
     </section>
     """
 
@@ -335,7 +396,7 @@ def main() -> None:
 </head>
 <body>
   <h1>Ekimemo Step2 攻击辅助排行</h1>
-  <p>从 Step1 DB 自动整理。三类分别看 ATK百分比、固定伤害、降低对手DEF。排序先看“可辅助主攻”，再按 Lv50 实用值，其次 Lv30、VU/其他等级。偏自用技能仍保留在表内，方便比较主攻自身能力。</p>
+  <p>从 Step1 DB 自动整理。三类分别看 ATK百分比、固定伤害、降低对手DEF。每类再拆成常驻、手动触发、概率/自动触发。排序先看“可辅助主攻”，再按 Lv50 实用值，其次 Lv30、VU/其他等级。偏自用技能仍保留在表内，方便比较主攻自身能力。</p>
   <div class="toolbar">
     <input id="q" placeholder="搜索ID、名字、条件、效果" size="36">
     <select id="support">
@@ -344,27 +405,37 @@ def main() -> None:
       <option value="偏自用">只看偏自用</option>
       <option value="看触发者">只看触发者</option>
     </select>
+    <select id="activation">
+      <option value="">全部发动方式</option>
+      <option value="always">常驻技能</option>
+      <option value="manual">手动触发技能</option>
+      <option value="probability">概率/自动触发技能</option>
+    </select>
     <span class="muted">ATK {counts['atk_percent']} / 固定伤害 {counts['fixed_damage']} / DEF下降 {counts['def_debuff']}</span>
   </div>
   {''.join(sections)}
   <script>
     const q = document.getElementById('q');
     const support = document.getElementById('support');
+    const activation = document.getElementById('activation');
     const rows = [...document.querySelectorAll('tbody tr')];
     function applyFilter() {{
       const needle = q.value.trim().toLowerCase();
       for (const row of rows) {{
         const okText = !needle || row.innerText.toLowerCase().includes(needle);
         const okSupport = !support.value || row.dataset.support === support.value;
-        row.style.display = okText && okSupport ? '' : 'none';
+        const okActivation = !activation.value || row.dataset.activation === activation.value;
+        row.style.display = okText && okSupport && okActivation ? '' : 'none';
       }}
     }}
     q.addEventListener('input', applyFilter);
     support.addEventListener('input', applyFilter);
+    activation.addEventListener('input', applyFilter);
   </script>
 </body>
 </html>
 """
+    html_text = "\n".join(line.rstrip() for line in html_text.splitlines()) + "\n"
     OUT_HTML.write_text(html_text, encoding="utf-8")
     print(json.dumps({"out": str(OUT_HTML.relative_to(ROOT)), "counts": counts}, ensure_ascii=False))
 
