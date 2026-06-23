@@ -14,9 +14,15 @@ OUT_HTML = ROOT / "data" / "reports" / "step2_attack_support_rankings_zh.html"
 
 
 CATEGORIES = {
+    "self_atk_result": {
+        "title": "自用ATK结果",
+        "description": "只看给自己加 ATK 的技能。用基础 AP × (1 + ATK增加%) 估算发动后的攻击结果，并按结果排序。",
+        "kinds": {"atk_buff"},
+        "score_label": "发动后AP",
+    },
     "atk_percent": {
         "title": "ATK百分比增加",
-        "description": "看谁能给主攻或自己提供 ATK +%。默认按 Lv50 的最大百分比排序。",
+        "description": "只看能给主攻或队伍提供 ATK +% 的辅助。只给自己加攻的角色已拆到“自用ATK结果”。",
         "kinds": {"atk_buff"},
         "score_label": "ATK增加",
     },
@@ -201,6 +207,66 @@ def primary_score(category: str, component: dict[str, Any]) -> tuple[float | Non
     return None, "-"
 
 
+def level_from_basis(basis: str) -> str | None:
+    match = re.search(r"Lv(\d+)", basis)
+    return match.group(1) if match else None
+
+
+def is_self_only_atk(component: dict[str, Any]) -> bool:
+    if component.get("effect_kind") != "atk_buff":
+        return False
+    scope = set(component.get("target_scope") or [])
+    filters = component.get("target_filters") or {}
+    condition = str(component.get("condition_raw") or "")
+    if scope == {"self"}:
+        return True
+    if "自身のATK" in condition and "編成内" not in condition:
+        return True
+    if filters.get("exclude_self") or "team_all" in scope:
+        return False
+    return False
+
+
+def ap_at_level(row: dict[str, Any], level: str | None) -> float | None:
+    if not level:
+        return None
+    stats = row.get("key_level_stats") or {}
+    value = stats.get(level) or {}
+    ap = value.get("AP")
+    if ap not in {None, ""}:
+        try:
+            return float(ap)
+        except ValueError:
+            return None
+    numeric_levels = sorted(int(item) for item in stats if str(item).isdigit() and int(item) <= int(level))
+    for fallback_level in reversed(numeric_levels):
+        fallback_ap = (stats.get(str(fallback_level)) or {}).get("AP")
+        if fallback_ap not in {None, ""}:
+            try:
+                return float(fallback_ap)
+            except ValueError:
+                continue
+    return None
+
+
+def self_atk_result(row: dict[str, Any], component: dict[str, Any]) -> tuple[float | None, str, str]:
+    percent, basis = primary_score("atk_percent", component)
+    level = level_from_basis(basis)
+    ap = ap_at_level(row, level)
+    if percent is None or ap is None:
+        return None, basis, "-"
+    result = ap * (1 + percent / 100)
+    detail = f"AP {ap:g} × (1+{percent:g}%) = {result:g}"
+    return result, basis, detail
+
+
+def is_vu_only(component: dict[str, Any], basis: str) -> bool:
+    availability = component.get("availability") or {}
+    if availability.get("vu_only") is True:
+        return True
+    return level_from_basis(basis) in {"92", "96", "100"}
+
+
 def target_text(component: dict[str, Any]) -> str:
     scope = component.get("target_scope") or []
     if not scope:
@@ -257,18 +323,6 @@ def support_judgement(component: dict[str, Any]) -> str:
     return "需人工判断"
 
 
-def row_note(component: dict[str, Any]) -> str:
-    availability = component.get("availability") or {}
-    levels = [str(level) for level in availability.get("levels") or []]
-    notes = []
-    if availability.get("vu_only") or any(level.isdigit() and int(level) >= 92 for level in levels):
-        notes.append("含VU/Lv92+")
-    reasons = component.get("review_reasons") or []
-    if reasons:
-        notes.append("需复查：" + ",".join(map(str, reasons[:2])))
-    return "；".join(notes) if notes else "-"
-
-
 def is_opponent_def_debuff(component: dict[str, Any]) -> bool:
     scope = set(component.get("target_scope") or [])
     condition = str(component.get("condition_raw") or "")
@@ -284,13 +338,22 @@ def build_candidates(category: str, rows: list[dict[str, Any]], attrs: dict[str,
         for component in row.get("skill_components") or []:
             if component.get("effect_kind") not in wanted:
                 continue
+            if category == "atk_percent" and is_self_only_atk(component):
+                continue
+            if category == "self_atk_result" and not is_self_only_atk(component):
+                continue
             if category == "def_debuff" and not is_opponent_def_debuff(component):
                 continue
-            score, basis = primary_score(category, component)
-            support = support_judgement(component)
+            if category == "self_atk_result":
+                score, basis, result_detail = self_atk_result(row, component)
+            else:
+                score, basis = primary_score(category, component)
+                result_detail = ""
+            support = "偏自用" if category == "self_atk_result" else support_judgement(component)
             group_id, group_label = activation_group(row, component)
             denko_id = str(row.get("denko_id") or "")
             target = "对手でんこ" if category == "def_debuff" else target_text(component)
+            vu_only = is_vu_only(component, basis)
             candidates.append(
                 {
                     "score": score,
@@ -298,6 +361,7 @@ def build_candidates(category: str, rows: list[dict[str, Any]], attrs: dict[str,
                     "denko_id": denko_id,
                     "name": row.get("name"),
                     "attribute": attrs.get(denko_id, "-"),
+                    "result_detail": result_detail,
                     "pool": row.get("pool"),
                     "kind": component.get("effect_kind"),
                     "component_id": component.get("component_id"),
@@ -310,19 +374,30 @@ def build_candidates(category: str, rows: list[dict[str, Any]], attrs: dict[str,
                     "activation_type": component.get("activation_type") or row.get("activation_type") or "",
                     "lv30": value_text(component, "30"),
                     "lv50": value_text(component, "50"),
+                    "vu_only": vu_only,
                     "url": row.get("detail_url") or "",
                 }
             )
     support_order = {"可辅助主攻": 0, "看触发者": 1, "需人工判断": 2, "偏自用": 3}
-    candidates.sort(
-        key=lambda item: (
-            support_order.get(str(item["support"]), 2),
-            0 if item["basis"] == "Lv50" else 1 if item["basis"] == "Lv30" else 2,
-            -(item["score"] if item["score"] is not None else -1),
-            denko_sort_key(str(item["denko_id"])),
-            str(item["component_id"]),
+    if category == "self_atk_result":
+        candidates.sort(
+            key=lambda item: (
+                -(item["score"] if item["score"] is not None else -1),
+                0 if item["basis"] == "Lv50" else 1 if item["basis"] == "Lv30" else 2,
+                denko_sort_key(str(item["denko_id"])),
+                str(item["component_id"]),
+            )
         )
-    )
+    else:
+        candidates.sort(
+            key=lambda item: (
+                support_order.get(str(item["support"]), 2),
+                0 if item["basis"] == "Lv50" else 1 if item["basis"] == "Lv30" else 2,
+                -(item["score"] if item["score"] is not None else -1),
+                denko_sort_key(str(item["denko_id"])),
+                str(item["component_id"]),
+            )
+        )
     return candidates
 
 
@@ -335,15 +410,16 @@ def render_table(category: str, candidates: list[dict[str, Any]]) -> str:
         body = []
         for rank, item in enumerate(group_items, 1):
             score = "-" if item["score"] is None else f"{item['score']:g}"
+            score_detail = item["result_detail"] if category == "self_atk_result" and item["result_detail"] else item["basis"]
             body.append(
                 "\n".join(
                     [
-                        f'<tr data-support="{esc(item["support"])}" data-activation="{esc(item["activation_group"])}">',
-                        f"<td>{rank}</td>",
+                        f'<tr data-support="{esc(item["support"])}" data-activation="{esc(item["activation_group"])}" data-attr="{esc(item["attribute"])}" data-vu-only="{str(item["vu_only"]).lower()}">',
+                        f'<td class="rank">{rank}</td>',
                         f"<td><strong>{esc(item['denko_id'])}</strong><br><a href=\"{esc(item['url'])}\">{esc(item['name'])}</a></td>",
                         f"<td>{esc(item['attribute'])}</td>",
                         f"<td>{esc(EFFECT_LABELS.get(item['kind'], item['kind']))}<br><span class=\"muted\">{esc(item['component_id'])}</span></td>",
-                        f"<td><strong>{esc(score)}</strong><br><span class=\"muted\">{esc(item['basis'])}</span></td>",
+                        f"<td><strong>{esc(score)}</strong><br><span class=\"muted\">{esc(score_detail)}</span></td>",
                         f"<td>{esc(item['activation_label'])}<br><span class=\"muted\">{esc(item['activation_type'])}</span></td>",
                         f"<td>{esc(item['support'])}</td>",
                         f"<td>{esc(item['target'])}<br><span class=\"muted\">{esc(item['filters'])}</span></td>",
@@ -407,8 +483,10 @@ def main() -> None:
     h1 {{ margin-bottom: 6px; }}
     h2 {{ margin-top: 30px; border-bottom: 1px solid #d8dee4; padding-bottom: 6px; }}
     .muted {{ color: #68707c; font-size: 12px; }}
-    .toolbar {{ position: sticky; top: 0; z-index: 2; background: white; border-bottom: 1px solid #d8dee4; padding: 12px 0; display: flex; gap: 8px; flex-wrap: wrap; }}
+    .toolbar {{ position: sticky; top: 0; z-index: 2; background: white; border-bottom: 1px solid #d8dee4; padding: 12px 0; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }}
     input, select {{ padding: 7px 9px; border: 1px solid #c9d1d9; border-radius: 4px; font-size: 14px; }}
+    .toggle {{ display: inline-flex; align-items: center; gap: 5px; font-size: 13px; color: #444c56; }}
+    .toggle input {{ padding: 0; }}
     table {{ border-collapse: collapse; width: 100%; font-size: 13px; margin-top: 12px; }}
     th, td {{ border: 1px solid #d8dee4; padding: 7px 8px; vertical-align: top; }}
     th {{ background: #f6f8fa; position: sticky; top: 53px; z-index: 1; }}
@@ -419,7 +497,7 @@ def main() -> None:
 </head>
 <body>
   <h1>Ekimemo Step2 攻击辅助排行</h1>
-  <p>从 Step1 DB 自动整理。三类分别看 ATK百分比、固定伤害、降低对手DEF。每类再拆成常驻、手动触发、概率/自动触发。排序先看“可辅助主攻”，再按 Lv50 实用值，其次 Lv30、VU/其他等级。偏自用技能仍保留在表内，方便比较主攻自身能力。</p>
+  <p>从 Step1 DB 自动整理。分别看自用ATK结果、ATK百分比、固定伤害、降低对手DEF。每类再拆成常驻、手动触发、概率/自动触发。排序先看 Lv50 实用值，其次 Lv30；仅 VU 后生效的项目默认隐藏，可手动打开。只给自己加攻的技能单独列出，并用基础 AP × ATK 增幅估算发动后 AP。</p>
   <div class="toolbar">
     <input id="q" placeholder="搜索ID、名字、条件、效果" size="36">
     <select id="support">
@@ -434,13 +512,22 @@ def main() -> None:
       <option value="manual">手动触发技能</option>
       <option value="probability">概率/自动触发技能</option>
     </select>
-    <span class="muted">ATK {counts['atk_percent']} / 固定伤害 {counts['fixed_damage']} / DEF下降 {counts['def_debuff']}</span>
+    <select id="attr">
+      <option value="">全部属性</option>
+      <option value="cool">cool</option>
+      <option value="heat">heat</option>
+      <option value="eco">eco</option>
+    </select>
+    <label class="toggle"><input id="showVu" type="checkbox">显示仅VU后生效</label>
+    <span class="muted">自用ATK {counts['self_atk_result']} / ATK {counts['atk_percent']} / 固定伤害 {counts['fixed_damage']} / DEF下降 {counts['def_debuff']}</span>
   </div>
   {''.join(sections)}
   <script>
     const q = document.getElementById('q');
     const support = document.getElementById('support');
     const activation = document.getElementById('activation');
+    const attr = document.getElementById('attr');
+    const showVu = document.getElementById('showVu');
     const rows = [...document.querySelectorAll('tbody tr')];
     function applyFilter() {{
       const needle = q.value.trim().toLowerCase();
@@ -448,12 +535,24 @@ def main() -> None:
         const okText = !needle || row.innerText.toLowerCase().includes(needle);
         const okSupport = !support.value || row.dataset.support === support.value;
         const okActivation = !activation.value || row.dataset.activation === activation.value;
-        row.style.display = okText && okSupport && okActivation ? '' : 'none';
+        const okAttr = !attr.value || row.dataset.attr === attr.value;
+        const okVu = showVu.checked || row.dataset.vuOnly !== 'true';
+        row.style.display = okText && okSupport && okActivation && okAttr && okVu ? '' : 'none';
+      }}
+      for (const body of document.querySelectorAll('tbody')) {{
+        let visibleRank = 1;
+        for (const row of body.querySelectorAll('tr')) {{
+          if (row.style.display === 'none') continue;
+          row.querySelector('.rank').textContent = visibleRank++;
+        }}
       }}
     }}
     q.addEventListener('input', applyFilter);
     support.addEventListener('input', applyFilter);
     activation.addEventListener('input', applyFilter);
+    attr.addEventListener('input', applyFilter);
+    showVu.addEventListener('input', applyFilter);
+    applyFilter();
   </script>
 </body>
 </html>
