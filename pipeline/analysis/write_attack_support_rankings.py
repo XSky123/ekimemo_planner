@@ -61,6 +61,8 @@ SCOPE_LABELS = {
     "own_front_car": "自己队伍先头",
     "opponent_front_car": "对手队伍先头",
     "accessing_denko": "访问中的でんこ",
+    "accessed_denko": "被访问的でんこ",
+    "relative_car": "相对车位",
 }
 
 
@@ -312,6 +314,8 @@ def compact_filter_text(component: dict[str, Any]) -> str:
         notes.append(f"对手{filters['opponent_attribute']}")
     if filters.get("attribute"):
         notes.append(f"{filters['attribute']}对象")
+    if filters.get("state") == "cooldown":
+        notes.append("クールダウン中")
     if filters.get("attributes"):
         notes.append("对象属性 " + "/".join(map(str, filters["attributes"])))
     if filters.get("exclude_self"):
@@ -439,11 +443,10 @@ def render_table(category: str, candidates: list[dict[str, Any]]) -> str:
                         f'<td class="rank">{rank}</td>',
                         f"<td><strong>{esc(item['denko_id'])}</strong><br><a href=\"{esc(item['url'])}\">{esc(item['name'])}</a></td>",
                         f"<td>{esc(item['attribute'])}</td>",
-                        f"<td>{esc(item['type'])}</td>",
+                        f"<td>{esc(item['type_key'])}</td>",
                         f"<td>{esc(EFFECT_LABELS.get(item['kind'], item['kind']))}<br><span class=\"muted\">{esc(item['component_id'])}</span></td>",
                         f"<td><strong>{esc(score)}</strong><br><span class=\"muted\">{esc(score_detail)}</span></td>",
-                        f"<td>{esc(item['activation_label'])}<br><span class=\"muted\">{esc(item['activation_type'])}</span></td>",
-                        f"<td>{esc(item['support'])}</td>",
+                        f"<td title=\"{esc(item['activation_type'])}\">{esc(item['activation_label'])}</td>",
                         f"<td>{esc(item['target'])}<br><span class=\"muted\">{esc(item['filters'])}</span></td>",
                         f"<td>{esc(item['condition'])}</td>",
                         f"<td>{esc(item['lv30'])}</td>",
@@ -465,8 +468,7 @@ def render_table(category: str, candidates: list[dict[str, Any]]) -> str:
             <th>类型</th>
             <th>效果</th>
             <th>{esc(score_label)}</th>
-            <th>发动方式</th>
-            <th>辅助判断</th>
+            <th>发动</th>
             <th>对象/限制</th>
             <th>触发与条件</th>
             <th>Lv30</th>
@@ -513,7 +515,8 @@ def main() -> None:
     table {{ border-collapse: collapse; width: 100%; font-size: 13px; margin-top: 12px; }}
     th, td {{ border: 1px solid #d8dee4; padding: 7px 8px; vertical-align: top; }}
     th {{ background: #f6f8fa; position: sticky; top: 53px; z-index: 1; }}
-    td:nth-child(7) {{ min-width: 300px; }}
+    td:nth-child(7) {{ white-space: nowrap; }}
+    td:nth-child(9) {{ min-width: 260px; }}
     a {{ color: #0969da; text-decoration: none; }}
     a:hover {{ text-decoration: underline; }}
   </style>
@@ -523,14 +526,8 @@ def main() -> None:
   <p>从 Step1 DB 自动整理。分别看自用ATK结果、ATK百分比、固定伤害、降低对手DEF。每类再拆成常驻、手动触发、概率/自动触发。排序先看 Lv50 实用值，其次 Lv30；仅 VU 后生效的项目默认隐藏，可手动打开。只给自己加攻的技能单独列出，并用基础 AP × ATK 增幅估算发动后 AP。</p>
   <div class="toolbar">
     <input id="q" placeholder="搜索ID、名字、条件、效果" size="36">
-    <select id="support">
-      <option value="">全部</option>
-      <option value="可辅助主攻">只看可辅助主攻</option>
-      <option value="偏自用">只看偏自用</option>
-      <option value="看触发者">只看触发者</option>
-    </select>
     <select id="activation">
-      <option value="">全部发动方式</option>
+      <option value="">全部发动</option>
       <option value="always">常驻技能</option>
       <option value="manual">手动触发技能</option>
       <option value="probability">概率/自动触发技能</option>
@@ -547,7 +544,6 @@ def main() -> None:
   {''.join(sections)}
   <script>
     const q = document.getElementById('q');
-    const support = document.getElementById('support');
     const activation = document.getElementById('activation');
     const attr = document.getElementById('attr');
     const showVu = document.getElementById('showVu');
@@ -556,11 +552,10 @@ def main() -> None:
       const needle = q.value.trim().toLowerCase();
       for (const row of rows) {{
         const okText = !needle || row.innerText.toLowerCase().includes(needle);
-        const okSupport = !support.value || row.dataset.support === support.value;
         const okActivation = !activation.value || row.dataset.activation === activation.value;
         const okAttr = !attr.value || row.dataset.attr === attr.value;
         const okVu = showVu.checked || row.dataset.vuOnly !== 'true';
-        row.style.display = okText && okSupport && okActivation && okAttr && okVu ? '' : 'none';
+        row.style.display = okText && okActivation && okAttr && okVu ? '' : 'none';
       }}
       for (const body of document.querySelectorAll('tbody')) {{
         let visibleRank = 1;
@@ -571,7 +566,6 @@ def main() -> None:
       }}
     }}
     q.addEventListener('input', applyFilter);
-    support.addEventListener('input', applyFilter);
     activation.addEventListener('input', applyFilter);
     attr.addEventListener('input', applyFilter);
     showVu.addEventListener('input', applyFilter);
