@@ -56,7 +56,14 @@ def dedupe_components(components: list[dict[str, Any]]) -> list[dict[str, Any]]:
 
 
 def deep_merge(target: dict[str, Any], patch_value: dict[str, Any]) -> None:
+    delete_keys = patch_value.get("__delete_keys__")
+    if isinstance(delete_keys, list):
+        for key in delete_keys:
+            if isinstance(key, str):
+                target.pop(key, None)
     for key, value in patch_value.items():
+        if key == "__delete_keys__":
+            continue
         if isinstance(value, dict) and isinstance(target.get(key), dict):
             deep_merge(target[key], value)
         else:

@@ -13,39 +13,34 @@ SKILL_PATH = ROOT / "data" / "step1_db" / "skill_facts.jsonl"
 OUT_HTML = ROOT / "data" / "reports" / "step2_attack_support_rankings_zh.html"
 
 
-CATEGORIES = {
-    "self_atk_result": {
-        "title": "自用ATK结果",
-        "description": "只看给自己加 ATK 的技能。用基础 AP × (1 + ATK增加%) 估算发动后的攻击结果，并按结果排序。",
+TABS = {
+    "self_atk": {
+        "title": "攻击手：自己加ATK",
+        "description": "只看对自己生效的 ATK 增加。理论最大/平均值用 Lv50 AP 乘以 ATK 增幅估算。",
         "kinds": {"atk_buff"},
-        "score_label": "发动后AP",
     },
-    "atk_percent": {
-        "title": "ATK百分比增加",
-        "description": "只看能给主攻或队伍提供 ATK +% 的辅助。只给自己加攻的角色已拆到“自用ATK结果”。",
+    "team_atk": {
+        "title": "ATK辅助：给队友/队伍",
+        "description": "只看能给自身以外、队伍、访问者、相对车位等对象提供 ATK 增加的技能。",
         "kinds": {"atk_buff"},
-        "score_label": "ATK增加",
     },
     "fixed_damage": {
         "title": "固定伤害",
-        "description": "看谁能追加轻减不能/固定伤害。范围值按上限排序，例如 1～210 记作 210。",
+        "description": "轻减不能/固定伤害。范围值同时给出理论最大和平均值。",
         "kinds": {"fixed_damage", "additional_fixed_damage"},
-        "score_label": "固定伤害",
     },
     "def_debuff": {
         "title": "降低对手DEF",
-        "description": "只看能让对手 DEF 下降的技能。排序用下降幅度，例如 DEF -35% 记作 35%。自降DEF、队友降DEF不列入这个维度。",
+        "description": "只看对手 DEF 下降。自降 DEF 或队友 DEF 下降不列入。",
         "kinds": {"def_debuff"},
-        "score_label": "DEF下降",
     },
 }
 
-ACTIVATION_GROUPS = [
-    ("always", "常驻技能", "基本不需要按技能按钮；适合作为稳定底盘。"),
-    ("manual", "手动触发技能", "需要开技能，重点看持续时间和CD。"),
-    ("probability", "概率/自动触发技能", "发动不完全稳定，重点看概率、触发条件和是否能接受波动。"),
-]
-
+ACTIVATION_GROUPS = {
+    "always": "常驻",
+    "manual": "手动",
+    "probability": "概率/自动",
+}
 
 EFFECT_LABELS = {
     "atk_buff": "ATK增加",
@@ -65,9 +60,15 @@ SCOPE_LABELS = {
     "relative_car": "相对车位",
 }
 
+LEVEL_PRIORITY = ["50", "92", "96", "100", "80", "70", "60", "30", "15", "5"]
+
 
 def read_jsonl(path: Path) -> list[dict[str, Any]]:
     return [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
+
+
+def esc(value: Any) -> str:
+    return html.escape("" if value is None else str(value), quote=True)
 
 
 def type_key(type_raw: str) -> str:
@@ -91,14 +92,9 @@ def denko_metadata() -> dict[str, dict[str, str]]:
             type_raw = str(identity.get("type") or "-")
             metadata[str(denko_id)] = {
                 "attribute": str(identity.get("attribute") or "-"),
-                "type": type_raw,
                 "type_key": type_key(type_raw),
             }
     return metadata
-
-
-def esc(value: Any) -> str:
-    return html.escape("" if value is None else str(value), quote=True)
 
 
 def denko_sort_key(denko_id: str) -> tuple[int, int]:
@@ -106,12 +102,20 @@ def denko_sort_key(denko_id: str) -> tuple[int, int]:
     return (0 if pool == "original" else 1, int(number or 0))
 
 
+def is_vu_only(component: dict[str, Any], basis_level: str) -> bool:
+    availability = component.get("availability") or {}
+    if availability.get("vu_only") is True:
+        return True
+    return basis_level in {"92", "96", "100"}
+
+
 def probability_text(value: dict[str, Any]) -> str:
     probability = value.get("probability")
     if not probability:
-        return ""
+        return "-"
     if isinstance(probability, dict):
-        return " / ".join(f"{k} {v}" for k, v in probability.items() if v not in {None, "", "-"})
+        parts = [f"{k} {v}" for k, v in probability.items() if v not in {None, "", "-"}]
+        return " / ".join(parts) if parts else "-"
     return str(probability)
 
 
@@ -122,20 +126,14 @@ def probability_numbers(value: dict[str, Any]) -> list[float]:
     text = json.dumps(probability, ensure_ascii=False) if isinstance(probability, dict) else str(probability)
     numbers = []
     for raw in re.findall(r"\d+(?:\.\d+)?\s*[％%]", text):
-        try:
-            numbers.append(float(re.search(r"\d+(?:\.\d+)?", raw).group(0)))
-        except (AttributeError, ValueError):
-            pass
+        match = re.search(r"\d+(?:\.\d+)?", raw)
+        if match:
+            numbers.append(float(match.group(0)))
     return numbers
 
 
 def is_probability_trigger(component: dict[str, Any]) -> bool:
-    values = component.get("values_by_denko_level") or {}
-    for level in ("50", "30"):
-        nums = probability_numbers(values.get(level) or {})
-        if nums and any(number < 100 for number in nums):
-            return True
-    for _, value in all_level_values(component):
+    for _level, value in all_level_values(component):
         nums = probability_numbers(value)
         if nums and any(number < 100 for number in nums):
             return True
@@ -146,32 +144,31 @@ def activation_group(row: dict[str, Any], component: dict[str, Any]) -> tuple[st
     activation_type = str(component.get("activation_type") or row.get("activation_type") or "")
     activation_mode = str((row.get("normalized_skill") or {}).get("activation_mode") or "")
     if is_probability_trigger(component) or activation_type == "でんこにおまかせ":
-        return "probability", "概率/自动触发"
+        return "probability", ACTIVATION_GROUPS["probability"]
     if activation_type == "マスターにおまかせ" or activation_mode == "passive_auto":
-        return "manual", "手动触发"
+        return "manual", ACTIVATION_GROUPS["manual"]
     if activation_type == "いつでもアクティブ" or activation_mode == "always_active":
-        return "always", "常驻"
-    return "probability", "发动方式需确认"
-
-
-def value_text(component: dict[str, Any], level: str) -> str:
-    value = (component.get("values_by_denko_level") or {}).get(level) or {}
-    parts = []
-    if value.get("value_raw"):
-        parts.append(str(value["value_raw"]))
-    prob = probability_text(value)
-    if prob:
-        parts.append(prob)
-    if value.get("duration"):
-        parts.append(f"持续 {value['duration']}")
-    if value.get("cooldown"):
-        parts.append(f"CD {value['cooldown']}")
-    return "，".join(parts) if parts else "-"
+        return "always", ACTIVATION_GROUPS["always"]
+    return "probability", "需确认"
 
 
 def all_level_values(component: dict[str, Any]) -> list[tuple[str, dict[str, Any]]]:
     values = component.get("values_by_denko_level") or {}
     return sorted(values.items(), key=lambda item: int(item[0]) if str(item[0]).isdigit() else 999)
+
+
+def basis_value(component: dict[str, Any]) -> tuple[str, dict[str, Any]]:
+    values = component.get("values_by_denko_level") or {}
+    for level in LEVEL_PRIORITY:
+        if level in values:
+            return level, values[level]
+    return "-", {}
+
+
+def as_number(value: Any) -> float | None:
+    if isinstance(value, (int, float)):
+        return float(value)
+    return None
 
 
 def signed_numbers(text: str) -> list[float]:
@@ -184,72 +181,61 @@ def signed_numbers(text: str) -> list[float]:
     return nums
 
 
-def score_for_value(category: str, value: dict[str, Any]) -> float | None:
+def formula_range_from_text(raw: str, condition: str) -> tuple[float | None, float | None]:
+    distance_match = re.search(r"\+(\d+(?:\.\d+)?)×移動距離\(km\)%", raw)
+    if distance_match and ("100km" in condition or "上限100" in condition):
+        rate = float(distance_match.group(1))
+        return 0.0, rate * 100
+    over_100_match = re.search(r"\+(\d+(?:\.\d+)?)×\(移動距離\(km\)-100\)%", raw)
+    if over_100_match:
+        rate = float(over_100_match.group(1))
+        return 0.0, rate * (360 - 100)
+    return None, None
+
+
+def value_range(tab_id: str, component: dict[str, Any], value: dict[str, Any]) -> tuple[float | None, float | None]:
     raw = str(value.get("value_raw") or "")
-    if not raw:
-        return None
-    if category == "def_debuff":
-        negatives = [number for number in signed_numbers(raw) if number < 0]
-        if negatives:
-            return max(abs(number) for number in negatives)
-        numeric = value.get("value_numeric")
-        if isinstance(numeric, (int, float)) and numeric < 0:
-            return abs(float(numeric))
-        return None
-    if category == "fixed_damage":
-        for key in ("value_max", "value_numeric"):
-            numeric = value.get(key)
-            if isinstance(numeric, (int, float)):
-                return abs(float(numeric))
-        nums = signed_numbers(raw)
-        return max(abs(number) for number in nums) if nums else None
-    numeric_candidates = []
-    for key in ("value_max", "value_numeric"):
-        numeric = value.get(key)
-        if isinstance(numeric, (int, float)):
-            numeric_candidates.append(float(numeric))
-    if numeric_candidates:
-        return max(abs(number) for number in numeric_candidates)
-    nums = signed_numbers(raw)
-    return max(abs(number) for number in nums) if nums else None
-
-
-def primary_score(category: str, component: dict[str, Any]) -> tuple[float | None, str]:
-    values = component.get("values_by_denko_level") or {}
-    for level in ("50", "30"):
-        score = score_for_value(category, values.get(level) or {})
-        if score is not None:
-            return score, f"Lv{level}"
-    for level, value in all_level_values(component):
-        score = score_for_value(category, value)
-        if score is not None:
-            return score, f"Lv{level}"
-    return None, "-"
-
-
-def level_from_basis(basis: str) -> str | None:
-    match = re.search(r"Lv(\d+)", basis)
-    return match.group(1) if match else None
-
-
-def is_self_only_atk(component: dict[str, Any]) -> bool:
-    if component.get("effect_kind") != "atk_buff":
-        return False
-    scope = set(component.get("target_scope") or [])
-    filters = component.get("target_filters") or {}
     condition = str(component.get("condition_raw") or "")
-    if scope == {"self"}:
-        return True
-    if "自身のATK" in condition and "編成内" not in condition:
-        return True
-    if filters.get("exclude_self") or "team_all" in scope:
-        return False
-    return False
+    numeric = as_number(value.get("value_numeric"))
+    value_min = as_number(value.get("value_min"))
+    value_max = as_number(value.get("value_max"))
+
+    if tab_id == "def_debuff":
+        nums = [abs(number) for number in signed_numbers(raw) if number < 0]
+        if "～" in raw and nums:
+            return min(nums), max(nums)
+        if value_min is not None and value_max is not None:
+            return min(abs(value_min), abs(value_max)), max(abs(value_min), abs(value_max))
+        if numeric is not None:
+            return abs(numeric), abs(numeric)
+        return (max(nums), max(nums)) if nums else (None, None)
+
+    if value_min is not None and value_max is not None and value_max >= value_min:
+        return abs(value_min), abs(value_max)
+    if value_max is not None and value_max >= 0:
+        return 0.0 if "～" in raw else abs(value_max), abs(value_max)
+    if numeric is not None:
+        return abs(numeric), abs(numeric)
+
+    formula_min, formula_max = formula_range_from_text(raw, condition)
+    if formula_max is not None:
+        return formula_min, formula_max
+
+    nums = [abs(number) for number in signed_numbers(raw)]
+    if "～" in raw and nums:
+        return min(nums), max(nums)
+    if nums:
+        return max(nums), max(nums)
+    return None, None
 
 
-def ap_at_level(row: dict[str, Any], level: str | None) -> float | None:
-    if not level:
+def mean_value(value_min: float | None, value_max: float | None) -> float | None:
+    if value_min is None or value_max is None:
         return None
+    return (value_min + value_max) / 2
+
+
+def ap_at_level(row: dict[str, Any], level: str) -> float | None:
     stats = row.get("key_level_stats") or {}
     value = stats.get(level) or {}
     ap = value.get("AP")
@@ -258,49 +244,46 @@ def ap_at_level(row: dict[str, Any], level: str | None) -> float | None:
             return float(ap)
         except ValueError:
             return None
-    numeric_levels = sorted(int(item) for item in stats if str(item).isdigit() and int(item) <= int(level))
-    for fallback_level in reversed(numeric_levels):
-        fallback_ap = (stats.get(str(fallback_level)) or {}).get("AP")
-        if fallback_ap not in {None, ""}:
-            try:
-                return float(fallback_ap)
-            except ValueError:
-                continue
     return None
 
 
-def self_atk_result(row: dict[str, Any], component: dict[str, Any]) -> tuple[float | None, str, str]:
-    percent, basis = primary_score("atk_percent", component)
-    level = level_from_basis(basis)
-    ap = ap_at_level(row, level)
-    if percent is None or ap is None:
-        return None, basis, "-"
-    result = ap * (1 + percent / 100)
-    detail = f"AP {ap:g} × (1+{percent:g}%) = {result:g}"
-    return result, basis, detail
+def metric_display(tab_id: str, row: dict[str, Any], max_value: float | None, avg_value: float | None) -> tuple[str, str, float | None, float | None]:
+    if tab_id != "self_atk":
+        return format_metric(max_value), format_metric(avg_value), max_value, avg_value
+    ap = ap_at_level(row, "50")
+    if ap is None:
+        return "-", "-", None, None
+    max_result = ap * (1 + max_value / 100) if max_value is not None else None
+    avg_result = ap * (1 + avg_value / 100) if avg_value is not None else None
+    max_text = f"AP {max_result:g} / ATK +{max_value:g}%" if max_result is not None and max_value is not None else "-"
+    avg_text = f"AP {avg_result:g} / ATK +{avg_value:g}%" if avg_result is not None and avg_value is not None else "-"
+    return max_text, avg_text, max_result, avg_result
 
 
-def is_vu_only(component: dict[str, Any], basis: str) -> bool:
-    availability = component.get("availability") or {}
-    if availability.get("vu_only") is True:
-        return True
-    return level_from_basis(basis) in {"92", "96", "100"}
+def format_metric(value: float | None) -> str:
+    return "-" if value is None else f"{value:g}"
+
+
+def lv50_text(component: dict[str, Any], basis_level: str, value: dict[str, Any]) -> str:
+    if not value:
+        return "-"
+    raw = str(value.get("value_raw") or "-")
+    if basis_level != "50":
+        return f"※Lv{basis_level}: {raw}"
+    return raw
 
 
 def target_text(component: dict[str, Any]) -> str:
     scope = component.get("target_scope") or []
     if not scope:
         return "对象未明"
-    labels = []
-    for item in scope:
-        item = str(item)
-        labels.append(SCOPE_LABELS.get(item, item))
-    return "、".join(labels)
+    return "、".join(SCOPE_LABELS.get(str(item), str(item)) for item in scope)
 
 
 def compact_filter_text(component: dict[str, Any]) -> str:
     filters = component.get("target_filters") or {}
     trigger = component.get("trigger_conditions") or {}
+    scaling = component.get("scaling_conditions") or {}
     notes = []
     if trigger.get("access_direction") == "active":
         notes.append("主动访问")
@@ -310,8 +293,6 @@ def compact_filter_text(component: dict[str, Any]) -> str:
         notes.append("link时")
     if filters.get("own_team_all_attribute"):
         notes.append(f"队伍全{filters['own_team_all_attribute']}")
-    if filters.get("opponent_attribute"):
-        notes.append(f"对手{filters['opponent_attribute']}")
     if filters.get("attribute"):
         notes.append(f"{filters['attribute']}对象")
     if filters.get("state") == "cooldown":
@@ -322,27 +303,21 @@ def compact_filter_text(component: dict[str, Any]) -> str:
         notes.append("不含自己")
     if filters.get("type"):
         notes.append(f"对象类型 {filters['type']}")
-    count_filter = filters.get("opponent_team_attribute_count") or {}
-    if count_filter:
-        basis = "自己+对手队伍" if count_filter.get("includes_own_team") else "对手队伍"
-        max_count = f"上限{count_filter['max_count']}体" if count_filter.get("max_count") else ""
-        notes.append(f"按{basis}{count_filter.get('attribute')}数量{max_count}")
+    if scaling.get("basis"):
+        notes.append(f"按{scaling['basis']}")
     return "；".join(notes) if notes else "-"
 
 
-def support_judgement(component: dict[str, Any]) -> str:
+def is_self_only_atk(component: dict[str, Any]) -> bool:
+    if component.get("effect_kind") != "atk_buff":
+        return False
     scope = set(component.get("target_scope") or [])
     condition = str(component.get("condition_raw") or "")
-    filters = component.get("target_filters") or {}
-    if "team_all" in scope or "accessing_denko" in scope or filters.get("exclude_self"):
-        return "可辅助主攻"
-    if "編成内" in condition and "自身の" not in condition:
-        return "可辅助主攻"
     if scope == {"self"}:
-        return "偏自用"
-    if "opponent_denko" in scope:
-        return "看触发者"
-    return "需人工判断"
+        return True
+    if "自身のATK" in condition and "編成内" not in condition:
+        return True
+    return False
 
 
 def is_opponent_def_debuff(component: dict[str, Any]) -> bool:
@@ -353,112 +328,120 @@ def is_opponent_def_debuff(component: dict[str, Any]) -> bool:
     return bool(re.search(r"相手(?:のでんこ|でんこ)?のDEF|相手でんこのDEF", condition))
 
 
-def build_candidates(category: str, rows: list[dict[str, Any]], metadata: dict[str, dict[str, str]]) -> list[dict[str, Any]]:
-    wanted = CATEGORIES[category]["kinds"]
+def belongs_to_tab(tab_id: str, component: dict[str, Any]) -> bool:
+    if component.get("effect_kind") not in TABS[tab_id]["kinds"]:
+        return False
+    if tab_id == "self_atk":
+        return is_self_only_atk(component)
+    if tab_id == "team_atk":
+        return not is_self_only_atk(component)
+    if tab_id == "def_debuff":
+        return is_opponent_def_debuff(component)
+    return True
+
+
+def build_candidates(tab_id: str, rows: list[dict[str, Any]], metadata: dict[str, dict[str, str]]) -> list[dict[str, Any]]:
     candidates = []
     for row in rows:
         for component in row.get("skill_components") or []:
-            if component.get("effect_kind") not in wanted:
+            if not belongs_to_tab(tab_id, component):
                 continue
-            if category == "atk_percent" and is_self_only_atk(component):
-                continue
-            if category == "self_atk_result" and not is_self_only_atk(component):
-                continue
-            if category == "def_debuff" and not is_opponent_def_debuff(component):
-                continue
-            if category == "self_atk_result":
-                score, basis, result_detail = self_atk_result(row, component)
-            else:
-                score, basis = primary_score(category, component)
-                result_detail = ""
-            support = "偏自用" if category == "self_atk_result" else support_judgement(component)
+            basis_level, value = basis_value(component)
+            value_min, value_max = value_range(tab_id, component, value)
+            avg_value = mean_value(value_min, value_max)
+            max_text, avg_text, sort_max, sort_avg = metric_display(tab_id, row, value_max, avg_value)
             group_id, group_label = activation_group(row, component)
             denko_id = str(row.get("denko_id") or "")
             denko_meta = metadata.get(denko_id, {})
-            target = "对手でんこ" if category == "def_debuff" else target_text(component)
-            vu_only = is_vu_only(component, basis)
+            target = "对手でんこ" if tab_id == "def_debuff" else target_text(component)
+            filters = compact_filter_text(component)
+            condition = str(component.get("condition_raw") or "")
+            lv50 = lv50_text(component, basis_level, value)
+            search = " ".join(
+                [
+                    denko_id,
+                    str(row.get("name") or ""),
+                    str(denko_meta.get("attribute") or ""),
+                    str(denko_meta.get("type_key") or ""),
+                    str(component.get("component_id") or ""),
+                    condition,
+                    target,
+                    filters,
+                    lv50,
+                ]
+            ).lower()
             candidates.append(
                 {
-                    "score": score,
-                    "basis": basis,
+                    "sort_max": sort_max,
+                    "sort_avg": sort_avg,
+                    "basis_level": basis_level,
                     "denko_id": denko_id,
                     "name": row.get("name"),
                     "attribute": denko_meta.get("attribute", "-"),
-                    "type": denko_meta.get("type", "-"),
                     "type_key": denko_meta.get("type_key", "unknown"),
-                    "result_detail": result_detail,
-                    "pool": row.get("pool"),
                     "kind": component.get("effect_kind"),
                     "component_id": component.get("component_id"),
-                    "condition": component.get("condition_raw") or "",
+                    "condition": condition,
                     "target": target,
-                    "filters": compact_filter_text(component),
-                    "support": support,
+                    "filters": filters,
                     "activation_group": group_id,
                     "activation_label": group_label,
                     "activation_type": component.get("activation_type") or row.get("activation_type") or "",
-                    "lv30": value_text(component, "30"),
-                    "lv50": value_text(component, "50"),
-                    "vu_only": vu_only,
+                    "probability": probability_text(value),
+                    "duration": value.get("duration") or "-",
+                    "cooldown": value.get("cooldown") or "-",
+                    "lv50": lv50,
+                    "max_text": max_text,
+                    "avg_text": avg_text,
+                    "vu_only": is_vu_only(component, basis_level),
                     "url": row.get("detail_url") or "",
+                    "search": search,
                 }
             )
-    support_order = {"可辅助主攻": 0, "看触发者": 1, "需人工判断": 2, "偏自用": 3}
-    if category == "self_atk_result":
-        candidates.sort(
-            key=lambda item: (
-                -(item["score"] if item["score"] is not None else -1),
-                0 if item["basis"] == "Lv50" else 1 if item["basis"] == "Lv30" else 2,
-                denko_sort_key(str(item["denko_id"])),
-                str(item["component_id"]),
-            )
+    candidates.sort(
+        key=lambda item: (
+            -(item["sort_max"] if item["sort_max"] is not None else -1),
+            denko_sort_key(str(item["denko_id"])),
+            str(item["component_id"]),
         )
-    else:
-        candidates.sort(
-            key=lambda item: (
-                support_order.get(str(item["support"]), 2),
-                0 if item["basis"] == "Lv50" else 1 if item["basis"] == "Lv30" else 2,
-                -(item["score"] if item["score"] is not None else -1),
-                denko_sort_key(str(item["denko_id"])),
-                str(item["component_id"]),
-            )
-        )
+    )
     return candidates
 
 
-def render_table(category: str, candidates: list[dict[str, Any]]) -> str:
-    title = CATEGORIES[category]["title"]
-    score_label = CATEGORIES[category]["score_label"]
-    grouped_html = []
-    for group_id, group_title, group_description in ACTIVATION_GROUPS:
-        group_items = [item for item in candidates if item["activation_group"] == group_id]
-        body = []
-        for rank, item in enumerate(group_items, 1):
-            score = "-" if item["score"] is None else f"{item['score']:g}"
-            score_detail = item["result_detail"] if category == "self_atk_result" and item["result_detail"] else item["basis"]
-            body.append(
-                "\n".join(
-                    [
-                        f'<tr data-support="{esc(item["support"])}" data-activation="{esc(item["activation_group"])}" data-attr="{esc(item["attribute"])}" data-type="{esc(item["type_key"])}" data-vu-only="{str(item["vu_only"]).lower()}">',
-                        f'<td class="rank">{rank}</td>',
-                        f"<td><strong>{esc(item['denko_id'])}</strong><br><a href=\"{esc(item['url'])}\">{esc(item['name'])}</a></td>",
-                        f"<td>{esc(item['attribute'])}</td>",
-                        f"<td>{esc(item['type_key'])}</td>",
-                        f"<td>{esc(EFFECT_LABELS.get(item['kind'], item['kind']))}<br><span class=\"muted\">{esc(item['component_id'])}</span></td>",
-                        f"<td><strong>{esc(score)}</strong><br><span class=\"muted\">{esc(score_detail)}</span></td>",
-                        f"<td title=\"{esc(item['activation_type'])}\">{esc(item['activation_label'])}</td>",
-                        f"<td>{esc(item['target'])}<br><span class=\"muted\">{esc(item['filters'])}</span></td>",
-                        f"<td>{esc(item['condition'])}</td>",
-                        f"<td>{esc(item['lv30'])}</td>",
-                        f"<td>{esc(item['lv50'])}</td>",
-                        "</tr>",
-                    ]
-                )
+def render_rows(tab_id: str, candidates: list[dict[str, Any]]) -> str:
+    rows = []
+    for rank, item in enumerate(candidates, 1):
+        rows.append(
+            "\n".join(
+                [
+                    f'<tr data-tab="{esc(tab_id)}" data-search="{esc(item["search"])}" data-activation="{esc(item["activation_group"])}" data-attr="{esc(item["attribute"])}" data-type="{esc(item["type_key"])}" data-vu-only="{str(item["vu_only"]).lower()}" data-sort-max="{item["sort_max"] if item["sort_max"] is not None else -1}" data-sort-avg="{item["sort_avg"] if item["sort_avg"] is not None else -1}">',
+                    f'<td class="rank">{rank}</td>',
+                    f'<td><strong>{esc(item["denko_id"])}</strong><br><a href="{esc(item["url"])}">{esc(item["name"])}</a></td>',
+                    f'<td>{esc(item["attribute"])}</td>',
+                    f'<td>{esc(item["type_key"])}</td>',
+                    f'<td>{esc(EFFECT_LABELS.get(item["kind"], item["kind"]))}<br><span class="muted">{esc(item["component_id"])}</span></td>',
+                    f'<td class="metric">{esc(item["max_text"])}</td>',
+                    f'<td class="metric">{esc(item["avg_text"])}</td>',
+                    f'<td>{esc(item["lv50"])}</td>',
+                    f'<td>{esc(item["probability"])}</td>',
+                    f'<td>{esc(item["duration"])}</td>',
+                    f'<td>{esc(item["cooldown"])}</td>',
+                    f'<td title="{esc(item["activation_type"])}">{esc(item["activation_label"])}</td>',
+                    f'<td>{esc(item["target"])}<br><span class="muted">{esc(item["filters"])}</span></td>',
+                    f'<td>{esc(item["condition"])}</td>',
+                    "</tr>",
+                ]
             )
-        grouped_html.append(
-            f"""
-      <h3>{esc(group_title)} <span class="muted">({len(group_items)})</span></h3>
-      <p class="muted">{esc(group_description)}</p>
+        )
+    return "".join(rows)
+
+
+def render_table(tab_id: str, candidates: list[dict[str, Any]]) -> str:
+    tab = TABS[tab_id]
+    return f"""
+    <section class="tab-panel" id="panel-{esc(tab_id)}" data-tab-panel="{esc(tab_id)}">
+      <h2>{esc(tab["title"])} <span class="muted">({len(candidates)})</span></h2>
+      <p>{esc(tab["description"])}</p>
       <table>
         <thead>
           <tr>
@@ -467,23 +450,19 @@ def render_table(category: str, candidates: list[dict[str, Any]]) -> str:
             <th>属性</th>
             <th>类型</th>
             <th>效果</th>
-            <th>{esc(score_label)}</th>
+            <th>理论最大</th>
+            <th>平均值</th>
+            <th>Lv50</th>
+            <th>概率</th>
+            <th>持续</th>
+            <th>CD</th>
             <th>发动</th>
             <th>对象/限制</th>
             <th>触发与条件</th>
-            <th>Lv30</th>
-            <th>Lv50</th>
           </tr>
         </thead>
-        <tbody>{''.join(body)}</tbody>
+        <tbody>{render_rows(tab_id, candidates)}</tbody>
       </table>
-            """
-        )
-    return f"""
-    <section id="{esc(category)}">
-      <h2>{esc(title)}</h2>
-      <p>{esc(CATEGORIES[category]["description"])}</p>
-      {''.join(grouped_html)}
     </section>
     """
 
@@ -491,12 +470,13 @@ def render_table(category: str, candidates: list[dict[str, Any]]) -> str:
 def main() -> None:
     rows = read_jsonl(SKILL_PATH)
     metadata = denko_metadata()
-    sections = []
-    counts = {}
-    for category in CATEGORIES:
-        candidates = build_candidates(category, rows, metadata)
-        counts[category] = len(candidates)
-        sections.append(render_table(category, candidates))
+    candidates_by_tab = {tab_id: build_candidates(tab_id, rows, metadata) for tab_id in TABS}
+    tab_buttons = "\n".join(
+        f'<button class="tab-button" type="button" data-tab="{esc(tab_id)}">{esc(tab["title"])} <span>{len(candidates_by_tab[tab_id])}</span></button>'
+        for tab_id, tab in TABS.items()
+    )
+    sections = "\n".join(render_table(tab_id, candidates_by_tab[tab_id]) for tab_id in TABS)
+    counts = {tab_id: len(candidates) for tab_id, candidates in candidates_by_tab.items()}
 
     html_text = f"""<!doctype html>
 <html lang="zh-CN">
@@ -506,31 +486,42 @@ def main() -> None:
   <style>
     body {{ font-family: system-ui, -apple-system, "Segoe UI", sans-serif; margin: 24px; color: #1f2328; line-height: 1.45; }}
     h1 {{ margin-bottom: 6px; }}
-    h2 {{ margin-top: 30px; border-bottom: 1px solid #d8dee4; padding-bottom: 6px; }}
+    h2 {{ margin-top: 24px; border-bottom: 1px solid #d8dee4; padding-bottom: 6px; }}
     .muted {{ color: #68707c; font-size: 12px; }}
-    .toolbar {{ position: sticky; top: 0; z-index: 2; background: white; border-bottom: 1px solid #d8dee4; padding: 12px 0; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }}
-    input, select {{ padding: 7px 9px; border: 1px solid #c9d1d9; border-radius: 4px; font-size: 14px; }}
+    .toolbar {{ position: sticky; top: 0; z-index: 3; background: white; border-bottom: 1px solid #d8dee4; padding: 12px 0; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }}
+    .tabs {{ display: flex; gap: 6px; flex-wrap: wrap; margin: 12px 0; }}
+    button, input, select {{ padding: 7px 9px; border: 1px solid #c9d1d9; border-radius: 4px; font-size: 14px; background: white; }}
+    button {{ cursor: pointer; }}
+    .tab-button.active {{ background: #0969da; color: white; border-color: #0969da; }}
     .toggle {{ display: inline-flex; align-items: center; gap: 5px; font-size: 13px; color: #444c56; }}
     .toggle input {{ padding: 0; }}
     table {{ border-collapse: collapse; width: 100%; font-size: 13px; margin-top: 12px; }}
     th, td {{ border: 1px solid #d8dee4; padding: 7px 8px; vertical-align: top; }}
-    th {{ background: #f6f8fa; position: sticky; top: 53px; z-index: 1; }}
-    td:nth-child(7) {{ white-space: nowrap; }}
-    td:nth-child(9) {{ min-width: 260px; }}
+    th {{ background: #f6f8fa; position: sticky; top: 53px; z-index: 2; }}
+    td:nth-child(10), td:nth-child(11), td:nth-child(12) {{ white-space: nowrap; }}
+    td:nth-child(14) {{ min-width: 260px; }}
+    .metric {{ min-width: 108px; }}
+    .tab-panel {{ display: none; }}
+    .tab-panel.active {{ display: block; }}
     a {{ color: #0969da; text-decoration: none; }}
     a:hover {{ text-decoration: underline; }}
   </style>
 </head>
 <body>
   <h1>Ekimemo Step2 攻击辅助排行</h1>
-  <p>从 Step1 DB 自动整理。分别看自用ATK结果、ATK百分比、固定伤害、降低对手DEF。每类再拆成常驻、手动触发、概率/自动触发。排序先看 Lv50 实用值，其次 Lv30；仅 VU 后生效的项目默认隐藏，可手动打开。只给自己加攻的技能单独列出，并用基础 AP × ATK 增幅估算发动后 AP。</p>
+  <p>从 Step1 DB 自动整理。Lv50 作为默认查看基准；仅 VU 后生效的项目默认隐藏。范围型效果同时给出理论最大和平均值，并可切换排序。</p>
+  <div class="tabs">{tab_buttons}</div>
   <div class="toolbar">
-    <input id="q" placeholder="搜索ID、名字、条件、效果" size="36">
+    <input id="q" placeholder="搜索ID、名字、条件、效果" size="34">
+    <select id="sortMode">
+      <option value="max">按理论最大排序</option>
+      <option value="avg">按平均值排序</option>
+    </select>
     <select id="activation">
       <option value="">全部发动</option>
-      <option value="always">常驻技能</option>
-      <option value="manual">手动触发技能</option>
-      <option value="probability">概率/自动触发技能</option>
+      <option value="always">常驻</option>
+      <option value="manual">手动</option>
+      <option value="probability">概率/自动</option>
     </select>
     <select id="attr">
       <option value="">全部属性</option>
@@ -538,38 +529,74 @@ def main() -> None:
       <option value="heat">heat</option>
       <option value="eco">eco</option>
     </select>
+    <select id="type">
+      <option value="">全部类型</option>
+      <option value="attacker">attacker</option>
+      <option value="defender">defender</option>
+      <option value="supporter">supporter</option>
+      <option value="trickster">trickster</option>
+    </select>
     <label class="toggle"><input id="showVu" type="checkbox">显示仅VU后生效</label>
-    <span class="muted">自用ATK {counts['self_atk_result']} / ATK {counts['atk_percent']} / 固定伤害 {counts['fixed_damage']} / DEF下降 {counts['def_debuff']}</span>
   </div>
-  {''.join(sections)}
+  {sections}
   <script>
+    const state = {{ activeTab: 'self_atk' }};
     const q = document.getElementById('q');
+    const sortMode = document.getElementById('sortMode');
     const activation = document.getElementById('activation');
     const attr = document.getElementById('attr');
+    const type = document.getElementById('type');
     const showVu = document.getElementById('showVu');
-    const rows = [...document.querySelectorAll('tbody tr')];
+    const tabButtons = [...document.querySelectorAll('.tab-button')];
+    const panels = [...document.querySelectorAll('[data-tab-panel]')];
+    const rowCache = new Map();
+
+    for (const panel of panels) {{
+      rowCache.set(panel.dataset.tabPanel, [...panel.querySelectorAll('tbody tr')]);
+    }}
+
+    function activeRows() {{
+      return rowCache.get(state.activeTab) || [];
+    }}
+
+    function sortActiveRows() {{
+      const rows = activeRows();
+      const key = sortMode.value === 'avg' ? 'sortAvg' : 'sortMax';
+      rows.sort((a, b) => Number(b.dataset[key]) - Number(a.dataset[key]));
+      const tbody = document.querySelector(`#panel-${{state.activeTab}} tbody`);
+      for (const row of rows) tbody.appendChild(row);
+    }}
+
     function applyFilter() {{
       const needle = q.value.trim().toLowerCase();
-      for (const row of rows) {{
-        const okText = !needle || row.innerText.toLowerCase().includes(needle);
+      sortActiveRows();
+      let visibleRank = 1;
+      for (const row of activeRows()) {{
+        const okText = !needle || row.dataset.search.includes(needle);
         const okActivation = !activation.value || row.dataset.activation === activation.value;
         const okAttr = !attr.value || row.dataset.attr === attr.value;
+        const okType = !type.value || row.dataset.type === type.value;
         const okVu = showVu.checked || row.dataset.vuOnly !== 'true';
-        row.style.display = okText && okActivation && okAttr && okVu ? '' : 'none';
-      }}
-      for (const body of document.querySelectorAll('tbody')) {{
-        let visibleRank = 1;
-        for (const row of body.querySelectorAll('tr')) {{
-          if (row.style.display === 'none') continue;
-          row.querySelector('.rank').textContent = visibleRank++;
-        }}
+        const visible = okText && okActivation && okAttr && okType && okVu;
+        row.style.display = visible ? '' : 'none';
+        if (visible) row.querySelector('.rank').textContent = visibleRank++;
       }}
     }}
-    q.addEventListener('input', applyFilter);
-    activation.addEventListener('input', applyFilter);
-    attr.addEventListener('input', applyFilter);
-    showVu.addEventListener('input', applyFilter);
-    applyFilter();
+
+    function setActiveTab(tabId) {{
+      state.activeTab = tabId;
+      for (const button of tabButtons) button.classList.toggle('active', button.dataset.tab === tabId);
+      for (const panel of panels) panel.classList.toggle('active', panel.dataset.tabPanel === tabId);
+      applyFilter();
+    }}
+
+    for (const button of tabButtons) {{
+      button.addEventListener('click', () => setActiveTab(button.dataset.tab));
+    }}
+    for (const input of [q, sortMode, activation, attr, type, showVu]) {{
+      input.addEventListener('input', applyFilter);
+    }}
+    setActiveTab(state.activeTab);
   </script>
 </body>
 </html>
