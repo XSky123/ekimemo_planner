@@ -16,7 +16,7 @@ OUT_HTML = ROOT / "data" / "reports" / "step2_attack_support_rankings_zh.html"
 TABS = {
     "self_atk": {
         "title": "攻击手：自己加ATK",
-        "description": "只看对自己生效的 ATK 增加。理论最大/平均值用 Lv50 AP 乘以 ATK 增幅估算。",
+        "description": "只看对自己生效的 ATK 增加。理论最大/平均值用所选等级 AP 乘以 ATK 增幅估算。",
         "kinds": {"atk_buff"},
     },
     "team_atk": {
@@ -60,7 +60,28 @@ SCOPE_LABELS = {
     "relative_car": "相对车位",
 }
 
-LEVEL_PRIORITY = ["50", "92", "96", "100", "80", "70", "60", "30", "15", "5"]
+BASIS_LABELS = {
+    "access_count_yesterday_today": "昨天+今天访问次数",
+    "accessing_denko_total_atk_buff_percent": "访问でんこのATK增加合计",
+    "activation_count": "技能发动次数",
+    "daily_access_station_count": "今日访问站数",
+    "daily_distance_km": "今日移动距离",
+    "daily_distance_km_gte_100": "今日移动距离100km以上",
+    "daily_distance_km_over_100": "今日移动距离100km以后部分",
+    "friend_count": "电友数量",
+    "linked_denko_count": "link中でんこ数量",
+    "linked_station_count_per_target_denko": "对象每人的link站数",
+    "max_damage_dealt_during_skill": "技能发动中最大与伤害",
+    "opponent_team_distinct_attribute_count": "对手编成属性种类数",
+    "own_team_attribute_count": "编成内属性数量",
+    "random_bonus_when_atk_buff_1_gte_50_percent": "(1)达到ATK+50%以上时随机追加",
+    "received_damage_count": "被攻击次数",
+    "referenced_cars_film_damage_effect": "参照车厢film与伤害效果",
+}
+
+REPORT_LEVELS = ["30", "50", "80", "92", "100"]
+DEFAULT_LEVEL = "50"
+LEVEL_PRIORITY = ["50", "100", "92", "80", "30", "96", "70", "60", "15", "5"]
 
 
 def read_jsonl(path: Path) -> list[dict[str, Any]]:
@@ -160,7 +181,7 @@ def all_level_values(component: dict[str, Any]) -> list[tuple[str, dict[str, Any
 def basis_value(component: dict[str, Any]) -> tuple[str, dict[str, Any]]:
     values = component.get("values_by_denko_level") or {}
     if is_vu_only(component, "50"):
-        for level in ["100", "96", "92"]:
+        for level in ["100", "92", "96"]:
             if level in values:
                 return level, values[level]
     for level in LEVEL_PRIORITY:
@@ -185,7 +206,7 @@ def signed_numbers(text: str) -> list[float]:
     return nums
 
 
-def formula_range_from_text(raw: str, condition: str) -> tuple[float | None, float | None]:
+def formula_range_from_text(raw: str, condition: str, value: dict[str, Any]) -> tuple[float | None, float | None]:
     distance_match = re.search(r"\+(\d+(?:\.\d+)?)×移動距離\(km\)%", raw)
     if distance_match and ("100km" in condition or "上限100" in condition):
         rate = float(distance_match.group(1))
@@ -194,6 +215,19 @@ def formula_range_from_text(raw: str, condition: str) -> tuple[float | None, flo
     if over_100_match:
         rate = float(over_100_match.group(1))
         return 0.0, rate * (360 - 100)
+    n_match = re.search(r"\+n×(\d+(?:\.\d+)?)%", raw)
+    if n_match:
+        context = " ".join(
+            [
+                condition,
+                raw,
+                " ".join(str(key) for key in (value.get("raw_row") or {}).keys()),
+            ]
+        )
+        range_match = re.search(r"n\s*=\s*(\d+(?:\.\d+)?)\s*[～〜~-]\s*(\d+(?:\.\d+)?)", context)
+        max_n = float(range_match.group(2)) if range_match else None
+        if max_n is not None:
+            return 0.0, float(n_match.group(1)) * max_n
     return None, None
 
 
@@ -221,7 +255,7 @@ def value_range(tab_id: str, component: dict[str, Any], value: dict[str, Any]) -
     if numeric is not None:
         return abs(numeric), abs(numeric)
 
-    formula_min, formula_max = formula_range_from_text(raw, condition)
+    formula_min, formula_max = formula_range_from_text(raw, condition, value)
     if formula_max is not None:
         return formula_min, formula_max
 
@@ -251,10 +285,10 @@ def ap_at_level(row: dict[str, Any], level: str) -> float | None:
     return None
 
 
-def metric_display(tab_id: str, row: dict[str, Any], max_value: float | None, avg_value: float | None) -> tuple[str, str, float | None, float | None]:
+def metric_display(tab_id: str, row: dict[str, Any], level: str, max_value: float | None, avg_value: float | None) -> tuple[str, str, float | None, float | None]:
     if tab_id != "self_atk":
         return format_metric(max_value), format_metric(avg_value), max_value, avg_value
-    ap = ap_at_level(row, "50")
+    ap = ap_at_level(row, level)
     if ap is None:
         return "-", "-", None, None
     max_result = ap * (1 + max_value / 100) if max_value is not None else None
@@ -268,13 +302,34 @@ def format_metric(value: float | None) -> str:
     return "-" if value is None else f"{value:g}"
 
 
-def lv50_text(component: dict[str, Any], basis_level: str, value: dict[str, Any]) -> str:
+def level_value_text(basis_level: str, value: dict[str, Any]) -> str:
     if not value:
         return "-"
     raw = str(value.get("value_raw") or "-")
-    if basis_level != "50":
+    if basis_level != DEFAULT_LEVEL:
         return f"※Lv{basis_level}: {raw}"
     return raw
+
+
+def level_metrics(tab_id: str, row: dict[str, Any], component: dict[str, Any], level: str) -> dict[str, Any] | None:
+    values = component.get("values_by_denko_level") or {}
+    value = values.get(level)
+    if not value:
+        return None
+    value_min, value_max = value_range(tab_id, component, value)
+    avg_value = mean_value(value_min, value_max)
+    max_text, avg_text, sort_max, sort_avg = metric_display(tab_id, row, level, value_max, avg_value)
+    return {
+        "level": level,
+        "sort_max": sort_max,
+        "sort_avg": sort_avg,
+        "value_text": level_value_text(level, value),
+        "max_text": max_text,
+        "avg_text": avg_text,
+        "probability": probability_text(value),
+        "duration": value.get("duration") or "-",
+        "cooldown": value.get("cooldown") or "-",
+    }
 
 
 def target_text(component: dict[str, Any]) -> str:
@@ -297,6 +352,13 @@ def compact_filter_text(component: dict[str, Any]) -> str:
         notes.append("link时")
     if filters.get("own_team_all_attribute"):
         notes.append(f"队伍全{filters['own_team_all_attribute']}")
+    if isinstance(filters.get("opponent_team_attribute_count"), dict):
+        count_filter = filters["opponent_team_attribute_count"]
+        attribute = count_filter.get("attribute", "属性")
+        max_count = count_filter.get("max_count")
+        basis = "双方编成" if count_filter.get("includes_own_team") else "对手编成"
+        suffix = f"(上限{max_count})" if max_count else ""
+        notes.append(f"按{basis}{attribute}数量{suffix}")
     if filters.get("attribute"):
         notes.append(f"{filters['attribute']}对象")
     if filters.get("state") == "cooldown":
@@ -306,9 +368,22 @@ def compact_filter_text(component: dict[str, Any]) -> str:
     if filters.get("exclude_self"):
         notes.append("不含自己")
     if filters.get("type"):
-        notes.append(f"对象类型 {filters['type']}")
+        scope = set(component.get("target_scope") or [])
+        condition = str(component.get("condition_raw") or "")
+        if scope == {"self"} and "数に応じ" in condition:
+            notes.append(f"按编成内{filters['type']}数量")
+        else:
+            notes.append(f"对象类型 {filters['type']}")
     if scaling.get("basis"):
-        notes.append(f"按{scaling['basis']}")
+        basis = str(scaling["basis"])
+        if basis == "opponent_team_attribute_count" and not filters.get("opponent_team_attribute_count"):
+            attribute = scaling.get("attribute", "属性")
+            max_count = scaling.get("max_count")
+            suffix = f"(上限{max_count})" if max_count else ""
+            notes.append(f"按对手编成{attribute}数量{suffix}")
+        elif basis not in {"opponent_team_attribute_count"}:
+            label = BASIS_LABELS.get(basis, basis)
+            notes.append(f"按{label}")
     return "；".join(notes) if notes else "-"
 
 
@@ -350,17 +425,29 @@ def build_candidates(tab_id: str, rows: list[dict[str, Any]], metadata: dict[str
         for component in row.get("skill_components") or []:
             if not belongs_to_tab(tab_id, component):
                 continue
-            basis_level, value = basis_value(component)
-            value_min, value_max = value_range(tab_id, component, value)
-            avg_value = mean_value(value_min, value_max)
-            max_text, avg_text, sort_max, sort_avg = metric_display(tab_id, row, value_max, avg_value)
+            levels = {
+                level: metrics
+                for level in REPORT_LEVELS
+                if (metrics := level_metrics(tab_id, row, component, level)) is not None
+            }
+            if not levels:
+                continue
+            fallback_level, fallback_value = basis_value(component)
+            if DEFAULT_LEVEL in levels:
+                initial_level = DEFAULT_LEVEL
+            elif fallback_level in levels:
+                initial_level = fallback_level
+            else:
+                initial_level = next(iter(levels))
+            initial = levels[initial_level]
             group_id, group_label = activation_group(row, component)
             denko_id = str(row.get("denko_id") or "")
             denko_meta = metadata.get(denko_id, {})
             target = "对手でんこ" if tab_id == "def_debuff" else target_text(component)
             filters = compact_filter_text(component)
             condition = str(component.get("condition_raw") or "")
-            lv50 = lv50_text(component, basis_level, value)
+            level_data = json.dumps(levels, ensure_ascii=False, separators=(",", ":"))
+            all_level_text = " ".join(str(metrics["value_text"]) for metrics in levels.values())
             search = " ".join(
                 [
                     denko_id,
@@ -371,14 +458,14 @@ def build_candidates(tab_id: str, rows: list[dict[str, Any]], metadata: dict[str
                     condition,
                     target,
                     filters,
-                    lv50,
+                    all_level_text,
                 ]
             ).lower()
             candidates.append(
                 {
-                    "sort_max": sort_max,
-                    "sort_avg": sort_avg,
-                    "basis_level": basis_level,
+                    "sort_max": initial["sort_max"],
+                    "sort_avg": initial["sort_avg"],
+                    "basis_level": initial_level,
                     "denko_id": denko_id,
                     "name": row.get("name"),
                     "attribute": denko_meta.get("attribute", "-"),
@@ -391,13 +478,14 @@ def build_candidates(tab_id: str, rows: list[dict[str, Any]], metadata: dict[str
                     "activation_group": group_id,
                     "activation_label": group_label,
                     "activation_type": component.get("activation_type") or row.get("activation_type") or "",
-                    "probability": probability_text(value),
-                    "duration": value.get("duration") or "-",
-                    "cooldown": value.get("cooldown") or "-",
-                    "lv50": lv50,
-                    "max_text": max_text,
-                    "avg_text": avg_text,
-                    "vu_only": is_vu_only(component, basis_level),
+                    "probability": initial["probability"],
+                    "duration": initial["duration"],
+                    "cooldown": initial["cooldown"],
+                    "level_value": initial["value_text"],
+                    "max_text": initial["max_text"],
+                    "avg_text": initial["avg_text"],
+                    "level_data": level_data,
+                    "vu_only": is_vu_only(component, fallback_level),
                     "url": row.get("detail_url") or "",
                     "search": search,
                 }
@@ -418,18 +506,18 @@ def render_rows(tab_id: str, candidates: list[dict[str, Any]]) -> str:
         rows.append(
             "\n".join(
                 [
-                    f'<tr data-tab="{esc(tab_id)}" data-search="{esc(item["search"])}" data-activation="{esc(item["activation_group"])}" data-attr="{esc(item["attribute"])}" data-type="{esc(item["type_key"])}" data-vu-only="{str(item["vu_only"]).lower()}" data-sort-max="{item["sort_max"] if item["sort_max"] is not None else -1}" data-sort-avg="{item["sort_avg"] if item["sort_avg"] is not None else -1}">',
+                    f'<tr data-tab="{esc(tab_id)}" data-search="{esc(item["search"])}" data-activation="{esc(item["activation_group"])}" data-attr="{esc(item["attribute"])}" data-type="{esc(item["type_key"])}" data-vu-only="{str(item["vu_only"]).lower()}" data-sort-max="{item["sort_max"] if item["sort_max"] is not None else -1}" data-sort-avg="{item["sort_avg"] if item["sort_avg"] is not None else -1}" data-levels="{esc(item["level_data"])}">',
                     f'<td class="rank">{rank}</td>',
                     f'<td><strong>{esc(item["denko_id"])}</strong><br><a href="{esc(item["url"])}">{esc(item["name"])}</a></td>',
                     f'<td>{esc(item["attribute"])}</td>',
                     f'<td>{esc(item["type_key"])}</td>',
                     f'<td>{esc(EFFECT_LABELS.get(item["kind"], item["kind"]))}<br><span class="muted">{esc(item["component_id"])}</span></td>',
-                    f'<td class="metric">{esc(item["max_text"])}</td>',
-                    f'<td class="metric">{esc(item["avg_text"])}</td>',
-                    f'<td>{esc(item["lv50"])}</td>',
-                    f'<td>{esc(item["probability"])}</td>',
-                    f'<td>{esc(item["duration"])}</td>',
-                    f'<td>{esc(item["cooldown"])}</td>',
+                    f'<td class="metric max-cell">{esc(item["max_text"])}</td>',
+                    f'<td class="metric avg-cell">{esc(item["avg_text"])}</td>',
+                    f'<td class="level-cell">{esc(item["level_value"])}</td>',
+                    f'<td class="probability-cell">{esc(item["probability"])}</td>',
+                    f'<td class="duration-cell">{esc(item["duration"])}</td>',
+                    f'<td class="cooldown-cell">{esc(item["cooldown"])}</td>',
                     f'<td title="{esc(item["activation_type"])}">{esc(item["activation_label"])}</td>',
                     f'<td>{esc(item["target"])}<br><span class="muted">{esc(item["filters"])}</span></td>',
                     f'<td>{esc(item["condition"])}</td>',
@@ -456,7 +544,7 @@ def render_table(tab_id: str, candidates: list[dict[str, Any]]) -> str:
             <th>效果</th>
             <th>理论最大</th>
             <th>平均值</th>
-            <th>Lv50</th>
+            <th>等级值</th>
             <th>概率</th>
             <th>持续</th>
             <th>CD</th>
@@ -513,10 +601,17 @@ def main() -> None:
 </head>
 <body>
   <h1>Ekimemo Step2 攻击辅助排行</h1>
-  <p>从 Step1 DB 自动整理。Lv50 作为默认查看基准；仅 VU 后生效的项目默认隐藏。范围型效果同时给出理论最大和平均值，并可切换排序。</p>
+  <p>从 Step1 DB 自动整理。默认按 Lv50 查看，也可切换 Lv30/Lv80；打开 VU 项后可用 Lv92/Lv100 查看 VU 后效果。范围型效果同时给出理论最大和平均值，并可切换排序。</p>
   <div class="tabs">{tab_buttons}</div>
   <div class="toolbar">
     <input id="q" placeholder="搜索ID、名字、条件、效果" size="34">
+    <select id="levelMode">
+      <option value="50">Lv50</option>
+      <option value="30">Lv30</option>
+      <option value="80">Lv80</option>
+      <option value="92">Lv92(VU)</option>
+      <option value="100">Lv100(VU)</option>
+    </select>
     <select id="sortMode">
       <option value="max">按理论最大排序</option>
       <option value="avg">按平均值排序</option>
@@ -546,6 +641,7 @@ def main() -> None:
   <script>
     const state = {{ activeTab: 'self_atk' }};
     const q = document.getElementById('q');
+    const levelMode = document.getElementById('levelMode');
     const sortMode = document.getElementById('sortMode');
     const activation = document.getElementById('activation');
     const attr = document.getElementById('attr');
@@ -556,15 +652,37 @@ def main() -> None:
     const rowCache = new Map();
 
     for (const panel of panels) {{
-      rowCache.set(panel.dataset.tabPanel, [...panel.querySelectorAll('tbody tr')]);
+      const rows = [...panel.querySelectorAll('tbody tr')];
+      for (const row of rows) {{
+        try {{
+          row.levels = JSON.parse(row.dataset.levels || '{{}}');
+        }} catch (_error) {{
+          row.levels = {{}};
+        }}
+      }}
+      rowCache.set(panel.dataset.tabPanel, rows);
     }}
 
     function activeRows() {{
       return rowCache.get(state.activeTab) || [];
     }}
 
+    function applyLevel(row) {{
+      const data = row.levels[levelMode.value];
+      row.dataset.hasLevel = data ? 'true' : 'false';
+      row.dataset.sortMax = data && data.sort_max !== null ? data.sort_max : -1;
+      row.dataset.sortAvg = data && data.sort_avg !== null ? data.sort_avg : -1;
+      row.querySelector('.max-cell').textContent = data ? data.max_text : '-';
+      row.querySelector('.avg-cell').textContent = data ? data.avg_text : '-';
+      row.querySelector('.level-cell').textContent = data ? data.value_text : '-';
+      row.querySelector('.probability-cell').textContent = data ? data.probability : '-';
+      row.querySelector('.duration-cell').textContent = data ? data.duration : '-';
+      row.querySelector('.cooldown-cell').textContent = data ? data.cooldown : '-';
+    }}
+
     function sortActiveRows() {{
       const rows = activeRows();
+      for (const row of rows) applyLevel(row);
       const key = sortMode.value === 'avg' ? 'sortAvg' : 'sortMax';
       rows.sort((a, b) => Number(b.dataset[key]) - Number(a.dataset[key]));
       const tbody = document.querySelector(`#panel-${{state.activeTab}} tbody`);
@@ -581,7 +699,8 @@ def main() -> None:
         const okAttr = !attr.value || row.dataset.attr === attr.value;
         const okType = !type.value || row.dataset.type === type.value;
         const okVu = showVu.checked || row.dataset.vuOnly !== 'true';
-        const visible = okText && okActivation && okAttr && okType && okVu;
+        const okLevel = row.dataset.hasLevel === 'true';
+        const visible = okText && okActivation && okAttr && okType && okVu && okLevel;
         row.style.display = visible ? '' : 'none';
         if (visible) row.querySelector('.rank').textContent = visibleRank++;
       }}
@@ -597,7 +716,7 @@ def main() -> None:
     for (const button of tabButtons) {{
       button.addEventListener('click', () => setActiveTab(button.dataset.tab));
     }}
-    for (const input of [q, sortMode, activation, attr, type, showVu]) {{
+    for (const input of [q, levelMode, sortMode, activation, attr, type, showVu]) {{
       input.addEventListener('input', applyFilter);
     }}
     setActiveTab(state.activeTab);
