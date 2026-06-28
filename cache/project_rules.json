@@ -44,6 +44,73 @@
     "llm_scope": "Only send the smallest failed or ambiguous source snippet needed for semantic parsing.",
     "reuse_rule": "If content_hash is unchanged and confidence is sufficient, reuse cache."
   },
+  "model_precision_policy": {
+    "mode": "tiered_precision",
+    "rule": "Use the cheapest reliable execution path by default. Do not spend high-precision model budget on deterministic, cacheable, or bulk mechanical work.",
+    "resume_rule": "At the start of every continuation, especially after budget exhaustion or context compaction, reread this policy and resume with the same tiered routing instead of defaulting to high-precision model work.",
+    "auto_switch_rule": "If model selection is available, switch per task tier automatically. If model selection is not available in the current interface, emulate the policy by using scripts, caches, smallest snippets, and low-context summaries before asking for high-precision reasoning.",
+    "tiers": {
+      "script_or_no_model": {
+        "use_for": [
+          "web/cache fetch orchestration",
+          "content_hash checks",
+          "JSONL filtering and joins",
+          "HTML/report generation",
+          "table-matrix expansion",
+          "numeric extraction that deterministic parser supports",
+          "mojibake checks",
+          "git/status/report index maintenance"
+        ],
+        "forbidden_to_escalate_directly": true
+      },
+      "cheap_or_low_precision_model": {
+        "use_for": [
+          "summarizing script-generated issue lists",
+          "grouping suspicious rows by failure class",
+          "drafting TODO tables",
+          "simple Chinese report wording",
+          "low-risk display-only normalization suggestions"
+        ],
+        "input_rule": "Use compact issue rows, not full raw pages or whole DB files."
+      },
+      "medium_precision_model": {
+        "use_for": [
+          "planning parser/report changes from aggregated evidence",
+          "reviewing small batches of suspicious records",
+          "choosing between local implementation options",
+          "drafting handoff notes and final summaries"
+        ],
+        "input_rule": "Use targeted records and minimal evidence snippets."
+      },
+      "high_precision_model": {
+        "use_for_only": [
+          "ambiguous Japanese skill semantics",
+          "target/trigger/condition role disputes",
+          "merged-cell parser failures that scripts cannot resolve",
+          "manual override decisions",
+          "final high-risk audit before treating data as canonical",
+          "team-building strategy reasoning that combines multiple game constraints"
+        ],
+        "input_rule": "Send only denko_id, component_id, relevant condition_raw, values_by_denko_level rows, raw_row headers, remarks, and source URL. Never send full wiki pages unless explicitly required and justified."
+      }
+    },
+    "escalation_order": [
+      "script_or_no_model",
+      "cheap_or_low_precision_model",
+      "medium_precision_model",
+      "high_precision_model"
+    ],
+    "must_not_use_high_precision_for": [
+      "whole-corpus scans",
+      "basic counts",
+      "HTML regeneration",
+      "git operations",
+      "already-confirmed records",
+      "unchanged content_hash pages",
+      "simple TODO or checklist formatting"
+    ],
+    "handoff_requirement": "When stopping because of budget, write the remaining work and recommended next tier into a TODO, commit or clearly report uncommitted files, and remind the next agent to continue from this policy."
+  },
   "controller_policy": {
     "mode": "controller_first",
     "rule": "For hundreds of denko records, the controller must run deterministic scripts and cached parsers first. LLM/model calls are fallback only for parser failures, low-confidence semantic splits, repeated unknown templates, or conflict resolution.",
