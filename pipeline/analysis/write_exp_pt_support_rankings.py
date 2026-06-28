@@ -18,30 +18,54 @@ OUT_HTML = ROOT / "data" / "reports" / "step2_exp_pt_support_rankings_zh.html"
 
 
 TABS = {
-    "exp_gain": {
-        "title": "经验获取",
-        "description": "经验值付与/增加类。对象可能是自己、访问中的でんこ、队伍、或相手でんこ，具体看对象列。",
-        "kinds": {"exp_gain"},
+    "fixed_exp": {
+        "title": "固定経験値",
+        "description": "有明确经验值数值的経験値付与/增加类。排序按经验值本身，不和百分比/条件型混排。",
+        "metric_types": {"fixed_exp"},
+        "max_header": "理论最大",
+        "avg_header": "平均值",
     },
     "exp_distribution": {
-        "title": "经验分配",
-        "description": "把自身或相手获得的经验分配给其他でんこ的技能。",
-        "kinds": {"exp_distribution", "exp_distribution_bonus"},
+        "title": "経験値分配/倍率",
+        "description": "经验分配、经验比例、与伤害等条件联动的经验收益。排序按百分比/倍率，不和固定经验混排。",
+        "metric_types": {"exp_ratio"},
+        "max_header": "比例/倍率最大",
+        "avg_header": "比例/倍率平均",
     },
-    "score_gain": {
-        "title": "スコア/PT获取",
-        "description": "スコア獲得、スコア増加、随机スコア增减、追加スコア獲得等收益类技能。",
-        "kinds": {"score_gain", "additional_score_gain", "score_random_modifier"},
+    "fixed_score": {
+        "title": "固定スコア",
+        "description": "有明确数值的スコア/PT獲得。排序按 pt 数值，不和百分比/倍率混排。",
+        "metric_types": {"fixed_score"},
+        "max_header": "理论最大",
+        "avg_header": "平均值",
+    },
+    "score_modifier": {
+        "title": "スコア倍率/変動",
+        "description": "访问スコア增加、随机スコア增减、受伤害比例换算等百分比/倍率型收益。排序按百分比或倍率。",
+        "metric_types": {"score_percent_modifier"},
+        "max_header": "倍率/比例最大",
+        "avg_header": "倍率/比例平均",
     },
     "bonus_gain": {
         "title": "ボーナス/マイル",
         "description": "リンクボーナス、今日の新駅ボーナス、マイル付与等偏 PT/通勤收益的技能。",
-        "kinds": {"link_bonus", "today_new_station_bonus", "mile_gain"},
+        "metric_types": {"bonus_gain"},
+        "max_header": "理论最大",
+        "avg_header": "平均值",
+    },
+    "condition_unknown": {
+        "title": "条件型/数值未明",
+        "description": "效果存在但当前 Step1 数值没有结构化出来，或只有 score_gain/exp_gain 这类语义标签。默认降权排序，供后续详情页/LLM 复查。",
+        "metric_types": {"unknown_metric"},
+        "max_header": "理论最大",
+        "avg_header": "平均值",
     },
     "effect_boost": {
         "title": "经验/PT效果强化",
         "description": "经验、スコア、リンクボーナス、相关アクセサリー等收益技能的効果量増加。",
-        "kinds": {"effect_multiplier"},
+        "metric_types": {"effect_boost"},
+        "max_header": "倍率最大",
+        "avg_header": "倍率平均",
     },
 }
 
@@ -57,6 +81,8 @@ EFFECT_LABELS = {
     "mile_gain": "マイル付与",
     "effect_multiplier": "効果量増加",
 }
+
+UNKNOWN_VALUE_TOKENS = {"score_gain", "exp_gain", "経験値付与", "スコア獲得"}
 
 REPORT_LEVELS = base.REPORT_LEVELS
 DEFAULT_LEVEL = base.DEFAULT_LEVEL
@@ -99,13 +125,64 @@ def is_positive_effect_multiplier(component: dict[str, Any]) -> bool:
     )
 
 
+def value_for_metric_type(component: dict[str, Any]) -> dict[str, Any]:
+    values = component.get("values_by_denko_level") or {}
+    if DEFAULT_LEVEL in values:
+        return values[DEFAULT_LEVEL]
+    _fallback_level, fallback_value = base.basis_value(component)
+    return fallback_value
+
+
+def has_numeric_value(value: dict[str, Any]) -> bool:
+    return any(base.as_number(value.get(key)) is not None for key in ("value_numeric", "value_min", "value_max"))
+
+
+def is_percent_or_ratio(value: dict[str, Any]) -> bool:
+    raw = str(value.get("value_raw") or "")
+    unit = str(value.get("unit") or "")
+    return (
+        "percent" in unit
+        or "random_percent" in unit
+        or "%" in raw
+        or "％" in raw
+        or "受けたダメージ" in raw
+        or "与ダメージ" in raw
+    )
+
+
+def metric_type(component: dict[str, Any], value: dict[str, Any]) -> str:
+    kind = str(component.get("effect_kind") or "")
+    raw = str(value.get("value_raw") or "")
+    unit = str(value.get("unit") or "")
+
+    if kind == "effect_multiplier":
+        return "effect_boost" if is_positive_effect_multiplier(component) else "ignore"
+    if kind in {"link_bonus", "today_new_station_bonus", "mile_gain"}:
+        return "bonus_gain"
+    if kind in {"exp_distribution", "exp_distribution_bonus"}:
+        return "exp_ratio"
+    if kind == "exp_gain":
+        if raw in UNKNOWN_VALUE_TOKENS or unit == "condition_only":
+            return "unknown_metric"
+        if is_percent_or_ratio(value):
+            return "exp_ratio"
+        return "fixed_exp" if has_numeric_value(value) else "unknown_metric"
+    if kind in {"score_gain", "additional_score_gain", "score_random_modifier"}:
+        if raw in UNKNOWN_VALUE_TOKENS or unit == "condition_only":
+            return "unknown_metric"
+        if kind == "score_random_modifier" or is_percent_or_ratio(value):
+            return "score_percent_modifier"
+        return "fixed_score" if has_numeric_value(value) else "unknown_metric"
+    return "ignore"
+
+
+def component_metric_type(component: dict[str, Any]) -> str:
+    value = value_for_metric_type(component)
+    return metric_type(component, value) if value else "ignore"
+
+
 def belongs_to_tab(tab_id: str, component: dict[str, Any]) -> bool:
-    kind = component.get("effect_kind")
-    if kind not in TABS[tab_id]["kinds"]:
-        return False
-    if tab_id == "effect_boost":
-        return is_positive_effect_multiplier(component)
-    return True
+    return component_metric_type(component) in TABS[tab_id]["metric_types"]
 
 
 def signed_numbers(text: str) -> list[float]:
@@ -138,7 +215,24 @@ def multiplier_value(raw: str, numeric: float | None) -> float | None:
     return numeric
 
 
-def value_range(component: dict[str, Any], value: dict[str, Any]) -> tuple[float | None, float | None]:
+def probability_text(value: dict[str, Any]) -> str:
+    probability = value.get("probability")
+    if not probability:
+        return "-"
+    if isinstance(probability, dict):
+        labels = {"activation_probability": "発動率"}
+        parts = [
+            f"{labels.get(str(key), str(key))} {item}"
+            for key, item in probability.items()
+            if item not in {None, "", "-"}
+        ]
+        return " / ".join(parts) if parts else "-"
+    return str(probability)
+
+
+def value_range(component: dict[str, Any], value: dict[str, Any], metric: str) -> tuple[float | None, float | None]:
+    if metric == "unknown_metric":
+        return None, None
     raw = str(value.get("value_raw") or "")
     unit = str(value.get("unit") or "")
     numeric = base.as_number(value.get("value_numeric"))
@@ -167,35 +261,41 @@ def mean_value(value_min: float | None, value_max: float | None) -> float | None
     return (value_min + value_max) / 2
 
 
-def metric_text(kind: str, value: float | None) -> str:
+def metric_text(metric: str, value: float | None) -> str:
     if value is None:
         return "-"
-    if kind == "effect_multiplier":
+    if metric == "effect_boost":
         return f"{value:g}倍"
+    if metric in {"exp_ratio", "score_percent_modifier"}:
+        sign = "+" if value > 0 else ""
+        return f"{sign}{value:g}%"
     return f"{value:g}"
 
 
-def level_value_text(level: str, value: dict[str, Any]) -> str:
+def level_value_text(level: str, value: dict[str, Any], metric: str) -> str:
     raw = str(value.get("value_raw") or "-")
+    if metric == "unknown_metric":
+        raw = "数值未明" if raw in UNKNOWN_VALUE_TOKENS else f"数值未明（{raw}）"
     return raw if level == DEFAULT_LEVEL else f"※Lv{level}: {raw}"
 
 
-def level_metrics(component: dict[str, Any], level: str) -> dict[str, Any] | None:
+def level_metrics(component: dict[str, Any], level: str, component_metric: str) -> dict[str, Any] | None:
     values = component.get("values_by_denko_level") or {}
     value = values.get(level)
     if not value:
         return None
-    value_min, value_max = value_range(component, value)
+    metric = component_metric if component_metric != "ignore" else metric_type(component, value)
+    value_min, value_max = value_range(component, value, metric)
     avg_value = mean_value(value_min, value_max)
-    kind = str(component.get("effect_kind") or "")
     return {
         "level": level,
+        "metric_type": metric,
         "sort_max": value_max,
         "sort_avg": avg_value,
-        "value_text": level_value_text(level, value),
-        "max_text": metric_text(kind, value_max),
-        "avg_text": metric_text(kind, avg_value),
-        "probability": base.probability_text(value),
+        "value_text": level_value_text(level, value, metric),
+        "max_text": metric_text(metric, value_max),
+        "avg_text": metric_text(metric, avg_value),
+        "probability": probability_text(value),
         "duration": value.get("duration") or "-",
         "cooldown": value.get("cooldown") or "-",
     }
@@ -221,10 +321,11 @@ def build_candidates(tab_id: str, rows: list[dict[str, Any]], metadata: dict[str
         for component in row.get("skill_components") or []:
             if not belongs_to_tab(tab_id, component):
                 continue
+            component_metric = component_metric_type(component)
             levels = {
                 level: metrics
                 for level in REPORT_LEVELS
-                if (metrics := level_metrics(component, level)) is not None
+                if (metrics := level_metrics(component, level, component_metric)) is not None
             }
             if not levels:
                 continue
@@ -265,6 +366,7 @@ def build_candidates(tab_id: str, rows: list[dict[str, Any]], metadata: dict[str
                     "name": row.get("name"),
                     "attribute": denko_meta.get("attribute", "-"),
                     "type_key": denko_meta.get("type_key", "unknown"),
+                    "metric_type": component_metric,
                     "kind": component.get("effect_kind"),
                     "component_id": component.get("component_id"),
                     "condition": condition,
@@ -281,6 +383,7 @@ def build_candidates(tab_id: str, rows: list[dict[str, Any]], metadata: dict[str
                     "avg_text": initial["avg_text"],
                     "level_data": json.dumps(levels, ensure_ascii=False, separators=(",", ":")),
                     "vu_only": base.is_vu_only(component, fallback_level),
+                    "needs_metric_review": component_metric == "unknown_metric",
                     "url": row.get("detail_url") or "",
                     "search": search,
                 }
@@ -298,15 +401,16 @@ def build_candidates(tab_id: str, rows: list[dict[str, Any]], metadata: dict[str
 def render_rows(tab_id: str, candidates: list[dict[str, Any]]) -> str:
     rows = []
     for rank, item in enumerate(candidates, 1):
+        badge = ' <span class="badge">数值未明</span>' if item["needs_metric_review"] else ""
         rows.append(
             "\n".join(
                 [
-                    f'<tr data-tab="{esc(tab_id)}" data-search="{esc(item["search"])}" data-activation="{esc(item["activation_group"])}" data-attr="{esc(item["attribute"])}" data-type="{esc(item["type_key"])}" data-vu-only="{str(item["vu_only"]).lower()}" data-sort-max="{item["sort_max"] if item["sort_max"] is not None else -1}" data-sort-avg="{item["sort_avg"] if item["sort_avg"] is not None else -1}" data-levels="{esc(item["level_data"])}">',
+                    f'<tr data-tab="{esc(tab_id)}" data-search="{esc(item["search"])}" data-activation="{esc(item["activation_group"])}" data-attr="{esc(item["attribute"])}" data-type="{esc(item["type_key"])}" data-metric-type="{esc(item["metric_type"])}" data-needs-metric-review="{str(item["needs_metric_review"]).lower()}" data-vu-only="{str(item["vu_only"]).lower()}" data-sort-max="{item["sort_max"] if item["sort_max"] is not None else -1}" data-sort-avg="{item["sort_avg"] if item["sort_avg"] is not None else -1}" data-levels="{esc(item["level_data"])}">',
                     f'<td class="rank">{rank}</td>',
                     f'<td><strong>{esc(item["denko_id"])}</strong><br><a href="{esc(item["url"])}">{esc(item["name"])}</a></td>',
                     f'<td>{esc(item["attribute"])}</td>',
                     f'<td>{esc(item["type_key"])}</td>',
-                    f'<td>{esc(EFFECT_LABELS.get(str(item["kind"]), item["kind"]))}<br><span class="muted">{esc(item["component_id"])}</span></td>',
+                    f'<td>{esc(EFFECT_LABELS.get(str(item["kind"]), item["kind"]))}{badge}<br><span class="muted">{esc(item["component_id"])}</span></td>',
                     f'<td class="metric max-cell">{esc(item["max_text"])}</td>',
                     f'<td class="metric avg-cell">{esc(item["avg_text"])}</td>',
                     f'<td class="level-cell">{esc(item["level_value"])}</td>',
@@ -337,8 +441,8 @@ def render_table(tab_id: str, candidates: list[dict[str, Any]]) -> str:
             <th>属性</th>
             <th>类型</th>
             <th>效果</th>
-            <th>理论最大</th>
-            <th>平均值</th>
+            <th>{esc(tab["max_header"])}</th>
+            <th>{esc(tab["avg_header"])}</th>
             <th>等级值</th>
             <th>概率</th>
             <th>持续</th>
@@ -382,6 +486,7 @@ def main() -> None:
     .tab-button.active {{ background: #0969da; color: white; border-color: #0969da; }}
     .toggle {{ display: inline-flex; align-items: center; gap: 5px; font-size: 13px; color: #444c56; }}
     .toggle input {{ padding: 0; }}
+    .badge {{ display: inline-block; margin-left: 6px; padding: 1px 5px; border: 1px solid #d0a215; border-radius: 4px; color: #7d5f00; background: #fff8c5; font-size: 11px; white-space: nowrap; }}
     table {{ border-collapse: collapse; width: 100%; font-size: 13px; margin-top: 12px; }}
     th, td {{ border: 1px solid #d8dee4; padding: 7px 8px; vertical-align: top; }}
     th {{ background: #f6f8fa; position: sticky; top: 53px; z-index: 2; }}
@@ -396,7 +501,7 @@ def main() -> None:
 </head>
 <body>
   <h1>Ekimemo Step2 经验/PT辅助排行</h1>
-  <p>从 Step1 DB 自动整理，分类参考 wiki「経験値、スコア系スキル」。默认按 Lv50 查看，可切换 Lv30/Lv80/Lv92/Lv100；仅 VU 后生效的项目默认隐藏。</p>
+  <p>从 Step1 DB 自动整理，分类参考 wiki「経験値、スコア系スキル」。固定值、百分比/倍率、条件型数值未明分开排行；默认按 Lv50 查看，可切换 Lv30/Lv80/Lv92/Lv100；仅 VU 后生效的项目默认隐藏。</p>
   <div class="tabs">{tab_buttons}</div>
   <div class="toolbar">
     <input id="q" placeholder="搜索ID、名字、条件、效果" size="34">
@@ -434,7 +539,7 @@ def main() -> None:
   </div>
   {sections}
   <script>
-    const state = {{ activeTab: 'exp_gain' }};
+    const state = {{ activeTab: 'fixed_exp' }};
     const q = document.getElementById('q');
     const levelMode = document.getElementById('levelMode');
     const sortMode = document.getElementById('sortMode');
