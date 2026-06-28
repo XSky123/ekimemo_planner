@@ -15,3 +15,8 @@ Read order for future agents:
 7. Targeted rows/files in `data/`
 
 The old agent spec is protected under `archive/legacy_agent_2026-06-06/`.
+
+Reports:
+
+- Local report index: [docs/reports/index.html](docs/reports/index.html)
+- GitHub Pages: https://xsky123.github.io/ekimemo_planner/docs/reports/
