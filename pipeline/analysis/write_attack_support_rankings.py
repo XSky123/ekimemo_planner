@@ -159,6 +159,10 @@ def all_level_values(component: dict[str, Any]) -> list[tuple[str, dict[str, Any
 
 def basis_value(component: dict[str, Any]) -> tuple[str, dict[str, Any]]:
     values = component.get("values_by_denko_level") or {}
+    if is_vu_only(component, "50"):
+        for level in ["100", "96", "92"]:
+            if level in values:
+                return level, values[level]
     for level in LEVEL_PRIORITY:
         if level in values:
             return level, values[level]
