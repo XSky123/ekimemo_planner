@@ -214,6 +214,45 @@ def raw_detail_aux_values(denko_id: str) -> dict[str, dict[str, str]]:
     return out
 
 
+@lru_cache(maxsize=None)
+def raw_detail_weekday_values(denko_id: str) -> dict[str, dict[str, dict[str, str]]]:
+    path = raw_detail_path(denko_id)
+    if not path.exists():
+        return {}
+    soup = BeautifulSoup(path.read_text(encoding="utf-8", errors="replace"), "html.parser")
+    out: dict[str, dict[str, dict[str, str]]] = {}
+    for table in soup.find_all("table"):
+        matrix = expand_html_table(table)
+        if len(matrix) < 3:
+            continue
+        days = matrix[0]
+        effects = matrix[1]
+        if not {"金曜日", "土曜日"}.intersection(days):
+            continue
+        if not {"スコア獲得", "経験値獲得"}.intersection(effects):
+            continue
+        headers = []
+        for index, day in enumerate(days):
+            effect = effects[index] if index < len(effects) else ""
+            headers.append({"day": day, "effect": effect})
+        for row in matrix[2:]:
+            level = denko_level_from_text(row[0] if row else "")
+            if not level:
+                continue
+            level_values: dict[str, dict[str, str]] = {}
+            for index, cell in enumerate(row):
+                if index >= len(headers):
+                    continue
+                day = headers[index]["day"]
+                effect = headers[index]["effect"]
+                if not day or not effect or not cell:
+                    continue
+                level_values.setdefault(day, {})[effect] = cell
+            if level_values:
+                out[level] = level_values
+    return out
+
+
 def is_positive_effect_multiplier(component: dict[str, Any]) -> bool:
     text = " ".join(
         str(component.get(key) or "")
@@ -250,6 +289,10 @@ def supplemental_value_from_raw_page(
     corrected = corrected_value_from_raw_row_effect(component, value)
     if corrected:
         return corrected
+
+    weekday_value = supplemental_weekday_value_from_raw_page(denko_id, component, value, level)
+    if weekday_value:
+        return weekday_value
 
     raw = str(value.get("value_raw") or "")
     if raw not in UNKNOWN_VALUE_TOKENS and str(value.get("unit") or "") != "condition_only":
@@ -326,6 +369,42 @@ def supplemental_value_from_raw_page(
             "report_supplemented_from": "detail_raw_skill_table",
         }
     return None
+
+
+def supplemental_weekday_value_from_raw_page(
+    denko_id: str,
+    component: dict[str, Any],
+    value: dict[str, Any],
+    level: str,
+) -> dict[str, Any] | None:
+    if str(value.get("unit") or "") != "weekday_variable":
+        return None
+    weekday_map = {
+        "friday": ("金曜日", "スコア獲得"),
+        "saturday": ("土曜日", "経験値獲得"),
+    }
+    weekday = value.get("weekday")
+    if weekday not in weekday_map:
+        return None
+    day_raw, effect_raw = weekday_map[str(weekday)]
+    table_level = level if level in raw_detail_weekday_values(denko_id) else "80"
+    cell = raw_detail_weekday_values(denko_id).get(table_level, {}).get(day_raw, {}).get(effect_raw)
+    if not cell:
+        return None
+    value_min, value_max = parse_report_range(cell)
+    kind = str(component.get("effect_kind") or "")
+    prefix = "経験値獲得 " if kind == "exp_gain" else "スコア獲得 "
+    suffix = f" ※曜日表Lv{table_level}基準" if table_level != level else ""
+    return {
+        **value,
+        "unit": "flat_exp" if kind == "exp_gain" else "score",
+        "value_numeric": value_min if value_min == value_max else None,
+        "value_min": value_min,
+        "value_max": value_max,
+        "value_raw": prefix + cell + suffix,
+        "report_supplemented_from": "detail_raw_weekday_table",
+        "report_weekday_table_level": table_level,
+    }
 
 
 def corrected_value_from_raw_row_effect(component: dict[str, Any], value: dict[str, Any]) -> dict[str, Any] | None:
