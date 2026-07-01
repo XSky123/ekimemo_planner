@@ -4,8 +4,11 @@ import html
 import json
 import re
 import sys
+from functools import lru_cache
 from pathlib import Path
 from typing import Any
+
+from bs4 import BeautifulSoup
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -15,6 +18,7 @@ from pipeline.analysis import write_attack_support_rankings as base
 
 SKILL_PATH = ROOT / "data" / "step1_db" / "skill_facts.jsonl"
 OUT_HTML = ROOT / "data" / "reports" / "step2_exp_pt_support_rankings_zh.html"
+RAW_DIR = ROOT / "data" / "raw_pages"
 
 
 TABS = {
@@ -108,6 +112,108 @@ def esc(value: Any) -> str:
     return html.escape("" if value is None else str(value), quote=True)
 
 
+def raw_detail_path(denko_id: str) -> Path:
+    pool, _, number = denko_id.partition(":")
+    return RAW_DIR / f"sample_detail_{pool}_{int(number):03d}.html"
+
+
+def denko_level_from_text(text: str) -> str | None:
+    match = re.search(r"でんこLv\.?\s*(\d+)", text)
+    return match.group(1) if match else None
+
+
+def expand_html_table(table: Any) -> list[list[str]]:
+    matrix: list[list[str]] = []
+    spans: dict[int, tuple[int, str]] = {}
+    for tr in table.find_all("tr"):
+        row: list[str] = []
+        col = 0
+
+        def fill_spans() -> None:
+            nonlocal col
+            while col in spans:
+                remaining, text = spans[col]
+                row.append(text)
+                if remaining <= 1:
+                    del spans[col]
+                else:
+                    spans[col] = (remaining - 1, text)
+                col += 1
+
+        fill_spans()
+        for cell in tr.find_all(["th", "td"]):
+            fill_spans()
+            text = " ".join(cell.get_text(" ", strip=True).split())
+            rowspan = int(cell.get("rowspan") or 1)
+            colspan = int(cell.get("colspan") or 1)
+            for offset in range(colspan):
+                row.append(text)
+                if rowspan > 1:
+                    spans[col + offset] = (rowspan - 1, text)
+            col += colspan
+        fill_spans()
+        if row:
+            matrix.append(row)
+    return matrix
+
+
+def row_dict(headers: list[str], row: list[str]) -> dict[str, str]:
+    return {headers[index] or f"column_{index}": row[index] for index in range(min(len(headers), len(row)))}
+
+
+@lru_cache(maxsize=None)
+def raw_detail_level_rows(denko_id: str) -> dict[str, dict[str, str]]:
+    path = raw_detail_path(denko_id)
+    if not path.exists():
+        return {}
+    soup = BeautifulSoup(path.read_text(encoding="utf-8", errors="replace"), "html.parser")
+    out: dict[str, dict[str, str]] = {}
+    for table in soup.find_all("table"):
+        matrix = expand_html_table(table)
+        if not matrix:
+            continue
+        headers = matrix[0]
+        if "スキルLv" not in headers or "効果" not in headers:
+            continue
+        for row in matrix[1:]:
+            data = row_dict(headers, row)
+            level = denko_level_from_text(data.get("スキルLv", ""))
+            if not level:
+                continue
+            comment = data.get("コメント", "")
+            # Prefer the full value row over the duplicated skill-name row.
+            if level in out and comment.startswith("スキル名"):
+                continue
+            out[level] = data
+    return out
+
+
+@lru_cache(maxsize=None)
+def raw_detail_aux_values(denko_id: str) -> dict[str, dict[str, str]]:
+    path = raw_detail_path(denko_id)
+    if not path.exists():
+        return {}
+    soup = BeautifulSoup(path.read_text(encoding="utf-8", errors="replace"), "html.parser")
+    out: dict[str, dict[str, str]] = {}
+    for table in soup.find_all("table"):
+        matrix = expand_html_table(table)
+        if not matrix:
+            continue
+        headers = matrix[0]
+        if not {"スコア獲得", "経験値付与"}.issubset(set(headers)):
+            continue
+        for row in matrix[1:]:
+            data = row_dict(headers, row)
+            level = denko_level_from_text(data.get("", "") or data.get("column_0", "") or data.get("スキルLv", ""))
+            if not level:
+                continue
+            out[level] = {
+                "score_gain": data.get("スコア獲得", ""),
+                "exp_gain": data.get("経験値付与", ""),
+            }
+    return out
+
+
 def is_positive_effect_multiplier(component: dict[str, Any]) -> bool:
     text = " ".join(
         str(component.get(key) or "")
@@ -125,12 +231,187 @@ def is_positive_effect_multiplier(component: dict[str, Any]) -> bool:
     )
 
 
-def value_for_metric_type(component: dict[str, Any]) -> dict[str, Any]:
+def value_with_level_meta(value: dict[str, Any], level: str) -> dict[str, Any]:
+    out = dict(value)
+    out["_report_level"] = level
+    return out
+
+
+def supplemental_value_from_raw_page(
+    denko_id: str,
+    component: dict[str, Any],
+    value: dict[str, Any],
+    level: str,
+) -> dict[str, Any] | None:
+    kind = str(component.get("effect_kind") or "")
+    if kind not in {"exp_gain", "score_gain", "additional_score_gain"}:
+        return None
+
+    corrected = corrected_value_from_raw_row_effect(component, value)
+    if corrected:
+        return corrected
+
+    raw = str(value.get("value_raw") or "")
+    if raw not in UNKNOWN_VALUE_TOKENS and str(value.get("unit") or "") != "condition_only":
+        return None
+
+    aux = raw_detail_aux_values(denko_id).get(level, {})
+    aux_value = aux.get(kind) or (aux.get("score_gain") if kind == "additional_score_gain" else None)
+    if aux_value:
+        aux_min, aux_max = parse_report_range(aux_value)
+        return {
+            **value,
+            "unit": ("flat_exp_range" if aux_min != aux_max else "flat_exp") if kind == "exp_gain" else ("score_range" if aux_min != aux_max else "score"),
+            "value_numeric": aux_min if aux_min == aux_max else None,
+            "value_min": aux_min,
+            "value_max": aux_max,
+            "value_raw": ("経験値付与 " if kind == "exp_gain" else "スコア獲得 ") + aux_value,
+            "report_supplemented_from": "detail_raw_aux_table",
+        }
+
+    raw_row = raw_detail_level_rows(denko_id).get(level, {})
+    effect = raw_row.get("効果", "")
+    if not effect:
+        return None
+    probability = {"発動率": raw_row.get("発動率", "")} if raw_row.get("発動率") else value.get("probability")
+
+    if "スキル効果量" in effect and "スコア獲得" not in effect and "経験値付与" not in effect:
+        return {
+            **value,
+            "unit": "report_ignore",
+            "value_raw": effect,
+            "report_supplemented_from": "detail_raw_skill_table",
+        }
+
+    random_match = re.search(r"スコア・経験値変動\s*([+＋-]?\d+(?:\.\d+)?\s*[％%]\s*[～〜~\-]\s*[+＋-]?\d+(?:\.\d+)?\s*[％%])", effect)
+    if random_match:
+        return {
+            **value,
+            "unit": "percent_range",
+            "value_numeric": None,
+            "value_raw": normalize_metric_raw(random_match.group(0)),
+            "probability": probability,
+            "report_supplemented_from": "detail_raw_skill_table",
+        }
+
+    combined_match = re.search(
+        r"(?:経験値付与(?:＆|&|・)スコア獲得|スコア獲得(?:＆|&|・)経験値付与)\s*([+＋]?\d+(?:\.\d+)?(?:\s*[～〜~\-]\s*[+＋]?\d+(?:\.\d+)?)?)",
+        effect,
+    )
+    if combined_match:
+        raw_number = normalize_metric_raw(combined_match.group(1))
+        return {
+            **value,
+            "unit": ("flat_exp_range" if "～" in raw_number or "~" in raw_number else "flat_exp") if kind == "exp_gain" else ("score_range" if "～" in raw_number or "~" in raw_number else "score"),
+            "value_numeric": parse_report_number(raw_number),
+            "value_min": parse_report_range(raw_number)[0],
+            "value_max": parse_report_range(raw_number)[1],
+            "value_raw": ("経験値付与 " if kind == "exp_gain" else "スコア獲得 ") + raw_number,
+            "probability": probability,
+            "report_supplemented_from": "detail_raw_skill_table",
+        }
+
+    ratio_match = re.search(
+        r"(?:経験値付与(?:・|＆|&)?スコア獲得|スコア獲得(?:・|＆|&)?経験値付与|スコア獲得)[^0-9％%]*(?:与ダメージ|相手に与えたダメージ|受けたダメージ)の\s*(\d+(?:\.\d+)?)\s*[％%]",
+        effect,
+    )
+    if ratio_match and (kind in {"exp_gain", "score_gain"}):
+        value_number = ratio_match.group(1)
+        return {
+            **value,
+            "unit": "percent",
+            "value_numeric": parse_report_number(value_number),
+            "value_raw": ("経験値付与 " if kind == "exp_gain" else "スコア獲得 ") + f"与ダメージの{value_number}%",
+            "probability": probability,
+            "report_supplemented_from": "detail_raw_skill_table",
+        }
+    return None
+
+
+def corrected_value_from_raw_row_effect(component: dict[str, Any], value: dict[str, Any]) -> dict[str, Any] | None:
+    raw_row = value.get("raw_row") or {}
+    effect = str(raw_row.get("効果") or "")
+    if not effect:
+        return None
+    kind = str(component.get("effect_kind") or "")
+    label = str(component.get("condition_label") or "")
+    label_prefix = re.escape(label) + r"\s*" if label else r"(?:\(\d+\)\s*)?"
+    value_token = r"(?:[+＋]?\d+(?:\.\d+)?\s*体につき\s*[+＋]?\d+(?:\.\d+)?|[+＋]?\d+(?:\.\d+)?(?:\s*[～〜~\-]\s*[+＋]?\d+(?:\.\d+)?)?)"
+    if kind == "exp_gain":
+        patterns = [
+            rf"{label_prefix}(?:追加)?経験値付与\s*({value_token})",
+            rf"{label_prefix}(?:経験値付与(?:＆|&|・)スコア獲得|スコア獲得(?:＆|&|・)経験値付与)\s*({value_token})",
+        ]
+        prefix = "経験値付与 "
+        unit = "flat_exp"
+    elif kind in {"score_gain", "additional_score_gain"}:
+        patterns = [
+            rf"{label_prefix}(?:追加)?スコア獲得\s*({value_token})",
+            rf"{label_prefix}(?:経験値付与(?:＆|&|・)スコア獲得|スコア獲得(?:＆|&|・)経験値付与)\s*({value_token})",
+        ]
+        prefix = "スコア獲得 "
+        unit = "score"
+    else:
+        return None
+
+    for pattern in patterns:
+        match = re.search(pattern, effect)
+        if not match:
+            continue
+        raw_number = normalize_metric_raw(match.group(1))
+        if raw_number == str(value.get("value_raw") or "").replace(prefix, ""):
+            return None
+        value_min, value_max = metric_range_from_raw_number(raw_number)
+        return {
+            **value,
+            "unit": (unit + "_range") if value_min != value_max else unit,
+            "value_numeric": value_min if value_min == value_max else None,
+            "value_min": value_min,
+            "value_max": value_max,
+            "value_raw": prefix + raw_number,
+            "report_supplemented_from": "raw_row_effect_correction",
+        }
+    return None
+
+
+def effective_value(denko_id: str, component: dict[str, Any], value: dict[str, Any], level: str) -> dict[str, Any]:
+    supplement = supplemental_value_from_raw_page(denko_id, component, value, level)
+    return value_with_level_meta(supplement or value, level)
+
+
+def normalize_metric_raw(text: str) -> str:
+    return text.replace("＋", "+").replace("％", "%").replace("〜", "～").strip()
+
+
+def parse_report_range(text: str) -> tuple[float | None, float | None]:
+    nums = signed_numbers(normalize_metric_raw(text))
+    if not nums:
+        return None, None
+    if any(mark in text for mark in ("～", "~", "-")) and len(nums) >= 2:
+        return min(nums), max(nums)
+    return nums[0], nums[0]
+
+
+def metric_range_from_raw_number(text: str) -> tuple[float | None, float | None]:
+    normalized = normalize_metric_raw(text)
+    per_unit = re.search(r"につき\s*([+＋]?\d+(?:\.\d+)?)", normalized)
+    if per_unit:
+        value = float(per_unit.group(1))
+        return value, value
+    return parse_report_range(normalized)
+
+
+def parse_report_number(text: str) -> float | None:
+    nums = signed_numbers(normalize_metric_raw(text))
+    return nums[0] if nums else None
+
+
+def value_for_metric_type(denko_id: str, component: dict[str, Any]) -> dict[str, Any]:
     values = component.get("values_by_denko_level") or {}
     if DEFAULT_LEVEL in values:
-        return values[DEFAULT_LEVEL]
-    _fallback_level, fallback_value = base.basis_value(component)
-    return fallback_value
+        return effective_value(denko_id, component, values[DEFAULT_LEVEL], DEFAULT_LEVEL)
+    fallback_level, fallback_value = base.basis_value(component)
+    return effective_value(denko_id, component, fallback_value, fallback_level) if fallback_value else fallback_value
 
 
 def has_numeric_value(value: dict[str, Any]) -> bool:
@@ -155,6 +436,8 @@ def metric_type(component: dict[str, Any], value: dict[str, Any]) -> str:
     raw = str(value.get("value_raw") or "")
     unit = str(value.get("unit") or "")
 
+    if unit == "report_ignore":
+        return "ignore"
     if kind == "effect_multiplier":
         return "effect_boost" if is_positive_effect_multiplier(component) else "ignore"
     if kind in {"link_bonus", "today_new_station_bonus", "mile_gain"}:
@@ -176,13 +459,13 @@ def metric_type(component: dict[str, Any], value: dict[str, Any]) -> str:
     return "ignore"
 
 
-def component_metric_type(component: dict[str, Any]) -> str:
-    value = value_for_metric_type(component)
+def component_metric_type(denko_id: str, component: dict[str, Any]) -> str:
+    value = value_for_metric_type(denko_id, component)
     return metric_type(component, value) if value else "ignore"
 
 
-def belongs_to_tab(tab_id: str, component: dict[str, Any]) -> bool:
-    return component_metric_type(component) in TABS[tab_id]["metric_types"]
+def belongs_to_tab(tab_id: str, denko_id: str, component: dict[str, Any]) -> bool:
+    return component_metric_type(denko_id, component) in TABS[tab_id]["metric_types"]
 
 
 def signed_numbers(text: str) -> list[float]:
@@ -221,11 +504,15 @@ def probability_text(value: dict[str, Any]) -> str:
         return "-"
     if isinstance(probability, dict):
         labels = {"activation_probability": "発動率"}
-        parts = [
-            f"{labels.get(str(key), str(key))} {item}"
-            for key, item in probability.items()
-            if item not in {None, "", "-"}
-        ]
+        parts = []
+        for key, item in probability.items():
+            if item in {None, "", "-"}:
+                continue
+            label = labels.get(str(key), str(key))
+            if label == "発動率":
+                parts.append(str(item))
+            else:
+                parts.append(f"{label} {item}")
         return " / ".join(parts) if parts else "-"
     return str(probability)
 
@@ -272,6 +559,13 @@ def metric_text(metric: str, value: float | None) -> str:
     return f"{value:g}"
 
 
+def display_metric_text(metric: str, value: float | None, value_raw: str) -> str:
+    text = metric_text(metric, value)
+    if value is not None and "につき" in value_raw:
+        return f"{text}/体"
+    return text
+
+
 def level_value_text(level: str, value: dict[str, Any], metric: str) -> str:
     raw = str(value.get("value_raw") or "-")
     if metric == "unknown_metric":
@@ -279,25 +573,28 @@ def level_value_text(level: str, value: dict[str, Any], metric: str) -> str:
     return raw if level == DEFAULT_LEVEL else f"※Lv{level}: {raw}"
 
 
-def level_metrics(component: dict[str, Any], level: str, component_metric: str) -> dict[str, Any] | None:
+def level_metrics(denko_id: str, component: dict[str, Any], level: str, component_metric: str) -> dict[str, Any] | None:
     values = component.get("values_by_denko_level") or {}
-    value = values.get(level)
-    if not value:
+    source_value = values.get(level)
+    if not source_value:
         return None
+    value = effective_value(denko_id, component, source_value, level)
     metric = component_metric if component_metric != "ignore" else metric_type(component, value)
     value_min, value_max = value_range(component, value, metric)
     avg_value = mean_value(value_min, value_max)
+    value_raw = str(value.get("value_raw") or "")
     return {
         "level": level,
         "metric_type": metric,
         "sort_max": value_max,
         "sort_avg": avg_value,
         "value_text": level_value_text(level, value, metric),
-        "max_text": metric_text(metric, value_max),
-        "avg_text": metric_text(metric, avg_value),
+        "max_text": display_metric_text(metric, value_max, value_raw),
+        "avg_text": display_metric_text(metric, avg_value, value_raw),
         "probability": probability_text(value),
         "duration": value.get("duration") or "-",
         "cooldown": value.get("cooldown") or "-",
+        "supplemented": bool(value.get("report_supplemented_from")),
     }
 
 
@@ -315,17 +612,31 @@ def target_text(component: dict[str, Any]) -> str:
     return target
 
 
+def condition_text(component: dict[str, Any]) -> str:
+    condition = str(component.get("condition_raw") or "")
+    filters = component.get("target_filters") or {}
+    attribute = filters.get("attribute")
+    if not attribute:
+        match = re.search(r"\s(heat|cool|eco)属性", condition)
+        attribute = match.group(1) if match else None
+    if attribute and "編成内の が" in condition:
+        condition = condition.replace("編成内の が", f"編成内の{attribute}属性でんこが")
+        condition = re.sub(rf"\s{re.escape(str(attribute))}属性(?=$|[\s　])", "", condition)
+    return condition
+
+
 def build_candidates(tab_id: str, rows: list[dict[str, Any]], metadata: dict[str, dict[str, str]]) -> list[dict[str, Any]]:
     candidates = []
     for row in rows:
+        denko_id = str(row.get("denko_id") or "")
         for component in row.get("skill_components") or []:
-            if not belongs_to_tab(tab_id, component):
+            if not belongs_to_tab(tab_id, denko_id, component):
                 continue
-            component_metric = component_metric_type(component)
+            component_metric = component_metric_type(denko_id, component)
             levels = {
                 level: metrics
                 for level in REPORT_LEVELS
-                if (metrics := level_metrics(component, level, component_metric)) is not None
+                if (metrics := level_metrics(denko_id, component, level, component_metric)) is not None
             }
             if not levels:
                 continue
@@ -338,11 +649,10 @@ def build_candidates(tab_id: str, rows: list[dict[str, Any]], metadata: dict[str
                 initial_level = next(iter(levels))
             initial = levels[initial_level]
             group_id, group_label = base.activation_group(row, component)
-            denko_id = str(row.get("denko_id") or "")
             denko_meta = metadata.get(denko_id, {})
             target = target_text(component)
             filters = base.compact_filter_text(component)
-            condition = str(component.get("condition_raw") or "")
+            condition = condition_text(component)
             all_level_text = " ".join(str(metrics["value_text"]) for metrics in levels.values())
             search = " ".join(
                 [
@@ -384,6 +694,7 @@ def build_candidates(tab_id: str, rows: list[dict[str, Any]], metadata: dict[str
                     "level_data": json.dumps(levels, ensure_ascii=False, separators=(",", ":")),
                     "vu_only": base.is_vu_only(component, fallback_level),
                     "needs_metric_review": component_metric == "unknown_metric",
+                    "supplemented": any(bool(metrics.get("supplemented")) for metrics in levels.values()),
                     "url": row.get("detail_url") or "",
                     "search": search,
                 }
@@ -401,7 +712,12 @@ def build_candidates(tab_id: str, rows: list[dict[str, Any]], metadata: dict[str
 def render_rows(tab_id: str, candidates: list[dict[str, Any]]) -> str:
     rows = []
     for rank, item in enumerate(candidates, 1):
-        badge = ' <span class="badge">数值未明</span>' if item["needs_metric_review"] else ""
+        badges = []
+        if item["needs_metric_review"]:
+            badges.append('<span class="badge">数值未明</span>')
+        if item["supplemented"]:
+            badges.append('<span class="badge badge-supplement">网页补完</span>')
+        badge = (" " + " ".join(badges)) if badges else ""
         rows.append(
             "\n".join(
                 [
@@ -487,6 +803,7 @@ def main() -> None:
     .toggle {{ display: inline-flex; align-items: center; gap: 5px; font-size: 13px; color: #444c56; }}
     .toggle input {{ padding: 0; }}
     .badge {{ display: inline-block; margin-left: 6px; padding: 1px 5px; border: 1px solid #d0a215; border-radius: 4px; color: #7d5f00; background: #fff8c5; font-size: 11px; white-space: nowrap; }}
+    .badge-supplement {{ border-color: #6fdd8b; color: #116329; background: #dafbe1; }}
     table {{ border-collapse: collapse; width: 100%; font-size: 13px; margin-top: 12px; }}
     th, td {{ border: 1px solid #d8dee4; padding: 7px 8px; vertical-align: top; }}
     th {{ background: #f6f8fa; position: sticky; top: 53px; z-index: 2; }}
