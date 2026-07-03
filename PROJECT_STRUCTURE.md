@@ -13,7 +13,7 @@ Use this file to avoid confusing legacy/prototype files with the new step-based 
 - `docs/`: shared reference docs used by steps.
 - `schemas/`: JSON schemas for structured records.
 - `data/`: pipeline inputs/outputs and generated records. `data/step1_db/` is the canonical Step 1 DB handoff; batch files under `data/records/` are provenance/intermediate artifacts.
-- `pipeline/`: future implementation code.
+- `pipeline/`: ingestion, normalization, backfill, audit, and report generation scripts.
 - `cache/`: current project rules plus legacy/prototype caches from the previous agent phase.
 
 ## Important Distinction

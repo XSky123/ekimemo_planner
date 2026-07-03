@@ -1,100 +1,30 @@
 # Step2 经验/PT辅助报表 TODO
 
-更新时间: 2026-06-28
+更新时间: 2026-07-03
 
 ## 当前状态
 
-当前报表: `data/reports/step2_exp_pt_support_rankings_zh.html`
+- 当前报表: `data/reports/step2_exp_pt_support_rankings_zh.html`
+- 当前脚本: `pipeline/analysis/write_exp_pt_support_rankings.py`
+- 数据来源: `data/step1_db/skill_facts.jsonl`
+- 状态: 已生成、已完成基础分类清理、已回写稳定补充，并已发布到 GitHub Pages。
 
-当前脚本: `pipeline/analysis/write_exp_pt_support_rankings.py`
+## 已完成清理
 
-本文件记录第一次生成后发现的基础问题。2026-06-29 已按报表层修正完成；未大改 parser，未回写 Step1 DB。
+- 已拆分页签: 固定経験値、経験値分配/倍率、固定スコア、スコア倍率/変動、ボーナス/マイル、条件型/数值未明、经验/PT效果强化。
+- 已修正概率展示，避免 `activation_probability 100%` 这类内部 key 直接出现在报表。
+- 已把 `score_gain` / `exp_gain` 这类内部标签显示为 `数值未明`，并降权排序。
+- 已将スコア百分比/倍率型从固定スコア排行中分离。
+- 已将稳定的曜日/经验/PT补充回写 Step1 DB。
 
-## 2026-06-29 处理结果
+## 保留风险
 
-| 项目 | 结果 |
-|---|---|
-| 分类页签 | 已拆为固定経験値、経験値分配/倍率、固定スコア、スコア倍率/変動、ボーナス/マイル、条件型/数值未明、经验/PT效果强化 |
-| 排序指标 | 固定值按数值排序；百分比/倍率独立排序；条件型/数值未明 sort=-1 |
-| 概率显示 | `activation_probability` 已显示为 `発動率` |
-| `score_gain` / `exp_gain` 内部标签 | 已显示为 `数值未明` 并进入条件型/数值未明 |
-| スコア百分比/倍率 | `スコア増加 +N%`、`スコア増減 +N% or -N%`、`受けたダメージのN%` 已进入スコア倍率/変動 |
-| 点名样例 | `original:078`、`original:091`、`extra:048`、`extra:090`、`extra:091` 已脚本复查通过 |
+- “与ダメージに応じてスコア/経験値” 等公式型效果仍有少量只保留语义，未必能稳定换算为固定收益。
+- 活动任务中“访问次数”“随机踩站”“远程アクセス”价值不等于经验/PT报表数值，需要后续按场景加权。
+- 经验/PT收益最终应区分玩家目标: 纯积分、育成、活动次数、称号/新站推进。
 
-## 基础筛查结果
+## 下一步
 
-| 类别 | 数量 | 例子 | 当前表现 | 问题 |
-|---|---:|---|---|---|
-| 概率 key 未展示成人话 | 2 | `original:091 exp_gain_2`, `original:091 score_gain_2` | `activation_probability 100%` | 应显示为 `発動率 100%` 或 `100%` |
-| 等级值是内部 kind | 3 | `extra:048 score_gain_1`, `extra:090 score_gain_1`, `extra:091 score_gain_1` | `score_gain`，最大/平均为 `-` | 源值只有语义标签，没有数值；报告应显示“数值未明/条件型”，并降权排序 |
-| スコア百分比/倍率型混入绝对值排序 | 5 | `original:078`, `extra:115`, `extra:073`, `extra:121 score_gain_2/3` | `+750%` 被排序成 `750` | 这不是固定 pt，而是访问スコア倍率/变动，应单独归类或明确单位 |
-| 数值缺失但效果存在 | 12 | `original:102`, `extra:017`, `extra:046`, `extra:048`, `extra:087`, `extra:091` 等 | 最大/平均 `-` | 需要区分“数值未解析”“条件型无固定值”“随机/曜日/倍率” |
-
-## 点名 case
-
-| denko | component | 现状 | 判断 |
-|---|---|---|---|
-| `original:078` 海部なる | `score_random_modifier_1` | `スコア増減 +750% or -50%`，max `750`，avg `350` | 这是访问スコア的倍率/随机变动，不是绝对 pt。应该放入“スコア倍率/変動”分类，不应和固定スコア獲得直接排序。 |
-| `original:091` 岩切よしの | `score_gain_2` / `exp_gain_2` | 概率显示 `activation_probability 100%` | 只是 probability dict 的 key 未规范显示，报表层即可修。 |
-| `extra:048` エマ | `score_gain_1` | 等级值 `score_gain`，无最大/平均 | 条件写“与ダメージに応じスコア獲得＆経験値付与”，但数值未被解析。需要查详情页或保留为“与伤害联动，数值未明”。 |
-| `extra:090` キャシー | `score_gain_1` | 等级值 `score_gain`，无最大/平均 | 与ダメージに応じてスコア獲得，属于条件型/公式型，不能当作普通固定スコア。 |
-| `extra:091` ルーシー | `score_gain_1` | 等级值 `score_gain`，无最大/平均 | link获得时经验和スコア，但数值未解析；需要详情页复查或报告标为“数值未明”。 |
-
-## 下次修正方向
-
-1. 增加分类页签或筛选:
-   - `固定経験値`
-   - `経験値分配/倍率`
-   - `固定スコア`
-   - `スコア倍率/変動`
-   - `条件型/数值未明`
-   - `ボーナス/マイル`
-
-2. 分离排序指标:
-   - 固定值: 按 pt/exp 数值排序。
-   - 百分比/倍率: 按倍率排序，但列名必须显示 `%/倍`，不要和固定值混排。
-   - 条件型/数值未明: 默认靠后，显示 `数值未明`，不参与固定值排行。
-
-3. 概率显示 normalization:
-   - `activation_probability` -> `発動率`
-   - 空 dict -> `-`
-   - 保持日语原始值，不改 DB 原事实。
-
-4. 对 `value_raw in {"score_gain", "exp_gain"}` 的记录:
-   - 报告层显示 `数值未明`
-   - `needs_metric_review` 或类似前端标记
-   - 排序值设为 `-1`
-   - 后续详情页/LLM 复查时再决定是否能解析公式或固定值。
-
-5. 对 `スコア増加 +N%`、`スコア変動 +N%`、`受けたダメージのN%`:
-   - 标记 metric_type=`percent_score_modifier`
-   - 列名显示“倍率/比例最大”“倍率/比例平均”
-   - 不要在固定スコア tab 里与 `スコア獲得 9000` 比大小。
-
-## 最小复查命令
-
-```powershell
-$env:PYTHONIOENCODING='utf-8'
-python pipeline\analysis\write_exp_pt_support_rankings.py
-```
-
-筛查样例:
-
-```powershell
-$env:PYTHONIOENCODING='utf-8'
-@'
-import json, sys
-from pathlib import Path
-sys.path.insert(0, str(Path('.').resolve()))
-from pipeline.analysis import write_exp_pt_support_rankings as w
-rows=w.base.read_jsonl(Path('data/step1_db/skill_facts.jsonl'))
-meta=w.base.denko_metadata()
-all=[]
-for tab in w.TABS:
-    for c in w.build_candidates(tab, rows, meta):
-        c=dict(c); c['tab']=tab; all.append(c)
-for c in all:
-    if c['probability'].startswith('activation_probability') or c['level_value'] in {'score_gain','exp_gain'} or c['max_text']=='-':
-        print(c['tab'], c['denko_id'], c['name'], c['component_id'], c['level_value'], c['probability'], c['max_text'], c['condition'])
-'@ | python -
-```
+1. 为“通勤随手打”“长距离开图”“活动访问次数”分别定义收益函数。
+2. 将固定收益、倍率收益、随机/传送型收益拆成不同 role profile。
+3. 对数值未明但高价值的条件型条目做小批量详情页复查，稳定后再回写 DB。

@@ -13,10 +13,11 @@ Global read order:
 
 ## Current Status
 
-- Current step: `step1_data_reading`
+- Current step: `step2_indexes`
 - Legacy agent: protected in `archive/legacy_agent_2026-06-06/`
-- Git repo: initialized on branch `main`
-- Step 1 state: prepared, fetch not started, parse not started
+- Git repo: active on branch `main`; static reports are published from the minimal `pages` branch.
+- Step 1 state: complete. Canonical DB lives under `data/step1_db/`.
+- Step 2 state: candidate discovery reports are available for attack, experience/PT, and defense/support.
 
 ## Steps
 
@@ -41,11 +42,12 @@ Goal:
 
 Key outputs:
 
-- `data/records/denko_facts.jsonl`
-- `data/records/skill_facts.jsonl`
-- `data/records/recommendation_priors.jsonl`
-- `data/indexes/denko_index.json`
-- `data/review_queue/review_queue.jsonl`
+- `data/step1_db/denko_facts.jsonl`
+- `data/step1_db/skill_facts.jsonl`
+- `data/step1_db/denko_index.json`
+- `data/step1_db/manifest.json`
+- `data/step1_db/validation.json`
+- Batch/intermediate provenance remains under `data/records/`, `data/indexes/`, and `data/review_queue/`.
 
 Execution checklist:
 
@@ -59,6 +61,10 @@ Goal:
 
 - Build searchable indexes from cleaned records.
 - Keep recommendation priors and observed team cases separate from facts.
+- Generate candidate reports before solver scoring:
+  - `data/reports/step2_attack_support_rankings_zh.html`
+  - `data/reports/step2_exp_pt_support_rankings_zh.html`
+  - `data/reports/step2_defense_support_rankings_zh.html`
 
 ### Step 3: Role Profiles
 
