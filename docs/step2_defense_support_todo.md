@@ -30,8 +30,10 @@
   - `extra:011 hp_recovery_1/2` 目标修为 `accessed_denko`。
   - `extra:082 hp_recovery_1`、`extra:122 hp_recovery_2` 目标修为 `self`。
   - `original:048`、`original:082`、`original:092` 的先头车 DEF 目标修为 `own_front_car`。
+  - `original:035 def_buff_1` 的 `n駅×倍率%` 范围回写为 `0～上限5駅×倍率`，Lv50 为最大 40、平均 20。
 - 剩余 `自身以外` 类型通常以 `target_scope=team_all` 加 `exclude_self` filter 表示，报告中应显示“不含自己”。
 - 部分 DB 的 `target_scope` 仍可能偏粗，后续发现稳定问题时继续回写 DB，并保留 manual/stable lock。
+- `n駅×倍率%`、`倍率×n%` 这类公式已加入 `backfill_per_unit_ranges.py` 幂等回写；横向扫描当前未发现仍缺少范围的同类公式。
 - `skill_disable` 在防御中暂归入“降低对手输出”，但实际还要区分主动访问无效化、被访问防御、对双方/己方是否有副作用。
 - 布尔型防御效果当前用发动概率作为可靠性分数；还没有纳入持续/CD 的 uptime。
 - 尚未实现“守站时间/生存率”模拟，当前只是候选 ranking，不是最终 solver 分数。

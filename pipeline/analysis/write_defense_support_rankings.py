@@ -132,17 +132,45 @@ def belongs_to_tab(tab_id: str, component: dict[str, Any]) -> bool:
     return True
 
 
-def metric_range(tab_id: str, value: dict[str, Any]) -> tuple[float | None, float | None]:
+def max_unit_count(component: dict[str, Any]) -> float:
+    for container_key in ("target_filters", "scaling_conditions"):
+        container = component.get(container_key) or {}
+        for key in (
+            "max_station_count",
+            "max_count",
+            "max_linked_station_count",
+            "max_units",
+            "max_n",
+        ):
+            number = base.as_number(container.get(key))
+            if number is not None:
+                return number
+
+    context = " ".join(
+        str(item or "")
+        for item in (
+            component.get("condition_raw"),
+            component.get("remarks_raw"),
+            component.get("condition_label"),
+        )
+    )
+    match = re.search(r"(?:上限|最大)\s*(\d+(?:\.\d+)?)\s*(?:駅|体|人|両|個)?", context)
+    if match:
+        return float(match.group(1))
+    return 7.0
+
+
+def metric_range(tab_id: str, component: dict[str, Any], value: dict[str, Any]) -> tuple[float | None, float | None]:
     raw = str(value.get("value_raw") or "")
     numeric = base.as_number(value.get("value_numeric"))
     value_min = base.as_number(value.get("value_min"))
     value_max = base.as_number(value.get("value_max"))
-    formula_match = re.search(r"\+?\s*(\d+(?:\.\d+)?)\s*×\s*n\s*%", raw, flags=re.IGNORECASE)
+    formula_match = re.search(r"\+?\s*(\d+(?:\.\d+)?)\s*[×xX]\s*n\s*駅?\s*%", raw, flags=re.IGNORECASE)
     if formula_match:
-        return 0.0, float(formula_match.group(1)) * 7
-    reverse_formula_match = re.search(r"\+?\s*n\s*×\s*(\d+(?:\.\d+)?)\s*%", raw, flags=re.IGNORECASE)
+        return 0.0, float(formula_match.group(1)) * max_unit_count(component)
+    reverse_formula_match = re.search(r"\+?\s*n\s*駅?\s*[×xX]\s*(\d+(?:\.\d+)?)\s*%", raw, flags=re.IGNORECASE)
     if reverse_formula_match:
-        return 0.0, float(reverse_formula_match.group(1)) * 7
+        return 0.0, float(reverse_formula_match.group(1)) * max_unit_count(component)
     if value_min is not None and value_max is not None:
         return min(abs(value_min), abs(value_max)), max(abs(value_min), abs(value_max))
     if numeric is not None:
@@ -194,7 +222,7 @@ def level_metrics(tab_id: str, component: dict[str, Any], level: str) -> dict[st
         return None
 
     kind = str(component.get("effect_kind") or "")
-    value_min, value_max = metric_range(tab_id, value)
+    value_min, value_max = metric_range(tab_id, component, value)
     default_score = TABS[tab_id]["default_score"]
     uses_reliability_score = False
     if (tab_id in RELIABILITY_TABS and kind != "counter_damage") or (value_max is None and default_score is not None):
