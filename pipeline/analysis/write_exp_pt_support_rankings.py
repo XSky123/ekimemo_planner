@@ -36,6 +36,13 @@ TABS = {
         "max_header": "比例/倍率最大",
         "avg_header": "比例/倍率平均",
     },
+    "cat_punch_exp_boost": {
+        "title": "ねこぱんち経験値强化",
+        "description": "只对ねこぱんち经验生效的增幅。它和普通经验倍率、经验分配不同，组队时需要单独考虑叠加式。",
+        "metric_types": {"cat_punch_exp_boost"},
+        "max_header": "增幅最大",
+        "avg_header": "增幅平均",
+    },
     "fixed_score": {
         "title": "固定スコア",
         "description": "有明确数值的スコア/PT獲得。排序按 pt 数值，不和百分比/倍率混排。",
@@ -77,6 +84,7 @@ EFFECT_LABELS = {
     "exp_gain": "経験値付与",
     "exp_distribution": "経験値分配",
     "exp_distribution_bonus": "経験値分配追加",
+    "cat_punch_exp_boost": "ねこぱんち経験値",
     "score_gain": "スコア獲得",
     "additional_score_gain": "追加スコア",
     "score_random_modifier": "スコア増減",
@@ -524,6 +532,8 @@ def metric_type(component: dict[str, Any], value: dict[str, Any]) -> str:
     if kind in {"exp_distribution", "exp_distribution_bonus"}:
         return "exp_ratio"
     if kind == "exp_gain":
+        if (component.get("target_filters") or {}).get("exp_source") == "cat_punch":
+            return "cat_punch_exp_boost"
         if raw in UNKNOWN_VALUE_TOKENS or unit == "condition_only":
             return "unknown_metric"
         if is_percent_or_ratio(value):
@@ -582,9 +592,18 @@ def probability_text(value: dict[str, Any]) -> str:
     if not probability:
         return "-"
     if isinstance(probability, dict):
-        labels = {"activation_probability": "発動率"}
+        labels = {
+            "activation_probability": "発動率",
+            "score_increase_probability": "スコア増加",
+            "score_decrease_probability": "スコア減少",
+        }
         parts = []
-        for key, item in probability.items():
+        keys = [
+            key for key in ("activation_probability", "score_increase_probability", "score_decrease_probability") if key in probability
+        ]
+        keys += [key for key in probability if key not in keys]
+        for key in keys:
+            item = probability[key]
             if item in {None, "", "-"}:
                 continue
             label = labels.get(str(key), str(key))
@@ -632,7 +651,7 @@ def metric_text(metric: str, value: float | None) -> str:
         return "-"
     if metric == "effect_boost":
         return f"{value:g}倍"
-    if metric in {"exp_ratio", "score_percent_modifier"}:
+    if metric in {"exp_ratio", "score_percent_modifier", "cat_punch_exp_boost"}:
         sign = "+" if value > 0 else ""
         return f"{sign}{value:g}%"
     return f"{value:g}"
@@ -643,6 +662,19 @@ def display_metric_text(metric: str, value: float | None, value_raw: str) -> str
     if value is not None and "につき" in value_raw:
         return f"{text}/体"
     return text
+
+
+def score_random_avg_text(value: dict[str, Any], avg_value: float | None) -> str | None:
+    if value.get("unit") != "score_random_percent":
+        return None
+    expected = base.as_number(value.get("value_expected"))
+    multiplier = base.as_number(value.get("value_expected_multiplier"))
+    if expected is None:
+        return None
+    sign = "+" if expected > 0 else ""
+    if multiplier is not None:
+        return f"{multiplier:g}x（期望{sign}{expected:g}%）"
+    return f"{sign}{expected:g}%"
 
 
 def level_value_text(level: str, value: dict[str, Any], metric: str) -> str:
@@ -661,7 +693,11 @@ def level_metrics(denko_id: str, component: dict[str, Any], level: str, componen
     metric = component_metric if component_metric != "ignore" else metric_type(component, value)
     value_min, value_max = value_range(component, value, metric)
     avg_value = mean_value(value_min, value_max)
+    expected_value = base.as_number(value.get("value_expected"))
+    if metric == "score_percent_modifier" and expected_value is not None:
+        avg_value = expected_value
     value_raw = str(value.get("value_raw") or "")
+    avg_text = score_random_avg_text(value, avg_value) or display_metric_text(metric, avg_value, value_raw)
     return {
         "level": level,
         "metric_type": metric,
@@ -669,7 +705,7 @@ def level_metrics(denko_id: str, component: dict[str, Any], level: str, componen
         "sort_avg": avg_value,
         "value_text": level_value_text(level, value, metric),
         "max_text": display_metric_text(metric, value_max, value_raw),
-        "avg_text": display_metric_text(metric, avg_value, value_raw),
+        "avg_text": avg_text,
         "probability": probability_text(value),
         "duration": value.get("duration") or "-",
         "cooldown": value.get("cooldown") or "-",
@@ -692,7 +728,7 @@ def target_text(component: dict[str, Any]) -> str:
 
 
 def condition_text(component: dict[str, Any]) -> str:
-    condition = str(component.get("condition_raw") or "")
+    condition = base.display_condition_text(component)
     filters = component.get("target_filters") or {}
     attribute = filters.get("attribute")
     if not attribute:

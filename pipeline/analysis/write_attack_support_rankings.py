@@ -58,6 +58,7 @@ SCOPE_LABELS = {
     "accessing_denko": "访问中的でんこ",
     "accessed_denko": "被访问的でんこ",
     "relative_car": "相对车位",
+    "specific_denko": "指定でんこ",
 }
 
 BASIS_LABELS = {
@@ -73,6 +74,7 @@ BASIS_LABELS = {
     "linked_station_count_per_target_denko": "对象每人的link站数",
     "max_damage_dealt_during_skill": "技能发动中最大与伤害",
     "opponent_team_distinct_attribute_count": "对手编成属性种类数",
+    "opponent_team_type_count": "对手编成类型数",
     "own_team_attribute_count": "编成内属性数量",
     "random_bonus_when_atk_buff_1_gte_50_percent": "(1)达到ATK+50%以上时随机追加",
     "received_damage_count": "被攻击次数",
@@ -134,10 +136,33 @@ def probability_text(value: dict[str, Any]) -> str:
     probability = value.get("probability")
     if not probability:
         return "-"
+
+    def clean_probability_item(item: Any) -> str:
+        text = str(item)
+        text = re.sub(r"\?\s*%", "未确认", text)
+        text = text.replace("+?", "+未确认")
+        return text
+
     if isinstance(probability, dict):
-        parts = [f"{k} {v}" for k, v in probability.items() if v not in {None, "", "-"}]
+        labels = {
+            "activation_probability": "発動率",
+            "score_increase_probability": "スコア増加",
+            "score_decrease_probability": "スコア減少",
+        }
+        parts = []
+        keys = [
+            key for key in ("activation_probability", "score_increase_probability", "score_decrease_probability") if key in probability
+        ]
+        keys += [key for key in probability if key not in keys]
+        for key in keys:
+            item = probability[key]
+            if item in {None, "", "-"}:
+                continue
+            label = labels.get(str(key), str(key))
+            text = clean_probability_item(item)
+            parts.append(text if label == "発動率" else f"{label} {text}")
         return " / ".join(parts) if parts else "-"
-    return str(probability)
+    return clean_probability_item(probability)
 
 
 def probability_numbers(value: dict[str, Any]) -> list[float]:
@@ -317,6 +342,8 @@ def level_metrics(tab_id: str, row: dict[str, Any], component: dict[str, Any], l
     if not value:
         return None
     value_min, value_max = value_range(tab_id, component, value)
+    if value_max is None:
+        return None
     avg_value = mean_value(value_min, value_max)
     max_text, avg_text, sort_max, sort_avg = metric_display(tab_id, row, level, value_max, avg_value)
     return {
@@ -359,8 +386,28 @@ def compact_filter_text(component: dict[str, Any]) -> str:
         basis = "双方编成" if count_filter.get("includes_own_team") else "对手编成"
         suffix = f"(上限{max_count})" if max_count else ""
         notes.append(f"按{basis}{attribute}数量{suffix}")
+    if filters.get("temperature_band"):
+        band = filters["temperature_band"]
+        label = {
+            ">=30C": "气温30°C以上",
+            "15-25C": "气温15-25°C",
+            "<=10C": "气温10°C以下",
+        }.get(str(band), f"气温{band}")
+        notes.append(label)
+    if filters.get("inactive_temperature_bands"):
+        notes.append("26-29°C/11-14°C无效果")
+    if filters.get("own_access_attribute"):
+        notes.append(f"己方{filters['own_access_attribute']}访问")
+    if filters.get("target_denko_name"):
+        notes.append(f"指定{filters['target_denko_name']}")
     if filters.get("attribute"):
         notes.append(f"{filters['attribute']}对象")
+    if filters.get("opponent_attribute_excluded"):
+        notes.append(f"对手非{filters['opponent_attribute_excluded']}")
+    if filters.get("opponent_team_attribute_diversity") == "multiple_attributes":
+        notes.append("对手多属性编成")
+    if filters.get("same_attribute_as_self_after_change"):
+        notes.append("自身变更后同属性对象")
     if filters.get("state") == "cooldown":
         notes.append("クールダウン中")
     if filters.get("attributes"):
@@ -374,6 +421,16 @@ def compact_filter_text(component: dict[str, Any]) -> str:
             notes.append(f"按编成内{filters['type']}数量")
         else:
             notes.append(f"对象类型 {filters['type']}")
+    if filters.get("opponent_type_count_min") and filters.get("opponent_type"):
+        notes.append(f"对手{filters['opponent_type']}≥{filters['opponent_type_count_min']}")
+    if filters.get("disabled_skill_kind") == "attribute_skill_nullification":
+        notes.append("属性技能无效化")
+    if filters.get("disabled_skill_kind") == "partial_damage_increase_skill_nullification":
+        notes.append("部分伤害增加技能无效化")
+    if filters.get("own_skill_conflict"):
+        notes.append(f"自身冲突:{filters['own_skill_conflict']}")
+    if filters.get("exp_source") == "cat_punch":
+        notes.append("ねこぱんち経験値")
     if scaling.get("basis"):
         basis = str(scaling["basis"])
         if basis == "opponent_team_attribute_count" and not filters.get("opponent_team_attribute_count"):
@@ -381,10 +438,77 @@ def compact_filter_text(component: dict[str, Any]) -> str:
             max_count = scaling.get("max_count")
             suffix = f"(上限{max_count})" if max_count else ""
             notes.append(f"按对手编成{attribute}数量{suffix}")
+        elif basis == "opponent_team_type_count":
+            count_max = scaling.get("count_max")
+            suffix = f"(上限{count_max})" if count_max else ""
+            notes.append(f"按对手编成类型数{suffix}")
         elif basis not in {"opponent_team_attribute_count"}:
             label = BASIS_LABELS.get(basis, basis)
             notes.append(f"按{label}")
+    if scaling.get("score_model") == "sustained_cumulative_heat_damage":
+        notes.append("累计heat伤害型")
+    if scaling.get("stacking_formula_with_cat_punch_exp_boost"):
+        notes.append("ねこぱんち经验按专用叠加式")
+    tags = set(component.get("modeling_tags") or [])
+    tag_labels = {
+        "burst_button": "爆发按钮",
+        "long_cooldown": "长CD",
+        "position_shift": "车位转移",
+        "soft_station_sustained_scoring": "软站持续得分",
+        "cat_punch_exp_boost": "ねこぱんち经验",
+        "level_breakpoint_lv80_major": "Lv80明显提升",
+    }
+    for tag, label in tag_labels.items():
+        if tag in tags:
+            notes.append(label)
     return "；".join(notes) if notes else "-"
+
+
+def display_condition_text(component: dict[str, Any]) -> str:
+    condition = str(component.get("condition_raw") or "")
+    filters = component.get("target_filters") or {}
+    attributes = filters.get("attributes") or []
+    if " と のみの編成" in condition and len(attributes) >= 2:
+        condition = condition.replace(" と のみの編成", f"{attributes[0]}と{attributes[1]}のみの編成", 1)
+    own_team_attribute = filters.get("own_team_all_attribute") or filters.get("attribute")
+    if own_team_attribute:
+        condition = condition.replace("編成内すべてのでんこが のとき", f"編成内すべてのでんこが{own_team_attribute}属性のとき")
+        condition = condition.replace("編成内すべてのでんこが 効果", f"編成内すべてのでんこが{own_team_attribute}属性 効果")
+        condition = condition.replace("全て で", f"全て{own_team_attribute}属性で")
+        condition = condition.replace("すべて で", f"すべて{own_team_attribute}属性で")
+    type_filter = filters.get("type")
+    if type_filter:
+        condition = condition.replace("編成内の が", f"編成内の{type_filter}が")
+        condition = condition.replace("編成内の の", f"編成内の{type_filter}の")
+        condition = condition.replace("属性の駅で にアクセス", f"属性の駅で{type_filter}にアクセス")
+    if "相手が ならDEF+15%、 ならDEF-10% cool属性 heat属性" in condition:
+        condition = condition.replace(
+            "相手が ならDEF+15%、 ならDEF-10% cool属性 heat属性",
+            "相手がcool属性ならDEF+15%、heat属性ならDEF-10%",
+        )
+    condition = condition.replace(
+        "(1)被チェックイン時編成内のディフェンダー数に応じて DEF増加 自身の",
+        "(1)被アクセス時、編成内のディフェンダー数に応じて自身のDEF増加",
+    )
+    condition = condition.replace(
+        "(2)リンクしているディフェンダー数に応じて DEF増加 編成内の",
+        "(2)リンクしているディフェンダー数に応じて編成内DEF増加",
+    )
+    condition = condition.replace(
+        "(2)(1)に加え、eco属性 でんこにアクセスされた場合は、相手でんこのスキルを無効化 以外の",
+        "(2)(1)に加え、eco属性以外のでんこにアクセスされた場合は、相手でんこのスキルを無効化",
+    )
+    condition = re.sub(
+        r"(\w+)属性\s+でんこにアクセスされた場合は、相手でんこのスキルを無効化\s+以外の",
+        r"\1属性以外のでんこにアクセスされた場合は、相手でんこのスキルを無効化",
+        condition,
+    )
+    attrs = filters.get("attributes") or []
+    if " と のみの編成" in condition and len(attrs) >= 2:
+        condition = condition.replace(" と のみの編成", f"{attrs[0]}と{attrs[1]}のみの編成", 1)
+    if filters.get("target_denko_name"):
+        condition = condition.replace("のHPが30%以下", f"{filters['target_denko_name']}のHPが30%以下")
+    return condition
 
 
 def is_self_only_atk(component: dict[str, Any]) -> bool:
@@ -445,7 +569,7 @@ def build_candidates(tab_id: str, rows: list[dict[str, Any]], metadata: dict[str
             denko_meta = metadata.get(denko_id, {})
             target = "对手でんこ" if tab_id == "def_debuff" else target_text(component)
             filters = compact_filter_text(component)
-            condition = str(component.get("condition_raw") or "")
+            condition = display_condition_text(component)
             level_data = json.dumps(levels, ensure_ascii=False, separators=(",", ":"))
             all_level_text = " ".join(str(metrics["value_text"]) for metrics in levels.values())
             search = " ".join(

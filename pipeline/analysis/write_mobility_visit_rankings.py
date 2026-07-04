@@ -13,278 +13,158 @@ sys.path.insert(0, str(ROOT))
 
 from pipeline.analysis import write_attack_support_rankings as base
 
+
 SKILL_PATH = ROOT / "data" / "step1_db" / "skill_facts.jsonl"
-OUT_HTML = ROOT / "data" / "reports" / "step2_defense_support_rankings_zh.html"
+OUT_HTML = ROOT / "data" / "reports" / "step2_mobility_visit_rankings_zh.html"
+
 
 TABS = {
-    "self_def": {
-        "title": "守站本体：自己DEF",
-        "description": "只看主要保护自己的 DEF 增加。适合找单体守站核心。",
-        "kinds": {"def_buff"},
-        "default_score": None,
+    "extra_access": {
+        "title": "追加访问/再次访问",
+        "description": "直接增加一次访问、失败后再访问、同一站追加访问。回数活动价值最高，但常受触发条件和概率限制。",
+        "kinds": {"extra_access"},
     },
-    "team_def": {
-        "title": "DEF辅助：队友/队伍",
-        "description": "给自身以外、队伍、被访问者或特定对象提供 DEF 的候选。",
-        "kinds": {"def_buff"},
-        "default_score": None,
+    "random_remote_access": {
+        "title": "随机/远程/思い出し访问",
+        "description": "随机访问已取得站、远程访问常用站周边、增加思い出しアクセス次数或时间。适合人在固定地点时补访问机会。",
+        "kinds": {"random_previous_station_access", "remote_station_access", "memory_access_station_count", "memory_access_time"},
     },
-    "damage_reduction": {
-        "title": "伤害减轻/上限",
-        "description": "固定减伤、百分比减伤、伤害上限等。数值未明时保留为条件型候选。",
-        "kinds": {"damage_reduction", "damage_cap"},
-        "default_score": None,
+    "range_transfer": {
+        "title": "范围/链接转移",
+        "description": "レーダー范围、link 转移、站点受け渡し。它们未必增加访问次数，但会改变可触达范围或保留/转移访问成果。",
+        "kinds": {"radar_detection_range", "station_link_transfer", "link_transfer"},
     },
-    "hp_recovery": {
-        "title": "HP回复/续航",
-        "description": "HP回复、被访问后回复、手动回复等。平均值按数值和范围估算，不直接模拟战斗。",
-        "kinds": {"hp_recovery", "hp_recovery_bonus"},
-        "default_score": None,
-    },
-    "nullify_survival": {
-        "title": "无效化/保命",
-        "description": "伤害无效化、HP1保命、代受伤害等。排序以触发可靠性和等级值可读性为主。",
-        "kinds": {"damage_nullification", "survive_hp1", "damage_substitution"},
-        "default_score": 100.0,
-    },
-    "opponent_suppression": {
-        "title": "降低对手输出",
-        "description": "降低对手 ATK、技能无效化、电池无效化等。这里只列防御向干扰，不列降低对手 DEF。",
-        "kinds": {"atk_debuff", "skill_disable", "battery_disable"},
-        "default_score": 100.0,
-    },
-    "link_retention": {
-        "title": "link保持",
-        "description": "HP归零后仍保持其他 link、link继续等。适合守多站或远征保站场景。",
-        "kinds": {"link_continue", "link_retention"},
-        "default_score": 100.0,
-    },
-    "counter_disruption": {
-        "title": "反击/惩罚",
-        "description": "カウンター、反击伤害、重启对手、强制 HP 0。严格说不是防御，但能提高被打时收益或威慑。",
-        "kinds": {"counter", "counter_damage", "reboot", "force_hp_zero"},
-        "default_score": 100.0,
+    "new_station_bonus": {
+        "title": "今日新駅奖励",
+        "description": "今日新駅ボーナス增幅。不是访问次数增加，但和长距离开图、活动路线收益有关，单独列出。",
+        "kinds": {"today_new_station_bonus"},
     },
 }
-RELIABILITY_TABS = {"nullify_survival", "link_retention", "counter_disruption"}
+
 
 EFFECT_LABELS = {
-    "atk_debuff": "对手ATK降低",
-    "battery_disable": "电池无效化",
-    "counter": "カウンター",
-    "counter_damage": "反击伤害",
-    "damage_cap": "伤害上限",
-    "damage_nullification": "伤害无效化",
-    "damage_reduction": "伤害减轻",
-    "damage_substitution": "代受伤害",
-    "def_buff": "DEF增加",
-    "force_hp_zero": "强制HP0",
-    "hp_recovery": "HP回复",
-    "hp_recovery_bonus": "HP回复追加",
-    "link_continue": "link继续",
-    "link_retention": "link保持",
-    "reboot": "リブート",
-    "skill_disable": "技能无效化",
-    "survive_hp1": "HP1保命",
+    "extra_access": "追加访问",
+    "random_previous_station_access": "随机已访问站",
+    "remote_station_access": "远程/常用站周边访问",
+    "memory_access_station_count": "思い出し访问次数",
+    "memory_access_time": "思い出し时间",
+    "radar_detection_range": "レーダー范围",
+    "station_link_transfer": "link譲渡",
+    "link_transfer": "link转移",
+    "today_new_station_bonus": "今日新駅奖励",
 }
 
-base.SCOPE_LABELS.update(
-    {
-        "front_car": "先头车",
-        "component:hp_recovery_1": "指定技能分量",
-    }
-)
+
+KIND_USE_CASE = {
+    "extra_access": "回数活动核心",
+    "random_previous_station_access": "固定地点补访问",
+    "remote_station_access": "回国/固定地点补站",
+    "memory_access_station_count": "思い出し回数扩展",
+    "memory_access_time": "思い出し窗口延长",
+    "radar_detection_range": "扩大可访问范围",
+    "station_link_transfer": "转移link成果",
+    "link_transfer": "保留/转移link",
+    "today_new_station_bonus": "开图收益放大",
+}
 
 
 def esc(value: Any) -> str:
     return html.escape("" if value is None else str(value), quote=True)
 
 
-def is_self_only_def(component: dict[str, Any]) -> bool:
-    scope = set(component.get("target_scope") or [])
-    condition = str(component.get("condition_raw") or "")
-    if scope == {"self"}:
-        return True
-    return "自身のDEF" in condition and "編成内" not in condition
+def probability_text(value: dict[str, Any]) -> str:
+    return base.probability_text(value)
 
 
-def is_opponent_output_suppression(component: dict[str, Any]) -> bool:
-    kind = component.get("effect_kind")
-    if kind in {"skill_disable", "battery_disable"}:
-        return True
-    if kind != "atk_debuff":
-        return False
-    scope = set(component.get("target_scope") or [])
-    condition = str(component.get("condition_raw") or "")
-    return "opponent_denko" in scope or bool(re.search(r"相手(?:のでんこ|でんこ)?のATK|相手でんこのATK", condition))
-
-
-def belongs_to_tab(tab_id: str, component: dict[str, Any]) -> bool:
-    kind = component.get("effect_kind")
-    if kind not in TABS[tab_id]["kinds"]:
-        return False
-    if tab_id == "self_def":
-        return is_self_only_def(component)
-    if tab_id == "team_def":
-        return not is_self_only_def(component)
-    if tab_id == "opponent_suppression":
-        return is_opponent_output_suppression(component)
-    return True
-
-
-def max_unit_count(component: dict[str, Any]) -> float:
-    for container_key in ("target_filters", "scaling_conditions"):
-        container = component.get(container_key) or {}
-        for key in (
-            "max_station_count",
-            "max_count",
-            "max_linked_station_count",
-            "max_units",
-            "max_n",
-        ):
-            number = base.as_number(container.get(key))
-            if number is not None:
-                return number
-
-    context = " ".join(
-        str(item or "")
-        for item in (
-            component.get("condition_raw"),
-            component.get("remarks_raw"),
-            component.get("condition_label"),
-        )
-    )
-    match = re.search(r"(?:上限|最大)\s*(\d+(?:\.\d+)?)\s*(?:駅|体|人|両|個)?", context)
-    if match:
-        return float(match.group(1))
-    return 7.0
-
-
-def metric_range(tab_id: str, component: dict[str, Any], value: dict[str, Any]) -> tuple[float | None, float | None]:
-    raw = str(value.get("value_raw") or "")
-    numeric = base.as_number(value.get("value_numeric"))
-    value_min = base.as_number(value.get("value_min"))
-    value_max = base.as_number(value.get("value_max"))
-    formula_match = re.search(r"\+?\s*(\d+(?:\.\d+)?)\s*[×xX]\s*n\s*駅?\s*%", raw, flags=re.IGNORECASE)
-    if formula_match:
-        return 0.0, float(formula_match.group(1)) * max_unit_count(component)
-    reverse_formula_match = re.search(r"\+?\s*n\s*駅?\s*[×xX]\s*(\d+(?:\.\d+)?)\s*%", raw, flags=re.IGNORECASE)
-    if reverse_formula_match:
-        return 0.0, float(reverse_formula_match.group(1)) * max_unit_count(component)
-    if value_min is not None and value_max is not None:
-        return min(abs(value_min), abs(value_max)), max(abs(value_min), abs(value_max))
-    if numeric is not None:
-        return abs(numeric), abs(numeric)
-
-    numbers = base.signed_numbers(raw)
-    if tab_id == "opponent_suppression":
-        negatives = [abs(number) for number in numbers if number < 0]
-        if negatives:
-            return min(negatives), max(negatives)
-    if numbers:
-        positive = [abs(number) for number in numbers]
-        if any(mark in raw for mark in ("～", "~", "〜")) and len(positive) >= 2:
-            return min(positive), max(positive)
-        return max(positive), max(positive)
-    return None, None
-
-
-def probability_factor(value: dict[str, Any]) -> float:
-    nums = base.probability_numbers(value)
+def probability_max(value: dict[str, Any]) -> float:
+    probability = value.get("probability")
+    if not probability:
+        return 100.0
+    text = json.dumps(probability, ensure_ascii=False) if isinstance(probability, dict) else str(probability)
+    nums = [float(raw) for raw in re.findall(r"\d+(?:\.\d+)?", text)]
     if not nums:
         return 100.0
     return min(max(nums), 100.0)
 
 
-def metric_text(value: float | None, fallback: str) -> str:
-    if value is None:
-        return fallback
-    return f"{value:g}"
+def numeric_from_text(text: str) -> float | None:
+    nums = [float(raw) for raw in re.findall(r"[+-]?\d+(?:\.\d+)?", text.replace("％", "%"))]
+    return max(nums, key=abs) if nums else None
 
 
-def level_value_text(level: str, value: dict[str, Any], kind: str) -> str:
-    raw = str(value.get("value_raw") or "-")
-    if raw in {"def_buff", "damage_reduction", "hp_recovery", "skill_disable", "battery_disable", "counter", "reboot", "damage_nullification"}:
-        raw = "条件型/数值未明"
-    if kind in {"reboot", "force_hp_zero", "link_continue", "link_retention", "survive_hp1"} and (
-        "スコア" in raw or "経験値" in raw or raw in {"link_continue", "force_hp_zero"}
+def value_number(kind: str, value: dict[str, Any]) -> float | None:
+    numeric = base.as_number(value.get("value_numeric"))
+    if numeric is not None:
+        return abs(numeric)
+    raw = str(value.get("value_raw") or "")
+    if kind in {"extra_access", "random_previous_station_access", "remote_station_access"} and (
+        "アクセス" in raw or raw == "extra_access"
     ):
-        raw = "条件型/数值未明"
-    if level != base.DEFAULT_LEVEL:
-        return f"※Lv{level}: {raw}"
-    return raw
+        return 1.0
+    return numeric_from_text(raw)
 
 
-def level_metrics(tab_id: str, component: dict[str, Any], level: str) -> dict[str, Any] | None:
+def metric_text(kind: str, number: float | None, raw: str) -> str:
+    if number is None:
+        return raw or "-"
+    if kind == "today_new_station_bonus":
+        return f"+{number:g}%"
+    if kind == "memory_access_time":
+        return raw or f"{number:g}"
+    if kind == "radar_detection_range":
+        return f"+{number:g}駅"
+    if kind in {"station_link_transfer", "link_transfer"}:
+        return f"{number:g}駅"
+    return f"{number:g}回"
+
+
+def level_value_text(level: str, value: dict[str, Any]) -> str:
+    raw = str(value.get("value_raw") or "-")
+    return raw if level == base.DEFAULT_LEVEL else f"※Lv{level}: {raw}"
+
+
+def level_metrics(component: dict[str, Any], level: str) -> dict[str, Any] | None:
     values = component.get("values_by_denko_level") or {}
     value = values.get(level)
     if not value:
         return None
-    if value.get("unit") == "report_ignore":
-        return None
-
     kind = str(component.get("effect_kind") or "")
-    value_min, value_max = metric_range(tab_id, component, value)
-    default_score = TABS[tab_id]["default_score"]
-    uses_reliability_score = False
-    if (tab_id in RELIABILITY_TABS and kind != "counter_damage") or (value_max is None and default_score is not None):
-        reliability = probability_factor(value)
-        value_min = reliability
-        value_max = reliability
-        uses_reliability_score = True
-    if value_max is None:
-        return None
-    avg = base.mean_value(value_min, value_max)
-    expected = avg if uses_reliability_score else (avg * probability_factor(value) / 100 if avg is not None else None)
-    max_text = f"{value_max:g}%" if uses_reliability_score and value_max is not None else metric_text(value_max, "条件型")
-    avg_text = f"{expected:g}%" if uses_reliability_score and expected is not None else metric_text(expected, "条件型")
+    raw = str(value.get("value_raw") or "")
+    number = value_number(kind, value)
+    probability = probability_max(value)
+    expected = number * probability / 100 if number is not None else None
     return {
         "level": level,
-        "sort_max": value_max,
+        "sort_max": number,
         "sort_avg": expected,
-        "value_text": level_value_text(level, value, kind),
-        "max_text": max_text,
-        "avg_text": avg_text,
-        "probability": base.probability_text(value),
+        "value_text": level_value_text(level, value),
+        "max_text": metric_text(kind, number, raw),
+        "avg_text": metric_text(kind, expected, raw) if expected is not None else "-",
+        "probability": probability_text(value),
         "duration": value.get("duration") or "-",
         "cooldown": value.get("cooldown") or "-",
     }
 
 
-def target_text(component: dict[str, Any]) -> str:
-    scope = component.get("target_scope") or []
-    if not scope:
-        return "对象未明"
-    return "、".join(base.SCOPE_LABELS.get(str(item), str(item)) for item in scope)
+def belongs_to_tab(tab_id: str, component: dict[str, Any]) -> bool:
+    return component.get("effect_kind") in TABS[tab_id]["kinds"]
 
 
-def defense_target_text(tab_id: str, component: dict[str, Any]) -> str:
-    kind = component.get("effect_kind")
-    if tab_id == "opponent_suppression":
-        if kind == "atk_debuff":
-            return "对手でんこ"
-        if kind == "skill_disable":
-            filters = component.get("target_filters") or {}
-            if filters.get("disabled_skill_kind") == "attribute_skill_nullification":
-                return "属性技能无效化"
-            if filters.get("disabled_skill_kind") == "partial_damage_increase_skill_nullification":
-                return "部分伤害增加技能无效化"
-            return "对手技能"
-        if kind == "battery_disable":
-            return "对手/电池使用"
-    return target_text(component)
+def candidate_search_text(parts: list[Any]) -> str:
+    return " ".join(str(part or "") for part in parts).lower()
 
 
 def build_candidates(tab_id: str, rows: list[dict[str, Any]], metadata: dict[str, dict[str, str]]) -> list[dict[str, Any]]:
-    candidates: list[dict[str, Any]] = []
+    candidates = []
     for row in rows:
+        denko_id = str(row.get("denko_id") or "")
         for component in row.get("skill_components") or []:
             if not belongs_to_tab(tab_id, component):
                 continue
             levels = {
                 level: metrics
                 for level in base.REPORT_LEVELS
-                if (metrics := level_metrics(tab_id, component, level)) is not None
+                if (metrics := level_metrics(component, level)) is not None
             }
             if not levels:
                 continue
@@ -297,26 +177,27 @@ def build_candidates(tab_id: str, rows: list[dict[str, Any]], metadata: dict[str
                 initial_level = next(iter(levels))
             initial = levels[initial_level]
             group_id, group_label = base.activation_group(row, component)
-            denko_id = str(row.get("denko_id") or "")
             denko_meta = metadata.get(denko_id, {})
             condition = base.display_condition_text(component)
             filters = base.compact_filter_text(component)
-            target = defense_target_text(tab_id, component)
+            target = base.target_text(component)
+            kind = str(component.get("effect_kind") or "")
             level_data = json.dumps(levels, ensure_ascii=False, separators=(",", ":"))
             all_level_text = " ".join(str(metrics["value_text"]) for metrics in levels.values())
-            search = " ".join(
+            search = candidate_search_text(
                 [
                     denko_id,
-                    str(row.get("name") or ""),
-                    str(denko_meta.get("attribute") or ""),
-                    str(denko_meta.get("type_key") or ""),
-                    str(component.get("component_id") or ""),
+                    row.get("name"),
+                    denko_meta.get("attribute"),
+                    denko_meta.get("type_key"),
+                    component.get("component_id"),
+                    kind,
                     condition,
                     target,
                     filters,
                     all_level_text,
                 ]
-            ).lower()
+            )
             candidates.append(
                 {
                     "sort_max": initial["sort_max"],
@@ -326,11 +207,12 @@ def build_candidates(tab_id: str, rows: list[dict[str, Any]], metadata: dict[str
                     "name": row.get("name"),
                     "attribute": denko_meta.get("attribute", "-"),
                     "type_key": denko_meta.get("type_key", "unknown"),
-                    "kind": component.get("effect_kind"),
+                    "kind": kind,
                     "component_id": component.get("component_id"),
                     "condition": condition,
                     "target": target,
                     "filters": filters,
+                    "use_case": KIND_USE_CASE.get(kind, "-"),
                     "activation_group": group_id,
                     "activation_label": group_label,
                     "activation_type": component.get("activation_type") or row.get("activation_type") or "",
@@ -367,7 +249,8 @@ def render_rows(tab_id: str, candidates: list[dict[str, Any]]) -> str:
                     f'<td><strong>{esc(item["denko_id"])}</strong><br><a href="{esc(item["url"])}">{esc(item["name"])}</a></td>',
                     f'<td>{esc(item["attribute"])}</td>',
                     f'<td>{esc(item["type_key"])}</td>',
-                    f'<td>{esc(EFFECT_LABELS.get(str(item["kind"]), item["kind"]))}<br><span class="muted">{esc(item["component_id"])}</span></td>',
+                    f'<td>{esc(EFFECT_LABELS.get(item["kind"], item["kind"]))}<br><span class="muted">{esc(item["component_id"])}</span></td>',
+                    f'<td>{esc(item["use_case"])}</td>',
                     f'<td class="metric max-cell">{esc(item["max_text"])}</td>',
                     f'<td class="metric avg-cell">{esc(item["avg_text"])}</td>',
                     f'<td class="level-cell">{esc(item["level_value"])}</td>',
@@ -398,8 +281,9 @@ def render_table(tab_id: str, candidates: list[dict[str, Any]]) -> str:
             <th>属性</th>
             <th>类型</th>
             <th>效果</th>
-            <th>理论最大</th>
-            <th>期望值</th>
+            <th>活动用途</th>
+            <th>理论值</th>
+            <th>粗略期望</th>
             <th>等级值</th>
             <th>概率</th>
             <th>持续</th>
@@ -430,7 +314,7 @@ def main() -> None:
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8">
-  <title>Ekimemo Step2 防御/守站辅助排行</title>
+  <title>Ekimemo Step2 位移/访问次数辅助</title>
   <style>
     body {{ font-family: system-ui, -apple-system, "Segoe UI", sans-serif; margin: 24px; color: #1f2328; line-height: 1.45; }}
     h1 {{ margin-bottom: 6px; }}
@@ -446,9 +330,9 @@ def main() -> None:
     table {{ border-collapse: collapse; width: 100%; font-size: 13px; margin-top: 12px; }}
     th, td {{ border: 1px solid #d8dee4; padding: 7px 8px; vertical-align: top; }}
     th {{ background: #f6f8fa; position: sticky; top: 53px; z-index: 2; }}
-    td:nth-child(10), td:nth-child(11), td:nth-child(12) {{ white-space: nowrap; }}
-    td:nth-child(14) {{ min-width: 260px; }}
-    .metric {{ min-width: 108px; }}
+    td:nth-child(10), td:nth-child(11), td:nth-child(12), td:nth-child(13) {{ white-space: nowrap; }}
+    td:nth-child(15) {{ min-width: 280px; }}
+    .metric {{ min-width: 96px; }}
     .tab-panel {{ display: none; }}
     .tab-panel.active {{ display: block; }}
     a {{ color: #0969da; text-decoration: none; }}
@@ -456,8 +340,8 @@ def main() -> None:
   </style>
 </head>
 <body>
-  <h1>Ekimemo Step2 防御/守站辅助排行</h1>
-  <p>从 Step1 DB 自动整理。防御候选按 DEF、减伤、回复、无效化/保命、降低对手输出、link保持、反击惩罚拆分；默认 Lv50，可切换 Lv30/Lv80/Lv92/Lv100。理论最大是该维度的原始量级，期望值会粗略乘以发动概率。</p>
+  <h1>Ekimemo Step2 位移/访问次数辅助</h1>
+  <p>从 Step1 DB 自动整理。这个表面向“访问回数活动”“人在固定地点补访问”“长距离开图”场景；今日新駅奖励不是访问次数增加，已单独拆页签。</p>
   <div class="tabs">{tab_buttons}</div>
   <div class="toolbar">
     <input id="q" placeholder="搜索ID、名字、条件、效果" size="34">
@@ -469,8 +353,8 @@ def main() -> None:
       <option value="100">Lv100(VU)</option>
     </select>
     <select id="sortMode">
-      <option value="max">按理论最大排序</option>
-      <option value="avg">按期望值排序</option>
+      <option value="max">按理论值排序</option>
+      <option value="avg">按粗略期望排序</option>
     </select>
     <select id="activation">
       <option value="">全部发动</option>
@@ -495,7 +379,7 @@ def main() -> None:
   </div>
   {sections}
   <script>
-    const state = {{ activeTab: 'self_def' }};
+    const state = {{ activeTab: 'extra_access' }};
     const q = document.getElementById('q');
     const levelMode = document.getElementById('levelMode');
     const sortMode = document.getElementById('sortMode');

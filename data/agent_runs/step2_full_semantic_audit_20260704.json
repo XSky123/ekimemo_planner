@@ -1,0 +1,34 @@
+{
+  "reports": [
+    {
+      "report": "attack",
+      "path": "data\\reports\\step2_attack_support_rankings_zh.html",
+      "row_issue_count": 0,
+      "category_counts": {},
+      "issues": []
+    },
+    {
+      "report": "exp_pt",
+      "path": "data\\reports\\step2_exp_pt_support_rankings_zh.html",
+      "row_issue_count": 0,
+      "category_counts": {},
+      "issues": []
+    },
+    {
+      "report": "defense",
+      "path": "data\\reports\\step2_defense_support_rankings_zh.html",
+      "row_issue_count": 0,
+      "category_counts": {},
+      "issues": []
+    },
+    {
+      "report": "mobility",
+      "path": "data\\reports\\step2_mobility_visit_rankings_zh.html",
+      "row_issue_count": 0,
+      "category_counts": {},
+      "issues": []
+    }
+  ],
+  "total_issue_rows": 0,
+  "category_counts": {}
+}
