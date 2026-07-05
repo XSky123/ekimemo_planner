@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-07-06T01:00:58.782584+09:00",
+  "generated_at": "2026-07-06T02:16:05.995475+09:00",
   "source_records": "data\\prototype_db\\sample_prototype_records.jsonl",
   "groups": {
     "by_prefecture": {
@@ -122,6 +122,14 @@
       ]
     },
     "by_line": {
+      "山陽新幹線": [
+        {
+          "denko_id": "original:003",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%96%B0%E9%98%AA%E3%83%AB%E3%83%8A",
+          "name": "新阪ルナ",
+          "href": "#original-003"
+        }
+      ],
       "三陸鉄道リアス線": [
         {
           "denko_id": "original:004",
@@ -130,7 +138,7 @@
           "href": "#original-004"
         }
       ],
-      "山陽新幹線": [
+      "JR東海道本線": [
         {
           "denko_id": "original:003",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%96%B0%E9%98%AA%E3%83%AB%E3%83%8A",
@@ -146,7 +154,7 @@
           "href": "#original-003"
         }
       ],
-      "西名古屋港線(あおなみ線)": [
+      "西名古屋港線": [
         {
           "denko_id": "original:001",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E9%BB%84%E9%99%BD%E3%82%BB%E3%83%AA%E3%82%A2",
@@ -154,7 +162,7 @@
           "href": "#original-001"
         }
       ],
-      "JR東北本線(黒磯～利府・盛岡)": [
+      "JR東北本線": [
         {
           "denko_id": "original:005",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E9%BB%84%E9%99%BD%E3%83%AC%E3%82%A4%E3%82%AB",
@@ -162,15 +170,7 @@
           "href": "#original-005"
         }
       ],
-      "JR東海道本線(京都線)(京都～大阪)": [
-        {
-          "denko_id": "original:003",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%96%B0%E9%98%AA%E3%83%AB%E3%83%8A",
-          "name": "新阪ルナ",
-          "href": "#original-003"
-        }
-      ],
-      "JR飯田線(豊橋～天竜峡)": [
+      "JR飯田線": [
         {
           "denko_id": "original:002",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E7%82%BA%E6%A0%97%E3%83%A1%E3%83%AD",
@@ -356,44 +356,12 @@
           "href": "#extra-001"
         }
       ],
-      "スラブ洗浄車": [
-        {
-          "denko_id": "extra:003",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%B3%A2%E7%AF%A0%E3%81%99%E3%81%99%E3%81%90",
-          "name": "波篠すすぐ",
-          "href": "#extra-003"
-        }
-      ],
-      "ドクターイエロー": [
-        {
-          "denko_id": "original:001",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E9%BB%84%E9%99%BD%E3%82%BB%E3%83%AA%E3%82%A2",
-          "name": "黄陽セリア",
-          "href": "#original-001"
-        }
-      ],
-      "36形": [
-        {
-          "denko_id": "original:004",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%81%8B%E6%B5%9C%E3%81%BF%E3%82%8D%E3%81%8F",
-          "name": "恋浜みろく",
-          "href": "#original-004"
-        }
-      ],
-      "581系": [
+      "国鉄 581系": [
         {
           "denko_id": "original:003",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%96%B0%E9%98%AA%E3%83%AB%E3%83%8A",
           "name": "新阪ルナ",
           "href": "#original-003"
-        }
-      ],
-      "922形20番台 (T3編成)": [
-        {
-          "denko_id": "original:001",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E9%BB%84%E9%99%BD%E3%82%BB%E3%83%AA%E3%82%A2",
-          "name": "黄陽セリア",
-          "href": "#original-001"
         }
       ],
       "国鉄DD14形ディーゼル機関車": [
@@ -412,31 +380,15 @@
           "href": "#original-002"
         }
       ],
-      "架線延線車": [
+      "三陸鉄道 36形": [
         {
-          "denko_id": "extra:005",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%9E%9C%E9%B3%B4%E3%83%84%E3%83%85%E3%82%AD",
-          "name": "果鳴ツヅキ",
-          "href": "#extra-005"
+          "denko_id": "original:004",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%81%8B%E6%B5%9C%E3%81%BF%E3%82%8D%E3%81%8F",
+          "name": "恋浜みろく",
+          "href": "#original-004"
         }
       ],
-      "E926形": [
-        {
-          "denko_id": "original:005",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E9%BB%84%E9%99%BD%E3%83%AC%E3%82%A4%E3%82%AB",
-          "name": "黄陽レイカ",
-          "href": "#original-005"
-        }
-      ],
-      "HTM350SW": [
-        {
-          "denko_id": "extra:003",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%B3%A2%E7%AF%A0%E3%81%99%E3%81%99%E3%81%90",
-          "name": "波篠すすぐ",
-          "href": "#extra-003"
-        }
-      ],
-      "R400形高速確認車": [
+      "JR東海 R400形高速確認車": [
         {
           "denko_id": "extra:004",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%9C%AB%E6%B0%B8%E3%81%A6%E3%81%99%E3%81%A8",
@@ -444,12 +396,60 @@
           "href": "#extra-004"
         }
       ],
-      "TW4446": [
+      "JR西日本 922形20番台 (T3編成)": [
+        {
+          "denko_id": "original:001",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E9%BB%84%E9%99%BD%E3%82%BB%E3%83%AA%E3%82%A2",
+          "name": "黄陽セリア",
+          "href": "#original-001"
+        }
+      ],
+      "JR西日本 HTM350SW": [
+        {
+          "denko_id": "extra:003",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%B3%A2%E7%AF%A0%E3%81%99%E3%81%99%E3%81%90",
+          "name": "波篠すすぐ",
+          "href": "#extra-003"
+        }
+      ],
+      "JR西日本 TW4446": [
         {
           "denko_id": "extra:005",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%9E%9C%E9%B3%B4%E3%83%84%E3%83%85%E3%82%AD",
           "name": "果鳴ツヅキ",
           "href": "#extra-005"
+        }
+      ],
+      "JR西日本 スラブ洗浄車": [
+        {
+          "denko_id": "extra:003",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%B3%A2%E7%AF%A0%E3%81%99%E3%81%99%E3%81%90",
+          "name": "波篠すすぐ",
+          "href": "#extra-003"
+        }
+      ],
+      "JR西日本 ドクターイエロー": [
+        {
+          "denko_id": "original:001",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E9%BB%84%E9%99%BD%E3%82%BB%E3%83%AA%E3%82%A2",
+          "name": "黄陽セリア",
+          "href": "#original-001"
+        }
+      ],
+      "JR西日本 架線延線車": [
+        {
+          "denko_id": "extra:005",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%9E%9C%E9%B3%B4%E3%83%84%E3%83%85%E3%82%AD",
+          "name": "果鳴ツヅキ",
+          "href": "#extra-005"
+        }
+      ],
+      "JR東日本 E926形": [
+        {
+          "denko_id": "original:005",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E9%BB%84%E9%99%BD%E3%83%AC%E3%82%A4%E3%82%AB",
+          "name": "黄陽レイカ",
+          "href": "#original-005"
         }
       ]
     },

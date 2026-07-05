@@ -209,6 +209,44 @@ STATION_READINGS = {
     "ニューデリー駅": "にゅーでりーえき",
 }
 
+ADDITIONAL_STATION_READINGS = {
+    "九頭竜湖駅": "くずりゅうこえき",
+    "二見浦駅": "ふたみのうらえき",
+    "伊万里駅": "いまりえき",
+    "伊川谷駅": "いかわだにえき",
+    "出戸駅": "でとえき",
+    "出雲市駅": "いずもしえき",
+    "北巽か南巽駅": "きたたつみかみなみたつみえき",
+    "北野駅": "きたのえき",
+    "南古谷駅": "みなみふるやえき",
+    "南野駅": "みなみのえき",
+    "博多駅": "はかたえき",
+    "和田山駅": "わだやまえき",
+    "四天王寺前夕陽ヶ丘駅": "してんのうじまえゆうひがおかえき",
+    "天下茶屋駅": "てんがちゃやえき",
+    "小倉駅": "こくらえき",
+    "岩手石橋駅": "いわていしばしえき",
+    "摩耶駅": "まやえき",
+    "新山口駅": "しんやまぐちえき",
+    "東京貨物ターミナル (スポット)": "とうきょうかもつたーみなる",
+    "東京駅": "とうきょうえき",
+    "東灘貨物駅": "ひがしなだかもつえき",
+    "東灘駅": "ひがしなだえき",
+    "江波駅": "えばえき",
+    "江見駅": "えみえき",
+    "牧之郷駅": "まきのこうえき",
+    "神奈川新町駅": "かながわしんまちえき",
+    "福住駅": "ふくずみえき",
+    "豊橋駅": "とよはしえき",
+    "里見駅": "さとみえき",
+    "金沢文庫駅": "かなざわぶんこえき",
+    "阿佐ケ谷駅": "あさがやえき",
+    "阿蘇白川駅": "あそしらかわえき",
+    "龍山駅": "よんさんえき",
+    "龍陽路駅": "りゅうようろえき",
+}
+STATION_READINGS.update(ADDITIONAL_STATION_READINGS)
+
 VOICE_ACTOR_READINGS = {
     "ブリドカットセーラ恵美": "ぶりどかっとせーらえみ",
     "三上枝織": "みかみしおり",
@@ -261,6 +299,270 @@ VOICE_ACTOR_READINGS = {
     "鳴沢優海": "なるさわゆうみ",
     "黒木ほの香": "くろきほのか",
     "野中ここな": "のなかここな",
+}
+
+ADDITIONAL_OPERATOR_READINGS = {
+    "上田電鉄": "うえだでんてつ",
+    "京福電気鉄道": "けいふくでんきてつどう",
+    "京阪電気鉄道": "けいはんでんきてつどう",
+    "仙台市交通局": "せんだいしこうつうきょく",
+    "名古屋鉄道": "なごやてつどう",
+    "名古屋市交通局": "なごやしこうつうきょく",
+    "大阪市交通局": "おおさかしこうつうきょく",
+    "富士山麓鉄道": "ふじさんろくてつどう",
+    "岩手開発鉄道": "いわてかいはつてつどう",
+    "京浜急行電鉄": "けいひんきゅうこうでんてつ",
+    "京王電鉄": "けいおうでんてつ",
+    "千葉都市モノレール": "ちばとしものれーる",
+    "台湾鉄路公司": "たいわんてつろこうし",
+    "東京メトロ": "とうきょうめとろ",
+    "東京モノレール": "とうきょうものれーる",
+    "東武鉄道": "とうぶてつどう",
+    "沖縄都市モノレール": "おきなわとしものれーる",
+    "札幌市交通局": "さっぽろしこうつうきょく",
+    "東京都交通局": "とうきょうとこうつうきょく",
+    "松本電鉄": "まつもとでんてつ",
+    "横浜高速鉄道": "よこはまこうそくてつどう",
+    "水西高速鉄道": "すそこうそくてつどう",
+    "神戸市交通局": "こうべしこうつうきょく",
+    "西日本鉄道": "にしにっぽんてつどう",
+    "西武鉄道": "せいぶてつどう",
+    "秦皇島山海観光鉄道": "しんこうとうさんかいかんこうてつどう",
+    "箱根登山鉄道": "はこねとざんてつどう",
+    "野岩鉄道": "やがんてつどう",
+    "阿佐海岸鉄道": "あさかいがんてつどう",
+    "鹿児島市交通局": "かごしましこうつうきょく",
+    "長崎電気軌道": "ながさきでんききどう",
+    "阪堺電気軌道": "はんかいでんききどう",
+    "阪急電鉄": "はんきゅうでんてつ",
+    "黒部峡谷鉄道": "くろべきょうこくてつどう",
+    "豊橋鉄道": "とよはしてつどう",
+    "北勢鉄道": "ほくせいてつどう",
+    "ロボスレイル": "ろぼすれいる",
+    "ハウトレイン": "はうとれいん",
+    "VRグループ": "ぶいあーるぐるーぷ",
+    "フェロメックス": "ふぇろめっくす",
+    "メキシコシティ・ライトレール": "めきしこしてぃらいとれーる",
+    "ベルリンSバーン": "べるりんえすばーん",
+    "上海トランスラピッド": "しゃんはいとらんすらぴっど",
+    "伊豆急行": "いずきゅうこう",
+    "国土交通省立山砂防工事専用軌道": "こくどこうつうしょうたてやまさぼうこうじせんようきどう",
+    "埼玉新都市交通": "さいたましんとしこうつう",
+    "天津開発区導軌電車": "てんしんかいはつくどうきでんしゃ",
+    "宇都宮ライトレール": "うつのみやらいとれーる",
+    "富士急行": "ふじきゅうこう",
+    "愛知こどもの国": "あいちこどものくに",
+    "智頭急行": "ちずきゅうこう",
+    "首都圏新都市鉄道": "しゅとけんしんとしてつどう",
+    "GOトランジット": "ごーとらんじっと",
+}
+OPERATOR_READINGS.update(ADDITIONAL_OPERATOR_READINGS)
+
+LINE_READINGS = {
+    "東京モノレール": "とうきょうものれーる",
+    "2号線": "にごうせん",
+    "9号線": "きゅうごうせん",
+    "一畑電車北松江線": "いちばたでんしゃきたまつえせん",
+    "上越新幹線": "じょうえつしんかんせん",
+    "九州新幹線": "きゅうしゅうしんかんせん",
+    "予土線": "よどせん",
+    "京元線": "きょんうぉんせん",
+    "京浜東北線": "けいひんとうほくせん",
+    "京急本線": "けいきゅうほんせん",
+    "東海道新幹線": "とうかいどうしんかんせん",
+    "北海道新幹線": "ほっかいどうしんかんせん",
+    "北陸新幹線": "ほくりくしんかんせん",
+    "南北線": "なんぼくせん",
+    "奥の細道最上川ライン": "おくのほそみちもがみがわらいん",
+    "山陽新幹線": "さんようしんかんせん",
+    "山陽線": "さんようせん",
+    "常磐線": "じょうばんせん",
+    "徳島線": "とくしません",
+    "成田空港線": "なりたくうこうせん",
+    "押上線": "おしあげせん",
+    "日本海ひすいライン": "にほんかいひすいらいん",
+    "東北新幹線": "とうほくしんかんせん",
+    "森と水とロマンの鉄道": "もりとみずとろまんのてつどう",
+    "牟岐線": "むぎせん",
+    "生駒線": "いこません",
+    "知多新線": "ちたしんせん",
+    "総武線": "そうぶせん",
+    "西九州新幹線": "にしきゅうしゅうしんかんせん",
+    "北東線": "ほくとうせん",
+    "八日市線": "ようかいちせん",
+    "千葉都市モノレール２号線": "ちばとしものれーるにごうせん",
+    "平渓線": "へいけいせん",
+    "龍山線": "よんさんせん",
+    "名鉄名古屋本線": "めいてつなごやほんせん",
+    "豊橋鉄道東田本線": "とよはしてつどうあずまだほんせん",
+    "北勢鉄道": "ほくせいてつどう",
+    "三岐鉄道北勢線": "さんぎてつどうほくせいせん",
+    "岩手開発鉄道": "いわてかいはつてつどう",
+    "岩手開発鉄道日頃市線": "いわてかいはつてつどうひころいちせん",
+    "タイ国有鉄道メークローン線": "たいこくゆうてつどうめーくろーんせん",
+    "メキシコシティ地下鉄2号線": "めきしこしてぃちかてつにごうせん",
+    "ベルリンSバーン": "べるりんえすばーん",
+}
+
+LINE_PREFIX_READINGS = {
+    "一畑電車": "いちばたでんしゃ",
+    "三陸鉄道": "さんりくてつどう",
+    "上田電鉄": "うえだでんてつ",
+    "京成": "けいせい",
+    "京王": "けいおう",
+    "京福電鉄": "けいふくでんてつ",
+    "京阪": "けいはん",
+    "仙台市営地下鉄": "せんだいしえいちかてつ",
+    "伊豆急行": "いずきゅうこう",
+    "伊豆箱根鉄道": "いずはこねてつどう",
+    "伯備線": "はくびせん",
+    "信楽高原鐵道": "しがらきこうげんてつどう",
+    "内子線": "うちこせん",
+    "南海": "なんかい",
+    "南阿蘇鉄道": "みなみあそてつどう",
+    "台湾鉄路公司": "たいわんてつろこうし",
+    "名古屋市営地下鉄": "なごやしえいちかてつ",
+    "名鉄": "めいてつ",
+    "土佐くろしお鉄道": "とさくろしおてつどう",
+    "埼玉新都市交通": "さいたましんとしこうつう",
+    "富士山麓電気鉄道": "ふじさんろくでんきてつどう",
+    "富士急行": "ふじきゅうこう",
+    "小湊鉄道": "こみなとてつどう",
+    "小田急": "おだきゅう",
+    "山形鉄道": "やまがたてつどう",
+    "山梨リニア": "やまなしりにあ",
+    "島原鉄道": "しまばらてつどう",
+    "嵯峨野観光鉄道": "さがのかんこうてつどう",
+    "広電": "ひろでん",
+    "智頭急行": "ちずきゅうこう",
+    "札幌市営地下鉄": "さっぽろしえいちかてつ",
+    "東京メトロ": "とうきょうめとろ",
+    "東急": "とうきゅう",
+    "東武": "とうぶ",
+    "松本電鉄": "まつもとでんてつ",
+    "松浦鉄道": "まつうらてつどう",
+    "樽見鉄道": "たるみてつどう",
+    "水西高速鉄道": "すそこうそくてつどう",
+    "江ノ島電鉄": "えのしまでんてつ",
+    "由利高原鉄道": "ゆりこうげんてつどう",
+    "神戸市営地下鉄": "こうべしえいちかてつ",
+    "福井鉄道": "ふくいてつどう",
+    "秋田内陸縦貫鉄道": "あきたないりくじゅうかんてつどう",
+    "秦皇島山海観光鉄道": "しんこうとうさんかいかんこうてつどう",
+    "箱根登山鉄道": "はこねとざんてつどう",
+    "西名古屋港線": "にしなごやこうせん",
+    "西武": "せいぶ",
+    "西鉄": "にしてつ",
+    "近江鉄道": "おうみてつどう",
+    "近鉄": "きんてつ",
+    "道南いさりび鉄道": "どうなんいさりびてつどう",
+    "都営": "とえい",
+    "野岩鉄道": "やがんてつどう",
+    "長崎電軌": "ながさきでんき",
+    "長良川鉄道": "ながらがわてつどう",
+    "阪堺電軌": "はんかいでんき",
+    "阪急": "はんきゅう",
+    "阿佐海岸鉄道": "あさかいがんてつどう",
+    "青い森鉄道": "あおいもりてつどう",
+    "韓国鉄道公社": "かんこくてつどうこうしゃ",
+    "韓国鉄道": "かんこくてつどう",
+    "首都圏広域急行鉄道": "しゅとけんこういききゅうこうてつどう",
+    "鹿児島市電": "かごしましでん",
+    "黒部峡谷鉄道": "くろべきょうこくてつどう",
+}
+
+LINE_OPERATOR_PREFIXES = {
+    "JR山手線": "JR東日本",
+    "JR京浜東北線": "JR東日本",
+    "JR東北本線": "JR東日本",
+    "JR日光線": "JR東日本",
+    "JR常磐線": "JR東日本",
+    "常磐線": "JR東日本",
+    "JR奥羽本線": "JR東日本",
+    "JR津軽線": "JR東日本",
+    "JR城端線": "JR西日本",
+    "JR氷見線": "JR西日本",
+    "JR大村線": "JR九州",
+    "JR佐世保線": "JR九州",
+    "JR筑肥線": "JR九州",
+    "JR土讃線": "JR四国",
+    "JR陸羽西線": "JR東日本",
+    "総武線": "JR東日本",
+    "東北新幹線": "JR東日本",
+    "東京メトロ": "東京メトロ",
+    "東急": "東急電鉄",
+    "京急": "京浜急行電鉄",
+    "京成": "京成電鉄",
+    "京王": "京王電鉄",
+    "小田急": "小田急電鉄",
+    "東武": "東武鉄道",
+    "西武": "西武鉄道",
+    "近鉄": "近畿日本鉄道",
+    "阪急": "阪急電鉄",
+    "阪堺電軌": "阪堺電気軌道",
+    "南海": "南海電鉄",
+    "西鉄": "西日本鉄道",
+    "名鉄": "名古屋鉄道",
+    "京阪": "京阪電気鉄道",
+    "OsakaMetro": "OsakaMetro",
+    "都営": "東京都交通局",
+    "札幌市営地下鉄": "札幌市交通局",
+    "仙台市営地下鉄": "仙台市交通局",
+    "名古屋市営地下鉄": "名古屋市交通局",
+    "神戸市営地下鉄": "神戸市交通局",
+    "鹿児島市電": "鹿児島市交通局",
+    "長崎電軌": "長崎電気軌道",
+    "広電": "広島電鉄",
+    "東京モノレール": "東京モノレール",
+    "千葉都市モノレール": "千葉都市モノレール",
+    "沖縄都市モノレール": "沖縄都市モノレール",
+    "ゆいレール": "沖縄都市モノレール",
+    "ハピラインふくい": "ハピラインふくい",
+    "えちぜん鉄道": "えちぜん鉄道",
+    "三岐鉄道": "三岐鉄道",
+    "土佐くろしお鉄道": "土佐くろしお鉄道",
+    "松浦鉄道": "松浦鉄道",
+    "岩手開発鉄道": "岩手開発鉄道",
+    "タイ国有鉄道": "タイ国有鉄道",
+    "メキシコシティ地下鉄": "メキシコシティ地下鉄",
+    "マルセイユトラム": "マルセイユ・トラム",
+    "ソウル交通公社": "ソウル交通公社",
+    "台湾鉄路公司": "台湾鉄路公司",
+    "韓国鉄道公社": "韓国鉄道公社",
+    "ベルリンSバーン": "ベルリンSバーン",
+}
+
+MODEL_OPERATOR_NAMES = [
+    "東京メトロ",
+    "東急",
+    "京急",
+    "京王",
+    "小田急",
+    "東武",
+    "西武",
+    "近鉄",
+    "阪急",
+    "南海",
+    "西鉄",
+    "OsakaMetro",
+    "ハピラインふくい",
+]
+
+OPERATOR_ALIASES = {
+    "東急": "東急電鉄",
+    "京急": "京浜急行電鉄",
+    "京王": "京王電鉄",
+    "小田急": "小田急電鉄",
+    "東武": "東武鉄道",
+    "西武": "西武鉄道",
+    "近鉄": "近畿日本鉄道",
+    "阪急": "阪急電鉄",
+    "南海": "南海電鉄",
+    "西鉄": "西日本鉄道",
+    "京阪": "京阪電気鉄道",
+    "名鉄": "名古屋鉄道",
+    "VR": "VRグループ",
+    "台湾鉄路管理局": "台湾鉄路公司",
 }
 
 FOREIGN_REGION_PREFIXES = {
@@ -385,7 +687,11 @@ def unique_keep_order(items: list[str]) -> list[str]:
     result: list[str] = []
     seen: set[str] = set()
     for item in items:
-        cleaned = compact_text(item).strip("「」『』、。 ")
+        cleaned = compact_text(item).strip("、。 ")
+        if (cleaned.startswith("「") and cleaned.endswith("」")) or (
+            cleaned.startswith("『") and cleaned.endswith("』")
+        ):
+            cleaned = cleaned[1:-1].strip()
         if not cleaned or cleaned in seen:
             continue
         seen.add(cleaned)
@@ -530,11 +836,26 @@ def split_reference_lines(value: str) -> list[str]:
     cleaned: list[str] = []
     for part in merged:
         part = re.sub(r"\s+など$", "", part)
+        part = re.sub(r"\s+ほか$", "", part)
         part = re.sub(r"\s*\(\*\d+\)\s*", "", part)
         part = re.sub(r"\s*座標中心点住所：.*$", "", part)
         part = compact_text(part.strip("、。 "))
-        if part:
-            cleaned.append(part)
+        if part.startswith(("（", "(")):
+            continue
+        if match := re.match(r"^(東京モノレール)\s+", part):
+            part = match.group(1)
+        if "、" in part:
+            comma_parts = [compact_text(item) for item in re.split(r"\s*、\s*", part) if compact_text(item)]
+            if all(item.endswith(("新幹線", "本線", "線", "鉄道", "電鉄", "ライン", "号線", "系統")) for item in comma_parts):
+                for item in comma_parts:
+                    line = cleanup_line_candidate(item)
+                    if line:
+                        cleaned.append(line)
+                continue
+        for item in split_compound_line(part):
+            item = cleanup_line_candidate(item)
+            if item:
+                cleaned.append(item)
     return unique_keep_order(cleaned)
 
 
@@ -806,8 +1127,34 @@ def strip_foreign_region_prefix(value: str) -> str:
     return value
 
 
+def split_compound_line(value: str) -> list[str]:
+    value = compact_text(value)
+    if "・" not in value:
+        return [value] if value else []
+    parts = [part for part in re.split(r"\s*・\s*", value) if part]
+    if len(parts) < 2:
+        return [value] if value else []
+    line_suffixes = ("新幹線", "本線", "線", "鉄道", "電鉄", "ライン", "号線", "Sバーン")
+    propagated = []
+    if len(parts) >= 2 and (match := re.match(r"^(.+?)\d+号線$", parts[0])):
+        prefix = match.group(1)
+        for part in parts:
+            if re.match(r"^\d+号線$", part):
+                propagated.append(f"{prefix}{part}")
+            else:
+                propagated.append(part)
+        parts = propagated
+    if all(part.endswith(line_suffixes) for part in parts):
+        return parts
+    return [value]
+
+
 def cleanup_station_candidate(value: str) -> str | None:
     value = compact_text(value)
+    value = re.sub(r"\s*\(\*\d+\)\s*", "", value)
+    if "にある" in value:
+        value = value.rsplit("にある", 1)[1]
+    value = re.sub(r"^(?:かつてあった|現\s*)", "", value)
     if "駅である" in value:
         value = value.rsplit("駅である", 1)[1]
     if "駅が" in value:
@@ -816,6 +1163,10 @@ def cleanup_station_candidate(value: str) -> str | None:
     value = re.sub(r"^.*の", "", value)
     value = re.sub(r"^(?:[一-龥ぁ-んァ-ヶA-Za-z0-9・ー]+(?:新幹線|本線|線|鉄道|電鉄|ライン))+", "", value)
     if value == "駅":
+        return None
+    if value in {"最大駅", "最寄り駅", "終着駅", "起点駅", "境界駅", "管轄が分かれる境界駅", "説明で使用されている駅"}:
+        return None
+    if value.startswith("終着駅"):
         return None
     if any(noise in value for noise in ["という駅", "名称の駅", "駅は存在しない"]):
         return None
@@ -835,6 +1186,11 @@ def cleanup_station_candidate(value: str) -> str | None:
 def cleanup_line_candidate(value: str) -> str | None:
     value = compact_text(value)
     value = re.sub(r"^[・\s]+", "", value)
+    value = re.sub(r"\s+ほか$", "", value)
+    value = re.sub(r"沿線$", "", value)
+    value = re.sub(r"[（(].*$", "", value)
+    value = value.strip("（）()")
+    value = re.sub(r"鉄道の(?=[一-龥ぁ-んァ-ヶA-Za-z0-9・ー]+線$)", "鉄道", value)
     value = strip_foreign_region_prefix(value)
     if re.match(r"^[のはをやと]", value):
         return None
@@ -860,9 +1216,9 @@ def cleanup_line_candidate(value: str) -> str | None:
         value = value.split("スカイトレインの", 1)[1]
     if any(fragment in value for fragment in ["モチーフ路線", "サッカー好き", "航空機の性能", "治安の悪さ", "開催を機に", "結ぶ路線", "繋がる路線"]):
         return None
-    if any(fragment in value for fragment in ["営業廃止", "太陽光発電", "当路線", "保存鉄道", "元ネタ車両も", "株式会社の子会社", "協会の路線", "の線"]):
+    if any(fragment in value for fragment in ["営業廃止", "太陽光発電", "当路線", "保存鉄道", "元ネタ車両も", "株式会社の子会社", "協会の路線", "の線", "のうちの", "駅の軽便鉄道", "呼ばれる線", "元ネタの", "元ネタ車両", "車両は", "駅名としての由来", "運行しているツアー鉄道"]):
         return None
-    if value in {"鉄道", "高架鉄道", "路線"}:
+    if value in {"鉄道", "高架鉄道", "路線", "下り線", "保線", "貨物線", "号線", "軽便鉄道", "軽電鉄", "上記鉄道", "南アフリカの旅客鉄道", "南アフリカの鉄道路線", "国内最大の鉄道"}:
         return None
     if "駅は" in value:
         value = value.split("駅は", 1)[1]
@@ -876,12 +1232,16 @@ def cleanup_line_candidate(value: str) -> str | None:
 def cleanup_operator_candidate(value: str) -> str | None:
     value = compact_text(value)
     value = re.sub(r"^[・\s]+", "", value)
+    if value in OPERATOR_ALIASES:
+        return OPERATOR_ALIASES[value]
     value = strip_foreign_region_prefix(value)
     if value in {"JR北海道", "JR東日本", "JR東海", "JR西日本", "JR四国", "JR九州", "JR貨物", "国鉄"}:
         return value
     if re.match(r"^[のはをやと]", value):
         return None
     salvage_patterns = [
+        r"ことから(.+)$",
+        r"のうちの(.+)$",
         r"にある(.+)$",
         r"を走る(.+)$",
         r"を拠点とする(.+)$",
@@ -901,6 +1261,8 @@ def cleanup_operator_candidate(value: str) -> str | None:
         return None
     if any(fragment in value for fragment in ["にある", "である", "首都", "地域", "モデルとなった", "元ネタ車両", "カラーリング", "ゆかりのある駅", "沿線に鉄道", "名乗る鉄道", "保存鉄道", "間を結んでいた鉄道", "国有鉄道", "営業廃止", "株式会社の子会社"]):
         return None
+    if value in {"鉄道", "軽便鉄道", "軽電鉄", "南アフリカの旅客鉄道", "南アフリカの鉄道", "国内最大の鉄道"}:
+        return None
     if re.match(r"^(?:の|は|を|や|と|という|上記)", value):
         return None
     if len(value) <= 2:
@@ -911,26 +1273,30 @@ def cleanup_operator_candidate(value: str) -> str | None:
 def extract_lines(text: str) -> list[str]:
     if not text:
         return []
-    pattern = re.compile(r"([一-龥ぁ-んァ-ヶA-Za-z0-9・ー]+(?:新幹線|本線|線|鉄道|電鉄|ライン))")
+    pattern = re.compile(r"([一-龥ぁ-んァ-ヶA-Za-z0-9・ー]+(?:新幹線|本線|線|鉄道|電鉄|ライン|号線|Sバーン)|ハウトレイン)")
     candidates = []
     for item in pattern.findall(text):
         if any(noise in item for noise in ["架線", "延線", "視線", "目線"]):
             continue
         cleaned = cleanup_line_candidate(item)
         if cleaned:
-            if cleaned.count("線") >= 2 and "と" in cleaned:
+            if "・" in cleaned:
+                candidates.extend(split_compound_line(cleaned))
+            elif cleaned.count("線") >= 2 and "と" in cleaned:
                 candidates.extend(part for part in re.split(r"\s*と\s*", cleaned) if part)
             else:
                 candidates.append(cleaned)
-    return unique_keep_order(candidates)
+    return drop_substring_duplicates(unique_keep_order(candidates))
 
 
 def extract_vehicles(text: str) -> list[str]:
     if not text:
         return []
+    vehicle_prefix = r"(?:[A-ZＡ-Ｚ]{0,4}|キハ|クハネ|クハ|クモハ|モハニ|モハ|雪)"
     patterns = [
-        r"([A-ZＡ-Ｚ]*\s*\d{2,4}形(?:\d+番台)?(?:\s*[（(][^）)]*[）)])?)",
-        r"([A-ZＡ-Ｚ]*\s*\d{2,4}系(?:\d+番台)?(?:\s*[（(][^）)]*[）)])?)",
+        r"([A-ZＡ-Ｚ]{1,4}\d+[A-ZＡ-Ｚ]*(?:-\d+[A-ZＡ-Ｚ]*)?型[一-龥ぁ-んァ-ヶA-Za-z0-9・ー]*機関車)",
+        rf"({vehicle_prefix}\s*\d{{2,5}}形(?:\d+番台)?(?:\s*[（(][^）)]*[）)])?)",
+        rf"({vehicle_prefix}\s*\d{{2,5}}系(?:\d+番台)?(?:\s*[（(][^）)]*[）)])?)",
         r"(ドクターイエロー)",
         r"(オリエント急行)",
         r"([A-ZＡ-Ｚ]*\s*[A-ZＡ-Ｚ]{2,}\d+[A-ZＡ-Ｚ]*[A-Za-zＡ-Ｚ0-9]*)",
@@ -940,7 +1306,186 @@ def extract_vehicles(text: str) -> list[str]:
     found: list[str] = []
     for pattern in patterns:
         found.extend(re.findall(pattern, text, flags=re.IGNORECASE))
-    return drop_substring_duplicates(unique_keep_order(found))
+    cleaned = [item for item in (cleanup_vehicle_candidate(value) for value in found) if item]
+    return drop_substring_duplicates(unique_keep_order(cleaned))
+
+
+def cleanup_vehicle_candidate(value: str) -> str | None:
+    value = compact_text(value)
+    value = re.sub(r"\s+", " ", value)
+    value = re.sub(r"\s+[（(](?:デザイン|設定|双方|前者|後者|.*混同.*).*$", "", value)
+    value = re.sub(r"[（(]・[^）)]*[）)]", "", value)
+    value = compact_text(value)
+    if not value or len(value) <= 1:
+        return None
+    return value
+
+
+def normalized_operator_name(value: str) -> str:
+    return OPERATOR_ALIASES.get(value, value)
+
+
+MODEL_VEHICLE_OPERATOR_HINT_RE = re.compile(
+    r"(?:鉄道|電鉄|急行|交通(?:局|公社|会社)?|管理局|軌道|モノレール|ライトレール|地下鉄|メトロ|トラム|市電|電車|レール|レイル|LRT|MRT|国鉄|公社|公団|公司|ケーブルカー|スカイトレイン|トランジット|トランスラピッド|トレニタリア|レンフェ|アムトラック|シーメンス|工業|バーン|ルート|エクスプレス)"
+)
+
+MODEL_VEHICLE_MARKER_RE = re.compile(
+    r"(?:[A-ZＡ-Ｚ]{1,4}[- ]?\d|[A-ZＡ-Ｚ]*\d{1,5}[A-ZＡ-Ｚ]*(?:形|系|型)|\d+t|車両移動機|軌道作業車|機関車|気動車|客車|コンビーノ|トランスロール|アヴェニオ|トランスラピッド|フレキシティ|ヴェラロ|ノスタルジック|クリスタルムーバー|Urbos|EMU|MP40PH|MI09|MI79|「|（)"
+)
+
+MODEL_VEHICLE_OPERATOR_EXCLUDES = {
+    "オリエント急行",
+    "TGV Duplex",
+}
+
+MODEL_VEHICLE_OPERATOR_SPECIALS = {
+    "愛知こどもの国",
+    "パシフィック・ナショナル",
+    "ホワイト・パス・アンド・ユーコン・ルート",
+    "ユニオン・ピアソン・エクスプレス",
+    "セントーサ・エクスプレス",
+}
+
+
+MODEL_OPERATOR_SUFFIXES = [
+    "交通局",
+    "交通公社",
+    "交通会社",
+    "鉄道",
+    "電鉄",
+    "急行",
+    "管理局",
+    "軌道",
+    "モノレール",
+    "ライトレール",
+    "地下鉄",
+    "メトロ",
+    "トラム",
+    "市電",
+    "電車",
+    "国鉄",
+    "公社",
+    "公団",
+    "公司",
+    "ケーブルカー",
+    "スカイトレイン",
+    "トランジット",
+    "トランスラピッド",
+    "トレニタリア",
+    "レンフェ",
+    "アムトラック",
+    "シーメンス",
+    "工業",
+    "バーン",
+    "ルート",
+    "エクスプレス",
+    "レール",
+    "レイル",
+]
+
+
+def candidate_model_operator_names() -> list[str]:
+    names = set(MODEL_OPERATOR_NAMES)
+    names.update(OPERATOR_ALIASES)
+    names.update(OPERATOR_ALIASES.values())
+    names.update(OPERATOR_READINGS)
+    names.update(LINE_OPERATOR_PREFIXES)
+    names.update(LINE_OPERATOR_PREFIXES.values())
+    names.update(LINE_PREFIX_READINGS)
+    return sorted(names, key=len, reverse=True)
+
+
+def trim_model_operator_suffix(value: str) -> str:
+    if value.startswith("愛知こどもの国 "):
+        return "愛知こどもの国"
+    for special in ["アムトラック", "シーメンス", "レンフェ", "トレニタリア"]:
+        if value == special or value.startswith(f"{special} "):
+            return special
+    for suffix in MODEL_OPERATOR_SUFFIXES:
+        match = re.match(rf"^(.+?{re.escape(suffix)})(?:\s|$)", value)
+        if match:
+            return match.group(1)
+    return value
+
+
+def cleanup_model_operator_prefix(value: str) -> str | None:
+    value = compact_text(value)
+    value = re.sub(r"[（(].*$", "", value)
+    value = re.sub(r"\s+(?:新塗装|第一建設工業色|東鉄工業色)$", "", value)
+    value = trim_model_operator_suffix(value)
+    value = value.strip("・/／,，、。:： -")
+    value = compact_text(value)
+    if not value or value in MODEL_VEHICLE_OPERATOR_EXCLUDES:
+        return None
+    cleaned = cleanup_operator_candidate(value) or value
+    if cleaned in MODEL_VEHICLE_OPERATOR_EXCLUDES:
+        return None
+    if cleaned in MODEL_VEHICLE_OPERATOR_SPECIALS:
+        return normalized_operator_name(cleaned)
+    if MODEL_VEHICLE_OPERATOR_HINT_RE.search(cleaned):
+        return normalized_operator_name(cleaned)
+    return None
+
+
+def extract_model_vehicle_operators(model_vehicle_raw: str | None) -> list[str]:
+    if not model_vehicle_raw:
+        return []
+    direct = extract_operators(model_vehicle_raw)
+    if direct:
+        return direct
+
+    raw = compact_text(model_vehicle_raw)
+    candidates: list[str] = []
+    for name in candidate_model_operator_names():
+        if raw.startswith(name):
+            candidates.append(normalized_operator_name(name))
+            break
+
+    marker = MODEL_VEHICLE_MARKER_RE.search(raw)
+    prefix = raw[: marker.start()] if marker else raw
+    cleaned_prefix = cleanup_model_operator_prefix(prefix)
+    if cleaned_prefix:
+        candidates.append(cleaned_prefix)
+
+    if not candidates and MODEL_VEHICLE_OPERATOR_HINT_RE.search(raw):
+        cleaned_raw = cleanup_model_operator_prefix(raw)
+        if cleaned_raw:
+            candidates.append(cleaned_raw)
+    return unique_keep_order(candidates)
+
+
+def vehicle_operator_prefix(model_vehicle_raw: str | None, vehicle: str, model_operators: list[str]) -> str | None:
+    if not model_vehicle_raw:
+        return model_operators[0] if model_operators else None
+    idx = model_vehicle_raw.find(vehicle)
+    prefix_text = model_vehicle_raw[:idx] if idx >= 0 else model_vehicle_raw
+    candidates = set(model_operators)
+    candidates.update(OPERATOR_ALIASES)
+    candidates.update(OPERATOR_ALIASES.values())
+    candidates.update(OPERATOR_READINGS)
+    best: tuple[int, str] | None = None
+    for candidate in candidates:
+        pos = prefix_text.rfind(candidate)
+        if pos >= 0 and (best is None or pos > best[0]):
+            best = (pos, normalized_operator_name(candidate))
+    if best:
+        return best[1]
+    return model_operators[0] if model_operators else None
+
+
+def qualify_vehicles(vehicles: list[str], model_vehicle_raw: str | None, model_operators: list[str]) -> list[str]:
+    qualified: list[str] = []
+    for vehicle in vehicles:
+        if any(operator and operator in vehicle for operator in model_operators):
+            qualified.append(vehicle)
+            continue
+        operator = vehicle_operator_prefix(model_vehicle_raw, vehicle, model_operators)
+        for alias, normalized in OPERATOR_ALIASES.items():
+            if operator == normalized and vehicle.startswith(alias):
+                vehicle = compact_text(vehicle.removeprefix(alias))
+                break
+        qualified.append(f"{operator} {vehicle}" if operator else vehicle)
+    return unique_keep_order(qualified)
 
 
 def extract_operators(text: str) -> list[str]:
@@ -948,18 +1493,72 @@ def extract_operators(text: str) -> list[str]:
         return []
     patterns = [
         r"(JR北海道|JR東日本|JR東海|JR西日本|JR四国|JR九州|JR貨物)",
+        r"(東京メトロ|東急|京急|京王|小田急|東武|西武|近鉄|阪急|南海|西鉄|OsakaMetro|ハピラインふくい)",
         r"([一-龥ぁ-んァ-ヶA-Za-z0-9・ー]+国鉄)",
         r"(国鉄)",
         r"([一-龥ぁ-んァ-ヶA-Za-z0-9・ー]+交通局)",
         r"([一-龥ぁ-んァ-ヶA-Za-z0-9・ー]+鉄道)",
         r"([一-龥ぁ-んァ-ヶA-Za-z0-9・ー]+電鉄)",
-        r"(キウイレール|バンコク・スカイトレイン|ドバイメトロ|De\s*Lijn|TEC|MIVB|SNCB|NMBS|SNCF)",
+        r"(ロボスレイル|ハウトレイン|VRグループ|フェロメックス|メキシコシティ・ライトレール|ベルリンSバーン|キウイレール|バンコク・スカイトレイン|ドバイメトロ|De\s*Lijn|TEC|MIVB|SNCB|NMBS|SNCF)",
     ]
     found: list[str] = []
     for pattern in patterns:
         found.extend(re.findall(pattern, text, flags=re.IGNORECASE))
     cleaned = [item for item in (cleanup_operator_candidate(value) for value in found) if item]
     return drop_substring_duplicates(unique_keep_order(cleaned))
+
+
+def derive_operators_from_lines(lines: list[str]) -> list[str]:
+    operators: list[str] = []
+    for line in lines:
+        for prefix, operator in LINE_OPERATOR_PREFIXES.items():
+            if line.startswith(prefix):
+                operators.append(operator)
+                break
+    return unique_keep_order(operators)
+
+
+def derive_jr_operators_from_context(lines: list[str], prefectures: list[str], stations: list[str]) -> list[str]:
+    operators: list[str] = []
+    line_set = set(lines)
+    pref_set = set(prefectures)
+    station_set = set(stations)
+    if "JR中央本線" in line_set:
+        if "愛知県" in pref_set or "名古屋市営地下鉄鶴舞線" in line_set:
+            operators.append("JR東海")
+        elif pref_set & {"東京都", "山梨県", "長野県"}:
+            operators.append("JR東日本")
+    if "JR東海道本線" in line_set:
+        if pref_set & {"東京都", "神奈川県"}:
+            operators.append("JR東日本")
+        elif pref_set & {"静岡県", "愛知県", "岐阜県"}:
+            operators.append("JR東海")
+        elif pref_set & {"滋賀県", "京都府", "大阪府", "兵庫県"}:
+            operators.append("JR西日本")
+    if "JR関西本線" in line_set:
+        if pref_set & {"愛知県", "三重県"}:
+            operators.append("JR東海")
+        elif pref_set & {"京都府", "大阪府", "奈良県", "和歌山県"}:
+            operators.append("JR西日本")
+    if ("JR大糸線" in line_set or "北陸新幹線" in line_set) and ("糸魚川駅" in station_set or "新潟県" in pref_set):
+        operators.append("JR西日本")
+    return unique_keep_order(operators)
+
+
+def normalize_lines_with_context(lines: list[str], model_vehicle_raw: str | None) -> list[str]:
+    normalized: list[str] = []
+    for line in lines:
+        item = line
+        if re.match(r"^\d+号線$", item):
+            model = model_vehicle_raw or ""
+            if "メキシコシティ地下鉄" in model:
+                item = f"メキシコシティ地下鉄{item}"
+            elif "マルセイユ" in model:
+                item = f"マルセイユトラム{item}"
+        cleaned = cleanup_line_candidate(item)
+        if cleaned:
+            normalized.append(cleaned)
+    return drop_substring_duplicates(unique_keep_order(normalized))
 
 
 def extract_stations(text: str) -> list[str]:
@@ -1007,13 +1606,14 @@ def build_record(
     voice_actor = profile_field(profile_raw, "声の担当") or profile_field(profile_raw, "担当声優")
     designer = profile_field(profile_raw, "キャラクターデザイン")
     combined = " ".join(item for item in [model_vehicle_raw, name_origin_raw] if item)
-    operators = extract_operators(model_vehicle_raw or "") or extract_operators(combined)
-    lines = extract_lines(combined)
-    vehicles = extract_vehicles(model_vehicle_raw or combined)
+    model_vehicle_operators = extract_model_vehicle_operators(model_vehicle_raw)
+    fallback_operators = extract_operators(combined)
+    lines = normalize_lines_with_context(extract_lines(combined), model_vehicle_raw)
+    vehicles = qualify_vehicles(extract_vehicles(model_vehicle_raw or combined), model_vehicle_raw, model_vehicle_operators)
     stations = extract_stations(name_origin_raw or "")
     absent_station_names = extract_absent_station_names(name_origin_raw or "")
     if model_vehicle_raw and not vehicles:
-        vehicles = [model_vehicle_raw]
+        vehicles = qualify_vehicles([model_vehicle_raw], model_vehicle_raw, model_vehicle_operators)
 
     reference_matches = reference_lookup.get(identity["name"], [])
     reference_stations = reference_field_values(reference_matches, "station", homecoming_only=True)
@@ -1035,8 +1635,14 @@ def build_record(
         region_status = "foreign"
     elif no_place_regions:
         region_status = "none"
-    display_lines = reference_lines or lines
+    display_lines = normalize_lines_with_context(reference_lines or lines, model_vehicle_raw)
     display_stations = reference_stations or stations
+    related_operators = unique_keep_order(
+        derive_operators_from_lines(display_lines)
+        + derive_jr_operators_from_context(display_lines, prefectures, display_stations)
+    )
+    operators = model_vehicle_operators if model_vehicle_raw else fallback_operators or related_operators
+    related_operators = [operator for operator in related_operators if operator not in operators]
     reference_sources = unique_keep_order([match["source_label"] for match in reference_matches])
     primary_sources = primary_reference_sources(reference_matches)
     primary_links = primary_reference_links(reference_matches)
@@ -1122,6 +1728,8 @@ def build_record(
         "primary_reference_sources": primary_sources,
         "primary_reference_links": primary_links,
         "reference_notes": reference_notes,
+        "model_vehicle_operators": model_vehicle_operators,
+        "related_operators": related_operators,
         "prototype_regions": regions,
         "prototype_prefectures": prefectures,
         "prototype_countries": countries,
@@ -1208,6 +1816,65 @@ def normalized_search_text(value: str) -> str:
     return " ".join(sorted(item for item in variants if item))
 
 
+INFERRED_STATION_READINGS: dict[str, str] = {}
+
+
+def denko_name_stem(name: str) -> str:
+    match = re.match(r"[一-龥々ヶ]+", name or "")
+    return match.group(0) if match else ""
+
+
+def infer_station_readings(records: list[dict[str, Any]]) -> None:
+    inferred: dict[str, str] = {}
+    for record in records:
+        raw = record.get("name_origin_raw") or ""
+        match = re.search(r"苗字は[「『]([^」』]+)[」』]と読み", raw)
+        if not match:
+            continue
+        reading = katakana_to_hiragana(compact_text(match.group(1)))
+        stem = denko_name_stem(record.get("name") or "")
+        if not reading or not stem:
+            continue
+        for station in record.get("prototype_stations") or []:
+            station_base = re.sub(r"\s*[（(].*$", "", station).removesuffix("駅")
+            if station_base and (station_base.startswith(stem) or stem.startswith(station_base)):
+                inferred.setdefault(station, f"{reading}えき")
+    INFERRED_STATION_READINGS.clear()
+    INFERRED_STATION_READINGS.update(inferred)
+
+
+def station_reading(key: str) -> str | None:
+    return STATION_READINGS.get(key) or INFERRED_STATION_READINGS.get(key)
+
+
+def prefixed_reading(key: str) -> str | None:
+    candidates: list[tuple[str, str]] = []
+    candidates.extend((name, reading) for name, reading in OPERATOR_READINGS.items())
+    candidates.extend((name, reading) for name, reading in LINE_PREFIX_READINGS.items())
+    candidates.extend((name, reading) for name, reading in LINE_READINGS.items())
+    candidates.extend((name, reading) for name, reading in STATION_READINGS.items())
+    candidates.extend((name, reading) for name, reading in INFERRED_STATION_READINGS.items())
+    for name, reading in sorted(candidates, key=lambda item: len(item[0]), reverse=True):
+        if key.startswith(name):
+            suffix = key.removeprefix(name).strip()
+            return f"{reading} {suffix}" if suffix else reading
+    return None
+
+
+def line_reading(key: str) -> str | None:
+    if key in LINE_READINGS:
+        return LINE_READINGS[key]
+    if key in OPERATOR_READINGS:
+        return OPERATOR_READINGS[key]
+    for name, reading in LINE_PREFIX_READINGS.items():
+        if key.startswith(name):
+            return reading
+    for name, reading in OPERATOR_READINGS.items():
+        if key.startswith(name):
+            return reading
+    return None
+
+
 def reading_aliases(group: str, key: str) -> list[str]:
     aliases: list[str] = []
     if group == "by_prefecture":
@@ -1228,8 +1895,11 @@ def reading_aliases(group: str, key: str) -> list[str]:
         for name, reading in OPERATOR_READINGS.items():
             if name in key:
                 aliases.append(reading)
+    elif group == "by_line":
+        if reading := line_reading(key):
+            aliases.append(reading)
     elif group == "by_station":
-        if reading := STATION_READINGS.get(key):
+        if reading := station_reading(key):
             aliases.extend([reading, reading.removesuffix("えき")])
         aliases.append(key.removesuffix("駅"))
     elif group == "by_voice_actor":
@@ -1253,8 +1923,14 @@ def directory_primary_reading(group: str, key: str) -> str:
         for name, reading in OPERATOR_READINGS.items():
             if name in key:
                 return reading
+    if group == "by_line":
+        if reading := line_reading(key):
+            return reading
     if group == "by_station":
-        return STATION_READINGS.get(key) or key
+        return station_reading(key) or key
+    if group == "by_vehicle":
+        if reading := prefixed_reading(key):
+            return reading
     if group == "by_voice_actor":
         return VOICE_ACTOR_READINGS.get(key) or key
     return key
@@ -1285,7 +1961,7 @@ def kana_initial(value: str) -> str:
     if ch.isdigit():
         return "#"
     groups = [
-        ("あ", "あいうえおアイウエオ"),
+        ("あ", "あいうえおアイウエオヴ"),
         ("か", "かきくけこがぎぐげごカキクケコガギグゲゴ"),
         ("さ", "さしすせそざじずぜぞサシスセソザジズゼゾ"),
         ("た", "たちつてとだぢづでどタチツテトダヂヅデド"),
@@ -1500,9 +2176,10 @@ def render_directory_group(group: str, title: str, entries: dict[str, list[dict[
     last_initial: str | None = None
     for key, refs in entries.items():
         initial = directory_section_label(group, key)
+        item_id = directory_anchor_id(group, key)
         if initial != last_initial:
             header_id = directory_anchor_id(group, f"section:{initial}")
-            quick_links.append(f"""<a href="#{esc(header_id)}">{esc(initial)}</a>""")
+            quick_links.append(f"""<button type="button" data-directory-section="{esc(item_id)}">{esc(initial)}</button>""")
             items.append(f"""<li class="directory-section" id="{esc(header_id)}">{esc(initial)}</li>""")
             last_initial = initial
         links = " ".join(
@@ -1510,7 +2187,6 @@ def render_directory_group(group: str, title: str, entries: dict[str, list[dict[
             for ref in refs
         )
         multi = f"""<span class="entry-count">{len(refs)}件</span>""" if len(refs) > 1 else ""
-        item_id = directory_anchor_id(group, key)
         search_key = directory_search_key(group, key)
         items.append(
             f"""<li id="{esc(item_id)}" data-directory-item data-key="{esc(search_key)}"><span class="directory-key">{esc(key)}{multi}</span><span class="directory-links">{links}</span></li>"""
@@ -1524,6 +2200,7 @@ def render_directory_group(group: str, title: str, entries: dict[str, list[dict[
       </div>
       {quick}
       <ul class="directory-list">{''.join(items)}</ul>
+      <div class="directory-footer"><button type="button" data-directory-expand aria-pressed="false">展开</button></div>
     </section>"""
 
 
@@ -1575,6 +2252,7 @@ def render_audit(index: dict[str, Any]) -> str:
 
 
 def render_html(records: list[dict[str, Any]], dataset_label: str, source_records_path: Path) -> str:
+    infer_station_readings(records)
     generated_at = now_iso()
     index = build_index(records, source_records_path=source_records_path)
     character_cards = []
@@ -1597,6 +2275,11 @@ def render_html(records: list[dict[str, Any]], dataset_label: str, source_record
         <h3>参考注释</h3>
         <ul>{notes}</ul>
       </article>"""
+        related_operator_html = (
+            f"""<div><dt>关联公司</dt><dd>{esc('、'.join(record.get('related_operators') or []))}</dd></div>"""
+            if record.get("related_operators")
+            else ""
+        )
         character_cards.append(
             f"""<section class="character-card" id="{esc(record['denko_id'].replace(':', '-'))}">
       <header class="character-card-header">
@@ -1611,6 +2294,7 @@ def render_html(records: list[dict[str, Any]], dataset_label: str, source_record
         <div><dt>都道府県</dt><dd>{esc('、'.join(record.get('prototype_prefectures') or []) or '-')}</dd></div>
         <div><dt>国家/地区</dt><dd>{esc('、'.join(record.get('prototype_countries') or []) or '-')}</dd></div>
         <div><dt>公司/运营者</dt><dd>{esc('、'.join(record.get('prototype_operators') or []) or '-')}</dd></div>
+        {related_operator_html}
         <div><dt>车辆候选</dt><dd>{esc('、'.join(record['prototype_vehicles']) or '-')}</dd></div>
         <div><dt>线路候选</dt><dd>{esc('、'.join(record['prototype_lines']) or '-')}</dd></div>
         <div><dt>站点候选</dt><dd>{esc('、'.join(record['prototype_stations']) or '-')}</dd></div>
@@ -1645,10 +2329,14 @@ def render_html(records: list[dict[str, Any]], dataset_label: str, source_record
     .directory-tools button {{ border:1px solid #d0d7de; border-radius:4px; background:#f6f8fa; color:#24292f; padding:5px 8px; font:inherit; font-size:12px; cursor:pointer; }}
     .directory-tools button:hover {{ background:#eef6ff; border-color:#8cbeef; }}
     .directory-quick {{ display:flex; flex-wrap:wrap; gap:4px; margin:0 0 8px; }}
-    .directory-quick a {{ min-width:22px; text-align:center; border:1px solid #d0d7de; border-radius:4px; padding:1px 4px; color:#57606a; background:#fff; font-size:11px; font-weight:600; text-decoration:none; }}
-    .directory-quick a:hover {{ background:#f6f8fa; color:#0969da; text-decoration:none; }}
+    .directory-quick button {{ min-width:22px; text-align:center; border:1px solid #d0d7de; border-radius:4px; padding:1px 4px; color:#57606a; background:#fff; font:inherit; font-size:11px; font-weight:600; cursor:pointer; }}
+    .directory-quick button:hover {{ background:#f6f8fa; color:#0969da; }}
     .directory-card ul {{ list-style:none; padding:0; margin:0; display:grid; gap:7px; }}
-    .directory-list {{ max-height:520px; overflow:auto; overscroll-behavior:contain; padding-right:4px; scrollbar-gutter:stable; }}
+    .directory-list {{ position:relative; max-height:520px; overflow:auto; overscroll-behavior:contain; padding-right:4px; scrollbar-gutter:stable; }}
+    .directory-card.is-expanded .directory-list {{ max-height:min(72vh, 900px); }}
+    .directory-footer {{ position:sticky; bottom:0; z-index:3; display:flex; justify-content:center; align-items:center; margin:6px -10px -10px; padding:6px 10px 8px; background:linear-gradient(rgba(255,255,255,0), #fff 35%); border-bottom:1px solid #eef1f4; }}
+    .directory-footer button {{ min-width:72px; border:1px solid #d0d7de; border-radius:999px; background:#f6f8fa; color:#57606a; padding:2px 12px; font:inherit; font-size:11px; font-weight:700; cursor:pointer; line-height:1.4; box-shadow:0 1px 2px rgba(31,35,40,.05); }}
+    .directory-footer button:hover {{ background:#eef6ff; border-color:#8cbeef; color:#0969da; }}
     .directory-card li {{ display:grid; gap:3px; }}
     .directory-section {{ position:sticky; top:0; z-index:1; margin-top:2px; padding:2px 0; background:#fff; color:#68707c; font-size:11px; font-weight:700; border-bottom:1px solid #eef1f4; }}
     .directory-hit {{ outline:2px solid #f2cc60; outline-offset:2px; border-radius:4px; background:#fff8c5; }}
@@ -1725,10 +2413,22 @@ def render_html(records: list[dict[str, Any]], dataset_label: str, source_record
           .replace(/[ ・＝=]/g, '');
       }};
       const scrollWithinList = (list, target, block = 'center') => {{
-        const listRect = list.getBoundingClientRect();
-        const targetRect = target.getBoundingClientRect();
-        const current = list.scrollTop + targetRect.top - listRect.top;
-        const offset = block === 'center' ? (list.clientHeight - target.offsetHeight) / 2 : 0;
+        let current = 0;
+        let node = target;
+        while (node && node !== list) {{
+          current += node.offsetTop || 0;
+          node = node.offsetParent;
+        }}
+        if (node !== list) {{
+          current = list.scrollTop + target.getBoundingClientRect().top - list.getBoundingClientRect().top;
+        }}
+        let offset = block === 'center' ? (list.clientHeight - target.offsetHeight) / 2 : 0;
+        if (block === 'start') {{
+          const section = target.previousElementSibling?.classList.contains('directory-section')
+            ? target.previousElementSibling
+            : null;
+          offset = section ? section.offsetHeight + 6 : 8;
+        }}
         list.scrollTo({{ top: Math.max(0, current - offset), behavior: 'smooth' }});
       }};
       const jumpInCard = (card) => {{
@@ -1746,8 +2446,14 @@ def render_html(records: list[dict[str, Any]], dataset_label: str, source_record
       }};
       document.querySelectorAll('.directory-card').forEach((card) => {{
         const button = card.querySelector('[data-directory-jump]');
+        const expandButton = card.querySelector('[data-directory-expand]');
         const input = card.querySelector('[data-directory-search]');
         if (button) button.addEventListener('click', () => jumpInCard(card));
+        if (expandButton) expandButton.addEventListener('click', () => {{
+          const expanded = card.classList.toggle('is-expanded');
+          expandButton.textContent = expanded ? '收起' : '展开';
+          expandButton.setAttribute('aria-pressed', expanded ? 'true' : 'false');
+        }});
         if (input) input.addEventListener('keydown', (event) => {{
           if (event.key === 'Enter') {{
             event.preventDefault();
@@ -1755,12 +2461,12 @@ def render_html(records: list[dict[str, Any]], dataset_label: str, source_record
           }}
         }});
       }});
-      document.querySelectorAll('.directory-quick a').forEach((link) => {{
-        link.addEventListener('click', (event) => {{
-          const id = link.getAttribute('href')?.slice(1);
+      document.querySelectorAll('.directory-quick [data-directory-section]').forEach((button) => {{
+        button.addEventListener('click', (event) => {{
+          const id = button.dataset.directorySection;
           if (!id) return;
           const target = document.getElementById(id);
-          const list = link.closest('.directory-card')?.querySelector('.directory-list');
+          const list = button.closest('.directory-card')?.querySelector('.directory-list');
           if (!target || !list) return;
           event.preventDefault();
           scrollWithinList(list, target, 'start');
@@ -1771,6 +2477,10 @@ def render_html(records: list[dict[str, Any]], dataset_label: str, source_record
 </body>
 </html>
 """
+
+
+def strip_trailing_html_whitespace(html_text: str) -> str:
+    return "\n".join(line.rstrip() for line in html_text.splitlines()) + "\n"
 
 
 def load_state() -> dict[str, Any]:
@@ -1813,10 +2523,11 @@ def main() -> None:
         row = by_id[denko_id]
         html_text, cache_meta = fetch_html(denko_id, row["identity"]["detail_url"], state, refresh=args.refresh)
         records.append(build_record(row, html_text, cache_meta, reference_lookup, birthday_profile_lookup))
+    infer_station_readings(records)
     write_jsonl(out_jsonl, records)
     out_index_json.write_text(json.dumps(build_index(records, source_records_path=out_jsonl), ensure_ascii=False, indent=2), encoding="utf-8")
     out_html.parent.mkdir(parents=True, exist_ok=True)
-    out_html.write_text(render_html(records, dataset_label, source_records_path=out_jsonl), encoding="utf-8")
+    out_html.write_text(strip_trailing_html_whitespace(render_html(records, dataset_label, source_records_path=out_jsonl)), encoding="utf-8")
     save_state(state)
     summary = {
         "html": str(out_html.relative_to(ROOT)),
