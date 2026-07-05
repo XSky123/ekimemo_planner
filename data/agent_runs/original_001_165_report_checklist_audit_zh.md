@@ -1,6 +1,6 @@
 # original 全量报告校对审计
 
-- generated_at: `2026-07-06T03:42:49.383145+09:00`
+- generated_at: `2026-07-06T03:52:59.436565+09:00`
 - issue_count: `0`
 - skill_records: `167`
 - severity_counts: `{}`

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-06T03:42:49.383145+09:00",
+  "generated_at": "2026-07-06T03:52:59.436565+09:00",
   "issues": [],
   "metrics": {
     "category_counts": {},
@@ -9,30 +9,6 @@
     "skill_record_count": 167
   },
   "report_checks": {
-    "original_001_040": {
-      "ascii_only": true,
-      "double_question_count": 0,
-      "has_component_table": true,
-      "has_old_slot_matrix": false,
-      "has_vu_columns": true,
-      "mojibake_hits": {}
-    },
-    "original_040_080": {
-      "ascii_only": true,
-      "double_question_count": 0,
-      "has_component_table": true,
-      "has_old_slot_matrix": false,
-      "has_vu_columns": true,
-      "mojibake_hits": {}
-    },
-    "original_080_119": {
-      "ascii_only": true,
-      "double_question_count": 0,
-      "has_component_table": true,
-      "has_old_slot_matrix": false,
-      "has_vu_columns": true,
-      "mojibake_hits": {}
-    },
     "original_120_163": {
       "ascii_only": true,
       "double_question_count": 0,

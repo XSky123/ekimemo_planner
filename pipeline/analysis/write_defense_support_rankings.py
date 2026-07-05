@@ -31,7 +31,7 @@ TABS = {
     },
     "damage_reduction": {
         "title": "伤害减轻/上限",
-        "description": "固定减伤、百分比减伤、伤害上限等。数值未明时保留为条件型候选。",
+        "description": "固定减伤、百分比减伤、伤害上限等。无法用单一数值表达时保留为条件型候选。",
         "kinds": {"damage_reduction", "damage_cap"},
         "default_score": None,
     },
@@ -232,11 +232,11 @@ def metric_text(value: float | None, fallback: str) -> str:
 def level_value_text(level: str, value: dict[str, Any], kind: str) -> str:
     raw = str(value.get("value_raw") or "-")
     if raw in {"def_buff", "damage_reduction", "hp_recovery", "skill_disable", "battery_disable", "counter", "reboot", "damage_nullification"}:
-        raw = "条件型/数值未明"
+        raw = "条件型"
     if kind in {"reboot", "force_hp_zero", "link_continue", "link_retention", "survive_hp1"} and (
         "スコア" in raw or "経験値" in raw or raw in {"link_continue", "force_hp_zero"}
     ):
-        raw = "条件型/数值未明"
+        raw = "条件型"
     if level != base.DEFAULT_LEVEL:
         return f"※Lv{level}: {raw}"
     return raw

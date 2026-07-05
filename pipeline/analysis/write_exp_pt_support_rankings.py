@@ -65,8 +65,8 @@ TABS = {
         "avg_header": "平均值",
     },
     "condition_unknown": {
-        "title": "条件型/数值未明",
-        "description": "效果存在但当前 Step1 数值没有结构化出来，或只有 score_gain/exp_gain 这类语义标签。默认降权排序，供后续详情页/LLM 复查。",
+        "title": "条件型/待确认",
+        "description": "效果存在但当前 Step1 还不能稳定转成排序数值，或只有 score_gain/exp_gain 这类语义标签。默认降权排序，供后续详情页/LLM 复查。",
         "metric_types": {"unknown_metric"},
         "max_header": "理论最大",
         "avg_header": "平均值",
@@ -680,7 +680,7 @@ def score_random_avg_text(value: dict[str, Any], avg_value: float | None) -> str
 def level_value_text(level: str, value: dict[str, Any], metric: str) -> str:
     raw = str(value.get("value_raw") or "-")
     if metric == "unknown_metric":
-        raw = "数值未明" if raw in UNKNOWN_VALUE_TOKENS else f"数值未明（{raw}）"
+        raw = "待确认" if raw in UNKNOWN_VALUE_TOKENS else f"待确认（{raw}）"
     return raw if level == DEFAULT_LEVEL else f"※Lv{level}: {raw}"
 
 
@@ -829,7 +829,7 @@ def render_rows(tab_id: str, candidates: list[dict[str, Any]]) -> str:
     for rank, item in enumerate(candidates, 1):
         badges = []
         if item["needs_metric_review"]:
-            badges.append('<span class="badge">数值未明</span>')
+            badges.append('<span class="badge">待确认</span>')
         if item["supplemented"]:
             badges.append('<span class="badge badge-supplement">网页补完</span>')
         badge = (" " + " ".join(badges)) if badges else ""
@@ -933,7 +933,7 @@ def main() -> None:
 </head>
 <body>
   <h1>Ekimemo Step2 经验/PT辅助排行</h1>
-  <p>从 Step1 DB 自动整理，分类参考 wiki「経験値、スコア系スキル」。固定值、百分比/倍率、条件型数值未明分开排行；默认按 Lv50 查看，可切换 Lv30/Lv80/Lv92/Lv100；仅 VU 后生效的项目默认隐藏。</p>
+  <p>从 Step1 DB 自动整理，分类参考 wiki「経験値、スコア系スキル」。固定值、百分比/倍率、条件型待确认分开排行；默认按 Lv50 查看，可切换 Lv30/Lv80/Lv92/Lv100；仅 VU 后生效的项目默认隐藏。</p>
   <div class="tabs">{tab_buttons}</div>
   <div class="toolbar">
     <input id="q" placeholder="搜索ID、名字、条件、效果" size="34">
