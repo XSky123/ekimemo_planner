@@ -2,7 +2,7 @@
   "artifact": "step1_db",
   "dedupe": {
     "denko": {
-      "duplicate_denko_count": 2,
+      "duplicate_denko_count": 3,
       "duplicate_details": [
         {
           "candidate_count": 2,
@@ -21,12 +21,22 @@
           "denko_id": "original:080",
           "identity_count": 1,
           "resolution": "last_batch_row_selected"
+        },
+        {
+          "candidate_count": 2,
+          "content_hashes": [
+            "5a4c0d3b1393037bfc42d73a51675def5f1ff49c25ec2a5e3845cbfb520639fc",
+            "ff2e5596e125c25ccc61d69fb69c22b23197aefa27700ab55b7af8c05ff2ce9a"
+          ],
+          "denko_id": "extra:127",
+          "identity_count": 2,
+          "resolution": "last_batch_row_selected"
         }
       ],
-      "unique_count": 290
+      "unique_count": 293
     },
     "skill": {
-      "duplicate_denko_count": 2,
+      "duplicate_denko_count": 3,
       "duplicate_details": [
         {
           "candidate_count": 2,
@@ -45,12 +55,22 @@
           "denko_id": "original:080",
           "identity_count": 1,
           "resolution": "last_batch_row_selected"
+        },
+        {
+          "candidate_count": 2,
+          "content_hashes": [
+            "42de0c64870722f5b5a1c3af2f5a24d2741ca30357d48d0f123e3f1ac9f41e19",
+            "601f44e871753bf3ff5f27ceaf553ff1008ec1c28f74c5800f99d1e670c8bd26"
+          ],
+          "denko_id": "extra:127",
+          "identity_count": 2,
+          "resolution": "last_batch_row_selected"
         }
       ],
-      "unique_count": 290
+      "unique_count": 293
     }
   },
-  "generated_at": "2026-07-04T14:36:57.747629+09:00",
+  "generated_at": "2026-07-06T03:14:54.811072+09:00",
   "language_policy": {
     "display": "zh",
     "schema_keys": "en",
@@ -59,15 +79,15 @@
   "metrics": {
     "by_pool": {
       "extra": {
-        "denko": 127,
-        "skill": 127
+        "denko": 128,
+        "skill": 128
       },
       "original": {
-        "denko": 163,
-        "skill": 163
+        "denko": 165,
+        "skill": 165
       }
     },
-    "denko_total": 290,
+    "denko_total": 293,
     "skill_component_effect_kind_counts": {
       "activation_probability_boost": 10,
       "additional_fixed_damage": 5,
@@ -85,11 +105,11 @@
       "damage_nullification": 3,
       "damage_reduction": 32,
       "damage_substitution": 1,
-      "def_buff": 145,
+      "def_buff": 148,
       "def_debuff": 16,
       "def_modifier": 2,
       "duration_extension": 19,
-      "effect_multiplier": 10,
+      "effect_multiplier": 11,
       "exp_distribution": 4,
       "exp_distribution_bonus": 1,
       "exp_gain": 65,
@@ -100,7 +120,7 @@
       "footbar": 1,
       "force_hp_zero": 2,
       "friend_slot_increase": 1,
-      "hp_recovery": 15,
+      "hp_recovery": 16,
       "hp_recovery_bonus": 1,
       "item_gain": 1,
       "link_bonus": 3,
@@ -125,7 +145,7 @@
       "survive_hp1": 1,
       "today_new_station_bonus": 3
     },
-    "skill_total": 290
+    "skill_total": 293
   },
   "outputs": {
     "denko_facts": "data/step1_db/denko_facts.jsonl",
@@ -138,7 +158,7 @@
   "review_status": {
     "checklist_issue_count": 0,
     "extra_audit": "data/reports/extra_full_audit_zh.html",
-    "original_audit": "data/reports/original_001_163_full_audit_zh.html"
+    "original_audit": "data/reports/original_001_165_full_audit_zh.html"
   },
   "schema_version": 1,
   "scope": {
@@ -158,12 +178,14 @@
         "data\\records\\original_040_080_denko_facts.jsonl",
         "data\\records\\original_080_119_denko_facts.jsonl",
         "data\\records\\original_120_163_denko_facts.jsonl",
+        "data\\records\\original_164_165_denko_facts.jsonl",
         "data\\records\\extra_001_040_denko_facts.jsonl",
         "data\\records\\extra_041_080_denko_facts.jsonl",
         "data\\records\\extra_081_120_denko_facts.jsonl",
-        "data\\records\\extra_121_127_denko_facts.jsonl"
+        "data\\records\\extra_121_127_denko_facts.jsonl",
+        "data\\records\\extra_127_128_denko_facts.jsonl"
       ],
-      "source_row_count": 292
+      "source_row_count": 296
     },
     "skill": {
       "source_files": [
@@ -171,12 +193,14 @@
         "data\\records\\original_040_080_skill_facts.jsonl",
         "data\\records\\original_080_119_skill_facts.jsonl",
         "data\\records\\original_120_163_skill_facts.jsonl",
+        "data\\records\\original_164_165_skill_facts.jsonl",
         "data\\records\\extra_001_040_skill_facts.jsonl",
         "data\\records\\extra_041_080_skill_facts.jsonl",
         "data\\records\\extra_081_120_skill_facts.jsonl",
-        "data\\records\\extra_121_127_skill_facts.jsonl"
+        "data\\records\\extra_121_127_skill_facts.jsonl",
+        "data\\records\\extra_127_128_skill_facts.jsonl"
       ],
-      "source_row_count": 292
+      "source_row_count": 296
     }
   }
 }

@@ -1,39 +1,15 @@
 {
-  "generated_at": "2026-06-16T11:49:14.790693+09:00",
+  "generated_at": "2026-07-06T03:11:18.764506+09:00",
   "issues": [],
   "metrics": {
     "category_counts": {},
     "issue_count": 0,
     "severity_counts": {},
-    "skill_file_count": 4,
-    "skill_record_count": 127
+    "skill_file_count": 5,
+    "skill_record_count": 129
   },
   "report_checks": {
-    "extra_001_040": {
-      "ascii_only": true,
-      "double_question_count": 0,
-      "has_component_table": true,
-      "has_old_slot_matrix": false,
-      "has_vu_columns": true,
-      "mojibake_hits": {}
-    },
-    "extra_041_080": {
-      "ascii_only": true,
-      "double_question_count": 0,
-      "has_component_table": true,
-      "has_old_slot_matrix": false,
-      "has_vu_columns": true,
-      "mojibake_hits": {}
-    },
-    "extra_081_120": {
-      "ascii_only": true,
-      "double_question_count": 0,
-      "has_component_table": true,
-      "has_old_slot_matrix": false,
-      "has_vu_columns": true,
-      "mojibake_hits": {}
-    },
-    "extra_121_127": {
+    "extra_127_128": {
       "ascii_only": true,
       "double_question_count": 0,
       "has_component_table": true,

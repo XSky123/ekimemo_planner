@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-07-06T03:03:06.871258+09:00",
+  "generated_at": "2026-07-06T03:15:04.534520+09:00",
   "source_records": "data\\prototype_db\\prototype_records.jsonl",
   "groups": {
     "by_prefecture": {
@@ -337,6 +337,13 @@
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%A8%AA%E6%B5%9C%E3%81%BF%E3%81%A1%E3%82%8B",
           "name": "横浜みちる",
           "href": "#original-124",
+          "countries": []
+        },
+        {
+          "denko_id": "original:164",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E5%85%AB%E6%99%AF%E5%B3%B6%E3%81%82%E3%81%84%E3%82%8A",
+          "name": "八景島あいり",
+          "href": "#original-164",
           "countries": []
         }
       ],
@@ -946,6 +953,13 @@
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%A1%91%E5%B7%9D%E3%82%86%E3%81%86%E3%82%8A",
           "name": "桑川ゆうり",
           "href": "#original-146",
+          "countries": []
+        },
+        {
+          "denko_id": "original:165",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%96%B0%E6%B4%A5%E3%81%88%E3%81%A4%E3%81%93",
+          "name": "新津えつこ",
+          "href": "#original-165",
           "countries": []
         }
       ],
@@ -2546,6 +2560,13 @@
           "name": "蕗つぐみ",
           "href": "#extra-127",
           "countries": []
+        },
+        {
+          "denko_id": "extra:128",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E8%95%97%E3%81%A4%E3%81%B0%E3%82%81",
+          "name": "蕗つばめ",
+          "href": "#extra-128",
+          "countries": []
         }
       ],
       "アント工業": [
@@ -2800,6 +2821,13 @@
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E8%B1%8A%E6%A9%8B%E3%81%A1%E3%82%8F",
           "name": "豊橋ちわ",
           "href": "#original-163",
+          "countries": []
+        },
+        {
+          "denko_id": "original:165",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%96%B0%E6%B4%A5%E3%81%88%E3%81%A4%E3%81%93",
+          "name": "新津えつこ",
+          "href": "#original-165",
           "countries": []
         },
         {
@@ -3839,6 +3867,15 @@
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%A8%AA%E6%B5%9C%E3%81%BF%E3%81%A1%E3%82%8B",
           "name": "横浜みちる",
           "href": "#original-124",
+          "countries": []
+        }
+      ],
+      "横浜新都市交通": [
+        {
+          "denko_id": "original:164",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E5%85%AB%E6%99%AF%E5%B3%B6%E3%81%82%E3%81%84%E3%82%8A",
+          "name": "八景島あいり",
+          "href": "#original-164",
           "countries": []
         }
       ],
@@ -5188,6 +5225,13 @@
           "name": "蕗つぐみ",
           "href": "#extra-127",
           "countries": []
+        },
+        {
+          "denko_id": "extra:128",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E8%95%97%E3%81%A4%E3%81%B0%E3%82%81",
+          "name": "蕗つばめ",
+          "href": "#extra-128",
+          "countries": []
         }
       ],
       "鹿児島市電１系統": [
@@ -5688,6 +5732,13 @@
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E8%95%97%E3%81%A4%E3%81%90%E3%81%BF",
           "name": "蕗つぐみ",
           "href": "#extra-127",
+          "countries": []
+        },
+        {
+          "denko_id": "extra:128",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E8%95%97%E3%81%A4%E3%81%B0%E3%82%81",
+          "name": "蕗つばめ",
+          "href": "#extra-128",
           "countries": []
         }
       ],
@@ -6322,6 +6373,13 @@
           "name": "蕗つぐみ",
           "href": "#extra-127",
           "countries": []
+        },
+        {
+          "denko_id": "extra:128",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E8%95%97%E3%81%A4%E3%81%B0%E3%82%81",
+          "name": "蕗つばめ",
+          "href": "#extra-128",
+          "countries": []
         }
       ],
       "名鉄蒲郡線": [
@@ -6362,6 +6420,13 @@
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E4%BC%9A%E6%B4%A5%E3%81%82%E3%82%84%E3%81%8B",
           "name": "会津あやか",
           "href": "#original-158",
+          "countries": []
+        },
+        {
+          "denko_id": "original:165",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%96%B0%E6%B4%A5%E3%81%88%E3%81%A4%E3%81%93",
+          "name": "新津えつこ",
+          "href": "#original-165",
           "countries": []
         }
       ],
@@ -6425,6 +6490,15 @@
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E7%AA%AA%E5%B7%9D%E3%81%BE%E3%81%9C",
           "name": "窪川まぜ",
           "href": "#original-067",
+          "countries": []
+        }
+      ],
+      "金沢シーサイドライン": [
+        {
+          "denko_id": "original:164",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E5%85%AB%E6%99%AF%E5%B3%B6%E3%81%82%E3%81%84%E3%82%8A",
+          "name": "八景島あいり",
+          "href": "#original-164",
           "countries": []
         }
       ],
@@ -7027,6 +7101,13 @@
           "name": "会津あやか",
           "href": "#original-158",
           "countries": []
+        },
+        {
+          "denko_id": "original:165",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%96%B0%E6%B4%A5%E3%81%88%E3%81%A4%E3%81%93",
+          "name": "新津えつこ",
+          "href": "#original-165",
+          "countries": []
         }
       ],
       "JR七尾線": [
@@ -7269,6 +7350,13 @@
           "name": "青海川しゅか",
           "href": "#original-125",
           "countries": []
+        },
+        {
+          "denko_id": "original:165",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%96%B0%E6%B4%A5%E3%81%88%E3%81%A4%E3%81%93",
+          "name": "新津えつこ",
+          "href": "#original-165",
+          "countries": []
         }
       ],
       "JR岩徳線": [
@@ -7311,6 +7399,13 @@
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%A1%91%E5%B7%9D%E3%82%86%E3%81%86%E3%82%8A",
           "name": "桑川ゆうり",
           "href": "#original-146",
+          "countries": []
+        },
+        {
+          "denko_id": "original:165",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%96%B0%E6%B4%A5%E3%81%88%E3%81%A4%E3%81%93",
+          "name": "新津えつこ",
+          "href": "#original-165",
           "countries": []
         }
       ],
@@ -8675,6 +8770,13 @@
           "name": "唐津シズ",
           "href": "#original-079",
           "countries": []
+        },
+        {
+          "denko_id": "extra:128",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E8%95%97%E3%81%A4%E3%81%B0%E3%82%81",
+          "name": "蕗つばめ",
+          "href": "#extra-128",
+          "countries": []
         }
       ],
       "2月7日": [
@@ -8748,6 +8850,15 @@
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E4%BF%A1%E6%A5%BD%E3%81%8F%E3%82%8D%E3%81%8C%E3%81%AD",
           "name": "信楽くろがね",
           "href": "#original-083",
+          "countries": []
+        }
+      ],
+      "2月26日": [
+        {
+          "denko_id": "original:164",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E5%85%AB%E6%99%AF%E5%B3%B6%E3%81%82%E3%81%84%E3%82%8A",
+          "name": "八景島あいり",
+          "href": "#original-164",
           "countries": []
         }
       ],
@@ -9361,6 +9472,13 @@
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E7%94%9F%E9%A7%92%E3%82%8F%E3%81%8B%E3%81%AA",
           "name": "生駒わかな",
           "href": "#original-121",
+          "countries": []
+        },
+        {
+          "denko_id": "original:165",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%96%B0%E6%B4%A5%E3%81%88%E3%81%A4%E3%81%93",
+          "name": "新津えつこ",
+          "href": "#original-165",
           "countries": []
         },
         {
@@ -12707,6 +12825,24 @@
           "countries": []
         }
       ],
+      "八景島駅": [
+        {
+          "denko_id": "original:164",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E5%85%AB%E6%99%AF%E5%B3%B6%E3%81%82%E3%81%84%E3%82%8A",
+          "name": "八景島あいり",
+          "href": "#original-164",
+          "countries": []
+        }
+      ],
+      "新津駅": [
+        {
+          "denko_id": "original:165",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%96%B0%E6%B4%A5%E3%81%88%E3%81%A4%E3%81%93",
+          "name": "新津えつこ",
+          "href": "#original-165",
+          "countries": []
+        }
+      ],
       "アトーチャ駅": [
         {
           "denko_id": "extra:064",
@@ -13787,6 +13923,15 @@
           "countries": []
         }
       ],
+      "小田急電鉄 MR1500形": [
+        {
+          "denko_id": "extra:128",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E8%95%97%E3%81%A4%E3%81%B0%E3%82%81",
+          "name": "蕗つばめ",
+          "href": "#extra-128",
+          "countries": []
+        }
+      ],
       "アント工業 車両移動機": [
         {
           "denko_id": "extra:015",
@@ -14046,6 +14191,15 @@
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E8%8C%85%E6%B2%BC%E3%81%BF%E3%82%86%E3%81%8D",
           "name": "茅沼みゆき",
           "href": "#original-110",
+          "countries": []
+        }
+      ],
+      "国鉄C57形蒸気機関車": [
+        {
+          "denko_id": "original:165",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%96%B0%E6%B4%A5%E3%81%88%E3%81%A4%E3%81%93",
+          "name": "新津えつこ",
+          "href": "#original-165",
           "countries": []
         }
       ],
@@ -15398,6 +15552,15 @@
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%A8%AA%E6%B5%9C%E3%81%BF%E3%81%A1%E3%82%8B",
           "name": "横浜みちる",
           "href": "#original-124",
+          "countries": []
+        }
+      ],
+      "横浜新都市交通 2000形": [
+        {
+          "denko_id": "original:164",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E5%85%AB%E6%99%AF%E5%B3%B6%E3%81%82%E3%81%84%E3%82%8A",
+          "name": "八景島あいり",
+          "href": "#original-164",
           "countries": []
         }
       ],
@@ -17838,6 +18001,15 @@
           "無し"
         ],
         "countries": []
+      },
+      {
+        "denko_id": "extra:128",
+        "name": "蕗つばめ",
+        "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E8%95%97%E3%81%A4%E3%81%B0%E3%82%81",
+        "regions": [
+          "無し"
+        ],
+        "countries": []
       }
     ],
     "unknown_region": [
@@ -17864,12 +18036,12 @@
       }
     ],
     "counts": {
-      "records": 290,
+      "records": 293,
       "missing_birthday": 0,
       "missing_prefecture_unknown": 3,
       "foreign_denko": 100,
-      "no_place_denko": 17,
-      "domestic_denko": 173
+      "no_place_denko": 18,
+      "domestic_denko": 175
     }
   }
 }

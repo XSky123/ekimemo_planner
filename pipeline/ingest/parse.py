@@ -779,9 +779,9 @@ def parse_level_components(common_text: str, row_fact: dict[str, Any]) -> list[d
     stat_plain_number = r"[+＋-]?\d+(?:\.\d+)?(?![\d.]|\s*[×x])"
     stat_value_pattern = rf"{stat_plain_number}\s*[％%]?(?:\s*[～〜~\-]\s*(?:{stat_plain_number}|x)\s*[％%]?)?"
     formula_value_pattern = r"[+＋-]?(?:n|x|\d+(?:\.\d+)?)\s*[×x]\s*[^％%\s]+[％%]"
-    for formula_match in re.finditer(rf"(?:{label_pattern}\s*)?(ATK|DEF)\s*({formula_value_pattern})", effect_text):
+    for formula_match in re.finditer(rf"(?:{label_pattern}\s*)?(ATK|DEF|DFF)\s*({formula_value_pattern})", effect_text):
         label = f"({formula_match.group(1)})" if formula_match.group(1) else None
-        stat = formula_match.group(2)
+        stat = "DEF" if formula_match.group(2) == "DFF" else formula_match.group(2)
         value_text = normalize_numeric_text(f"{stat} {formula_match.group(3)}")
         signed_value = parse_signed_number(value_text)
         if "n" in value_text or "x" in value_text or "×" in value_text:
@@ -820,7 +820,7 @@ def parse_level_components(common_text: str, row_fact: dict[str, Any]) -> list[d
 
     stat_matches = list(
         re.finditer(
-            rf"(?:{label_pattern}\s*)?(ATK|DEF)\s*({stat_value_pattern})",
+            rf"(?:{label_pattern}\s*)?(ATK|DEF|DFF)\s*({stat_value_pattern})",
             effect_text,
         )
     )
@@ -828,7 +828,7 @@ def parse_level_components(common_text: str, row_fact: dict[str, Any]) -> list[d
     stat_seen: dict[str, int] = {}
     kind_seen: dict[str, int] = {}
     for match in stat_matches:
-        stat = match.group(2)
+        stat = "DEF" if match.group(2) == "DFF" else match.group(2)
         stat_seen[stat] = stat_seen.get(stat, 0) + 1
         value_text = normalize_numeric_text(f"{stat} {match.group(3)}")
         signed_value = parse_signed_number(value_text)
@@ -872,15 +872,19 @@ def parse_level_components(common_text: str, row_fact: dict[str, Any]) -> list[d
                 effect_role=effect_role_from_label(label, common_text),
             )
         )
-    for hp_match in re.finditer(rf"(?:{label_pattern}\s*)?HP回復\s*({number})", effect_text):
+    for hp_match in re.finditer(rf"(?:{label_pattern}\s*)?HP回復\s*({stat_value_pattern})", effect_text):
         label = f"({hp_match.group(1)})" if hp_match.group(1) else None
+        value_raw = normalize_numeric_text(f"HP回復 {hp_match.group(2)}")
+        unit = "percent_range" if is_range_text(value_raw) and ("%" in value_raw or "％" in value_raw) else (
+            "percent_hp" if "%" in value_raw or "％" in value_raw else "flat_hp"
+        )
         components.append(
             component_value(
                 "hp_recovery",
                 row_fact,
-                normalize_numeric_text(f"HP回復 {hp_match.group(2)}"),
+                value_raw,
                 parse_signed_number(hp_match.group(2)),
-                "flat_hp",
+                unit,
                 condition_label=label,
                 effect_role=effect_role_from_label(label, common_text),
             )

@@ -32,13 +32,13 @@ def write_html_entity(path: Path, lines: list[str]) -> None:
 
 
 def default_audit_json(pool: str) -> Path:
-    suffix = "001_163" if pool == "original" else "full"
+    suffix = "001_165" if pool == "original" else "full"
     return base.ROOT / "data" / "agent_runs" / f"{pool}_{suffix}_report_checklist_audit.json"
 
 
 def default_out_html(pool: str) -> Path:
     if pool == "original":
-        return base.ROOT / "data" / "reports" / "original_001_163_full_audit_zh.html"
+        return base.ROOT / "data" / "reports" / "original_001_165_full_audit_zh.html"
     return base.ROOT / "data" / "reports" / f"{pool}_full_audit_zh.html"
 
 

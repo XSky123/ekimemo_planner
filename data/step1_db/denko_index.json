@@ -1651,6 +1651,19 @@
       "type": "トリックスター",
       "wiki_no": "EX127"
     },
+    "extra:128": {
+      "attribute": "cool",
+      "color": "青",
+      "denko_id": "extra:128",
+      "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E8%95%97%E3%81%A4%E3%81%B0%E3%82%81",
+      "full_name": "蕗つばめ",
+      "id_number": 128,
+      "name": "蕗つばめ",
+      "pool": "extra",
+      "skill_name": "パワフル妹",
+      "type": "トリックスター",
+      "wiki_no": "EX128"
+    },
     "original:001": {
       "attribute": "eco",
       "color": "黄",
@@ -3769,6 +3782,32 @@
       "skill_name": "ちくわの穴を覗いてみれば",
       "type": "トリックスター",
       "wiki_no": "163"
+    },
+    "original:164": {
+      "attribute": "cool",
+      "color": "桃",
+      "denko_id": "original:164",
+      "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E5%85%AB%E6%99%AF%E5%B3%B6%E3%81%82%E3%81%84%E3%82%8A",
+      "full_name": "八景島あいり",
+      "id_number": 164,
+      "name": "八景島あいり",
+      "pool": "original",
+      "skill_name": "ラブラブゲージ",
+      "type": "サポーター",
+      "wiki_no": "164"
+    },
+    "original:165": {
+      "attribute": "heat",
+      "color": "赤",
+      "denko_id": "original:165",
+      "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%96%B0%E6%B4%A5%E3%81%88%E3%81%A4%E3%81%93",
+      "full_name": "新津えつこ",
+      "id_number": 165,
+      "name": "新津えつこ",
+      "pool": "original",
+      "skill_name": "物とみんなの思い出",
+      "type": "サポーター",
+      "wiki_no": "165"
     }
   },
   "by_name": {
@@ -3899,6 +3938,7 @@
     "倶利伽羅しおり": "original:060",
     "八戸ましろ": "original:102",
     "八日市ゆかり": "original:082",
+    "八景島あいり": "original:164",
     "八潮みらい": "original:023",
     "八雲レーノ": "original:030",
     "出戸たすく": "extra:012",
@@ -3951,6 +3991,7 @@
     "敷島ヒメギ": "original:051",
     "新居浜ありす": "original:031",
     "新居浜いずな": "original:013",
+    "新津えつこ": "original:165",
     "新田野なのか": "original:113",
     "新百合うらら": "original:025",
     "新百合ほこね": "original:026",
@@ -4028,6 +4069,7 @@
     "蓮台寺ミオ": "original:036",
     "蓮台寺ミナト": "original:086",
     "蕗つぐみ": "extra:127",
+    "蕗つばめ": "extra:128",
     "蛍茶屋みなも": "original:066",
     "観音町ひめ": "original:087",
     "角館あけひ": "original:064",
@@ -4191,7 +4233,8 @@
       "extra:124",
       "extra:125",
       "extra:126",
-      "extra:127"
+      "extra:127",
+      "extra:128"
     ],
     "original": [
       "original:001",
@@ -4356,7 +4399,9 @@
       "original:160",
       "original:161",
       "original:162",
-      "original:163"
+      "original:163",
+      "original:164",
+      "original:165"
     ]
   },
   "by_wiki_no": {
@@ -4432,6 +4477,8 @@
     "161": "original:161",
     "162": "original:162",
     "163": "original:163",
+    "164": "original:164",
+    "165": "original:165",
     "17": "original:017",
     "18": "original:018",
     "19": "original:019",
@@ -4563,6 +4610,7 @@
     "EX125": "extra:125",
     "EX126": "extra:126",
     "EX127": "extra:127",
+    "EX128": "extra:128",
     "EX13": "extra:013",
     "EX14": "extra:014",
     "EX15": "extra:015",
@@ -4651,6 +4699,6 @@
     "EX98": "extra:098",
     "EX99": "extra:099"
   },
-  "generated_at": "2026-07-04T14:36:57.739006+09:00",
+  "generated_at": "2026-07-06T03:14:54.808072+09:00",
   "schema_version": 1
 }

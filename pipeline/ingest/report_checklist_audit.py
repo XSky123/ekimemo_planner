@@ -281,12 +281,12 @@ def write_markdown(path: Path, audit: dict[str, Any]) -> None:
 
 
 def default_json_out(pool: str) -> Path:
-    suffix = "001_163" if pool == "original" else "full"
+    suffix = "001_165" if pool == "original" else "full"
     return base.ROOT / "data" / "agent_runs" / f"{pool}_{suffix}_report_checklist_audit.json"
 
 
 def default_md_out(pool: str) -> Path:
-    suffix = "001_163" if pool == "original" else "full"
+    suffix = "001_165" if pool == "original" else "full"
     return base.ROOT / "data" / "agent_runs" / f"{pool}_{suffix}_report_checklist_audit_zh.md"
 
 

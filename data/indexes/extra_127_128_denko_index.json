@@ -1,0 +1,24 @@
+{
+  "generated_at": "2026-07-06T03:10:48.538908+09:00",
+  "parser_version": "detail_html_table_matrix.v8",
+  "records": [
+    {
+      "denko_id": "extra:127",
+      "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E8%95%97%E3%81%A4%E3%81%90%E3%81%BF",
+      "name": "蕗つぐみ",
+      "wiki_no": "EX127"
+    },
+    {
+      "denko_id": "extra:128",
+      "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E8%95%97%E3%81%A4%E3%81%B0%E3%82%81",
+      "name": "蕗つばめ",
+      "wiki_no": "EX128"
+    }
+  ],
+  "schema_version": 1,
+  "scope": {
+    "end": 128,
+    "pool": "extra",
+    "start": 127
+  }
+}

@@ -2,16 +2,16 @@
   "counts": {
     "by_pool": {
       "extra": {
-        "denko": 127,
-        "skill": 127
+        "denko": 128,
+        "skill": 128
       },
       "original": {
-        "denko": 163,
-        "skill": 163
+        "denko": 165,
+        "skill": 165
       }
     },
-    "denko_total": 290,
-    "skill_total": 290
+    "denko_total": 293,
+    "skill_total": 293
   },
   "issue_count": 0,
   "issues": []

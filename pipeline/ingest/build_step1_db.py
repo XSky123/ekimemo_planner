@@ -158,7 +158,7 @@ def validate(denko_rows: list[dict[str, Any]], skill_rows: list[dict[str, Any]])
                 "missing_denko_ids": sorted(skill_set - denko_set),
             }
         )
-    for pool, expected in {"original": 163, "extra": 127}.items():
+    for pool, expected in {"original": 165, "extra": 128}.items():
         denko_count = sum(1 for denko_id in denko_ids if denko_id and pool_from_denko_id(denko_id) == pool)
         skill_count = sum(1 for denko_id in skill_ids if denko_id and pool_from_denko_id(denko_id) == pool)
         if denko_count != expected or skill_count != expected:
@@ -275,7 +275,7 @@ def main() -> int:
         },
         "review_status": {
             "checklist_issue_count": validation["issue_count"],
-            "original_audit": "data/reports/original_001_163_full_audit_zh.html",
+            "original_audit": "data/reports/original_001_165_full_audit_zh.html",
             "extra_audit": "data/reports/extra_full_audit_zh.html",
         },
     }

@@ -1,0 +1,24 @@
+{
+  "generated_at": "2026-07-06T03:14:39.999254+09:00",
+  "parser_version": "detail_html_table_matrix.v8",
+  "records": [
+    {
+      "denko_id": "original:164",
+      "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E5%85%AB%E6%99%AF%E5%B3%B6%E3%81%82%E3%81%84%E3%82%8A",
+      "name": "八景島あいり",
+      "wiki_no": "164"
+    },
+    {
+      "denko_id": "original:165",
+      "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%96%B0%E6%B4%A5%E3%81%88%E3%81%A4%E3%81%93",
+      "name": "新津えつこ",
+      "wiki_no": "165"
+    }
+  ],
+  "schema_version": 1,
+  "scope": {
+    "end": 165,
+    "pool": "original",
+    "start": 164
+  }
+}

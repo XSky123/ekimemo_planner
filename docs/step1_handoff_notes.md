@@ -4,7 +4,9 @@ Date: 2026-06-16
 
 Step1 is closed as the first ingestion and cleanup phase. The canonical output is `data/step1_db/`.
 
-## Final Status
+Update: 2026-07-06 added `original` 164-165 and `extra` 128. The current canonical DB scope is `original` 001-165 and `extra` 001-128.
+
+## 2026-06-16 Closeout Snapshot
 
 - Denko total: 290
 - Skill total: 290
@@ -14,6 +16,14 @@ Step1 is closed as the first ingestion and cleanup phase. The canonical output i
 - Original checklist audit: 0 issues
 - Extra checklist audit: 0 issues
 - Recommendation prior audit: 288 checked, 2 info findings, 0 warn/error findings
+
+## Current Scope After 2026-07-06 Increment
+
+- Denko total: 293
+- Skill total: 293
+- Original: 165
+- Extra: 128
+- Step1 validation: 0 issues
 
 The remaining recommendation prior findings are intentionally not applied to DB facts:
 

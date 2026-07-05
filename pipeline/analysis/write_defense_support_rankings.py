@@ -35,6 +35,12 @@ TABS = {
         "kinds": {"damage_reduction", "damage_cap"},
         "default_score": None,
     },
+    "defense_effect_boost": {
+        "title": "防御效果量倍率",
+        "description": "提高 DEF 增加、固定减伤、伤害减轻类技能效果量的候选。用于叠防御辅助时估算放大器。",
+        "kinds": {"effect_multiplier"},
+        "default_score": None,
+    },
     "hp_recovery": {
         "title": "HP回复/续航",
         "description": "HP回复、被访问后回复、手动回复等。平均值按数值和范围估算，不直接模拟战斗。",
@@ -78,6 +84,7 @@ EFFECT_LABELS = {
     "damage_reduction": "伤害减轻",
     "damage_substitution": "代受伤害",
     "def_buff": "DEF增加",
+    "effect_multiplier": "防御效果量增加",
     "force_hp_zero": "强制HP0",
     "hp_recovery": "HP回复",
     "hp_recovery_bonus": "HP回复追加",
@@ -119,6 +126,22 @@ def is_opponent_output_suppression(component: dict[str, Any]) -> bool:
     return "opponent_denko" in scope or bool(re.search(r"相手(?:のでんこ|でんこ)?のATK|相手でんこのATK", condition))
 
 
+def is_defense_effect_multiplier(component: dict[str, Any]) -> bool:
+    text = " ".join(
+        str(component.get(key) or "")
+        for key in ("condition_raw", "remarks_raw", "component_id")
+    )
+    return any(
+        marker in text
+        for marker in (
+            "DEF",
+            "ダメージを固定値で軽減",
+            "ダメージ軽減",
+            "軽減するスキル",
+        )
+    )
+
+
 def belongs_to_tab(tab_id: str, component: dict[str, Any]) -> bool:
     kind = component.get("effect_kind")
     if kind not in TABS[tab_id]["kinds"]:
@@ -129,6 +152,8 @@ def belongs_to_tab(tab_id: str, component: dict[str, Any]) -> bool:
         return not is_self_only_def(component)
     if tab_id == "opponent_suppression":
         return is_opponent_output_suppression(component)
+    if tab_id == "defense_effect_boost":
+        return is_defense_effect_multiplier(component)
     return True
 
 
@@ -173,6 +198,8 @@ def metric_range(tab_id: str, component: dict[str, Any], value: dict[str, Any]) 
         return 0.0, float(reverse_formula_match.group(1)) * max_unit_count(component)
     if value_min is not None and value_max is not None:
         return min(abs(value_min), abs(value_max)), max(abs(value_min), abs(value_max))
+    if tab_id == "defense_effect_boost" and "倍" in raw and numeric is not None:
+        return abs(numeric), abs(numeric)
     if numeric is not None:
         return abs(numeric), abs(numeric)
 

@@ -14,14 +14,14 @@ User-facing reports remain Chinese. Source facts are stored in Japanese. Schema 
 
 ## Scope
 
-- Included: `original` 001-163 and `extra` 001-127.
+- Included: `original` 001-165 and `extra` 001-128.
 - Excluded from Step1: special/collaboration denko, solver logic, recommendation priors, and observed team cases.
 
 ## Current Counts
 
-- `original`: 163 denko rows and 163 skill rows.
-- `extra`: 127 denko rows and 127 skill rows.
-- Total: 290 denko rows and 290 skill rows.
+- `original`: 165 denko rows and 165 skill rows.
+- `extra`: 128 denko rows and 128 skill rows.
+- Total: 293 denko rows and 293 skill rows.
 
 ## Notes
 

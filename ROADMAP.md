@@ -16,8 +16,8 @@ Global read order:
 - Current step: `step2_indexes`
 - Legacy agent: protected in `archive/legacy_agent_2026-06-06/`
 - Git repo: active on branch `main`; static reports are published from the minimal `pages` branch.
-- Step 1 state: complete. Canonical DB lives under `data/step1_db/`.
-- Step 2 state: candidate discovery reports are available for attack, experience/PT, and defense/support.
+- Step 1 state: complete and incrementally updated through `original` 001-165 and `extra` 001-128. Canonical DB lives under `data/step1_db/`.
+- Step 2 state: candidate discovery reports are available for attack, experience/PT, defense/support, mobility/visit count, and prototype lookup.
 
 ## Steps
 
@@ -65,6 +65,8 @@ Goal:
   - `data/reports/step2_attack_support_rankings_zh.html`
   - `data/reports/step2_exp_pt_support_rankings_zh.html`
   - `data/reports/step2_defense_support_rankings_zh.html`
+  - `data/reports/step2_mobility_visit_rankings_zh.html`
+  - `data/reports/step2_prototype_lookup_zh.html`
 
 ### Step 3: Role Profiles
 
