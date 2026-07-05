@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-07-06T02:16:05.995475+09:00",
+  "generated_at": "2026-07-06T02:46:09.129899+09:00",
   "source_records": "data\\prototype_db\\sample_prototype_records.jsonl",
   "groups": {
     "by_prefecture": {
@@ -9,7 +9,8 @@
           "denko_id": "original:001",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E9%BB%84%E9%99%BD%E3%82%BB%E3%83%AA%E3%82%A2",
           "name": "黄陽セリア",
-          "href": "#original-001"
+          "href": "#original-001",
+          "countries": []
         }
       ],
       "岩手県": [
@@ -17,7 +18,8 @@
           "denko_id": "original:004",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%81%8B%E6%B5%9C%E3%81%BF%E3%82%8D%E3%81%8F",
           "name": "恋浜みろく",
-          "href": "#original-004"
+          "href": "#original-004",
+          "countries": []
         }
       ],
       "大阪府": [
@@ -25,7 +27,8 @@
           "denko_id": "original:003",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%96%B0%E9%98%AA%E3%83%AB%E3%83%8A",
           "name": "新阪ルナ",
-          "href": "#original-003"
+          "href": "#original-003",
+          "countries": []
         }
       ],
       "長野県": [
@@ -33,7 +36,8 @@
           "denko_id": "original:002",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E7%82%BA%E6%A0%97%E3%83%A1%E3%83%AD",
           "name": "為栗メロ",
-          "href": "#original-002"
+          "href": "#original-002",
+          "countries": []
         }
       ],
       "宮城県": [
@@ -41,7 +45,8 @@
           "denko_id": "original:005",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E9%BB%84%E9%99%BD%E3%83%AC%E3%82%A4%E3%82%AB",
           "name": "黄陽レイカ",
-          "href": "#original-005"
+          "href": "#original-005",
+          "countries": []
         }
       ]
     },
@@ -51,7 +56,10 @@
           "denko_id": "extra:001",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%A8%E3%83%AB%E3%83%9F%E3%83%BC%E3%83%8C%E3%83%BB%E3%83%AF%E3%83%AD%E3%83%B3",
           "name": "エルミーヌ・ワロン",
-          "href": "#extra-001"
+          "href": "#extra-001",
+          "countries": [
+            "ベルギー"
+          ]
         }
       ]
     },
@@ -61,19 +69,22 @@
           "denko_id": "original:002",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E7%82%BA%E6%A0%97%E3%83%A1%E3%83%AD",
           "name": "為栗メロ",
-          "href": "#original-002"
+          "href": "#original-002",
+          "countries": []
         },
         {
           "denko_id": "original:003",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%96%B0%E9%98%AA%E3%83%AB%E3%83%8A",
           "name": "新阪ルナ",
-          "href": "#original-003"
+          "href": "#original-003",
+          "countries": []
         },
         {
           "denko_id": "extra:002",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E8%B5%A4%E5%A3%95%E3%81%BE%E3%81%B2%E3%82%8B",
           "name": "赤壕まひる",
-          "href": "#extra-002"
+          "href": "#extra-002",
+          "countries": []
         }
       ],
       "三陸鉄道": [
@@ -81,7 +92,8 @@
           "denko_id": "original:004",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%81%8B%E6%B5%9C%E3%81%BF%E3%82%8D%E3%81%8F",
           "name": "恋浜みろく",
-          "href": "#original-004"
+          "href": "#original-004",
+          "countries": []
         }
       ],
       "JR東海": [
@@ -89,7 +101,8 @@
           "denko_id": "extra:004",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%9C%AB%E6%B0%B8%E3%81%A6%E3%81%99%E3%81%A8",
           "name": "末永てすと",
-          "href": "#extra-004"
+          "href": "#extra-004",
+          "countries": []
         }
       ],
       "JR西日本": [
@@ -97,19 +110,22 @@
           "denko_id": "original:001",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E9%BB%84%E9%99%BD%E3%82%BB%E3%83%AA%E3%82%A2",
           "name": "黄陽セリア",
-          "href": "#original-001"
+          "href": "#original-001",
+          "countries": []
         },
         {
           "denko_id": "extra:003",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%B3%A2%E7%AF%A0%E3%81%99%E3%81%99%E3%81%90",
           "name": "波篠すすぐ",
-          "href": "#extra-003"
+          "href": "#extra-003",
+          "countries": []
         },
         {
           "denko_id": "extra:005",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%9E%9C%E9%B3%B4%E3%83%84%E3%83%85%E3%82%AD",
           "name": "果鳴ツヅキ",
-          "href": "#extra-005"
+          "href": "#extra-005",
+          "countries": []
         }
       ],
       "JR東日本": [
@@ -117,7 +133,8 @@
           "denko_id": "original:005",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E9%BB%84%E9%99%BD%E3%83%AC%E3%82%A4%E3%82%AB",
           "name": "黄陽レイカ",
-          "href": "#original-005"
+          "href": "#original-005",
+          "countries": []
         }
       ]
     },
@@ -127,7 +144,8 @@
           "denko_id": "original:003",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%96%B0%E9%98%AA%E3%83%AB%E3%83%8A",
           "name": "新阪ルナ",
-          "href": "#original-003"
+          "href": "#original-003",
+          "countries": []
         }
       ],
       "三陸鉄道リアス線": [
@@ -135,7 +153,8 @@
           "denko_id": "original:004",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%81%8B%E6%B5%9C%E3%81%BF%E3%82%8D%E3%81%8F",
           "name": "恋浜みろく",
-          "href": "#original-004"
+          "href": "#original-004",
+          "countries": []
         }
       ],
       "JR東海道本線": [
@@ -143,7 +162,8 @@
           "denko_id": "original:003",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%96%B0%E9%98%AA%E3%83%AB%E3%83%8A",
           "name": "新阪ルナ",
-          "href": "#original-003"
+          "href": "#original-003",
+          "countries": []
         }
       ],
       "東海道新幹線": [
@@ -151,7 +171,8 @@
           "denko_id": "original:003",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%96%B0%E9%98%AA%E3%83%AB%E3%83%8A",
           "name": "新阪ルナ",
-          "href": "#original-003"
+          "href": "#original-003",
+          "countries": []
         }
       ],
       "西名古屋港線": [
@@ -159,7 +180,8 @@
           "denko_id": "original:001",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E9%BB%84%E9%99%BD%E3%82%BB%E3%83%AA%E3%82%A2",
           "name": "黄陽セリア",
-          "href": "#original-001"
+          "href": "#original-001",
+          "countries": []
         }
       ],
       "JR東北本線": [
@@ -167,7 +189,8 @@
           "denko_id": "original:005",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E9%BB%84%E9%99%BD%E3%83%AC%E3%82%A4%E3%82%AB",
           "name": "黄陽レイカ",
-          "href": "#original-005"
+          "href": "#original-005",
+          "countries": []
         }
       ],
       "JR飯田線": [
@@ -175,7 +198,8 @@
           "denko_id": "original:002",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E7%82%BA%E6%A0%97%E3%83%A1%E3%83%AD",
           "name": "為栗メロ",
-          "href": "#original-002"
+          "href": "#original-002",
+          "countries": []
         }
       ]
     },
@@ -185,7 +209,8 @@
           "denko_id": "original:002",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E7%82%BA%E6%A0%97%E3%83%A1%E3%83%AD",
           "name": "為栗メロ",
-          "href": "#original-002"
+          "href": "#original-002",
+          "countries": []
         }
       ],
       "香里有佐": [
@@ -193,7 +218,8 @@
           "denko_id": "original:003",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%96%B0%E9%98%AA%E3%83%AB%E3%83%8A",
           "name": "新阪ルナ",
-          "href": "#original-003"
+          "href": "#original-003",
+          "countries": []
         }
       ],
       "鈴代紗弓": [
@@ -201,7 +227,8 @@
           "denko_id": "original:005",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E9%BB%84%E9%99%BD%E3%83%AC%E3%82%A4%E3%82%AB",
           "name": "黄陽レイカ",
-          "href": "#original-005"
+          "href": "#original-005",
+          "countries": []
         }
       ],
       "ブリドカットセーラ恵美": [
@@ -209,7 +236,8 @@
           "denko_id": "original:001",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E9%BB%84%E9%99%BD%E3%82%BB%E3%83%AA%E3%82%A2",
           "name": "黄陽セリア",
-          "href": "#original-001"
+          "href": "#original-001",
+          "countries": []
         }
       ],
       "柳原かなこ": [
@@ -217,7 +245,8 @@
           "denko_id": "original:004",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%81%8B%E6%B5%9C%E3%81%BF%E3%82%8D%E3%81%8F",
           "name": "恋浜みろく",
-          "href": "#original-004"
+          "href": "#original-004",
+          "countries": []
         }
       ]
     },
@@ -227,7 +256,8 @@
           "denko_id": "extra:002",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E8%B5%A4%E5%A3%95%E3%81%BE%E3%81%B2%E3%82%8B",
           "name": "赤壕まひる",
-          "href": "#extra-002"
+          "href": "#extra-002",
+          "countries": []
         }
       ],
       "3月5日": [
@@ -235,7 +265,8 @@
           "denko_id": "extra:003",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%B3%A2%E7%AF%A0%E3%81%99%E3%81%99%E3%81%90",
           "name": "波篠すすぐ",
-          "href": "#extra-003"
+          "href": "#extra-003",
+          "countries": []
         }
       ],
       "4月1日": [
@@ -243,7 +274,8 @@
           "denko_id": "original:004",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%81%8B%E6%B5%9C%E3%81%BF%E3%82%8D%E3%81%8F",
           "name": "恋浜みろく",
-          "href": "#original-004"
+          "href": "#original-004",
+          "countries": []
         }
       ],
       "4月6日": [
@@ -251,7 +283,8 @@
           "denko_id": "extra:005",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%9E%9C%E9%B3%B4%E3%83%84%E3%83%85%E3%82%AD",
           "name": "果鳴ツヅキ",
-          "href": "#extra-005"
+          "href": "#extra-005",
+          "countries": []
         }
       ],
       "4月26日": [
@@ -259,7 +292,8 @@
           "denko_id": "original:005",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E9%BB%84%E9%99%BD%E3%83%AC%E3%82%A4%E3%82%AB",
           "name": "黄陽レイカ",
-          "href": "#original-005"
+          "href": "#original-005",
+          "countries": []
         }
       ],
       "5月8日": [
@@ -267,7 +301,8 @@
           "denko_id": "extra:004",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%9C%AB%E6%B0%B8%E3%81%A6%E3%81%99%E3%81%A8",
           "name": "末永てすと",
-          "href": "#extra-004"
+          "href": "#extra-004",
+          "countries": []
         }
       ],
       "7月15日": [
@@ -275,7 +310,8 @@
           "denko_id": "original:002",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E7%82%BA%E6%A0%97%E3%83%A1%E3%83%AD",
           "name": "為栗メロ",
-          "href": "#original-002"
+          "href": "#original-002",
+          "countries": []
         }
       ],
       "9月30日": [
@@ -283,7 +319,8 @@
           "denko_id": "original:001",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E9%BB%84%E9%99%BD%E3%82%BB%E3%83%AA%E3%82%A2",
           "name": "黄陽セリア",
-          "href": "#original-001"
+          "href": "#original-001",
+          "countries": []
         }
       ],
       "10月1日": [
@@ -291,7 +328,8 @@
           "denko_id": "original:003",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%96%B0%E9%98%AA%E3%83%AB%E3%83%8A",
           "name": "新阪ルナ",
-          "href": "#original-003"
+          "href": "#original-003",
+          "countries": []
         }
       ],
       "10月4日": [
@@ -299,7 +337,10 @@
           "denko_id": "extra:001",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%A8%E3%83%AB%E3%83%9F%E3%83%BC%E3%83%8C%E3%83%BB%E3%83%AF%E3%83%AD%E3%83%B3",
           "name": "エルミーヌ・ワロン",
-          "href": "#extra-001"
+          "href": "#extra-001",
+          "countries": [
+            "ベルギー"
+          ]
         }
       ]
     }
@@ -311,7 +352,8 @@
           "denko_id": "original:001",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E9%BB%84%E9%99%BD%E3%82%BB%E3%83%AA%E3%82%A2",
           "name": "黄陽セリア",
-          "href": "#original-001"
+          "href": "#original-001",
+          "countries": []
         }
       ],
       "恋し浜駅": [
@@ -319,7 +361,8 @@
           "denko_id": "original:004",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%81%8B%E6%B5%9C%E3%81%BF%E3%82%8D%E3%81%8F",
           "name": "恋浜みろく",
-          "href": "#original-004"
+          "href": "#original-004",
+          "countries": []
         }
       ],
       "為栗駅": [
@@ -327,7 +370,8 @@
           "denko_id": "original:002",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E7%82%BA%E6%A0%97%E3%83%A1%E3%83%AD",
           "name": "為栗メロ",
-          "href": "#original-002"
+          "href": "#original-002",
+          "countries": []
         }
       ],
       "新大阪駅": [
@@ -335,7 +379,8 @@
           "denko_id": "original:003",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%96%B0%E9%98%AA%E3%83%AB%E3%83%8A",
           "name": "新阪ルナ",
-          "href": "#original-003"
+          "href": "#original-003",
+          "countries": []
         }
       ],
       "新利府駅": [
@@ -343,25 +388,19 @@
           "denko_id": "original:005",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E9%BB%84%E9%99%BD%E3%83%AC%E3%82%A4%E3%82%AB",
           "name": "黄陽レイカ",
-          "href": "#original-005"
+          "href": "#original-005",
+          "countries": []
         }
       ]
     },
     "by_vehicle": {
-      "オリエント急行": [
-        {
-          "denko_id": "extra:001",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%A8%E3%83%AB%E3%83%9F%E3%83%BC%E3%83%8C%E3%83%BB%E3%83%AF%E3%83%AD%E3%83%B3",
-          "name": "エルミーヌ・ワロン",
-          "href": "#extra-001"
-        }
-      ],
       "国鉄 581系": [
         {
           "denko_id": "original:003",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%96%B0%E9%98%AA%E3%83%AB%E3%83%8A",
           "name": "新阪ルナ",
-          "href": "#original-003"
+          "href": "#original-003",
+          "countries": []
         }
       ],
       "国鉄DD14形ディーゼル機関車": [
@@ -369,7 +408,8 @@
           "denko_id": "extra:002",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E8%B5%A4%E5%A3%95%E3%81%BE%E3%81%B2%E3%82%8B",
           "name": "赤壕まひる",
-          "href": "#extra-002"
+          "href": "#extra-002",
+          "countries": []
         }
       ],
       "国鉄ED30形電気機関車": [
@@ -377,7 +417,8 @@
           "denko_id": "original:002",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E7%82%BA%E6%A0%97%E3%83%A1%E3%83%AD",
           "name": "為栗メロ",
-          "href": "#original-002"
+          "href": "#original-002",
+          "countries": []
         }
       ],
       "三陸鉄道 36形": [
@@ -385,7 +426,8 @@
           "denko_id": "original:004",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%81%8B%E6%B5%9C%E3%81%BF%E3%82%8D%E3%81%8F",
           "name": "恋浜みろく",
-          "href": "#original-004"
+          "href": "#original-004",
+          "countries": []
         }
       ],
       "JR東海 R400形高速確認車": [
@@ -393,7 +435,8 @@
           "denko_id": "extra:004",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%9C%AB%E6%B0%B8%E3%81%A6%E3%81%99%E3%81%A8",
           "name": "末永てすと",
-          "href": "#extra-004"
+          "href": "#extra-004",
+          "countries": []
         }
       ],
       "JR西日本 922形20番台 (T3編成)": [
@@ -401,7 +444,8 @@
           "denko_id": "original:001",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E9%BB%84%E9%99%BD%E3%82%BB%E3%83%AA%E3%82%A2",
           "name": "黄陽セリア",
-          "href": "#original-001"
+          "href": "#original-001",
+          "countries": []
         }
       ],
       "JR西日本 HTM350SW": [
@@ -409,7 +453,8 @@
           "denko_id": "extra:003",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%B3%A2%E7%AF%A0%E3%81%99%E3%81%99%E3%81%90",
           "name": "波篠すすぐ",
-          "href": "#extra-003"
+          "href": "#extra-003",
+          "countries": []
         }
       ],
       "JR西日本 TW4446": [
@@ -417,7 +462,8 @@
           "denko_id": "extra:005",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%9E%9C%E9%B3%B4%E3%83%84%E3%83%85%E3%82%AD",
           "name": "果鳴ツヅキ",
-          "href": "#extra-005"
+          "href": "#extra-005",
+          "countries": []
         }
       ],
       "JR西日本 スラブ洗浄車": [
@@ -425,7 +471,8 @@
           "denko_id": "extra:003",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%B3%A2%E7%AF%A0%E3%81%99%E3%81%99%E3%81%90",
           "name": "波篠すすぐ",
-          "href": "#extra-003"
+          "href": "#extra-003",
+          "countries": []
         }
       ],
       "JR西日本 ドクターイエロー": [
@@ -433,7 +480,8 @@
           "denko_id": "original:001",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E9%BB%84%E9%99%BD%E3%82%BB%E3%83%AA%E3%82%A2",
           "name": "黄陽セリア",
-          "href": "#original-001"
+          "href": "#original-001",
+          "countries": []
         }
       ],
       "JR西日本 架線延線車": [
@@ -441,7 +489,8 @@
           "denko_id": "extra:005",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%9E%9C%E9%B3%B4%E3%83%84%E3%83%85%E3%82%AD",
           "name": "果鳴ツヅキ",
-          "href": "#extra-005"
+          "href": "#extra-005",
+          "countries": []
         }
       ],
       "JR東日本 E926形": [
@@ -449,7 +498,19 @@
           "denko_id": "original:005",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E9%BB%84%E9%99%BD%E3%83%AC%E3%82%A4%E3%82%AB",
           "name": "黄陽レイカ",
-          "href": "#original-005"
+          "href": "#original-005",
+          "countries": []
+        }
+      ],
+      "オリエント急行": [
+        {
+          "denko_id": "extra:001",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%A8%E3%83%AB%E3%83%9F%E3%83%BC%E3%83%8C%E3%83%BB%E3%83%AF%E3%83%AD%E3%83%B3",
+          "name": "エルミーヌ・ワロン",
+          "href": "#extra-001",
+          "countries": [
+            "ベルギー"
+          ]
         }
       ]
     },
@@ -459,7 +520,8 @@
           "denko_id": "extra:004",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%9C%AB%E6%B0%B8%E3%81%A6%E3%81%99%E3%81%A8",
           "name": "末永てすと",
-          "href": "#extra-004"
+          "href": "#extra-004",
+          "countries": []
         }
       ],
       "果鳴": [
@@ -467,7 +529,8 @@
           "denko_id": "extra:005",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%9E%9C%E9%B3%B4%E3%83%84%E3%83%85%E3%82%AD",
           "name": "果鳴ツヅキ",
-          "href": "#extra-005"
+          "href": "#extra-005",
+          "countries": []
         }
       ],
       "波篠": [
@@ -475,7 +538,8 @@
           "denko_id": "extra:003",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%B3%A2%E7%AF%A0%E3%81%99%E3%81%99%E3%81%90",
           "name": "波篠すすぐ",
-          "href": "#extra-003"
+          "href": "#extra-003",
+          "countries": []
         }
       ],
       "赤壕": [
@@ -483,7 +547,8 @@
           "denko_id": "extra:002",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E8%B5%A4%E5%A3%95%E3%81%BE%E3%81%B2%E3%82%8B",
           "name": "赤壕まひる",
-          "href": "#extra-002"
+          "href": "#extra-002",
+          "countries": []
         }
       ],
       "黄陽": [
@@ -491,13 +556,15 @@
           "denko_id": "original:001",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E9%BB%84%E9%99%BD%E3%82%BB%E3%83%AA%E3%82%A2",
           "name": "黄陽セリア",
-          "href": "#original-001"
+          "href": "#original-001",
+          "countries": []
         },
         {
           "denko_id": "original:005",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E9%BB%84%E9%99%BD%E3%83%AC%E3%82%A4%E3%82%AB",
           "name": "黄陽レイカ",
-          "href": "#original-005"
+          "href": "#original-005",
+          "countries": []
         }
       ]
     }

@@ -31,6 +31,10 @@
     .directory-section { position:sticky; top:0; z-index:1; margin-top:2px; padding:2px 0; background:#fff; color:#68707c; font-size:11px; font-weight:700; border-bottom:1px solid #eef1f4; }
     .directory-hit { outline:2px solid #f2cc60; outline-offset:2px; border-radius:4px; background:#fff8c5; }
     .directory-key { font-weight:600; }
+    .translated-key { display:grid; gap:2px; }
+    .translated-key-main { font-weight:700; }
+    .translated-key-meta { color:#68707c; font-size:11px; font-weight:500; line-height:1.35; }
+    .country-note { display:inline-flex; align-items:center; margin-left:6px; border:1px solid #d8dee4; border-radius:999px; padding:1px 6px; color:#57606a; background:#f6f8fa; font-size:11px; font-weight:600; vertical-align:1px; }
     .directory-links { display:flex; flex-wrap:wrap; gap:6px; }
     .denko-chip { display:inline-flex; align-items:center; gap:4px; border:1px solid #dbe7f3; border-radius:999px; padding:2px 6px; background:white; }
     .detail-link, .back-top { font-size:12px; }
@@ -62,6 +66,10 @@
     .fact-grid div { min-width:0; }
     .fact-grid dt { color:#68707c; font-size:12px; font-weight:600; }
     .fact-grid dd { margin:2px 0 0; overflow-wrap:anywhere; }
+    .value-list { display:flex; flex-direction:column; gap:5px; }
+    .translated-inline, .plain-inline { display:inline-grid; gap:1px; align-items:start; }
+    .translated-inline-main { font-weight:650; }
+    .translated-inline-meta { color:#68707c; font-size:11px; line-height:1.35; }
     .source-badge-list { display:flex; flex-wrap:wrap; gap:6px; }
     .source-badge { display:inline-flex; align-items:center; min-height:22px; border:1px solid #d0d7de; background:#f6f8fa; color:#24292f; border-radius:999px; padding:2px 8px; font-size:12px; font-weight:600; text-decoration:none; }
     .source-badge:hover { background:#eef6ff; border-color:#8cbeef; color:#0969da; text-decoration:none; }
@@ -85,7 +93,7 @@
 <body id="top">
   <header>
     <h1>Ekimemo 原型反查表</h1>
-    <div class="meta">generated_at: 2026-07-06T02:16:05.996475+09:00 / sample: original 001-005 + extra 001-005</div>
+    <div class="meta">generated_at: 2026-07-06T02:46:09.129899+09:00 / sample: original 001-005 + extra 001-005</div>
   </header>
   <main>
     <p class="note">展示层为中文；wiki 原文保留日语。当前为 sample: original 001-005 + extra 001-005。</p>
@@ -115,8 +123,11 @@
         <input type="search" placeholder="搜索后跳转" aria-label="外国でんこ入口 搜索" data-directory-search>
         <button type="button" data-directory-jump>跳转</button>
       </div>
-      <nav class="directory-quick" aria-label="外国でんこ入口 快速选择"><button type="button" data-directory-section="dir-by_foreign_country-52635afa35">は</button></nav>
-      <ul class="directory-list"><li class="directory-section" id="dir-by_foreign_country-3a2604ddea">は</li><li id="dir-by_foreign_country-52635afa35" data-directory-item data-key="べるぎー ベルギー"><span class="directory-key">ベルギー</span><span class="directory-links"><span class="denko-chip"><a href="#extra-001">extra:001 エルミーヌ・ワロン</a></span></span></li></ul>
+      <nav class="directory-quick" aria-label="外国でんこ入口 快速选择"><button type="button" data-directory-section="dir-by_foreign_country-52635afa35">B</button></nav>
+      <ul class="directory-list"><li class="directory-section" id="dir-by_foreign_country-9282f1cbdf">B</li><li id="dir-by_foreign_country-52635afa35" data-directory-item data-key="べるぎー 比利时 belgium belgië / belgique べるぎー べるぎー比利时belgiumbelgië/belgiqueべるぎー ベルギー 比利时 belgium belgië / belgique ベルギー ベルギー比利时belgiumbelgië/belgiqueベルギー"><span class="directory-key"><span class="translated-key">
+      <span><span class="translated-key-main">比利时</span></span>
+      <span class="translated-key-meta">原文: België / Belgique · 日文: ベルギー</span>
+    </span></span><span class="directory-links"><span class="denko-chip"><a href="#extra-001">extra:001 エルミーヌ・ワロン</a></span></span></li></ul>
       <div class="directory-footer"><button type="button" data-directory-expand aria-pressed="false">展开</button></div>
     </section>
       <section class="directory-card">
@@ -182,8 +193,11 @@
         <input type="search" placeholder="搜索后跳转" aria-label="车辆入口 搜索" data-directory-search>
         <button type="button" data-directory-jump>跳转</button>
       </div>
-      <nav class="directory-quick" aria-label="车辆入口 快速选择"><button type="button" data-directory-section="dir-by_vehicle-44674cd9d0">あ</button><button type="button" data-directory-section="dir-by_vehicle-81708670f0">か</button><button type="button" data-directory-section="dir-by_vehicle-0260f61e63">さ</button></nav>
-      <ul class="directory-list"><li class="directory-section" id="dir-by_vehicle-8e4fab8141">あ</li><li id="dir-by_vehicle-44674cd9d0" data-directory-item data-key="おりえんと急行 オリエント急行"><span class="directory-key">オリエント急行</span><span class="directory-links"><span class="denko-chip"><a href="#extra-001">extra:001 エルミーヌ・ワロン</a></span></span></li><li class="directory-section" id="dir-by_vehicle-39609ab985">か</li><li id="dir-by_vehicle-81708670f0" data-directory-item data-key="国鉄 581系 国鉄581系"><span class="directory-key">国鉄 581系</span><span class="directory-links"><span class="denko-chip"><a href="#original-003">original:003 新阪ルナ</a></span></span></li><li id="dir-by_vehicle-f6891998e8" data-directory-item data-key="国鉄dd14形でぃーぜる機関車 国鉄dd14形ディーゼル機関車"><span class="directory-key">国鉄DD14形ディーゼル機関車</span><span class="directory-links"><span class="denko-chip"><a href="#extra-002">extra:002 赤壕まひる</a></span></span></li><li id="dir-by_vehicle-316b2c9f77" data-directory-item data-key="国鉄ed30形電気機関車"><span class="directory-key">国鉄ED30形電気機関車</span><span class="directory-links"><span class="denko-chip"><a href="#original-002">original:002 為栗メロ</a></span></span></li><li class="directory-section" id="dir-by_vehicle-c6638bec5d">さ</li><li id="dir-by_vehicle-0260f61e63" data-directory-item data-key="三陸鉄道 36形 三陸鉄道36形"><span class="directory-key">三陸鉄道 36形</span><span class="directory-links"><span class="denko-chip"><a href="#original-004">original:004 恋浜みろく</a></span></span></li><li id="dir-by_vehicle-cba8a17b31" data-directory-item data-key="jr東海 r400形高速確認車 jr東海r400形高速確認車"><span class="directory-key">JR東海 R400形高速確認車</span><span class="directory-links"><span class="denko-chip"><a href="#extra-004">extra:004 末永てすと</a></span></span></li><li id="dir-by_vehicle-bebdca52ef" data-directory-item data-key="jr西日本 922形20番台 (t3編成) jr西日本922形20番台(t3編成)"><span class="directory-key">JR西日本 922形20番台 (T3編成)</span><span class="directory-links"><span class="denko-chip"><a href="#original-001">original:001 黄陽セリア</a></span></span></li><li id="dir-by_vehicle-d06768338c" data-directory-item data-key="jr西日本 htm350sw jr西日本htm350sw"><span class="directory-key">JR西日本 HTM350SW</span><span class="directory-links"><span class="denko-chip"><a href="#extra-003">extra:003 波篠すすぐ</a></span></span></li><li id="dir-by_vehicle-4646d61ff5" data-directory-item data-key="jr西日本 tw4446 jr西日本tw4446"><span class="directory-key">JR西日本 TW4446</span><span class="directory-links"><span class="denko-chip"><a href="#extra-005">extra:005 果鳴ツヅキ</a></span></span></li><li id="dir-by_vehicle-f91c64c8da" data-directory-item data-key="jr西日本 すらぶ洗浄車 jr西日本 スラブ洗浄車 jr西日本すらぶ洗浄車 jr西日本スラブ洗浄車"><span class="directory-key">JR西日本 スラブ洗浄車</span><span class="directory-links"><span class="denko-chip"><a href="#extra-003">extra:003 波篠すすぐ</a></span></span></li><li id="dir-by_vehicle-8de46e8900" data-directory-item data-key="jr西日本 どくたーいえろー jr西日本 ドクターイエロー jr西日本どくたーいえろー jr西日本ドクターイエロー"><span class="directory-key">JR西日本 ドクターイエロー</span><span class="directory-links"><span class="denko-chip"><a href="#original-001">original:001 黄陽セリア</a></span></span></li><li id="dir-by_vehicle-b87c80feba" data-directory-item data-key="jr西日本 架線延線車 jr西日本架線延線車"><span class="directory-key">JR西日本 架線延線車</span><span class="directory-links"><span class="denko-chip"><a href="#extra-005">extra:005 果鳴ツヅキ</a></span></span></li><li id="dir-by_vehicle-d44c76ddaa" data-directory-item data-key="jr東日本 e926形 jr東日本e926形"><span class="directory-key">JR東日本 E926形</span><span class="directory-links"><span class="denko-chip"><a href="#original-005">original:005 黄陽レイカ</a></span></span></li></ul>
+      <nav class="directory-quick" aria-label="车辆入口 快速选择"><button type="button" data-directory-section="dir-by_vehicle-81708670f0">か</button><button type="button" data-directory-section="dir-by_vehicle-0260f61e63">さ</button><button type="button" data-directory-section="dir-by_vehicle-44674cd9d0">D</button></nav>
+      <ul class="directory-list"><li class="directory-section" id="dir-by_vehicle-39609ab985">か</li><li id="dir-by_vehicle-81708670f0" data-directory-item data-key="国鉄 581系 国鉄581系"><span class="directory-key">国鉄 581系</span><span class="directory-links"><span class="denko-chip"><a href="#original-003">original:003 新阪ルナ</a></span></span></li><li id="dir-by_vehicle-f6891998e8" data-directory-item data-key="国鉄dd14形でぃーぜる機関車 国鉄dd14形ディーゼル機関車"><span class="directory-key">国鉄DD14形ディーゼル機関車</span><span class="directory-links"><span class="denko-chip"><a href="#extra-002">extra:002 赤壕まひる</a></span></span></li><li id="dir-by_vehicle-316b2c9f77" data-directory-item data-key="国鉄ed30形電気機関車"><span class="directory-key">国鉄ED30形電気機関車</span><span class="directory-links"><span class="denko-chip"><a href="#original-002">original:002 為栗メロ</a></span></span></li><li class="directory-section" id="dir-by_vehicle-c6638bec5d">さ</li><li id="dir-by_vehicle-0260f61e63" data-directory-item data-key="三陸鉄道 36形 三陸鉄道36形"><span class="directory-key">三陸鉄道 36形</span><span class="directory-links"><span class="denko-chip"><a href="#original-004">original:004 恋浜みろく</a></span></span></li><li id="dir-by_vehicle-cba8a17b31" data-directory-item data-key="jr東海 r400形高速確認車 jr東海r400形高速確認車"><span class="directory-key">JR東海 R400形高速確認車</span><span class="directory-links"><span class="denko-chip"><a href="#extra-004">extra:004 末永てすと</a></span></span></li><li id="dir-by_vehicle-bebdca52ef" data-directory-item data-key="jr西日本 922形20番台 (t3編成) jr西日本922形20番台(t3編成)"><span class="directory-key">JR西日本 922形20番台 (T3編成)</span><span class="directory-links"><span class="denko-chip"><a href="#original-001">original:001 黄陽セリア</a></span></span></li><li id="dir-by_vehicle-d06768338c" data-directory-item data-key="jr西日本 htm350sw jr西日本htm350sw"><span class="directory-key">JR西日本 HTM350SW</span><span class="directory-links"><span class="denko-chip"><a href="#extra-003">extra:003 波篠すすぐ</a></span></span></li><li id="dir-by_vehicle-4646d61ff5" data-directory-item data-key="jr西日本 tw4446 jr西日本tw4446"><span class="directory-key">JR西日本 TW4446</span><span class="directory-links"><span class="denko-chip"><a href="#extra-005">extra:005 果鳴ツヅキ</a></span></span></li><li id="dir-by_vehicle-f91c64c8da" data-directory-item data-key="jr西日本 すらぶ洗浄車 jr西日本 スラブ洗浄車 jr西日本すらぶ洗浄車 jr西日本スラブ洗浄車"><span class="directory-key">JR西日本 スラブ洗浄車</span><span class="directory-links"><span class="denko-chip"><a href="#extra-003">extra:003 波篠すすぐ</a></span></span></li><li id="dir-by_vehicle-8de46e8900" data-directory-item data-key="jr西日本 どくたーいえろー jr西日本 ドクターイエロー jr西日本どくたーいえろー jr西日本ドクターイエロー"><span class="directory-key">JR西日本 ドクターイエロー</span><span class="directory-links"><span class="denko-chip"><a href="#original-001">original:001 黄陽セリア</a></span></span></li><li id="dir-by_vehicle-b87c80feba" data-directory-item data-key="jr西日本 架線延線車 jr西日本架線延線車"><span class="directory-key">JR西日本 架線延線車</span><span class="directory-links"><span class="denko-chip"><a href="#extra-005">extra:005 果鳴ツヅキ</a></span></span></li><li id="dir-by_vehicle-d44c76ddaa" data-directory-item data-key="jr東日本 e926形 jr東日本e926形"><span class="directory-key">JR東日本 E926形</span><span class="directory-links"><span class="denko-chip"><a href="#original-005">original:005 黄陽レイカ</a></span></span></li><li class="directory-section" id="dir-by_vehicle-15b4755bab">D</li><li id="dir-by_vehicle-44674cd9d0" data-directory-item data-key="おりえんと急行 东方快车 orient express おりえんと急行 おりえんと急行东方快车orientexpressおりえんと急行 オリエント急行 东方快车 orient express オリエント急行 オリエント急行东方快车orientexpressオリエント急行"><span class="directory-key"><span class="translated-key">
+      <span><span class="translated-key-main">东方快车</span><span class="country-note">比利时</span></span>
+      <span class="translated-key-meta">英语: Orient Express · 日文: オリエント急行</span>
+    </span></span><span class="directory-links"><span class="denko-chip"><a href="#extra-001">extra:001 エルミーヌ・ワロン</a></span></span></li></ul>
       <div class="directory-footer"><button type="button" data-directory-expand aria-pressed="false">展开</button></div>
     </section>
     </details>
@@ -201,11 +215,11 @@
         <div><dt>声优</dt><dd>ブリドカットセーラ恵美 （のぞみ・グラフィリアと兼任）</dd></div>
         <div><dt>都道府県</dt><dd>愛知県</dd></div>
         <div><dt>国家/地区</dt><dd>-</dd></div>
-        <div><dt>公司/运营者</dt><dd>JR西日本</dd></div>
+        <div><dt>公司/运营者</dt><dd><span class="value-list"><span class="plain-inline">JR西日本</span></span></dd></div>
 
-        <div><dt>车辆候选</dt><dd>JR西日本 922形20番台 (T3編成)、JR西日本 ドクターイエロー</dd></div>
-        <div><dt>线路候选</dt><dd>西名古屋港線</dd></div>
-        <div><dt>站点候选</dt><dd>金城ふ頭駅</dd></div>
+        <div><dt>车辆候选</dt><dd><span class="value-list"><span class="plain-inline">JR西日本 922形20番台 (T3編成)</span><span class="plain-inline">JR西日本 ドクターイエロー</span></span></dd></div>
+        <div><dt>线路候选</dt><dd><span class="value-list"><span class="plain-inline">西名古屋港線</span></span></dd></div>
+        <div><dt>站点候选</dt><dd><span class="value-list"><span class="plain-inline">金城ふ頭駅</span></span></dd></div>
         <div><dt>参考来源</dt><dd class="source-badge-list"><a class="source-badge" href="https://ek1mem0.wiki.fc2.com/wiki/%E3%81%A7%E3%82%93%E3%81%93%E3%81%A8%E5%85%A8%E5%9B%BD%E5%90%84%E5%9C%B0%E3%81%AE%E9%A7%85%E3%81%AB%E3%81%8A%E3%81%A7%E3%81%8B%E3%81%91%E3%81%97%E3%82%88%E3%81%86%20%EF%BD%9E10%E5%91%A8%E5%B9%B4ver.%EF%BD%9E" target="_blank" rel="noopener">返乡活动（10周年）</a></dd></div>
       </dl>
       <article class="source-text">
@@ -226,11 +240,11 @@
         <div><dt>声优</dt><dd>会沢紗弥</dd></div>
         <div><dt>都道府県</dt><dd>長野県</dd></div>
         <div><dt>国家/地区</dt><dd>-</dd></div>
-        <div><dt>公司/运营者</dt><dd>国鉄</dd></div>
+        <div><dt>公司/运营者</dt><dd><span class="value-list"><span class="plain-inline">国鉄</span></span></dd></div>
 
-        <div><dt>车辆候选</dt><dd>国鉄ED30形電気機関車</dd></div>
-        <div><dt>线路候选</dt><dd>JR飯田線</dd></div>
-        <div><dt>站点候选</dt><dd>為栗駅</dd></div>
+        <div><dt>车辆候选</dt><dd><span class="value-list"><span class="plain-inline">国鉄ED30形電気機関車</span></span></dd></div>
+        <div><dt>线路候选</dt><dd><span class="value-list"><span class="plain-inline">JR飯田線</span></span></dd></div>
+        <div><dt>站点候选</dt><dd><span class="value-list"><span class="plain-inline">為栗駅</span></span></dd></div>
         <div><dt>参考来源</dt><dd class="source-badge-list"><a class="source-badge" href="https://ek1mem0.wiki.fc2.com/wiki/%E3%81%A7%E3%82%93%E3%81%93%E3%81%A8%E5%85%A8%E5%9B%BD%E5%90%84%E5%9C%B0%E3%81%AE%E9%A7%85%E3%81%AB%E3%81%8A%E3%81%A7%E3%81%8B%E3%81%91%E3%81%97%E3%82%88%E3%81%86%20%EF%BD%9E10%E5%91%A8%E5%B9%B4ver.%EF%BD%9E" target="_blank" rel="noopener">返乡活动（10周年）</a></dd></div>
       </dl>
       <article class="source-text">
@@ -251,11 +265,11 @@
         <div><dt>声优</dt><dd>香里有佐</dd></div>
         <div><dt>都道府県</dt><dd>大阪府</dd></div>
         <div><dt>国家/地区</dt><dd>-</dd></div>
-        <div><dt>公司/运营者</dt><dd>国鉄</dd></div>
-        <div><dt>关联公司</dt><dd>JR西日本</dd></div>
-        <div><dt>车辆候选</dt><dd>国鉄 581系</dd></div>
-        <div><dt>线路候选</dt><dd>東海道新幹線、山陽新幹線、JR東海道本線</dd></div>
-        <div><dt>站点候选</dt><dd>新大阪駅</dd></div>
+        <div><dt>公司/运营者</dt><dd><span class="value-list"><span class="plain-inline">国鉄</span></span></dd></div>
+        <div><dt>关联公司</dt><dd><span class="value-list"><span class="plain-inline">JR西日本</span></span></dd></div>
+        <div><dt>车辆候选</dt><dd><span class="value-list"><span class="plain-inline">国鉄 581系</span></span></dd></div>
+        <div><dt>线路候选</dt><dd><span class="value-list"><span class="plain-inline">東海道新幹線</span><span class="plain-inline">山陽新幹線</span><span class="plain-inline">JR東海道本線</span></span></dd></div>
+        <div><dt>站点候选</dt><dd><span class="value-list"><span class="plain-inline">新大阪駅</span></span></dd></div>
         <div><dt>参考来源</dt><dd class="source-badge-list"><a class="source-badge" href="https://ek1mem0.wiki.fc2.com/wiki/%E3%81%A7%E3%82%93%E3%81%93%E3%81%A8%E5%85%A8%E5%9B%BD%E5%90%84%E5%9C%B0%E3%81%AE%E9%A7%85%E3%81%AB%E3%81%8A%E3%81%A7%E3%81%8B%E3%81%91%E3%81%97%E3%82%88%E3%81%86%20%EF%BD%9E10%E5%91%A8%E5%B9%B4ver.%EF%BD%9E" target="_blank" rel="noopener">返乡活动（10周年）</a></dd></div>
       </dl>
       <article class="source-text">
@@ -276,11 +290,11 @@
         <div><dt>声优</dt><dd>柳原かなこ</dd></div>
         <div><dt>都道府県</dt><dd>岩手県</dd></div>
         <div><dt>国家/地区</dt><dd>-</dd></div>
-        <div><dt>公司/运营者</dt><dd>三陸鉄道</dd></div>
+        <div><dt>公司/运营者</dt><dd><span class="value-list"><span class="plain-inline">三陸鉄道</span></span></dd></div>
 
-        <div><dt>车辆候选</dt><dd>三陸鉄道 36形</dd></div>
-        <div><dt>线路候选</dt><dd>三陸鉄道リアス線</dd></div>
-        <div><dt>站点候选</dt><dd>恋し浜駅</dd></div>
+        <div><dt>车辆候选</dt><dd><span class="value-list"><span class="plain-inline">三陸鉄道 36形</span></span></dd></div>
+        <div><dt>线路候选</dt><dd><span class="value-list"><span class="plain-inline">三陸鉄道リアス線</span></span></dd></div>
+        <div><dt>站点候选</dt><dd><span class="value-list"><span class="plain-inline">恋し浜駅</span></span></dd></div>
         <div><dt>参考来源</dt><dd class="source-badge-list"><a class="source-badge" href="https://ek1mem0.wiki.fc2.com/wiki/%E3%81%A7%E3%82%93%E3%81%93%E3%81%A8%E5%85%A8%E5%9B%BD%E5%90%84%E5%9C%B0%E3%81%AE%E9%A7%85%E3%81%AB%E3%81%8A%E3%81%A7%E3%81%8B%E3%81%91%E3%81%97%E3%82%88%E3%81%86%20%EF%BD%9E10%E5%91%A8%E5%B9%B4ver.%EF%BD%9E" target="_blank" rel="noopener">返乡活动（10周年）</a></dd></div>
       </dl>
       <article class="source-text">
@@ -301,11 +315,11 @@
         <div><dt>声优</dt><dd>鈴代紗弓</dd></div>
         <div><dt>都道府県</dt><dd>宮城県</dd></div>
         <div><dt>国家/地区</dt><dd>-</dd></div>
-        <div><dt>公司/运营者</dt><dd>JR東日本</dd></div>
+        <div><dt>公司/运营者</dt><dd><span class="value-list"><span class="plain-inline">JR東日本</span></span></dd></div>
 
-        <div><dt>车辆候选</dt><dd>JR東日本 E926形</dd></div>
-        <div><dt>线路候选</dt><dd>JR東北本線</dd></div>
-        <div><dt>站点候选</dt><dd>新利府駅</dd></div>
+        <div><dt>车辆候选</dt><dd><span class="value-list"><span class="plain-inline">JR東日本 E926形</span></span></dd></div>
+        <div><dt>线路候选</dt><dd><span class="value-list"><span class="plain-inline">JR東北本線</span></span></dd></div>
+        <div><dt>站点候选</dt><dd><span class="value-list"><span class="plain-inline">新利府駅</span></span></dd></div>
         <div><dt>参考来源</dt><dd class="source-badge-list"><a class="source-badge" href="https://ek1mem0.wiki.fc2.com/wiki/%E3%81%A7%E3%82%93%E3%81%93%E3%81%A8%E5%85%A8%E5%9B%BD%E5%90%84%E5%9C%B0%E3%81%AE%E9%A7%85%E3%81%AB%E3%81%8A%E3%81%A7%E3%81%8B%E3%81%91%E3%81%97%E3%82%88%E3%81%86%20%EF%BD%9E10%E5%91%A8%E5%B9%B4ver.%EF%BD%9E" target="_blank" rel="noopener">返乡活动（10周年）</a></dd></div>
       </dl>
       <article class="source-text">
@@ -325,10 +339,10 @@
         <div><dt>生日</dt><dd>10月4日</dd></div>
         <div><dt>声优</dt><dd>未実装</dd></div>
         <div><dt>都道府県</dt><dd>-</dd></div>
-        <div><dt>国家/地区</dt><dd>ベルギー</dd></div>
+        <div><dt>国家/地区</dt><dd><span class="value-list"><span class="translated-inline"><span class="translated-inline-main">比利时</span><span class="translated-inline-meta">原文: België / Belgique · 日文: ベルギー</span></span></span></dd></div>
         <div><dt>公司/运营者</dt><dd>-</dd></div>
 
-        <div><dt>车辆候选</dt><dd>オリエント急行</dd></div>
+        <div><dt>车辆候选</dt><dd><span class="value-list"><span class="translated-inline"><span class="translated-inline-main">东方快车</span><span class="translated-inline-meta">英语: Orient Express · 日文: オリエント急行</span></span></span></dd></div>
         <div><dt>线路候选</dt><dd>-</dd></div>
         <div><dt>站点候选</dt><dd>-</dd></div>
         <div><dt>参考来源</dt><dd class="source-badge-list"><a class="source-badge" href="https://newekimemo.wiki.fc2.com/wiki/%E3%81%A7%E3%82%93%E3%81%93%E4%B8%80%E8%A6%A7%2F%E9%83%BD%E9%81%93%E5%BA%9C%E7%9C%8C%E5%88%A5" target="_blank" rel="noopener">都道府県別一览</a></dd></div>
@@ -351,9 +365,9 @@
         <div><dt>声优</dt><dd>未実装</dd></div>
         <div><dt>都道府県</dt><dd>-</dd></div>
         <div><dt>国家/地区</dt><dd>-</dd></div>
-        <div><dt>公司/运营者</dt><dd>国鉄</dd></div>
+        <div><dt>公司/运营者</dt><dd><span class="value-list"><span class="plain-inline">国鉄</span></span></dd></div>
 
-        <div><dt>车辆候选</dt><dd>国鉄DD14形ディーゼル機関車</dd></div>
+        <div><dt>车辆候选</dt><dd><span class="value-list"><span class="plain-inline">国鉄DD14形ディーゼル機関車</span></span></dd></div>
         <div><dt>线路候选</dt><dd>-</dd></div>
         <div><dt>站点候选</dt><dd>-</dd></div>
         <div><dt>参考来源</dt><dd class="source-badge-list"><a class="source-badge" href="https://newekimemo.wiki.fc2.com/wiki/%E3%81%A7%E3%82%93%E3%81%93%E4%B8%80%E8%A6%A7%2F%E9%83%BD%E9%81%93%E5%BA%9C%E7%9C%8C%E5%88%A5" target="_blank" rel="noopener">都道府県別一览</a></dd></div>
@@ -376,9 +390,9 @@
         <div><dt>声优</dt><dd>未実装</dd></div>
         <div><dt>都道府県</dt><dd>-</dd></div>
         <div><dt>国家/地区</dt><dd>-</dd></div>
-        <div><dt>公司/运营者</dt><dd>JR西日本</dd></div>
+        <div><dt>公司/运营者</dt><dd><span class="value-list"><span class="plain-inline">JR西日本</span></span></dd></div>
 
-        <div><dt>车辆候选</dt><dd>JR西日本 HTM350SW、JR西日本 スラブ洗浄車</dd></div>
+        <div><dt>车辆候选</dt><dd><span class="value-list"><span class="plain-inline">JR西日本 HTM350SW</span><span class="plain-inline">JR西日本 スラブ洗浄車</span></span></dd></div>
         <div><dt>线路候选</dt><dd>-</dd></div>
         <div><dt>站点候选</dt><dd>-</dd></div>
         <div><dt>参考来源</dt><dd class="source-badge-list"><a class="source-badge" href="https://newekimemo.wiki.fc2.com/wiki/%E3%81%A7%E3%82%93%E3%81%93%E4%B8%80%E8%A6%A7%2F%E9%83%BD%E9%81%93%E5%BA%9C%E7%9C%8C%E5%88%A5" target="_blank" rel="noopener">都道府県別一览</a></dd></div>
@@ -401,9 +415,9 @@
         <div><dt>声优</dt><dd>未実装</dd></div>
         <div><dt>都道府県</dt><dd>-</dd></div>
         <div><dt>国家/地区</dt><dd>-</dd></div>
-        <div><dt>公司/运营者</dt><dd>JR東海</dd></div>
+        <div><dt>公司/运营者</dt><dd><span class="value-list"><span class="plain-inline">JR東海</span></span></dd></div>
 
-        <div><dt>车辆候选</dt><dd>JR東海 R400形高速確認車</dd></div>
+        <div><dt>车辆候选</dt><dd><span class="value-list"><span class="plain-inline">JR東海 R400形高速確認車</span></span></dd></div>
         <div><dt>线路候选</dt><dd>-</dd></div>
         <div><dt>站点候选</dt><dd>-</dd></div>
         <div><dt>参考来源</dt><dd class="source-badge-list"><a class="source-badge" href="https://newekimemo.wiki.fc2.com/wiki/%E3%81%A7%E3%82%93%E3%81%93%E4%B8%80%E8%A6%A7%2F%E9%83%BD%E9%81%93%E5%BA%9C%E7%9C%8C%E5%88%A5" target="_blank" rel="noopener">都道府県別一览</a></dd></div>
@@ -426,9 +440,9 @@
         <div><dt>声优</dt><dd>未実装</dd></div>
         <div><dt>都道府県</dt><dd>-</dd></div>
         <div><dt>国家/地区</dt><dd>-</dd></div>
-        <div><dt>公司/运营者</dt><dd>JR西日本</dd></div>
+        <div><dt>公司/运营者</dt><dd><span class="value-list"><span class="plain-inline">JR西日本</span></span></dd></div>
 
-        <div><dt>车辆候选</dt><dd>JR西日本 TW4446、JR西日本 架線延線車</dd></div>
+        <div><dt>车辆候选</dt><dd><span class="value-list"><span class="plain-inline">JR西日本 TW4446</span><span class="plain-inline">JR西日本 架線延線車</span></span></dd></div>
         <div><dt>线路候选</dt><dd>-</dd></div>
         <div><dt>站点候选</dt><dd>-</dd></div>
         <div><dt>参考来源</dt><dd class="source-badge-list"><a class="source-badge muted" href="https://newekimemo.wiki.fc2.com/wiki/%E6%9E%9C%E9%B3%B4%E3%83%84%E3%83%85%E3%82%AD" target="_blank" rel="noopener">详情页</a></dd></div>

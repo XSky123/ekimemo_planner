@@ -7,12 +7,18 @@ import json
 import re
 import sys
 import time
+import unicodedata
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 from urllib.request import Request, urlopen
 
 from bs4 import BeautifulSoup, Tag
+
+try:
+    from unidecode import unidecode
+except ImportError:  # pragma: no cover - optional display sorting helper
+    unidecode = None
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -565,6 +571,303 @@ OPERATOR_ALIASES = {
     "台湾鉄路管理局": "台湾鉄路公司",
 }
 
+FOREIGN_DISPLAY_TRANSLATIONS: dict[str, dict[str, dict[str, str]]] = {
+    "by_operator": {
+        "GOトランジット": {"zh": "GO运输", "en": "GO Transit", "native": "GO Transit"},
+        "VRグループ": {"zh": "芬兰VR集团", "en": "VR Group", "native": "VR Group"},
+        "アイルランド国鉄": {"zh": "爱尔兰国铁", "en": "Iarnrod Eireann", "native": "Iarnrod Eireann"},
+        "インド国鉄": {"zh": "印度铁路", "en": "Indian Railways", "native": "Indian Railways"},
+        "インド鉄道": {"zh": "印度铁路", "en": "Indian Railways", "native": "Indian Railways"},
+        "エストニア国鉄": {"zh": "爱沙尼亚铁路", "en": "Estonian Railways", "native": "Eesti Raudtee"},
+        "カウアイ・プランテーション・レイルウェイ": {"zh": "考艾种植园铁路", "en": "Kauai Plantation Railway", "native": "Kauai Plantation Railway"},
+        "クライストチャーチ・トラム": {"zh": "基督城有轨电车", "en": "Christchurch Tramway", "native": "Christchurch Tramway"},
+        "サンフランシスコ・ケーブルカー": {"zh": "旧金山缆车", "en": "San Francisco cable car", "native": "San Francisco cable car"},
+        "シュトースバーン": {"zh": "施图斯缆索铁路", "en": "Stoosbahn", "native": "Stoosbahn"},
+        "スカイライン ドライバーレス・メトロ": {"zh": "檀香山天际线无人驾驶地铁", "en": "Skyline driverless metro", "native": "Skyline driverless metro"},
+        "セントーサ・エクスプレス": {"zh": "圣淘沙捷运", "en": "Sentosa Express", "native": "Sentosa Express"},
+        "シンガポールLRT センカン線": {"zh": "新加坡轻轨盛港线", "en": "Singapore LRT Sengkang line", "native": "Singapore LRT Sengkang line"},
+        "ソウル交通公社2号線 新": {"zh": "首尔交通公社2号线 新", "en": "Seoul Metro Line 2 new", "native": "서울교통공사 2호선 신"},
+        "タイ国有鉄道メークローン線 NKF型": {"zh": "泰国国铁美功线NKF型", "en": "State Railway of Thailand Maeklong Line NKF", "native": "การรถไฟแห่งประเทศไทย สายแม่กลอง NKF"},
+        "デリー・メトロ": {"zh": "德里地铁", "en": "Delhi Metro", "native": "Delhi Metro"},
+        "フランス国鉄": {"zh": "法国国铁", "en": "SNCF", "native": "SNCF"},
+        "ベルギー国鉄": {"zh": "比利时国铁", "en": "SNCB / NMBS", "native": "SNCB / NMBS"},
+        "上海トランスラピッド": {"zh": "上海磁浮", "en": "Shanghai Maglev", "native": "上海磁浮"},
+        "韓国鉄道": {"zh": "韩国铁道公社", "en": "KORAIL", "native": "한국철도공사"},
+    },
+    "by_foreign_country": {
+        "アイルランド": {"zh": "爱尔兰", "en": "Ireland", "native": "Ireland"},
+        "アメリカ": {"zh": "美国", "en": "United States", "native": "United States"},
+        "アラブ首長国連邦": {"zh": "阿拉伯联合酋长国", "en": "United Arab Emirates", "native": "United Arab Emirates"},
+        "アルゼンチン": {"zh": "阿根廷", "en": "Argentina", "native": "Argentina"},
+        "イギリス": {"zh": "英国", "en": "United Kingdom", "native": "United Kingdom"},
+        "イタリア": {"zh": "意大利", "en": "Italy", "native": "Italia"},
+        "インド": {"zh": "印度", "en": "India", "native": "India"},
+        "エジプト": {"zh": "埃及", "en": "Egypt", "native": "Egypt"},
+        "エストニア": {"zh": "爱沙尼亚", "en": "Estonia", "native": "Eesti"},
+        "オランダ": {"zh": "荷兰", "en": "Netherlands", "native": "Nederland"},
+        "オーストラリア": {"zh": "澳大利亚", "en": "Australia", "native": "Australia"},
+        "カナダ": {"zh": "加拿大", "en": "Canada", "native": "Canada"},
+        "ギリシャ": {"zh": "希腊", "en": "Greece", "native": "Ελλάδα"},
+        "シンガポール": {"zh": "新加坡", "en": "Singapore", "native": "Singapore"},
+        "ジンバブエ": {"zh": "津巴布韦", "en": "Zimbabwe", "native": "Zimbabwe"},
+        "スイス": {"zh": "瑞士", "en": "Switzerland", "native": "Schweiz / Suisse / Svizzera"},
+        "スペイン": {"zh": "西班牙", "en": "Spain", "native": "España"},
+        "タイ": {"zh": "泰国", "en": "Thailand", "native": "ประเทศไทย"},
+        "トルコ": {"zh": "土耳其", "en": "Turkey", "native": "Türkiye"},
+        "ドイツ": {"zh": "德国", "en": "Germany", "native": "Deutschland"},
+        "ニュージーランド": {"zh": "新西兰", "en": "New Zealand", "native": "New Zealand / Aotearoa"},
+        "フィンランド": {"zh": "芬兰", "en": "Finland", "native": "Suomi"},
+        "フランス": {"zh": "法国", "en": "France", "native": "France"},
+        "ブラジル": {"zh": "巴西", "en": "Brazil", "native": "Brasil"},
+        "ベトナム": {"zh": "越南", "en": "Vietnam", "native": "Việt Nam"},
+        "ベルギー": {"zh": "比利时", "en": "Belgium", "native": "België / Belgique"},
+        "ペルー": {"zh": "秘鲁", "en": "Peru", "native": "Perú"},
+        "メキシコ": {"zh": "墨西哥", "en": "Mexico", "native": "México"},
+        "ラトビア": {"zh": "拉脱维亚", "en": "Latvia", "native": "Latvija"},
+        "リトアニア": {"zh": "立陶宛", "en": "Lithuania", "native": "Lietuva"},
+        "ロシア": {"zh": "俄罗斯", "en": "Russia", "native": "Россия"},
+        "中国": {"zh": "中国", "en": "China", "native": "中国"},
+        "南アフリカ": {"zh": "南非", "en": "South Africa", "native": "South Africa"},
+        "台湾": {"zh": "台湾", "en": "Taiwan", "native": "台灣"},
+        "韓国": {"zh": "韩国", "en": "South Korea", "native": "대한민국"},
+    },
+    "by_line": {
+        "A線": {"zh": "RER A线", "en": "RER A line", "native": "RER A"},
+        "B線": {"zh": "RER B线", "en": "RER B line", "native": "RER B"},
+        "C線": {"zh": "RER C线", "en": "RER C line", "native": "RER C"},
+        "GOトランジット・レイクショア・ウェスト線": {"zh": "GO运输湖滨西线", "en": "GO Transit Lakeshore West line", "native": "Lakeshore West line"},
+        "SR水西平沢高速線": {"zh": "SR水西平泽高速线", "en": "Suseo-Pyeongtaek high-speed railway", "native": "수서평택고속선"},
+        "T2号線": {"zh": "伊斯坦布尔T2线", "en": "Istanbul tram T2 line", "native": "T2 hattı"},
+        "T3号線": {"zh": "伊斯坦布尔T3线", "en": "Istanbul tram T3 line", "native": "T3 hattı"},
+        "アフダル線": {"zh": "阿赫达尔线", "en": "Al Akhdar line", "native": "Al Akhdar line"},
+        "アラスカ鉄道": {"zh": "阿拉斯加铁路", "en": "Alaska Railroad", "native": "Alaska Railroad"},
+        "アルブラ線": {"zh": "阿尔布拉线", "en": "Albula line", "native": "Albulalinie"},
+        "イギリス鉄道": {"zh": "英国铁路", "en": "British railway", "native": "British railway"},
+        "インド鉄道": {"zh": "印度铁路", "en": "Indian Railways", "native": "Indian Railways"},
+        "ウェスト・コースト鉄道": {"zh": "西海岸铁路", "en": "West Coast Railways", "native": "West Coast Railways"},
+        "ウェスト・ハイランド線": {"zh": "西高地线", "en": "West Highland Line", "native": "West Highland Line"},
+        "エジプト鉄道": {"zh": "埃及铁路", "en": "Egyptian National Railways", "native": "Egyptian National Railways"},
+        "オランダ鉄道": {"zh": "荷兰铁路", "en": "Nederlandse Spoorwegen", "native": "Nederlandse Spoorwegen"},
+        "カイロ地下鉄1号線": {"zh": "开罗地铁1号线", "en": "Cairo Metro Line 1", "native": "Cairo Metro Line 1"},
+        "キウイレール・ミッドランド線": {"zh": "KiwiRail米德兰线", "en": "KiwiRail Midland Line", "native": "Midland Line"},
+        "グランドキャニオン鉄道": {"zh": "大峡谷铁路", "en": "Grand Canyon Railway", "native": "Grand Canyon Railway"},
+        "グレート・ウェスタン鉄道": {"zh": "大西部铁路", "en": "Great Western Railway", "native": "Great Western Railway"},
+        "コラライン": {"zh": "珊瑚线", "en": "Coral line", "native": "Coral line"},
+        "シベリア鉄道": {"zh": "西伯利亚铁路", "en": "Trans-Siberian Railway", "native": "Транссибирская магистраль"},
+        "シルバーライン": {"zh": "银线", "en": "Silver Line", "native": "Silver Line"},
+        "シーロム線": {"zh": "是隆线", "en": "Silom Line", "native": "สายสีลม"},
+        "スイスMOB鉄道": {"zh": "瑞士MOB铁路", "en": "Montreux Oberland Bernois Railway", "native": "Chemin de fer Montreux Oberland bernois"},
+        "スカイライン": {"zh": "檀香山天际线", "en": "Skyline", "native": "Skyline"},
+        "スクムウィット線": {"zh": "素坤逸线", "en": "Sukhumvit Line", "native": "สายสุขุมวิท"},
+        "センカン線": {"zh": "盛港线", "en": "Sengkang LRT line", "native": "Sengkang LRT line"},
+        "ソウル交通公社2号線": {"zh": "首尔地铁2号线", "en": "Seoul Subway Line 2", "native": "서울 지하철 2호선"},
+        "タイエリ峡谷鉄道": {"zh": "泰伊里峡谷铁路", "en": "Taieri Gorge Railway", "native": "Taieri Gorge Railway"},
+        "タイ国有鉄道メークローン線": {"zh": "泰国国铁美功线", "en": "Maeklong Railway", "native": "ทางรถไฟสายแม่กลอง"},
+        "タイ国有鉄道北本線": {"zh": "泰国国铁北本线", "en": "Northern Line", "native": "ทางรถไฟสายเหนือ"},
+        "ダニーデン鉄道": {"zh": "达尼丁铁路", "en": "Dunedin Railways", "native": "Dunedin Railways"},
+        "ダージリン・ヒマラヤ鉄道": {"zh": "大吉岭喜马拉雅铁路", "en": "Darjeeling Himalayan Railway", "native": "Darjeeling Himalayan Railway"},
+        "ドイツ鉄道": {"zh": "德国铁路", "en": "Deutsche Bahn", "native": "Deutsche Bahn"},
+        "ドバイメトロアフマル線": {"zh": "迪拜地铁红线", "en": "Dubai Metro Red Line", "native": "Red Line"},
+        "ハウトレイン": {"zh": "豪登列车", "en": "Gautrain", "native": "Gautrain"},
+        "ハワイ鉄道": {"zh": "夏威夷铁路", "en": "Hawaiian Railway", "native": "Hawaiian Railway"},
+        "バイロンベイ鉄道": {"zh": "拜伦湾铁路", "en": "Byron Bay Train", "native": "Byron Bay Train"},
+        "パッフィンビリー鉄道": {"zh": "普芬比利铁路", "en": "Puffing Billy Railway", "native": "Puffing Billy Railway"},
+        "ベトナム鉄道南北線": {"zh": "越南铁路南北线", "en": "North-South Railway", "native": "Đường sắt Bắc Nam"},
+        "ベルリンSバーン": {"zh": "柏林城市快铁", "en": "Berlin S-Bahn", "native": "S-Bahn Berlin"},
+        "ペリオン鉄道": {"zh": "皮立翁铁路", "en": "Pelion railway", "native": "Pelion railway"},
+        "ペルー鉄道": {"zh": "秘鲁铁路", "en": "PeruRail", "native": "PeruRail"},
+        "マルセイユトラム1号線": {"zh": "马赛有轨电车1号线", "en": "Marseille tramway line 1", "native": "Ligne 1 du tramway de Marseille"},
+        "マルセイユトラム2号線": {"zh": "马赛有轨电车2号线", "en": "Marseille tramway line 2", "native": "Ligne 2 du tramway de Marseille"},
+        "メイソン線": {"zh": "梅森线", "en": "Mason line", "native": "Mason line"},
+        "メキシコシティ地下鉄2号線": {"zh": "墨西哥城地铁2号线", "en": "Mexico City Metro Line 2", "native": "Línea 2"},
+        "メキシコシティ地下鉄9号線": {"zh": "墨西哥城地铁9号线", "en": "Mexico City Metro Line 9", "native": "Línea 9"},
+        "モントルー・オーベルラン・ベルノワ鉄道": {"zh": "蒙特勒-伯尔尼高地铁路", "en": "Montreux Oberland Bernois Railway", "native": "Chemin de fer Montreux Oberland bernois"},
+        "リトアニア鉄道": {"zh": "立陶宛铁路", "en": "Lithuanian Railways", "native": "Lietuvos geležinkeliai"},
+        "レーティッシュ鉄道ベルニナ線": {"zh": "雷蒂亚铁路伯尔尼纳线", "en": "Bernina line", "native": "Berninalinie"},
+        "ロシア鉄道": {"zh": "俄罗斯铁路", "en": "Russian Railways", "native": "Российские железные дороги"},
+        "ロッキーマウンテニア鉄道": {"zh": "落基山登山者列车", "en": "Rocky Mountaineer", "native": "Rocky Mountaineer"},
+        "ヴィトーリア・ミナス鉄道": {"zh": "维多利亚-米纳斯铁路", "en": "Vitória-Minas Railway", "native": "Estrada de Ferro Vitória a Minas"},
+        "ヴィリニュス鉄道": {"zh": "维尔纽斯铁路", "en": "Vilnius railway", "native": "Vilnius railway"},
+        "ヴェルデ・キャニオン鉄道": {"zh": "佛得峡谷铁路", "en": "Verde Canyon Railroad", "native": "Verde Canyon Railroad"},
+        "ヴッパータール空中鉄道": {"zh": "伍珀塔尔悬挂铁路", "en": "Wuppertal Schwebebahn", "native": "Wuppertaler Schwebebahn"},
+        "京元線": {"zh": "京元线", "en": "Gyeongwon Line", "native": "경원선"},
+        "北東線": {"zh": "东北线", "en": "North East MRT line", "native": "North East MRT line"},
+        "南北線": {"zh": "南北线", "en": "North-South MRT line", "native": "North-South MRT line"},
+        "台湾鉄路公司平渓線": {"zh": "台铁平溪线", "en": "Pingxi line", "native": "平溪線"},
+        "水西高速鉄道": {"zh": "水西高速铁路", "en": "Suseo high-speed railway", "native": "수서고속철도"},
+        "秦皇島山海観光鉄道": {"zh": "秦皇岛山海观光铁路", "en": "Qinhuangdao Shanhai Tourist Railway", "native": "秦皇岛山海旅游铁路"},
+        "韓国鉄道公社・空港鉄道": {"zh": "韩国铁道公社/机场铁路", "en": "KORAIL / Airport Railroad", "native": "한국철도공사 / 공항철도"},
+        "韓国鉄道公社京釜線": {"zh": "京釜线", "en": "Gyeongbu Line", "native": "경부선"},
+        "首都圏広域急行鉄道A路線": {"zh": "首都圈广域急行铁路A线", "en": "GTX Line A", "native": "수도권 광역급행철도 A노선"},
+        "龍山線": {"zh": "龙山线", "en": "Yongsan Line", "native": "용산선"},
+    },
+    "by_station": {
+        "Bellevue駅": {"zh": "贝尔维尤站", "en": "Bellevue station", "native": "Bellevue"},
+        "アトランティス・アクアベンチャー駅": {"zh": "亚特兰蒂斯水世界站", "en": "Atlantis Aquaventure station", "native": "Atlantis Aquaventure"},
+        "アトーチャ駅": {"zh": "阿托查站", "en": "Atocha station", "native": "Atocha"},
+        "アンカレッジ駅": {"zh": "安克雷奇站", "en": "Anchorage station", "native": "Anchorage"},
+        "アントウェルペン中央駅": {"zh": "安特卫普中央站", "en": "Antwerp Central station", "native": "Antwerpen-Centraal"},
+        "イマンタ駅": {"zh": "伊曼塔站", "en": "Imanta station", "native": "Imanta"},
+        "イースト・カポレイ駅": {"zh": "东卡波雷站", "en": "East Kapolei station", "native": "East Kapolei"},
+        "ウィリアムス駅": {"zh": "威廉姆斯站", "en": "Williams station", "native": "Williams"},
+        "エル・ラムル駅": {"zh": "拉姆勒站", "en": "El Raml station", "native": "El Raml"},
+        "オペラ駅": {"zh": "歌剧院站", "en": "Opéra station", "native": "Opéra"},
+        "オリャンタイタンボ駅": {"zh": "奥良泰坦博站", "en": "Ollantaytambo station", "native": "Ollantaytambo"},
+        "オーバーバルメン駅": {"zh": "上巴门站", "en": "Oberbarmen station", "native": "Oberbarmen"},
+        "クアラカイ駅": {"zh": "库阿拉凯站", "en": "Kualakaʻi station", "native": "Kualakaʻi"},
+        "クラークデール駅": {"zh": "克拉克代尔站", "en": "Clarkdale station", "native": "Clarkdale"},
+        "グレンフィナン駅": {"zh": "格伦芬南站", "en": "Glenfinnan station", "native": "Glenfinnan"},
+        "サイアム駅": {"zh": "暹罗站", "en": "Siam station", "native": "สถานีสยาม"},
+        "サンタバーバラ駅": {"zh": "圣巴巴拉站", "en": "Santa Barbara station", "native": "Santa Barbara"},
+        "シシハネ駅": {"zh": "希什哈内站", "en": "Şişhane station", "native": "Şişhane"},
+        "シャトー駅": {"zh": "城堡站", "en": "Château station", "native": "Château"},
+        "ジャスパー駅": {"zh": "贾斯珀站", "en": "Jasper station", "native": "Jasper"},
+        "ジュメイラ・ビーチ・レジデンス1駅": {"zh": "朱美拉海滩公寓1站", "en": "Jumeirah Beach Residence 1 station", "native": "Jumeirah Beach Residence 1"},
+        "ジュメイラ・ビーチ・レジデンス2駅": {"zh": "朱美拉海滩公寓2站", "en": "Jumeirah Beach Residence 2 station", "native": "Jumeirah Beach Residence 2"},
+        "ジュメイラ・レイク・タワーズ駅": {"zh": "朱美拉湖塔站", "en": "Jumeirah Lakes Towers station", "native": "Jumeirah Lakes Towers"},
+        "スプリングフィールド駅": {"zh": "斯普林菲尔德站", "en": "Springfield station", "native": "Springfield"},
+        "センカン駅": {"zh": "盛港站", "en": "Sengkang station", "native": "Sengkang"},
+        "セント・パンクラス駅": {"zh": "圣潘克拉斯站", "en": "St Pancras station", "native": "St Pancras"},
+        "ソウル駅": {"zh": "首尔站", "en": "Seoul station", "native": "서울역"},
+        "ソチミルコ駅": {"zh": "霍奇米尔科站", "en": "Xochimilco station", "native": "Xochimilco"},
+        "タクバヤ駅": {"zh": "塔库巴亚站", "en": "Tacubaya station", "native": "Tacubaya"},
+        "タスケーニャ駅": {"zh": "塔斯克尼亚站", "en": "Tasqueña station", "native": "Tasqueña"},
+        "タルトゥ駅": {"zh": "塔尔图站", "en": "Tartu station", "native": "Tartu"},
+        "ダージリン駅": {"zh": "大吉岭站", "en": "Darjeeling station", "native": "Darjeeling"},
+        "チェンマイ駅": {"zh": "清迈站", "en": "Chiang Mai station", "native": "สถานีเชียงใหม่"},
+        "チャトラパティ・シヴァージー・ターミナス駅": {"zh": "贾特拉帕蒂·希瓦吉终点站", "en": "Chhatrapati Shivaji Terminus", "native": "Chhatrapati Shivaji Terminus"},
+        "デン・ハーグHS駅": {"zh": "海牙HS站", "en": "Den Haag HS station", "native": "Den Haag HS"},
+        "デン・ハーグ中央駅": {"zh": "海牙中央站", "en": "Den Haag Centraal station", "native": "Den Haag Centraal"},
+        "デ・パンネ駅": {"zh": "德潘讷站", "en": "De Panne station", "native": "De Panne"},
+        "ナイアガラ・フォールズ駅": {"zh": "尼亚加拉瀑布站", "en": "Niagara Falls station", "native": "Niagara Falls"},
+        "ナイアガラ駅": {"zh": "尼亚加拉站", "en": "Niagara station", "native": "Niagara"},
+        "ニューデリー駅": {"zh": "新德里站", "en": "New Delhi station", "native": "New Delhi"},
+        "ノアイユ駅": {"zh": "诺阿耶站", "en": "Noailles station", "native": "Noailles"},
+        "ハウステンボス駅": {"zh": "豪斯登堡站", "en": "Huis Ten Bosch station", "native": "Huis Ten Bosch"},
+        "ハットフィールド駅": {"zh": "哈特菲尔德站", "en": "Hatfield station", "native": "Hatfield"},
+        "ハノイ駅": {"zh": "河内站", "en": "Hanoi station", "native": "Ga Hà Nội"},
+        "バイロンベイ駅": {"zh": "拜伦湾站", "en": "Byron Bay station", "native": "Byron Bay"},
+        "パウエル駅": {"zh": "鲍威尔站", "en": "Powell station", "native": "Powell"},
+        "パリ北駅": {"zh": "巴黎北站", "en": "Paris-Nord station", "native": "Gare du Nord"},
+        "ヒューストン駅": {"zh": "休斯顿站", "en": "Heuston station", "native": "Heuston"},
+        "ビネンホフ駅": {"zh": "内庭站", "en": "Binnenhof station", "native": "Binnenhof"},
+        "フォーヴィンケル駅": {"zh": "福温克尔站", "en": "Vohwinkel station", "native": "Vohwinkel"},
+        "ブラッデル駅": {"zh": "布莱德站", "en": "Braddell station", "native": "Braddell"},
+        "ブルジュマーン駅": {"zh": "布尔朱曼站", "en": "BurJuman station", "native": "BurJuman"},
+        "ヘルシンキ中央駅": {"zh": "赫尔辛基中央站", "en": "Helsinki Central station", "native": "Helsingin päärautatieasema"},
+        "ベイオール駅": {"zh": "贝伊奥卢站", "en": "Beyoğlu station", "native": "Beyoğlu"},
+        "ベルリン中央駅": {"zh": "柏林中央站", "en": "Berlin Hauptbahnhof", "native": "Berlin Hauptbahnhof"},
+        "ベロオリゾンテ駅": {"zh": "贝洛奥里藏特站", "en": "Belo Horizonte station", "native": "Belo Horizonte"},
+        "マクリーン駅": {"zh": "麦克莱恩站", "en": "McLean station", "native": "McLean"},
+        "マドリード駅": {"zh": "马德里站", "en": "Madrid station", "native": "Madrid"},
+        "ミリエス駅": {"zh": "米利埃斯站", "en": "Milies station", "native": "Milies"},
+        "メークローン駅": {"zh": "美功站", "en": "Maeklong station", "native": "สถานีแม่กลอง"},
+        "モスクワ駅": {"zh": "莫斯科站", "en": "Moscow station", "native": "Москва"},
+        "モスコフスキー駅": {"zh": "莫斯科夫斯基站", "en": "Moskovsky station", "native": "Московский вокзал"},
+        "ユトレヒト中央駅": {"zh": "乌得勒支中央站", "en": "Utrecht Centraal", "native": "Utrecht Centraal"},
+        "ユニオン駅": {"zh": "联合车站", "en": "Union Station", "native": "Union Station"},
+        "ヨハネスブルグ・パーク駅": {"zh": "约翰内斯堡公园站", "en": "Johannesburg Park Station", "native": "Johannesburg Park Station"},
+        "レティーロ駅": {"zh": "雷蒂罗站", "en": "Retiro station", "native": "Retiro"},
+        "ヴァンセンヌ駅": {"zh": "万塞讷站", "en": "Vincennes station", "native": "Vincennes"},
+        "ヴィリニュス駅": {"zh": "维尔纽斯站", "en": "Vilnius station", "native": "Vilnius"},
+        "ヴィルパント駅": {"zh": "维勒潘特站", "en": "Villepinte station", "native": "Villepinte"},
+        "ヴッパータール中央駅": {"zh": "伍珀塔尔中央站", "en": "Wuppertal Hauptbahnhof", "native": "Wuppertal Hauptbahnhof"},
+        "ヴッパーフェルト駅": {"zh": "伍珀费尔德站", "en": "Wupperfeld station", "native": "Wupperfeld"},
+        "龍山駅": {"zh": "龙山站", "en": "Yongsan station", "native": "용산역"},
+        "龍陽路駅": {"zh": "龙阳路站", "en": "Longyang Road station", "native": "龙阳路站"},
+    },
+    "by_vehicle": {
+        "Sm5": {"zh": "Sm5型近郊列车", "en": "Sm5 train", "native": "Sm5"},
+        "TGV Duplex": {"zh": "TGV Duplex双层高速列车", "en": "TGV Duplex", "native": "TGV Duplex"},
+        "オリエント急行": {"zh": "东方快车", "en": "Orient Express", "native": "Orient Express"},
+        "上海トランスラピッド": {"zh": "上海磁浮列车", "en": "Shanghai Maglev Train", "native": "上海磁浮列车"},
+        "デリー・メトロ": {"zh": "德里地铁", "en": "Delhi Metro", "native": "Delhi Metro"},
+        "セントーサ・エクスプレス": {"zh": "圣淘沙捷运", "en": "Sentosa Express", "native": "Sentosa Express"},
+        "シュトースバーン": {"zh": "施图斯缆索铁路", "en": "Stoosbahn", "native": "Stoosbahn"},
+        "サンフランシスコ・ケーブルカー": {"zh": "旧金山缆车", "en": "San Francisco cable car", "native": "San Francisco cable car"},
+        "カウアイ・プランテーション・レイルウェイ": {"zh": "考艾种植园铁路", "en": "Kauai Plantation Railway", "native": "Kauai Plantation Railway"},
+        "クライストチャーチ・トラム": {"zh": "基督城有轨电车", "en": "Christchurch Tramway", "native": "Christchurch Tramway"},
+        "シンガポールLRT センカン線 「クリスタルムーバー」": {"zh": "新加坡轻轨盛港线 Crystal Mover", "en": "Singapore LRT Sengkang line Crystal Mover", "native": "Singapore LRT Sengkang line Crystal Mover"},
+    },
+}
+
+FOREIGN_PREFIX_DISPLAY_TRANSLATIONS = {
+    "アムステルダムトラム": {"zh": "阿姆斯特丹有轨电车", "en": "Amsterdam tram", "native": "Amsterdamse tram"},
+    "アムトラック": {"zh": "美铁", "en": "Amtrak", "native": "Amtrak"},
+    "アラスカ鉄道": {"zh": "阿拉斯加铁路", "en": "Alaska Railroad", "native": "Alaska Railroad"},
+    "アレクサンドリア市電": {"zh": "亚历山大有轨电车", "en": "Alexandria tram", "native": "Alexandria tram"},
+    "イギリス鉄道": {"zh": "英国铁路", "en": "British railway", "native": "British railway"},
+    "イスタンブールトラム": {"zh": "伊斯坦布尔有轨电车", "en": "Istanbul tram", "native": "İstanbul tramvayı"},
+    "インド鉄道": {"zh": "印度铁路", "en": "Indian Railways", "native": "Indian Railways"},
+    "ウェスト・コースト鉄道": {"zh": "西海岸铁路", "en": "West Coast Railways", "native": "West Coast Railways"},
+    "エカテリンブルク市電": {"zh": "叶卡捷琳堡有轨电车", "en": "Yekaterinburg tram", "native": "Екатеринбургский трамвай"},
+    "エジプト鉄道": {"zh": "埃及铁路", "en": "Egyptian National Railways", "native": "Egyptian National Railways"},
+    "エディンバラ・トラム": {"zh": "爱丁堡有轨电车", "en": "Edinburgh Trams", "native": "Edinburgh Trams"},
+    "オランダ鉄道": {"zh": "荷兰铁路", "en": "Nederlandse Spoorwegen", "native": "Nederlandse Spoorwegen"},
+    "カイロ地下鉄1号線": {"zh": "开罗地铁1号线", "en": "Cairo Metro Line 1", "native": "Cairo Metro Line 1"},
+    "キウイレール": {"zh": "KiwiRail", "en": "KiwiRail", "native": "KiwiRail"},
+    "グランドキャニオン鉄道": {"zh": "大峡谷铁路", "en": "Grand Canyon Railway", "native": "Grand Canyon Railway"},
+    "グレート・ウェスタン鉄道": {"zh": "大西部铁路", "en": "Great Western Railway", "native": "Great Western Railway"},
+    "シンガポールLRT": {"zh": "新加坡轻轨", "en": "Singapore LRT", "native": "Singapore LRT"},
+    "シンガポールMRT": {"zh": "新加坡地铁", "en": "Singapore MRT", "native": "Singapore MRT"},
+    "シーメンス": {"zh": "西门子", "en": "Siemens", "native": "Siemens"},
+    "スイスMOB鉄道": {"zh": "瑞士MOB铁路", "en": "Montreux Oberland Bernois Railway", "native": "Chemin de fer Montreux Oberland bernois"},
+    "スカイライン": {"zh": "檀香山天际线", "en": "Skyline", "native": "Skyline"},
+    "ソウル交通公社": {"zh": "首尔交通公社", "en": "Seoul Metro", "native": "서울교통공사"},
+    "タイ国有鉄道": {"zh": "泰国国家铁路", "en": "State Railway of Thailand", "native": "การรถไฟแห่งประเทศไทย"},
+    "ダニーデン鉄道": {"zh": "达尼丁铁路", "en": "Dunedin Railways", "native": "Dunedin Railways"},
+    "ダージリン・ヒマラヤ鉄道": {"zh": "大吉岭喜马拉雅铁路", "en": "Darjeeling Himalayan Railway", "native": "Darjeeling Himalayan Railway"},
+    "チューリッヒ市交通局": {"zh": "苏黎世市交通局", "en": "Verkehrsbetriebe Zürich", "native": "Verkehrsbetriebe Zürich"},
+    "トレニタリア": {"zh": "意大利铁路公司", "en": "Trenitalia", "native": "Trenitalia"},
+    "ドイツ鉄道": {"zh": "德国铁路", "en": "Deutsche Bahn", "native": "Deutsche Bahn"},
+    "ドバイメトロ": {"zh": "迪拜地铁", "en": "Dubai Metro", "native": "Dubai Metro"},
+    "ドバイ道路交通局": {"zh": "迪拜道路交通局", "en": "Roads and Transport Authority", "native": "Roads and Transport Authority"},
+    "ニューヨーク市地下鉄": {"zh": "纽约地铁", "en": "New York City Subway", "native": "New York City Subway"},
+    "ハウトレイン": {"zh": "豪登列车", "en": "Gautrain", "native": "Gautrain"},
+    "ハワイ鉄道": {"zh": "夏威夷铁路", "en": "Hawaiian Railway", "native": "Hawaiian Railway"},
+    "ハーグ市営交通会社": {"zh": "海牙市营交通公司", "en": "HTM Personenvervoer", "native": "HTM Personenvervoer"},
+    "バイロンベイ鉄道": {"zh": "拜伦湾铁路", "en": "Byron Bay Train", "native": "Byron Bay Train"},
+    "バンコク・スカイトレイン": {"zh": "曼谷空铁", "en": "Bangkok Skytrain", "native": "รถไฟฟ้าบีทีเอส"},
+    "パシフィック・ナショナル": {"zh": "太平洋国家铁路", "en": "Pacific National", "native": "Pacific National"},
+    "パッフィンビリー鉄道": {"zh": "普芬比利铁路", "en": "Puffing Billy Railway", "native": "Puffing Billy Railway"},
+    "パリ・メトロ": {"zh": "巴黎地铁", "en": "Paris Métro", "native": "Métro de Paris"},
+    "パリ交通公団": {"zh": "巴黎大众运输公司", "en": "RATP", "native": "Régie autonome des transports parisiens"},
+    "フェロメックス": {"zh": "墨西哥铁路", "en": "Ferromex", "native": "Ferromex"},
+    "フランデレン交通公社": {"zh": "佛兰德交通公司", "en": "De Lijn", "native": "De Lijn"},
+    "ブエノスアイレス地下鉄": {"zh": "布宜诺斯艾利斯地铁", "en": "Buenos Aires Underground", "native": "Subte de Buenos Aires"},
+    "ブリュッセル首都圏交通": {"zh": "布鲁塞尔首都圈交通", "en": "Brussels Intercommunal Transport Company", "native": "STIB/MIVB"},
+    "ヘルシンキ地下鉄": {"zh": "赫尔辛基地铁", "en": "Helsinki Metro", "native": "Helsingin metro"},
+    "ベトナム鉄道": {"zh": "越南铁路", "en": "Vietnam Railways", "native": "Đường sắt Việt Nam"},
+    "ベルリンSバーン": {"zh": "柏林城市快铁", "en": "Berlin S-Bahn", "native": "S-Bahn Berlin"},
+    "ペリオン鉄道": {"zh": "皮立翁铁路", "en": "Pelion railway", "native": "Pelion railway"},
+    "ペルー・レイル": {"zh": "秘鲁铁路", "en": "PeruRail", "native": "PeruRail"},
+    "ホワイト・パス・アンド・ユーコン・ルート": {"zh": "白隘与育空铁路", "en": "White Pass and Yukon Route", "native": "White Pass and Yukon Route"},
+    "マルセイユ・トラム": {"zh": "马赛有轨电车", "en": "Marseille tramway", "native": "Tramway de Marseille"},
+    "メキシコシティ・ライトレール": {"zh": "墨西哥城轻轨", "en": "Mexico City Light Rail", "native": "Tren Ligero de la Ciudad de México"},
+    "メキシコシティ地下鉄": {"zh": "墨西哥城地铁", "en": "Mexico City Metro", "native": "Metro de la Ciudad de México"},
+    "モントルー・オーベルラン・ベルノワ鉄道": {"zh": "蒙特勒-伯尔尼高地铁路", "en": "Montreux Oberland Bernois Railway", "native": "Chemin de fer Montreux Oberland bernois"},
+    "ユニオン・ピアソン・エクスプレス": {"zh": "联合车站-皮尔逊机场快线", "en": "Union Pearson Express", "native": "Union Pearson Express"},
+    "ラックスレール": {"zh": "勒克斯铁路", "en": "Luxrail", "native": "Luxrail"},
+    "リガ交通局": {"zh": "里加交通局", "en": "Rīgas satiksme", "native": "Rīgas satiksme"},
+    "リトアニア鉄道": {"zh": "立陶宛铁路", "en": "Lithuanian Railways", "native": "Lietuvos geležinkeliai"},
+    "レンフェ": {"zh": "西班牙国家铁路", "en": "Renfe", "native": "Renfe"},
+    "レーティッシュ鉄道": {"zh": "雷蒂亚铁路", "en": "Rhaetian Railway", "native": "Rhätische Bahn"},
+    "ロシア鉄道": {"zh": "俄罗斯铁路", "en": "Russian Railways", "native": "Российские железные дороги"},
+    "ロッキーマウンテニア鉄道": {"zh": "落基山登山者列车", "en": "Rocky Mountaineer", "native": "Rocky Mountaineer"},
+    "ロボスレイル": {"zh": "罗沃斯铁路", "en": "Rovos Rail", "native": "Rovos Rail"},
+    "ワシントン首都圏交通局": {"zh": "华盛顿都会区交通局", "en": "Washington Metropolitan Area Transit Authority", "native": "Washington Metropolitan Area Transit Authority"},
+    "ヴィトーリア・ミナス鉄道": {"zh": "维多利亚-米纳斯铁路", "en": "Vitória-Minas Railway", "native": "Estrada de Ferro Vitória a Minas"},
+    "ヴェルデ・キャニオン鉄道": {"zh": "佛得峡谷铁路", "en": "Verde Canyon Railroad", "native": "Verde Canyon Railroad"},
+    "ヴッパータール空中鉄道": {"zh": "伍珀塔尔悬挂铁路", "en": "Wuppertal Schwebebahn", "native": "Wuppertaler Schwebebahn"},
+    "台湾鉄路公司": {"zh": "台湾铁路公司", "en": "Taiwan Railway Corporation", "native": "臺灣鐵路公司"},
+    "天津開発区導軌電車": {"zh": "天津开发区导轨电车", "en": "TEDA Modern Guided Rail Tram", "native": "天津开发区导轨电车"},
+    "広島電鉄": {"zh": "广岛电铁", "en": "Hiroshima Electric Railway", "native": "広島電鉄"},
+    "水西高速鉄道": {"zh": "水西高速铁路", "en": "Suseo high-speed railway", "native": "수서고속철도"},
+    "福井鉄道": {"zh": "福井铁道", "en": "Fukui Railway", "native": "福井鉄道"},
+    "秦皇島山海観光鉄道": {"zh": "秦皇岛山海观光铁路", "en": "Qinhuangdao Shanhai Tourist Railway", "native": "秦皇岛山海旅游铁路"},
+    "国鉄": {"zh": "国铁", "en": "National railway", "native": "国鉄"},
+}
+
 FOREIGN_REGION_PREFIXES = {
     "アメリカ",
     "イギリス",
@@ -580,6 +883,10 @@ FOREIGN_REGION_PREFIXES = {
     "ベトナム",
     "メキシコ",
 }
+
+
+TRANSLATED_DIRECTORY_GROUPS = {"by_foreign_country", "by_operator", "by_line", "by_station", "by_vehicle"}
+DOMESTIC_PREFIX_TRANSLATION_EXCLUSIONS = {"広島電鉄", "福井鉄道", "国鉄"}
 
 
 def now_iso() -> str:
@@ -1914,6 +2221,59 @@ def reading_aliases(group: str, key: str) -> list[str]:
     return unique_keep_order([alias for alias in aliases if alias])
 
 
+def translated_display(group: str, key: str) -> dict[str, str] | None:
+    if group not in TRANSLATED_DIRECTORY_GROUPS:
+        return None
+    exact = FOREIGN_DISPLAY_TRANSLATIONS.get(group, {}).get(key)
+    if exact:
+        return {"ja": key, **exact}
+    if group not in {"by_operator", "by_line", "by_vehicle"}:
+        return None
+    for prefix, base in sorted(FOREIGN_PREFIX_DISPLAY_TRANSLATIONS.items(), key=lambda item: len(item[0]), reverse=True):
+        if prefix in DOMESTIC_PREFIX_TRANSLATION_EXCLUSIONS:
+            continue
+        if not key.startswith(prefix):
+            continue
+        suffix = key.removeprefix(prefix).strip()
+        if suffix:
+            return {
+                "ja": key,
+                "zh": f"{base['zh']} {suffix}",
+                "en": f"{base['en']} {suffix}",
+                "native": f"{base['native']} {suffix}",
+            }
+        return {"ja": key, **base}
+    return None
+
+
+def translation_search_aliases(group: str, key: str) -> list[str]:
+    translation = translated_display(group, key)
+    if not translation:
+        return []
+    aliases = [
+        translation.get("zh", ""),
+        translation.get("en", ""),
+        translation.get("native", ""),
+        translation.get("ja", ""),
+    ]
+    return unique_keep_order([alias for alias in aliases if alias])
+
+
+def romanized_sort_text(text: str) -> str:
+    text = compact_text(text)
+    if unidecode:
+        text = unidecode(text)
+    normalized = unicodedata.normalize("NFKD", text)
+    ascii_text = "".join(ch for ch in normalized if not unicodedata.combining(ch))
+    return re.sub(r"\s+", " ", ascii_text).strip().casefold()
+
+
+def romanized_initial(text: str) -> str:
+    normalized = romanized_sort_text(text)
+    match = re.search(r"[a-z]", normalized)
+    return match.group(0).upper() if match else "#"
+
+
 def directory_primary_reading(group: str, key: str) -> str:
     if group == "by_prefecture":
         return PREFECTURE_READINGS.get(key) or key
@@ -1937,7 +2297,7 @@ def directory_primary_reading(group: str, key: str) -> str:
 
 
 def directory_search_key(group: str, key: str) -> str:
-    parts = [key, *reading_aliases(group, key)]
+    parts = [key, *reading_aliases(group, key), *translation_search_aliases(group, key)]
     return normalized_search_text(" ".join(parts))
 
 
@@ -1945,6 +2305,10 @@ def directory_section_label(group: str, key: str) -> str:
     if group == "by_birthday":
         month, _, _ = birthday_sort_key(key)
         return f"{month}月" if month != 99 else "#"
+    if translation := translated_display(group, key):
+        zh = compact_text(translation.get("zh", ""))
+        if zh:
+            return romanized_initial(zh)
     initial = kana_initial(directory_primary_reading(group, key))
     if group in {"by_operator", "by_line", "by_voice_actor", "by_station", "by_vehicle", "by_absent_station_name"} and initial == "漢":
         return "#"
@@ -1984,13 +2348,19 @@ def directory_sort_key(group: str, key: str) -> tuple[Any, ...]:
     if group == "by_birthday":
         month, day, label = birthday_sort_key(key)
         return (month, day, label)
+    if translation := translated_display(group, key):
+        zh = compact_text(translation.get("zh", ""))
+        return (2, romanized_initial(zh), romanized_sort_text(zh), zh, key)
     sort_text = directory_primary_reading(group, key)
     initial = kana_initial(sort_text)
+    directory_groups = {"by_operator", "by_line", "by_voice_actor", "by_station", "by_vehicle", "by_absent_station_name"}
+    if group in directory_groups and len(initial) == 1 and initial.isascii() and initial.isalpha():
+        return (2, initial, romanized_sort_text(sort_text), key)
     order = ["あ", "か", "さ", "た", "な", "は", "ま", "や", "ら", "わ", "漢", "#"]
-    if group in {"by_operator", "by_line", "by_voice_actor", "by_station", "by_vehicle", "by_absent_station_name"}:
+    if group in directory_groups:
         order = ["あ", "か", "さ", "た", "な", "は", "ま", "や", "ら", "わ", "#", "漢"]
     rank = order.index(initial) if initial in order else 20
-    return (rank, initial, sort_text, key)
+    return (1, rank, initial, sort_text, key)
 
 
 def sorted_directory_entries(group: str, entries: dict[str, list[dict[str, str]]]) -> dict[str, list[dict[str, str]]]:
@@ -2072,16 +2442,17 @@ def directory_anchor_id(group: str, label: str) -> str:
     return f"dir-{group}-{digest}"
 
 
-def denko_ref(record: dict[str, Any]) -> dict[str, str]:
+def denko_ref(record: dict[str, Any]) -> dict[str, Any]:
     return {
         "denko_id": record["denko_id"],
         "detail_url": record["detail_url"],
         "name": record["name"],
         "href": f"#{denko_anchor(record['denko_id'])}",
+        "countries": record.get("prototype_countries") or [],
     }
 
 
-def add_index_entry(index: dict[str, dict[str, list[dict[str, str]]]], group: str, key: str, record: dict[str, Any]) -> None:
+def add_index_entry(index: dict[str, dict[str, list[dict[str, Any]]]], group: str, key: str, record: dict[str, Any]) -> None:
     if not key:
         return
     bucket = index.setdefault(group, {}).setdefault(key, [])
@@ -2165,7 +2536,69 @@ def build_index(records: list[dict[str, Any]], source_records_path: Path = OUT_J
     }
 
 
-def render_directory_group(group: str, title: str, entries: dict[str, list[dict[str, str]]], empty_text: str = "暂无") -> str:
+def translated_meta_text(translation: dict[str, str]) -> str:
+    parts = []
+    en = compact_text(translation.get("en", ""))
+    native = translation.get("native")
+    if native and native != en:
+        parts.append(f"原文: {native}")
+    elif en:
+        parts.append(f"英语: {en}")
+    if ja := translation.get("ja"):
+        parts.append(f"日文: {ja}")
+    return " · ".join(parts)
+
+
+def country_display_name(country: str) -> str:
+    translation = translated_display("by_foreign_country", country)
+    return translation["zh"] if translation else country
+
+
+def directory_country_note(group: str, refs: list[dict[str, Any]]) -> str:
+    if group not in {"by_operator", "by_line", "by_station", "by_vehicle"}:
+        return ""
+    countries = unique_keep_order(
+        country_display_name(country)
+        for ref in refs
+        for country in (ref.get("countries") or [])
+        if country
+    )
+    if not countries:
+        return ""
+    return "、".join(countries)
+
+
+def render_country_note(note: str) -> str:
+    return f"""<span class="country-note">{esc(note)}</span>""" if note else ""
+
+
+def render_translated_key(group: str, key: str, multi: str = "", country_note: str = "") -> str:
+    country_html = render_country_note(country_note)
+    translation = translated_display(group, key)
+    if not translation:
+        return f"""{esc(key)}{multi}{country_html}"""
+    return f"""<span class="translated-key">
+      <span><span class="translated-key-main">{esc(translation['zh'])}</span>{multi}{country_html}</span>
+      <span class="translated-key-meta">{esc(translated_meta_text(translation))}</span>
+    </span>"""
+
+
+def render_translated_value_list(group: str, values: list[str]) -> str:
+    if not values:
+        return "-"
+    items = []
+    for value in values:
+        translation = translated_display(group, value)
+        if translation:
+            items.append(
+                f"""<span class="translated-inline"><span class="translated-inline-main">{esc(translation['zh'])}</span><span class="translated-inline-meta">{esc(translated_meta_text(translation))}</span></span>"""
+            )
+        else:
+            items.append(f"""<span class="plain-inline">{esc(value)}</span>""")
+    return """<span class="value-list">""" + "".join(items) + "</span>"
+
+
+def render_directory_group(group: str, title: str, entries: dict[str, list[dict[str, Any]]], empty_text: str = "暂无") -> str:
     if not entries:
         return f"""<section class="directory-card">
       <h2>{esc(title)}</h2>
@@ -2187,9 +2620,10 @@ def render_directory_group(group: str, title: str, entries: dict[str, list[dict[
             for ref in refs
         )
         multi = f"""<span class="entry-count">{len(refs)}件</span>""" if len(refs) > 1 else ""
+        country_note = directory_country_note(group, refs)
         search_key = directory_search_key(group, key)
         items.append(
-            f"""<li id="{esc(item_id)}" data-directory-item data-key="{esc(search_key)}"><span class="directory-key">{esc(key)}{multi}</span><span class="directory-links">{links}</span></li>"""
+            f"""<li id="{esc(item_id)}" data-directory-item data-key="{esc(search_key)}"><span class="directory-key">{render_translated_key(group, key, multi, country_note)}</span><span class="directory-links">{links}</span></li>"""
         )
     quick = f"""<nav class="directory-quick" aria-label="{esc(title)} 快速选择">{''.join(quick_links)}</nav>"""
     return f"""<section class="directory-card">
@@ -2276,7 +2710,7 @@ def render_html(records: list[dict[str, Any]], dataset_label: str, source_record
         <ul>{notes}</ul>
       </article>"""
         related_operator_html = (
-            f"""<div><dt>关联公司</dt><dd>{esc('、'.join(record.get('related_operators') or []))}</dd></div>"""
+            f"""<div><dt>关联公司</dt><dd>{render_translated_value_list('by_operator', record.get('related_operators') or [])}</dd></div>"""
             if record.get("related_operators")
             else ""
         )
@@ -2292,12 +2726,12 @@ def render_html(records: list[dict[str, Any]], dataset_label: str, source_record
         <div><dt>生日</dt><dd>{esc(record.get('birthday') or '-')}</dd></div>
         <div><dt>声优</dt><dd>{esc(record.get('voice_actor') or '-')}</dd></div>
         <div><dt>都道府県</dt><dd>{esc('、'.join(record.get('prototype_prefectures') or []) or '-')}</dd></div>
-        <div><dt>国家/地区</dt><dd>{esc('、'.join(record.get('prototype_countries') or []) or '-')}</dd></div>
-        <div><dt>公司/运营者</dt><dd>{esc('、'.join(record.get('prototype_operators') or []) or '-')}</dd></div>
+        <div><dt>国家/地区</dt><dd>{render_translated_value_list('by_foreign_country', record.get('prototype_countries') or [])}</dd></div>
+        <div><dt>公司/运营者</dt><dd>{render_translated_value_list('by_operator', record.get('prototype_operators') or [])}</dd></div>
         {related_operator_html}
-        <div><dt>车辆候选</dt><dd>{esc('、'.join(record['prototype_vehicles']) or '-')}</dd></div>
-        <div><dt>线路候选</dt><dd>{esc('、'.join(record['prototype_lines']) or '-')}</dd></div>
-        <div><dt>站点候选</dt><dd>{esc('、'.join(record['prototype_stations']) or '-')}</dd></div>
+        <div><dt>车辆候选</dt><dd>{render_translated_value_list('by_vehicle', record['prototype_vehicles'])}</dd></div>
+        <div><dt>线路候选</dt><dd>{render_translated_value_list('by_line', record['prototype_lines'])}</dd></div>
+        <div><dt>站点候选</dt><dd>{render_translated_value_list('by_station', record['prototype_stations'])}</dd></div>
         <div><dt>参考来源</dt><dd class="source-badge-list">{source_html}</dd></div>
       </dl>
       <article class="source-text">
@@ -2341,6 +2775,10 @@ def render_html(records: list[dict[str, Any]], dataset_label: str, source_record
     .directory-section {{ position:sticky; top:0; z-index:1; margin-top:2px; padding:2px 0; background:#fff; color:#68707c; font-size:11px; font-weight:700; border-bottom:1px solid #eef1f4; }}
     .directory-hit {{ outline:2px solid #f2cc60; outline-offset:2px; border-radius:4px; background:#fff8c5; }}
     .directory-key {{ font-weight:600; }}
+    .translated-key {{ display:grid; gap:2px; }}
+    .translated-key-main {{ font-weight:700; }}
+    .translated-key-meta {{ color:#68707c; font-size:11px; font-weight:500; line-height:1.35; }}
+    .country-note {{ display:inline-flex; align-items:center; margin-left:6px; border:1px solid #d8dee4; border-radius:999px; padding:1px 6px; color:#57606a; background:#f6f8fa; font-size:11px; font-weight:600; vertical-align:1px; }}
     .directory-links {{ display:flex; flex-wrap:wrap; gap:6px; }}
     .denko-chip {{ display:inline-flex; align-items:center; gap:4px; border:1px solid #dbe7f3; border-radius:999px; padding:2px 6px; background:white; }}
     .detail-link, .back-top {{ font-size:12px; }}
@@ -2372,6 +2810,10 @@ def render_html(records: list[dict[str, Any]], dataset_label: str, source_record
     .fact-grid div {{ min-width:0; }}
     .fact-grid dt {{ color:#68707c; font-size:12px; font-weight:600; }}
     .fact-grid dd {{ margin:2px 0 0; overflow-wrap:anywhere; }}
+    .value-list {{ display:flex; flex-direction:column; gap:5px; }}
+    .translated-inline, .plain-inline {{ display:inline-grid; gap:1px; align-items:start; }}
+    .translated-inline-main {{ font-weight:650; }}
+    .translated-inline-meta {{ color:#68707c; font-size:11px; line-height:1.35; }}
     .source-badge-list {{ display:flex; flex-wrap:wrap; gap:6px; }}
     .source-badge {{ display:inline-flex; align-items:center; min-height:22px; border:1px solid #d0d7de; background:#f6f8fa; color:#24292f; border-radius:999px; padding:2px 8px; font-size:12px; font-weight:600; text-decoration:none; }}
     .source-badge:hover {{ background:#eef6ff; border-color:#8cbeef; color:#0969da; text-decoration:none; }}
@@ -2499,6 +2941,7 @@ def main() -> None:
     parser.add_argument("--refresh", action="store_true")
     parser.add_argument("--all", action="store_true", help="Generate the full prototype lookup report.")
     parser.add_argument("--ids", nargs="*", help="Generate a focused subset. Defaults to the sample set.")
+    parser.add_argument("--render-only", action="store_true", help="Render HTML/index from the existing prototype JSONL without reparsing wiki caches.")
     args = parser.parse_args()
 
     denko_rows = read_jsonl(DENKO_FACTS)
@@ -2515,6 +2958,22 @@ def main() -> None:
         out_index_json = OUT_INDEX_JSON
         out_html = OUT_HTML
         dataset_label = "sample: original 001-005 + extra 001-005" if selected_ids == SAMPLE_IDS else f"subset: {len(selected_ids)} denko"
+    if args.render_only:
+        records = read_jsonl(out_jsonl)
+        infer_station_readings(records)
+        out_index_json.write_text(json.dumps(build_index(records, source_records_path=out_jsonl), ensure_ascii=False, indent=2), encoding="utf-8")
+        out_html.parent.mkdir(parents=True, exist_ok=True)
+        out_html.write_text(strip_trailing_html_whitespace(render_html(records, dataset_label, source_records_path=out_jsonl)), encoding="utf-8")
+        summary = {
+            "html": str(out_html.relative_to(ROOT)),
+            "index_json": str(out_index_json.relative_to(ROOT)),
+            "jsonl": str(out_jsonl.relative_to(ROOT)),
+            "records": len(records),
+            "prompt_errors": prompt_error_items(records),
+            "render_only": True,
+        }
+        print(json.dumps(summary, ensure_ascii=False))
+        return
     reference_lookup = build_reference_lookup({row["identity"]["name"] for row in denko_rows})
     birthday_profile_lookup = parse_birthday_profile_reference(BIRTHDAY_PROFILE_PAGE)
     state = load_state()
