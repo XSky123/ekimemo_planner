@@ -779,9 +779,39 @@ FOREIGN_DISPLAY_TRANSLATIONS: dict[str, dict[str, dict[str, str]]] = {
     "by_vehicle": {
         "Sm5": {"zh": "Sm5型近郊列车", "en": "Sm5 train", "native": "Sm5"},
         "TGV Duplex": {"zh": "TGV Duplex双层高速列车", "en": "TGV Duplex", "native": "TGV Duplex"},
+        "アムステルダムトラム「コンビーノ」": {"zh": "阿姆斯特丹有轨电车 Combino", "en": "Amsterdam tram Combino", "native": "Amsterdamse tram Combino"},
+        "アムトラック 44型電気式ディーゼル機関車": {"zh": "美铁44型柴电机车", "en": "Amtrak 44 diesel-electric locomotive", "native": "Amtrak 44 diesel-electric locomotive"},
+        "アムトラック EMD F40PH「メープルリーフ」": {"zh": "美铁 EMD F40PH Maple Leaf", "en": "Amtrak EMD F40PH Maple Leaf", "native": "Amtrak EMD F40PH Maple Leaf"},
+        "イスタンブールトラム ノスタルジック・トラムヴァイ": {"zh": "伊斯坦布尔怀旧有轨电车", "en": "Istanbul nostalgic tram", "native": "Nostaljik Tramvay"},
+        "インド鉄道 デカン・オデッセイ・トレイン": {"zh": "印度铁路德干奥德赛列车", "en": "Indian Railways Deccan Odyssey train", "native": "Deccan Odyssey"},
         "オリエント急行": {"zh": "东方快车", "en": "Orient Express", "native": "Orient Express"},
+        "ウェスト・コースト鉄道 ウェスト・ハイランド線「ジャコバイト」号": {"zh": "西海岸铁路西高地线 Jacobite 号", "en": "West Coast Railways West Highland line Jacobite", "native": "The Jacobite"},
+        "エジプト鉄道 ターボトレイン": {"zh": "埃及铁路涡轮列车", "en": "Egyptian National Railways Turbo Train", "native": "Turbo Train"},
+        "キウイレール ミッドランド線 「トランツアルパイン」号": {"zh": "KiwiRail米德兰线 TranzAlpine 号", "en": "KiwiRail Midland Line TranzAlpine", "native": "TranzAlpine"},
+        "シーメンス ヴェラロRUS「サプサン」": {"zh": "西门子Velaro RUS Sapsan", "en": "Siemens Velaro RUS Sapsan", "native": "Сапсан"},
+        "スイスMOB鉄道 「ゴールデンパス・パノラミック」号": {"zh": "瑞士MOB铁路GoldenPass Panoramic号", "en": "Montreux Oberland Bernois Railway GoldenPass Panoramic", "native": "GoldenPass Panoramic"},
+        "スカイライン ドライバーレス・メトロ": {"zh": "檀香山天际线无人驾驶地铁", "en": "Skyline driverless metro", "native": "Skyline driverless metro"},
         "上海トランスラピッド": {"zh": "上海磁浮列车", "en": "Shanghai Maglev Train", "native": "上海磁浮列车"},
+        "タイ国有鉄道メークローン線 NKF型気動車": {"zh": "泰国国铁美功线NKF型柴油动车", "en": "State Railway of Thailand Maeklong Line NKF diesel railcar", "native": "NKF diesel railcar"},
+        "ダニーデン鉄道 DJ型電気式ディーゼル機関車": {"zh": "达尼丁铁路DJ型柴电机车", "en": "Dunedin Railways DJ class diesel-electric locomotive", "native": "DJ class diesel-electric locomotive"},
         "デリー・メトロ": {"zh": "德里地铁", "en": "Delhi Metro", "native": "Delhi Metro"},
+        "トレニタリア E.414「フレッチャビアンカ」": {"zh": "意大利铁路公司E.414 Frecciabianca", "en": "Trenitalia E.414 Frecciabianca", "native": "Frecciabianca"},
+        "ドイツ鉄道 燃料電池列車「コラディア・アイリント」": {"zh": "德国铁路Coradia iLint燃料电池列车", "en": "Deutsche Bahn Coradia iLint fuel-cell train", "native": "Coradia iLint"},
+        "ドバイ道路交通局 (RTA) ドバイ・トラム シタディス402型": {"zh": "迪拜道路交通局迪拜有轨电车Citadis 402型", "en": "RTA Dubai Tram Citadis 402", "native": "Dubai Tram Citadis 402"},
+        "ドバイ道路交通局 (RTA) パーム・ジュメイラ・モノレール": {"zh": "迪拜道路交通局朱美拉棕榈岛单轨", "en": "RTA Palm Jumeirah Monorail", "native": "Palm Jumeirah Monorail"},
+        "ハーグ市営交通会社 アヴェニオ": {"zh": "海牙市营交通公司Avenio", "en": "HTM Personenvervoer Avenio", "native": "Avenio"},
+        "フェロメックス 「ホセ・クエルボ・エクスプレス」号": {"zh": "墨西哥铁路Jose Cuervo Express号", "en": "Ferromex Jose Cuervo Express", "native": "Jose Cuervo Express"},
+        "ベトナム鉄道 D19E型ディーゼル機関車": {"zh": "越南铁路D19E型柴油机车", "en": "Vietnam Railways D19E diesel locomotive", "native": "D19E diesel locomotive"},
+        "ペリオン鉄道 A9500系ディーゼル機関車": {"zh": "皮立翁铁路A9500系柴油机车", "en": "Pelion railway A9500 diesel locomotive", "native": "A9500 diesel locomotive"},
+        "ペルー・レイル ビスタドーム": {"zh": "秘鲁铁路Vistadome", "en": "PeruRail Vistadome", "native": "Vistadome"},
+        "マルセイユ・トラム フレキシティ・アウトルックC": {"zh": "马赛有轨电车Flexity Outlook C", "en": "Marseille tramway Flexity Outlook C", "native": "Flexity Outlook C"},
+        "メキシコシティ地下鉄 NM-02型ゴムタイヤ車": {"zh": "墨西哥城地铁NM-02型胶轮车", "en": "Mexico City Metro NM-02 rubber-tyred train", "native": "NM-02"},
+        "ラックスレール 寝台列車「ブルートレイン」": {"zh": "勒克斯铁路Blue Train卧铺列车", "en": "Luxrail Blue Train sleeper train", "native": "Blue Train"},
+        "リガ交通局 リガ市電 シュコダ15T・15T1/T2/T3": {"zh": "里加交通局里加有轨电车Skoda 15T/15T1/T2/T3", "en": "Rigas satiksme Riga tram Skoda 15T/15T1/T2/T3", "native": "Rīgas satiksme Riga tram Škoda 15T/15T1/T2/T3"},
+        "ロッキーマウンテニア鉄道 「ロッキーマウンテニア」号": {"zh": "落基山登山者列车Rocky Mountaineer号", "en": "Rocky Mountaineer train", "native": "Rocky Mountaineer"},
+        "ロボスレイル 寝台列車「プライド・オブ・アフリカ」": {"zh": "罗沃斯铁路Pride of Africa卧铺列车", "en": "Rovos Rail Pride of Africa sleeper train", "native": "Pride of Africa"},
+        "ヴェルデ・キャニオン鉄道 FP7形ディーゼル機関車": {"zh": "佛得峡谷铁路FP7型柴油机车", "en": "Verde Canyon Railroad FP7 diesel locomotive", "native": "FP7 diesel locomotive"},
+        "天津開発区導軌電車 トランスロール": {"zh": "天津开发区导轨电车Translohr", "en": "TEDA Modern Guided Rail Tram Translohr", "native": "Translohr"},
         "セントーサ・エクスプレス": {"zh": "圣淘沙捷运", "en": "Sentosa Express", "native": "Sentosa Express"},
         "シュトースバーン": {"zh": "施图斯缆索铁路", "en": "Stoosbahn", "native": "Stoosbahn"},
         "サンフランシスコ・ケーブルカー": {"zh": "旧金山缆车", "en": "San Francisco cable car", "native": "San Francisco cable car"},
@@ -2536,11 +2566,14 @@ def build_index(records: list[dict[str, Any]], source_records_path: Path = OUT_J
     }
 
 
-def translated_meta_text(translation: dict[str, str]) -> str:
+def translated_meta_text(group: str, translation: dict[str, str]) -> str:
     parts = []
     en = compact_text(translation.get("en", ""))
     native = translation.get("native")
-    if native and native != en:
+    if group == "by_foreign_country":
+        if en:
+            parts.append(f"英语: {en}")
+    elif native and native != en:
         parts.append(f"原文: {native}")
     elif en:
         parts.append(f"英语: {en}")
@@ -2579,7 +2612,7 @@ def render_translated_key(group: str, key: str, multi: str = "", country_note: s
         return f"""{esc(key)}{multi}{country_html}"""
     return f"""<span class="translated-key">
       <span><span class="translated-key-main">{esc(translation['zh'])}</span>{multi}{country_html}</span>
-      <span class="translated-key-meta">{esc(translated_meta_text(translation))}</span>
+      <span class="translated-key-meta">{esc(translated_meta_text(group, translation))}</span>
     </span>"""
 
 
@@ -2591,7 +2624,7 @@ def render_translated_value_list(group: str, values: list[str]) -> str:
         translation = translated_display(group, value)
         if translation:
             items.append(
-                f"""<span class="translated-inline"><span class="translated-inline-main">{esc(translation['zh'])}</span><span class="translated-inline-meta">{esc(translated_meta_text(translation))}</span></span>"""
+                f"""<span class="translated-inline"><span class="translated-inline-main">{esc(translation['zh'])}</span><span class="translated-inline-meta">{esc(translated_meta_text(group, translation))}</span></span>"""
             )
         else:
             items.append(f"""<span class="plain-inline">{esc(value)}</span>""")
