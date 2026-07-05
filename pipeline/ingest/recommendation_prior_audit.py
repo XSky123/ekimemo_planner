@@ -553,7 +553,7 @@ def audit_row(candidate: dict[str, Any], skill_row: dict[str, Any]) -> dict[str,
 
 def write_json(path: Path, value: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(value, ensure_ascii=False, indent=2, sort_keys=True), encoding="utf-8")
+    path.write_text(json.dumps(value, ensure_ascii=False, indent=2, sort_keys=True), encoding="utf-8", newline="\n")
 
 
 def write_html(path: Path, audit: dict[str, Any]) -> None:
@@ -615,7 +615,7 @@ def write_html(path: Path, audit: dict[str, Any]) -> None:
             f"<td><code>{esc(', '.join(row.get('component_kinds') or []))}</code></td></tr>"
         )
     parts.extend(["</tbody></table>", "</body></html>"])
-    path.write_text("\n".join(parts), encoding="utf-8")
+    path.write_text("\n".join(parts), encoding="utf-8", newline="\n")
 
 
 def build_audit() -> dict[str, Any]:

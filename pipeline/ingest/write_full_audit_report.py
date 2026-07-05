@@ -28,7 +28,7 @@ def esc(value: Any) -> str:
 def write_html_entity(path: Path, lines: list[str]) -> None:
     text = "\n".join(lines).encode("ascii", "xmlcharrefreplace").decode("ascii")
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(text, encoding="ascii")
+    path.write_text(text, encoding="ascii", newline="\n")
 
 
 def default_audit_json(pool: str) -> Path:

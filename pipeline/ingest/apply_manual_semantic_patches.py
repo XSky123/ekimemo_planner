@@ -27,6 +27,7 @@ def write_jsonl(path: Path, rows: list[dict[str, Any]]) -> None:
     path.write_text(
         "\n".join(json.dumps(row, ensure_ascii=False, sort_keys=True) for row in rows) + "\n",
         encoding="utf-8",
+        newline="\n",
     )
 
 

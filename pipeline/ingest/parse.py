@@ -101,7 +101,7 @@ def fetch(url: str, out_path: Path) -> str:
     with urllib.request.urlopen(req, timeout=30) as response:
         body = response.read()
     text = body.decode("utf-8", errors="replace")
-    out_path.write_text(text, encoding="utf-8")
+    out_path.write_text(text, encoding="utf-8", newline="\n")
     return text
 
 
@@ -2520,13 +2520,14 @@ def write_jsonl(path: Path, rows: list[dict[str, Any]]) -> None:
     path.write_text(
         "".join(json.dumps(row, ensure_ascii=False, sort_keys=True) + "\n" for row in rows),
         encoding="utf-8",
+        newline="\n",
     )
 
 
 def write_html_entity_report(path: Path, lines: list[str]) -> None:
     """Write ASCII-only HTML so local viewers cannot mis-detect UTF-8."""
     text = "\n".join(lines).encode("ascii", "xmlcharrefreplace").decode("ascii")
-    path.write_text(text, encoding="ascii")
+    path.write_text(text, encoding="ascii", newline="\n")
 
 
 def write_report(records: list[dict[str, Any]], skill_rows: list[dict[str, Any]], reviews: list[dict[str, Any]]) -> None:
@@ -2730,6 +2731,7 @@ def main() -> int:
     (INDEX_DIR / "probe_first5_denko_index.json").write_text(
         json.dumps(index, ensure_ascii=False, indent=2, sort_keys=True),
         encoding="utf-8",
+        newline="\n",
     )
     write_report(all_records, skill_rows, all_reviews)
     print(json.dumps({"denko_records": len(all_records), "skill_records": len(skill_rows), "reviews": len(all_reviews)}, ensure_ascii=False))

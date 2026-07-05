@@ -28,7 +28,7 @@ def read_jsonl(path: Path) -> list[dict[str, Any]]:
 
 def write_json(path: Path, data: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(data, ensure_ascii=False, indent=2, sort_keys=True), encoding="utf-8")
+    path.write_text(json.dumps(data, ensure_ascii=False, indent=2, sort_keys=True), encoding="utf-8", newline="\n")
 
 
 def esc(value: Any) -> str:
@@ -286,7 +286,7 @@ def write_markdown(path: Path, audit: dict[str, Any]) -> None:
     else:
         lines.append("按当前 checklist，未检出剩余 issue。")
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    path.write_text("\n".join(lines) + "\n", encoding="utf-8", newline="\n")
 
 
 def default_json_out(pool: str) -> Path:

@@ -13,6 +13,9 @@
     button, input, select { padding: 7px 9px; border: 1px solid #c9d1d9; border-radius: 4px; font-size: 14px; background: white; }
     button { cursor: pointer; }
     .tab-button.active { background: #0969da; color: white; border-color: #0969da; }
+    .count-main { font-weight: 700; }
+    .vu-count { margin-left: 4px; color: #68707c; font-size: 12px; font-weight: 500; }
+    .tab-button.active .vu-count { color: rgba(255,255,255,.78); }
     .toggle { display: inline-flex; align-items: center; gap: 5px; font-size: 13px; color: #444c56; }
     .toggle input { padding: 0; }
     table { border-collapse: collapse; width: 100%; font-size: 13px; margin-top: 12px; }
@@ -30,10 +33,10 @@
 <body>
   <h1>Ekimemo Step2 位移/访问次数辅助</h1>
   <p>从 Step1 DB 自动整理。这个表面向“访问回数活动”“人在固定地点补访问”“长距离开图”场景；今日新駅奖励不是访问次数增加，已单独拆页签。</p>
-  <div class="tabs"><button class="tab-button" type="button" data-tab="extra_access">追加访问/再次访问 <span>4</span></button>
-<button class="tab-button" type="button" data-tab="random_remote_access">随机/远程/思い出し访问 <span>5</span></button>
-<button class="tab-button" type="button" data-tab="range_transfer">范围/链接转移 <span>3</span></button>
-<button class="tab-button" type="button" data-tab="new_station_bonus">今日新駅奖励 <span>3</span></button></div>
+  <div class="tabs"><button class="tab-button" type="button" data-tab="extra_access">追加访问/再次访问 <span class="count-main">3</span><span class="vu-count">+1 VU</span></button>
+<button class="tab-button" type="button" data-tab="random_remote_access">随机/远程/思い出し访问 <span class="count-main">5</span></button>
+<button class="tab-button" type="button" data-tab="range_transfer">范围/链接转移 <span class="count-main">3</span></button>
+<button class="tab-button" type="button" data-tab="new_station_bonus">今日新駅奖励 <span class="count-main">3</span></button></div>
   <div class="toolbar">
     <input id="q" placeholder="搜索ID、名字、条件、效果" size="34">
     <select id="levelMode">
@@ -70,7 +73,7 @@
   </div>
 
     <section class="tab-panel" id="panel-extra_access" data-tab-panel="extra_access">
-      <h2>追加访问/再次访问 <span class="muted">(4)</span></h2>
+      <h2>追加访问/再次访问 <span class="muted">(3 +1 VU)</span></h2>
       <p>直接增加一次访问、失败后再访问、同一站追加访问。回数活动价值最高，但常受触发条件和概率限制。</p>
       <table>
         <thead>

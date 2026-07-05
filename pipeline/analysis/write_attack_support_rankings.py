@@ -94,6 +94,43 @@ def esc(value: Any) -> str:
     return html.escape("" if value is None else str(value), quote=True)
 
 
+def write_text_lf(path: Path, text: str) -> None:
+    text = text.replace("\r\n", "\n").replace("\r", "\n")
+    path.write_text(text, encoding="utf-8", newline="\n")
+
+
+def has_default_level(item: dict[str, Any], level: str = "50") -> bool:
+    try:
+        levels = json.loads(str(item.get("level_data") or "{}"))
+    except json.JSONDecodeError:
+        return False
+    return level in levels
+
+
+def visible_counts(candidates: list[dict[str, Any]], level: str = "50") -> tuple[int, int, int]:
+    visible = sum(1 for item in candidates if not item.get("vu_only") and has_default_level(item, level))
+    vu_only = sum(1 for item in candidates if item.get("vu_only"))
+    other_hidden = len(candidates) - visible - vu_only
+    return visible, vu_only, other_hidden
+
+
+def tab_count_html(candidates: list[dict[str, Any]]) -> str:
+    visible, vu_only, other_hidden = visible_counts(candidates)
+    parts = [f'<span class="count-main">{visible}</span>']
+    if vu_only:
+        parts.append(f'<span class="vu-count">+{vu_only} VU</span>')
+    return "".join(parts)
+
+
+def section_count_html(candidates: list[dict[str, Any]]) -> str:
+    visible, vu_only, other_hidden = visible_counts(candidates)
+    suffixes = []
+    if vu_only:
+        suffixes.append(f"+{vu_only} VU")
+    suffix = " " + " ".join(suffixes) if suffixes else ""
+    return f'<span class="muted">({visible}{suffix})</span>'
+
+
 def type_key(type_raw: str) -> str:
     if "\u30b5\u30dd" in type_raw:
         return "supporter"
@@ -656,7 +693,7 @@ def render_table(tab_id: str, candidates: list[dict[str, Any]]) -> str:
     tab = TABS[tab_id]
     return f"""
     <section class="tab-panel" id="panel-{esc(tab_id)}" data-tab-panel="{esc(tab_id)}">
-      <h2>{esc(tab["title"])} <span class="muted">({len(candidates)})</span></h2>
+      <h2>{esc(tab["title"])} {section_count_html(candidates)}</h2>
       <p>{esc(tab["description"])}</p>
       <table>
         <thead>
@@ -688,7 +725,7 @@ def main() -> None:
     metadata = denko_metadata()
     candidates_by_tab = {tab_id: build_candidates(tab_id, rows, metadata) for tab_id in TABS}
     tab_buttons = "\n".join(
-        f'<button class="tab-button" type="button" data-tab="{esc(tab_id)}">{esc(tab["title"])} <span>{len(candidates_by_tab[tab_id])}</span></button>'
+        f'<button class="tab-button" type="button" data-tab="{esc(tab_id)}">{esc(tab["title"])} {tab_count_html(candidates_by_tab[tab_id])}</button>'
         for tab_id, tab in TABS.items()
     )
     sections = "\n".join(render_table(tab_id, candidates_by_tab[tab_id]) for tab_id in TABS)
@@ -709,6 +746,9 @@ def main() -> None:
     button, input, select {{ padding: 7px 9px; border: 1px solid #c9d1d9; border-radius: 4px; font-size: 14px; background: white; }}
     button {{ cursor: pointer; }}
     .tab-button.active {{ background: #0969da; color: white; border-color: #0969da; }}
+    .count-main {{ font-weight: 700; }}
+    .vu-count {{ margin-left: 4px; color: #68707c; font-size: 12px; font-weight: 500; }}
+    .tab-button.active .vu-count {{ color: rgba(255,255,255,.78); }}
     .toggle {{ display: inline-flex; align-items: center; gap: 5px; font-size: 13px; color: #444c56; }}
     .toggle input {{ padding: 0; }}
     table {{ border-collapse: collapse; width: 100%; font-size: 13px; margin-top: 12px; }}
@@ -849,7 +889,7 @@ def main() -> None:
 </html>
 """
     html_text = "\n".join(line.rstrip() for line in html_text.splitlines()) + "\n"
-    OUT_HTML.write_text(html_text, encoding="utf-8")
+    write_text_lf(OUT_HTML, html_text)
     print(json.dumps({"out": str(OUT_HTML.relative_to(ROOT)), "counts": counts}, ensure_ascii=False))
 
 

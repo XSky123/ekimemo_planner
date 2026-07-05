@@ -929,7 +929,11 @@ def read_jsonl(path: Path) -> list[dict[str, Any]]:
 
 def write_jsonl(path: Path, rows: list[dict[str, Any]]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text("\n".join(json.dumps(row, ensure_ascii=False, sort_keys=True) for row in rows) + "\n", encoding="utf-8")
+    path.write_text(
+        "\n".join(json.dumps(row, ensure_ascii=False, sort_keys=True) for row in rows) + "\n",
+        encoding="utf-8",
+        newline="\n",
+    )
 
 
 def cache_path_for(denko_id: str, url: str) -> Path:
@@ -946,7 +950,7 @@ def fetch_html(denko_id: str, url: str, state: dict[str, Any], refresh: bool = F
         request = Request(url, headers={"User-Agent": "Mozilla/5.0 prototype-sample-parser/0.1"})
         with urlopen(request, timeout=25) as response:
             content = response.read().decode(response.headers.get_content_charset() or "utf-8", errors="replace")
-        path.write_text(content, encoding="utf-8")
+        path.write_text(content, encoding="utf-8", newline="\n")
         fetched = True
         time.sleep(0.25)
     html_text = path.read_text(encoding="utf-8")
@@ -1226,7 +1230,7 @@ def reference_cache_text(page: dict[str, Any]) -> str:
         request = Request(page["url"], headers={"User-Agent": "Mozilla/5.0 prototype-reference-parser/0.1"})
         with urlopen(request, timeout=25) as response:
             content = response.read().decode(response.headers.get_content_charset() or "utf-8", errors="replace")
-        path.write_text(content, encoding="utf-8")
+        path.write_text(content, encoding="utf-8", newline="\n")
         time.sleep(0.25)
     return path.read_text(encoding="utf-8-sig", errors="replace")
 
@@ -2966,7 +2970,7 @@ def load_state() -> dict[str, Any]:
 
 def save_state(state: dict[str, Any]) -> None:
     STATE_PATH.parent.mkdir(parents=True, exist_ok=True)
-    STATE_PATH.write_text(json.dumps(state, ensure_ascii=False, indent=2, sort_keys=True), encoding="utf-8")
+    STATE_PATH.write_text(json.dumps(state, ensure_ascii=False, indent=2, sort_keys=True), encoding="utf-8", newline="\n")
 
 
 def main() -> None:
@@ -2994,9 +2998,17 @@ def main() -> None:
     if args.render_only:
         records = read_jsonl(out_jsonl)
         infer_station_readings(records)
-        out_index_json.write_text(json.dumps(build_index(records, source_records_path=out_jsonl), ensure_ascii=False, indent=2), encoding="utf-8")
+        out_index_json.write_text(
+            json.dumps(build_index(records, source_records_path=out_jsonl), ensure_ascii=False, indent=2),
+            encoding="utf-8",
+            newline="\n",
+        )
         out_html.parent.mkdir(parents=True, exist_ok=True)
-        out_html.write_text(strip_trailing_html_whitespace(render_html(records, dataset_label, source_records_path=out_jsonl)), encoding="utf-8")
+        out_html.write_text(
+            strip_trailing_html_whitespace(render_html(records, dataset_label, source_records_path=out_jsonl)),
+            encoding="utf-8",
+            newline="\n",
+        )
         summary = {
             "html": str(out_html.relative_to(ROOT)),
             "index_json": str(out_index_json.relative_to(ROOT)),
@@ -3017,9 +3029,17 @@ def main() -> None:
         records.append(build_record(row, html_text, cache_meta, reference_lookup, birthday_profile_lookup))
     infer_station_readings(records)
     write_jsonl(out_jsonl, records)
-    out_index_json.write_text(json.dumps(build_index(records, source_records_path=out_jsonl), ensure_ascii=False, indent=2), encoding="utf-8")
+    out_index_json.write_text(
+        json.dumps(build_index(records, source_records_path=out_jsonl), ensure_ascii=False, indent=2),
+        encoding="utf-8",
+        newline="\n",
+    )
     out_html.parent.mkdir(parents=True, exist_ok=True)
-    out_html.write_text(strip_trailing_html_whitespace(render_html(records, dataset_label, source_records_path=out_jsonl)), encoding="utf-8")
+    out_html.write_text(
+        strip_trailing_html_whitespace(render_html(records, dataset_label, source_records_path=out_jsonl)),
+        encoding="utf-8",
+        newline="\n",
+    )
     save_state(state)
     summary = {
         "html": str(out_html.relative_to(ROOT)),

@@ -13,6 +13,9 @@
     button, input, select { padding: 7px 9px; border: 1px solid #c9d1d9; border-radius: 4px; font-size: 14px; background: white; }
     button { cursor: pointer; }
     .tab-button.active { background: #0969da; color: white; border-color: #0969da; }
+    .count-main { font-weight: 700; }
+    .vu-count { margin-left: 4px; color: #68707c; font-size: 12px; font-weight: 500; }
+    .tab-button.active .vu-count { color: rgba(255,255,255,.78); }
     .toggle { display: inline-flex; align-items: center; gap: 5px; font-size: 13px; color: #444c56; }
     .toggle input { padding: 0; }
     .badge { display: inline-block; margin-left: 6px; padding: 1px 5px; border: 1px solid #d0a215; border-radius: 4px; color: #7d5f00; background: #fff8c5; font-size: 11px; white-space: nowrap; }
@@ -32,14 +35,14 @@
 <body>
   <h1>Ekimemo Step2 经验/PT辅助排行</h1>
   <p>从 Step1 DB 自动整理，分类参考 wiki「経験値、スコア系スキル」。固定值、百分比/倍率、条件型待确认分开排行；默认按 Lv50 查看，可切换 Lv30/Lv80/Lv92/Lv100；仅 VU 后生效的项目默认隐藏。</p>
-  <div class="tabs"><button class="tab-button" type="button" data-tab="fixed_exp">固定経験値 <span>61</span></button>
-<button class="tab-button" type="button" data-tab="exp_distribution">経験値分配/倍率 <span>9</span></button>
-<button class="tab-button" type="button" data-tab="cat_punch_exp_boost">ねこぱんち経験値强化 <span>0</span></button>
-<button class="tab-button" type="button" data-tab="fixed_score">固定スコア <span>24</span></button>
-<button class="tab-button" type="button" data-tab="score_modifier">スコア倍率/変動 <span>9</span></button>
-<button class="tab-button" type="button" data-tab="bonus_gain">ボーナス/マイル <span>7</span></button>
-<button class="tab-button" type="button" data-tab="condition_unknown">条件型/待确认 <span>0</span></button>
-<button class="tab-button" type="button" data-tab="effect_boost">经验/PT效果强化 <span>6</span></button></div>
+  <div class="tabs"><button class="tab-button" type="button" data-tab="fixed_exp">固定経験値 <span class="count-main">52</span><span class="vu-count">+9 VU</span></button>
+<button class="tab-button" type="button" data-tab="exp_distribution">経験値分配/倍率 <span class="count-main">6</span><span class="vu-count">+3 VU</span></button>
+<button class="tab-button" type="button" data-tab="cat_punch_exp_boost">ねこぱんち経験値强化 <span class="count-main">0</span></button>
+<button class="tab-button" type="button" data-tab="fixed_score">固定スコア <span class="count-main">21</span><span class="vu-count">+3 VU</span></button>
+<button class="tab-button" type="button" data-tab="score_modifier">スコア倍率/変動 <span class="count-main">9</span></button>
+<button class="tab-button" type="button" data-tab="bonus_gain">ボーナス/マイル <span class="count-main">7</span></button>
+<button class="tab-button" type="button" data-tab="condition_unknown">条件型/待确认 <span class="count-main">0</span></button>
+<button class="tab-button" type="button" data-tab="effect_boost">经验/PT效果强化 <span class="count-main">4</span><span class="vu-count">+2 VU</span></button></div>
   <div class="toolbar">
     <input id="q" placeholder="搜索ID、名字、条件、效果" size="34">
     <select id="levelMode">
@@ -76,7 +79,7 @@
   </div>
 
     <section class="tab-panel" id="panel-fixed_exp" data-tab-panel="fixed_exp">
-      <h2>固定経験値 <span class="muted">(61)</span></h2>
+      <h2>固定経験値 <span class="muted">(52 +9 VU)</span></h2>
       <p>有明确经验值数值的経験値付与/增加类。排序按经验值本身，不和百分比/条件型混排。</p>
       <table>
         <thead>
@@ -1018,7 +1021,7 @@
 
 
     <section class="tab-panel" id="panel-exp_distribution" data-tab-panel="exp_distribution">
-      <h2>経験値分配/倍率 <span class="muted">(9)</span></h2>
+      <h2>経験値分配/倍率 <span class="muted">(6 +3 VU)</span></h2>
       <p>经验分配、经验比例、与伤害等条件联动的经验收益。排序按百分比/倍率，不和固定经验混排。</p>
       <table>
         <thead>
@@ -1207,7 +1210,7 @@
 
 
     <section class="tab-panel" id="panel-fixed_score" data-tab-panel="fixed_score">
-      <h2>固定スコア <span class="muted">(24)</span></h2>
+      <h2>固定スコア <span class="muted">(21 +3 VU)</span></h2>
       <p>有明确数值的スコア/PT獲得。排序按 pt 数值，不和百分比/倍率混排。</p>
       <table>
         <thead>
@@ -1915,7 +1918,7 @@
 
 
     <section class="tab-panel" id="panel-effect_boost" data-tab-panel="effect_boost">
-      <h2>经验/PT效果强化 <span class="muted">(6)</span></h2>
+      <h2>经验/PT效果强化 <span class="muted">(4 +2 VU)</span></h2>
       <p>经验、スコア、リンクボーナス、相关アクセサリー等收益技能的効果量増加。</p>
       <table>
         <thead>

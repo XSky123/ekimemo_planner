@@ -13,6 +13,9 @@
     button, input, select { padding: 7px 9px; border: 1px solid #c9d1d9; border-radius: 4px; font-size: 14px; background: white; }
     button { cursor: pointer; }
     .tab-button.active { background: #0969da; color: white; border-color: #0969da; }
+    .count-main { font-weight: 700; }
+    .vu-count { margin-left: 4px; color: #68707c; font-size: 12px; font-weight: 500; }
+    .tab-button.active .vu-count { color: rgba(255,255,255,.78); }
     .toggle { display: inline-flex; align-items: center; gap: 5px; font-size: 13px; color: #444c56; }
     .toggle input { padding: 0; }
     table { border-collapse: collapse; width: 100%; font-size: 13px; margin-top: 12px; }
@@ -30,10 +33,10 @@
 <body>
   <h1>Ekimemo Step2 攻击辅助排行</h1>
   <p>从 Step1 DB 自动整理。默认按 Lv50 查看，也可切换 Lv30/Lv80；打开 VU 项后可用 Lv92/Lv100 查看 VU 后效果。范围型效果同时给出理论最大和平均值，并可切换排序。</p>
-  <div class="tabs"><button class="tab-button" type="button" data-tab="self_atk">攻击手：自己加ATK <span>55</span></button>
-<button class="tab-button" type="button" data-tab="team_atk">ATK辅助：给队友/队伍 <span>68</span></button>
-<button class="tab-button" type="button" data-tab="fixed_damage">固定伤害 <span>28</span></button>
-<button class="tab-button" type="button" data-tab="def_debuff">降低对手DEF <span>8</span></button></div>
+  <div class="tabs"><button class="tab-button" type="button" data-tab="self_atk">攻击手：自己加ATK <span class="count-main">40</span><span class="vu-count">+15 VU</span></button>
+<button class="tab-button" type="button" data-tab="team_atk">ATK辅助：给队友/队伍 <span class="count-main">52</span><span class="vu-count">+16 VU</span></button>
+<button class="tab-button" type="button" data-tab="fixed_damage">固定伤害 <span class="count-main">20</span><span class="vu-count">+8 VU</span></button>
+<button class="tab-button" type="button" data-tab="def_debuff">降低对手DEF <span class="count-main">6</span><span class="vu-count">+2 VU</span></button></div>
   <div class="toolbar">
     <input id="q" placeholder="搜索ID、名字、条件、效果" size="34">
     <select id="levelMode">
@@ -70,7 +73,7 @@
   </div>
 
     <section class="tab-panel" id="panel-self_atk" data-tab-panel="self_atk">
-      <h2>攻击手：自己加ATK <span class="muted">(55)</span></h2>
+      <h2>攻击手：自己加ATK <span class="muted">(40 +15 VU)</span></h2>
       <p>只看对自己生效的 ATK 增加。理论最大/平均值用所选等级 AP 乘以 ATK 增幅估算。</p>
       <table>
         <thead>
@@ -922,7 +925,7 @@
 
 
     <section class="tab-panel" id="panel-team_atk" data-tab-panel="team_atk">
-      <h2>ATK辅助：给队友/队伍 <span class="muted">(68)</span></h2>
+      <h2>ATK辅助：给队友/队伍 <span class="muted">(52 +16 VU)</span></h2>
       <p>只看能给自身以外、队伍、访问者、相对车位等对象提供 ATK 增加的技能。</p>
       <table>
         <thead>
@@ -1969,7 +1972,7 @@
 
 
     <section class="tab-panel" id="panel-fixed_damage" data-tab-panel="fixed_damage">
-      <h2>固定伤害 <span class="muted">(28)</span></h2>
+      <h2>固定伤害 <span class="muted">(20 +8 VU)</span></h2>
       <p>轻减不能/固定伤害。范围值同时给出理论最大和平均值。</p>
       <table>
         <thead>
@@ -2416,7 +2419,7 @@
 
 
     <section class="tab-panel" id="panel-def_debuff" data-tab-panel="def_debuff">
-      <h2>降低对手DEF <span class="muted">(8)</span></h2>
+      <h2>降低对手DEF <span class="muted">(6 +2 VU)</span></h2>
       <p>只看对手 DEF 下降。自降 DEF 或队友 DEF 下降不列入。</p>
       <table>
         <thead>

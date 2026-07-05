@@ -119,7 +119,7 @@ def compact_report_json(value: Any) -> str:
 def write_html_entity_report(path: Path, lines: list[str]) -> None:
     """Write ASCII-only HTML so local viewers cannot mis-detect UTF-8."""
     text = "\n".join(lines).encode("ascii", "xmlcharrefreplace").decode("ascii")
-    path.write_text(text, encoding="ascii")
+    path.write_text(text, encoding="ascii", newline="\n")
 
 
 def compact_report_field(value: Any) -> str:
@@ -495,6 +495,7 @@ def main() -> int:
     (base.INDEX_DIR / f"{stem}_denko_index.json").write_text(
         json.dumps(index, ensure_ascii=False, indent=2, sort_keys=True),
         encoding="utf-8",
+        newline="\n",
     )
     report_path = write_html_report(args.start, args.end, denko_rows, skill_rows, reviews, args.batch_size, args.pool)
     print(

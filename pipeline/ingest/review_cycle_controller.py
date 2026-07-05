@@ -48,7 +48,7 @@ def read_jsonl(path: Path) -> list[dict[str, Any]]:
 
 def write_json(path: Path, value: dict[str, Any]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(value, ensure_ascii=False, indent=2, sort_keys=True), encoding="utf-8")
+    path.write_text(json.dumps(value, ensure_ascii=False, indent=2, sort_keys=True), encoding="utf-8", newline="\n")
 
 
 def run_ingestion(pool: str, start: int, end: int, batch_size: int) -> dict[str, Any]:
@@ -159,7 +159,7 @@ def write_batch_review_prompt(stem: str, state: dict[str, Any]) -> Path:
             "- do_not_fix_in_parser_yet",
         ]
     )
-    prompt_path.write_text("\n".join(lines), encoding="utf-8")
+    prompt_path.write_text("\n".join(lines), encoding="utf-8", newline="\n")
     return prompt_path
 
 

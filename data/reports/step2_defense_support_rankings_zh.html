@@ -13,6 +13,9 @@
     button, input, select { padding: 7px 9px; border: 1px solid #c9d1d9; border-radius: 4px; font-size: 14px; background: white; }
     button { cursor: pointer; }
     .tab-button.active { background: #0969da; color: white; border-color: #0969da; }
+    .count-main { font-weight: 700; }
+    .vu-count { margin-left: 4px; color: #68707c; font-size: 12px; font-weight: 500; }
+    .tab-button.active .vu-count { color: rgba(255,255,255,.78); }
     .toggle { display: inline-flex; align-items: center; gap: 5px; font-size: 13px; color: #444c56; }
     .toggle input { padding: 0; }
     table { border-collapse: collapse; width: 100%; font-size: 13px; margin-top: 12px; }
@@ -30,15 +33,15 @@
 <body>
   <h1>Ekimemo Step2 防御/守站辅助排行</h1>
   <p>从 Step1 DB 自动整理。防御候选按 DEF、减伤、回复、无效化/保命、降低对手输出、link保持、反击惩罚拆分；默认 Lv50，可切换 Lv30/Lv80/Lv92/Lv100。理论最大是该维度的原始量级，期望值会粗略乘以发动概率。</p>
-  <div class="tabs"><button class="tab-button" type="button" data-tab="self_def">守站本体：自己DEF <span>42</span></button>
-<button class="tab-button" type="button" data-tab="team_def">DEF辅助：队友/队伍 <span>102</span></button>
-<button class="tab-button" type="button" data-tab="damage_reduction">伤害减轻/上限 <span>32</span></button>
-<button class="tab-button" type="button" data-tab="defense_effect_boost">防御效果量倍率 <span>3</span></button>
-<button class="tab-button" type="button" data-tab="hp_recovery">HP回复/续航 <span>16</span></button>
-<button class="tab-button" type="button" data-tab="nullify_survival">无效化/保命 <span>5</span></button>
-<button class="tab-button" type="button" data-tab="opponent_suppression">降低对手输出 <span>23</span></button>
-<button class="tab-button" type="button" data-tab="link_retention">link保持 <span>2</span></button>
-<button class="tab-button" type="button" data-tab="counter_disruption">反击/惩罚 <span>10</span></button></div>
+  <div class="tabs"><button class="tab-button" type="button" data-tab="self_def">守站本体：自己DEF <span class="count-main">30</span><span class="vu-count">+12 VU</span></button>
+<button class="tab-button" type="button" data-tab="team_def">DEF辅助：队友/队伍 <span class="count-main">88</span><span class="vu-count">+14 VU</span></button>
+<button class="tab-button" type="button" data-tab="damage_reduction">伤害减轻/上限 <span class="count-main">18</span><span class="vu-count">+13 VU</span></button>
+<button class="tab-button" type="button" data-tab="defense_effect_boost">防御效果量倍率 <span class="count-main">1</span><span class="vu-count">+2 VU</span></button>
+<button class="tab-button" type="button" data-tab="hp_recovery">HP回复/续航 <span class="count-main">14</span><span class="vu-count">+2 VU</span></button>
+<button class="tab-button" type="button" data-tab="nullify_survival">无效化/保命 <span class="count-main">5</span></button>
+<button class="tab-button" type="button" data-tab="opponent_suppression">降低对手输出 <span class="count-main">21</span><span class="vu-count">+2 VU</span></button>
+<button class="tab-button" type="button" data-tab="link_retention">link保持 <span class="count-main">2</span></button>
+<button class="tab-button" type="button" data-tab="counter_disruption">反击/惩罚 <span class="count-main">8</span><span class="vu-count">+2 VU</span></button></div>
   <div class="toolbar">
     <input id="q" placeholder="搜索ID、名字、条件、效果" size="34">
     <select id="levelMode">
@@ -75,7 +78,7 @@
   </div>
 
     <section class="tab-panel" id="panel-self_def" data-tab-panel="self_def">
-      <h2>守站本体：自己DEF <span class="muted">(42)</span></h2>
+      <h2>守站本体：自己DEF <span class="muted">(30 +12 VU)</span></h2>
       <p>只看主要保护自己的 DEF 增加。适合找单体守站核心。</p>
       <table>
         <thead>
@@ -732,7 +735,7 @@
 
 
     <section class="tab-panel" id="panel-team_def" data-tab-panel="team_def">
-      <h2>DEF辅助：队友/队伍 <span class="muted">(102)</span></h2>
+      <h2>DEF辅助：队友/队伍 <span class="muted">(88 +14 VU)</span></h2>
       <p>给自身以外、队伍、被访问者或特定对象提供 DEF 的候选。</p>
       <table>
         <thead>
@@ -2289,7 +2292,7 @@
 
 
     <section class="tab-panel" id="panel-damage_reduction" data-tab-panel="damage_reduction">
-      <h2>伤害减轻/上限 <span class="muted">(32)</span></h2>
+      <h2>伤害减轻/上限 <span class="muted">(18 +13 VU)</span></h2>
       <p>固定减伤、百分比减伤、伤害上限等。无法用单一数值表达时保留为条件型候选。</p>
       <table>
         <thead>
@@ -2796,7 +2799,7 @@
 
 
     <section class="tab-panel" id="panel-defense_effect_boost" data-tab-panel="defense_effect_boost">
-      <h2>防御效果量倍率 <span class="muted">(3)</span></h2>
+      <h2>防御效果量倍率 <span class="muted">(1 +2 VU)</span></h2>
       <p>提高 DEF 增加、固定减伤、伤害减轻类技能效果量的候选。用于叠防御辅助时估算放大器。</p>
       <table>
         <thead>
@@ -2868,7 +2871,7 @@
 
 
     <section class="tab-panel" id="panel-hp_recovery" data-tab-panel="hp_recovery">
-      <h2>HP回复/续航 <span class="muted">(16)</span></h2>
+      <h2>HP回复/续航 <span class="muted">(14 +2 VU)</span></h2>
       <p>HP回复、被访问后回复、手动回复等。平均值按数值和范围估算，不直接模拟战斗。</p>
       <table>
         <thead>
@@ -3237,7 +3240,7 @@
 
 
     <section class="tab-panel" id="panel-opponent_suppression" data-tab-panel="opponent_suppression">
-      <h2>降低对手输出 <span class="muted">(23)</span></h2>
+      <h2>降低对手输出 <span class="muted">(21 +2 VU)</span></h2>
       <p>降低对手 ATK、技能无效化、电池无效化等。这里只列防御向干扰，不列降低对手 DEF。</p>
       <table>
         <thead>
@@ -3666,7 +3669,7 @@
 
 
     <section class="tab-panel" id="panel-counter_disruption" data-tab-panel="counter_disruption">
-      <h2>反击/惩罚 <span class="muted">(10)</span></h2>
+      <h2>反击/惩罚 <span class="muted">(8 +2 VU)</span></h2>
       <p>カウンター、反击伤害、重启对手、强制 HP 0。严格说不是防御，但能提高被打时收益或威慑。</p>
       <table>
         <thead>

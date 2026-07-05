@@ -259,7 +259,7 @@ def write_report(records: list[dict[str, Any]]) -> None:
         )
     lines.extend(["</tbody></table>", "</body></html>"])
     REPORT_DIR.mkdir(parents=True, exist_ok=True)
-    (REPORT_DIR / "reverse_skill_lookup_sample_zh.html").write_text("\n".join(lines), encoding="utf-8")
+    (REPORT_DIR / "reverse_skill_lookup_sample_zh.html").write_text("\n".join(lines), encoding="utf-8", newline="\n")
 
 
 def main() -> int:
@@ -270,6 +270,7 @@ def main() -> int:
     out_path.write_text(
         "".join(json.dumps(row, ensure_ascii=False, sort_keys=True) + "\n" for row in records),
         encoding="utf-8",
+        newline="\n",
     )
     write_report(records)
     print(json.dumps({"reverse_lookup_candidates": len(records)}, ensure_ascii=False))

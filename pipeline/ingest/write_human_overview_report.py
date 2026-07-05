@@ -362,7 +362,7 @@ def main() -> None:
 </body>
 </html>
 """
-    OUT_HTML.write_text(html_text, encoding="utf-8")
+    OUT_HTML.write_text(html_text, encoding="utf-8", newline="\n")
     print(json.dumps({"out": str(OUT_HTML.relative_to(ROOT)), "rows": len(merged)}, ensure_ascii=False))
 
 

@@ -165,7 +165,7 @@ def write_markdown(result: dict[str, Any]) -> None:
                 + " |"
             )
         lines.append("")
-    OUT_MD.write_text("\n".join(lines).rstrip() + "\n", encoding="utf-8")
+    OUT_MD.write_text("\n".join(lines).rstrip() + "\n", encoding="utf-8", newline="\n")
 
 
 def main() -> None:
@@ -178,7 +178,7 @@ def main() -> None:
         "total_issue_rows": sum(report["row_issue_count"] for report in reports),
         "category_counts": dict(sorted(total_counts.items())),
     }
-    OUT_JSON.write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding="utf-8")
+    OUT_JSON.write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding="utf-8", newline="\n")
     write_markdown(result)
     print(json.dumps({"json": str(OUT_JSON.relative_to(ROOT)), "md": str(OUT_MD.relative_to(ROOT)), "total_issue_rows": result["total_issue_rows"], "category_counts": result["category_counts"]}, ensure_ascii=False))
 

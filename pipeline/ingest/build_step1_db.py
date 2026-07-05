@@ -25,12 +25,13 @@ def write_jsonl(path: Path, rows: list[dict[str, Any]]) -> None:
     path.write_text(
         "\n".join(json.dumps(row, ensure_ascii=False, sort_keys=True) for row in rows) + "\n",
         encoding="utf-8",
+        newline="\n",
     )
 
 
 def write_json(path: Path, value: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(value, ensure_ascii=False, indent=2, sort_keys=True), encoding="utf-8")
+    path.write_text(json.dumps(value, ensure_ascii=False, indent=2, sort_keys=True), encoding="utf-8", newline="\n")
 
 
 def pool_from_denko_id(denko_id: str) -> str:
