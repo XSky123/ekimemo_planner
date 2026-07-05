@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-07-06T02:51:25.116226+09:00",
+  "generated_at": "2026-07-06T03:03:06.871258+09:00",
   "source_records": "data\\prototype_db\\prototype_records.jsonl",
   "groups": {
     "by_prefecture": {

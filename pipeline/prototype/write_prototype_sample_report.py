@@ -2567,13 +2567,12 @@ def build_index(records: list[dict[str, Any]], source_records_path: Path = OUT_J
 
 
 def translated_meta_text(group: str, translation: dict[str, str]) -> str:
+    if group == "by_foreign_country":
+        return translation.get("ja", "")
     parts = []
     en = compact_text(translation.get("en", ""))
     native = translation.get("native")
-    if group == "by_foreign_country":
-        if en:
-            parts.append(f"英语: {en}")
-    elif native and native != en:
+    if native and native != en:
         parts.append(f"原文: {native}")
     elif en:
         parts.append(f"英语: {en}")
@@ -2659,8 +2658,9 @@ def render_directory_group(group: str, title: str, entries: dict[str, list[dict[
             f"""<li id="{esc(item_id)}" data-directory-item data-key="{esc(search_key)}"><span class="directory-key">{render_translated_key(group, key, multi, country_note)}</span><span class="directory-links">{links}</span></li>"""
         )
     quick = f"""<nav class="directory-quick" aria-label="{esc(title)} 快速选择">{''.join(quick_links)}</nav>"""
+    count_html = "" if group in {"by_birthday", "by_prefecture", "by_foreign_country"} else f" <span>{len(entries)}</span>"
     return f"""<section class="directory-card">
-      <h2>{esc(title)}{'' if group == 'by_birthday' else f' <span>{len(entries)}</span>'}</h2>
+      <h2>{esc(title)}{count_html}</h2>
       <div class="directory-tools">
         <input type="search" placeholder="搜索后跳转" aria-label="{esc(title)} 搜索" data-directory-search>
         <button type="button" data-directory-jump>跳转</button>
