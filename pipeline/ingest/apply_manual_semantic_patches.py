@@ -39,6 +39,16 @@ def find_component(components: list[dict[str, Any]], component_id: str) -> tuple
     for index, component in enumerate(components):
         if component.get("component_id") == component_id:
             return index, component
+    legacy_first_component_id = f"{component_id}_1"
+    for index, component in enumerate(components):
+        if component.get("component_id") == legacy_first_component_id:
+            return index, component
+    legacy_match = re.fullmatch(r"component_\d+_(.+)", component_id)
+    if legacy_match:
+        legacy_effect_id = legacy_match.group(1)
+        for index, component in enumerate(components):
+            if component.get("component_id") in {legacy_effect_id, f"{legacy_effect_id}_1"}:
+                return index, component
     return None, None
 
 

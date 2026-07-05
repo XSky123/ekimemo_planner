@@ -7,7 +7,7 @@
         {
           "candidate_count": 2,
           "content_hashes": [
-            "e0d1c5014c23d4c6f2a785da011d140401dcf2deb5a6f8a2764733de78edee8c"
+            "b01ea39d281efeebf55dff7cc07ddbb339cabb2f5eefe1f7ca4a772f5dbc4299"
           ],
           "denko_id": "original:040",
           "identity_count": 1,
@@ -16,7 +16,7 @@
         {
           "candidate_count": 2,
           "content_hashes": [
-            "e0d1c5014c23d4c6f2a785da011d140401dcf2deb5a6f8a2764733de78edee8c"
+            "b01ea39d281efeebf55dff7cc07ddbb339cabb2f5eefe1f7ca4a772f5dbc4299"
           ],
           "denko_id": "original:080",
           "identity_count": 1,
@@ -41,7 +41,7 @@
         {
           "candidate_count": 2,
           "content_hashes": [
-            "b0cba8152521d62e8a9a76507435dc6973911912cd4ebaf7b9fab70a4ad1e91e"
+            "3e76d727a8e9a36d86ff3b73a020c3890d0342e337f22b25f1bc896e55c53530"
           ],
           "denko_id": "original:040",
           "identity_count": 1,
@@ -50,7 +50,7 @@
         {
           "candidate_count": 2,
           "content_hashes": [
-            "03cf510a727ccc24a7b0a1488293ac99d1f8f580cc404fb5124b28ff22438e33"
+            "ab36d3903b0b27f7f43374c7be23adf627e456b26b93e5b6bddb99c09dfbc55a"
           ],
           "denko_id": "original:080",
           "identity_count": 1,
@@ -70,7 +70,7 @@
       "unique_count": 293
     }
   },
-  "generated_at": "2026-07-06T03:14:54.811072+09:00",
+  "generated_at": "2026-07-06T03:42:32.803663+09:00",
   "language_policy": {
     "display": "zh",
     "schema_keys": "en",
@@ -89,11 +89,11 @@
     },
     "denko_total": 293,
     "skill_component_effect_kind_counts": {
-      "activation_probability_boost": 10,
+      "activation_probability_boost": 11,
       "additional_fixed_damage": 5,
       "additional_score_gain": 4,
       "ap_debuff": 3,
-      "atk_buff": 126,
+      "atk_buff": 127,
       "atk_debuff": 13,
       "battery_disable": 2,
       "cooldown_entry": 1,
@@ -107,9 +107,9 @@
       "damage_substitution": 1,
       "def_buff": 148,
       "def_debuff": 16,
-      "def_modifier": 2,
-      "duration_extension": 19,
-      "effect_multiplier": 11,
+      "def_modifier": 1,
+      "duration_extension": 20,
+      "effect_multiplier": 13,
       "exp_distribution": 4,
       "exp_distribution_bonus": 1,
       "exp_gain": 65,
@@ -134,13 +134,13 @@
       "none": 2,
       "radar_detection_range": 1,
       "random_previous_station_access": 2,
-      "reboot": 6,
+      "reboot": 5,
       "remote_station_access": 1,
       "score_gain": 28,
       "score_random_modifier": 1,
       "skill_continue": 1,
       "skill_disable": 13,
-      "skill_force_end": 4,
+      "skill_force_end": 5,
       "station_link_transfer": 1,
       "survive_hp1": 1,
       "today_new_station_bonus": 3

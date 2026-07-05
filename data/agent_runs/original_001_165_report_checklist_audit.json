@@ -1,341 +1,46 @@
 {
-  "generated_at": "2026-07-06T03:15:04.449425+09:00",
-  "issues": [
-    {
-      "batch": "original_001_040",
-      "category": "probability",
-      "component_id": "hp_recovery_1",
-      "denko_id": "original:001",
-      "detail_zh": "probability 中仍混有多个 label。",
-      "evidence": {
-        "level": "100",
-        "probability": {
-          "発動率(1)": "50%",
-          "発動率(2)": "(1)+15%"
-        }
-      },
-      "fix_hint_zh": "按 component label 拆成独立 activation_probability。",
-      "issue": "mixed_labeled_probability",
-      "name": "黄陽セリア",
-      "severity": "high"
-    },
-    {
-      "batch": "original_001_040",
-      "category": "probability",
-      "component_id": "hp_recovery_1",
-      "denko_id": "original:001",
-      "detail_zh": "probability 中仍混有多个 label。",
-      "evidence": {
-        "level": "15",
-        "probability": {
-          "発動率(1)": "25%",
-          "発動率(2)": "-"
-        }
-      },
-      "fix_hint_zh": "按 component label 拆成独立 activation_probability。",
-      "issue": "mixed_labeled_probability",
-      "name": "黄陽セリア",
-      "severity": "high"
-    },
-    {
-      "batch": "original_001_040",
-      "category": "probability",
-      "component_id": "hp_recovery_1",
-      "denko_id": "original:001",
-      "detail_zh": "probability 中仍混有多个 label。",
-      "evidence": {
-        "level": "30",
-        "probability": {
-          "発動率(1)": "30%",
-          "発動率(2)": "-"
-        }
-      },
-      "fix_hint_zh": "按 component label 拆成独立 activation_probability。",
-      "issue": "mixed_labeled_probability",
-      "name": "黄陽セリア",
-      "severity": "high"
-    },
-    {
-      "batch": "original_001_040",
-      "category": "probability",
-      "component_id": "hp_recovery_1",
-      "denko_id": "original:001",
-      "detail_zh": "probability 中仍混有多个 label。",
-      "evidence": {
-        "level": "5",
-        "probability": {
-          "発動率(1)": "20%",
-          "発動率(2)": "-"
-        }
-      },
-      "fix_hint_zh": "按 component label 拆成独立 activation_probability。",
-      "issue": "mixed_labeled_probability",
-      "name": "黄陽セリア",
-      "severity": "high"
-    },
-    {
-      "batch": "original_001_040",
-      "category": "probability",
-      "component_id": "hp_recovery_1",
-      "denko_id": "original:001",
-      "detail_zh": "probability 中仍混有多个 label。",
-      "evidence": {
-        "level": "50",
-        "probability": {
-          "発動率(1)": "35%",
-          "発動率(2)": "-"
-        }
-      },
-      "fix_hint_zh": "按 component label 拆成独立 activation_probability。",
-      "issue": "mixed_labeled_probability",
-      "name": "黄陽セリア",
-      "severity": "high"
-    },
-    {
-      "batch": "original_001_040",
-      "category": "probability",
-      "component_id": "hp_recovery_1",
-      "denko_id": "original:001",
-      "detail_zh": "probability 中仍混有多个 label。",
-      "evidence": {
-        "level": "60",
-        "probability": {
-          "発動率(1)": "40%",
-          "発動率(2)": "-"
-        }
-      },
-      "fix_hint_zh": "按 component label 拆成独立 activation_probability。",
-      "issue": "mixed_labeled_probability",
-      "name": "黄陽セリア",
-      "severity": "high"
-    },
-    {
-      "batch": "original_001_040",
-      "category": "probability",
-      "component_id": "hp_recovery_1",
-      "denko_id": "original:001",
-      "detail_zh": "probability 中仍混有多个 label。",
-      "evidence": {
-        "level": "70",
-        "probability": {
-          "発動率(1)": "45%",
-          "発動率(2)": "-"
-        }
-      },
-      "fix_hint_zh": "按 component label 拆成独立 activation_probability。",
-      "issue": "mixed_labeled_probability",
-      "name": "黄陽セリア",
-      "severity": "high"
-    },
-    {
-      "batch": "original_001_040",
-      "category": "probability",
-      "component_id": "hp_recovery_1",
-      "denko_id": "original:001",
-      "detail_zh": "probability 中仍混有多个 label。",
-      "evidence": {
-        "level": "80",
-        "probability": {
-          "発動率(1)": "50%",
-          "発動率(2)": "-"
-        }
-      },
-      "fix_hint_zh": "按 component label 拆成独立 activation_probability。",
-      "issue": "mixed_labeled_probability",
-      "name": "黄陽セリア",
-      "severity": "high"
-    },
-    {
-      "batch": "original_001_040",
-      "category": "probability",
-      "component_id": "hp_recovery_1",
-      "denko_id": "original:001",
-      "detail_zh": "probability 中仍混有多个 label。",
-      "evidence": {
-        "level": "92",
-        "probability": {
-          "発動率(1)": "50%",
-          "発動率(2)": "(1)+5%"
-        }
-      },
-      "fix_hint_zh": "按 component label 拆成独立 activation_probability。",
-      "issue": "mixed_labeled_probability",
-      "name": "黄陽セリア",
-      "severity": "high"
-    },
-    {
-      "batch": "original_001_040",
-      "category": "probability",
-      "component_id": "hp_recovery_1",
-      "denko_id": "original:001",
-      "detail_zh": "probability 中仍混有多个 label。",
-      "evidence": {
-        "level": "96",
-        "probability": {
-          "発動率(1)": "50%",
-          "発動率(2)": "(1)+10%"
-        }
-      },
-      "fix_hint_zh": "按 component label 拆成独立 activation_probability。",
-      "issue": "mixed_labeled_probability",
-      "name": "黄陽セリア",
-      "severity": "high"
-    },
-    {
-      "batch": "original_001_040",
-      "category": "value",
-      "component_id": "friend_slot_increase_1",
-      "denko_id": "original:016",
-      "detail_zh": "(1) component 的 value_raw 中仍包含 (2)。",
-      "evidence": {
-        "level": "100",
-        "value_raw": "(1) 電友枠 +3 (計15) (2) ATK 0～+22% DEF 0～+22% (上限22人)"
-      },
-      "fix_hint_zh": "按 label 切分 value_raw。",
-      "issue": "base_value_contains_label_2",
-      "name": "ニャッシュ",
-      "severity": "high"
-    },
-    {
-      "batch": "original_001_040",
-      "category": "value",
-      "component_id": "friend_slot_increase_1",
-      "denko_id": "original:016",
-      "detail_zh": "(1) component 的 value_raw 中仍包含 (2)。",
-      "evidence": {
-        "level": "30",
-        "value_raw": "(1) 電友枠 +2 (計6) (2) -"
-      },
-      "fix_hint_zh": "按 label 切分 value_raw。",
-      "issue": "base_value_contains_label_2",
-      "name": "ニャッシュ",
-      "severity": "high"
-    },
-    {
-      "batch": "original_001_040",
-      "category": "value",
-      "component_id": "friend_slot_increase_1",
-      "denko_id": "original:016",
-      "detail_zh": "(1) component 的 value_raw 中仍包含 (2)。",
-      "evidence": {
-        "level": "50",
-        "value_raw": "(1) 電友枠 +2 (計8) (2) -"
-      },
-      "fix_hint_zh": "按 label 切分 value_raw。",
-      "issue": "base_value_contains_label_2",
-      "name": "ニャッシュ",
-      "severity": "high"
-    },
-    {
-      "batch": "original_001_040",
-      "category": "value",
-      "component_id": "friend_slot_increase_1",
-      "denko_id": "original:016",
-      "detail_zh": "(1) component 的 value_raw 中仍包含 (2)。",
-      "evidence": {
-        "level": "80",
-        "value_raw": "(1) 電友枠 +3 (計15) (2) -"
-      },
-      "fix_hint_zh": "按 label 切分 value_raw。",
-      "issue": "base_value_contains_label_2",
-      "name": "ニャッシュ",
-      "severity": "high"
-    },
-    {
-      "batch": "original_001_040",
-      "category": "value",
-      "component_id": "friend_slot_increase_1",
-      "denko_id": "original:016",
-      "detail_zh": "(1) component 的 value_raw 中仍包含 (2)。",
-      "evidence": {
-        "level": "92",
-        "value_raw": "(1) 電友枠 +3 (計15) (2) ATK 0～+7% DEF 0～+7% (上限7人)"
-      },
-      "fix_hint_zh": "按 label 切分 value_raw。",
-      "issue": "base_value_contains_label_2",
-      "name": "ニャッシュ",
-      "severity": "high"
-    },
-    {
-      "batch": "original_001_040",
-      "category": "value",
-      "component_id": "friend_slot_increase_1",
-      "denko_id": "original:016",
-      "detail_zh": "(1) component 的 value_raw 中仍包含 (2)。",
-      "evidence": {
-        "level": "96",
-        "value_raw": "(1) 電友枠 +3 (計15) (2) ATK 0～+15% DEF 0～+15% (上限15人)"
-      },
-      "fix_hint_zh": "按 label 切分 value_raw。",
-      "issue": "base_value_contains_label_2",
-      "name": "ニャッシュ",
-      "severity": "high"
-    },
-    {
-      "batch": "original_001_040",
-      "category": "probability",
-      "component_id": "survive_hp1_1",
-      "denko_id": "original:018",
-      "detail_zh": "probability 中仍混有多个 label。",
-      "evidence": {
-        "level": "100",
-        "probability": {
-          "発動率": "(1)40% (2)100%"
-        }
-      },
-      "fix_hint_zh": "按 component label 拆成独立 activation_probability。",
-      "issue": "mixed_labeled_probability",
-      "name": "汀良いちほ",
-      "severity": "high"
-    },
-    {
-      "batch": "original_001_040",
-      "category": "probability",
-      "component_id": "survive_hp1_1",
-      "denko_id": "original:018",
-      "detail_zh": "probability 中仍混有多个 label。",
-      "evidence": {
-        "level": "92",
-        "probability": {
-          "発動率": "(1)40% (2)100%"
-        }
-      },
-      "fix_hint_zh": "按 component label 拆成独立 activation_probability。",
-      "issue": "mixed_labeled_probability",
-      "name": "汀良いちほ",
-      "severity": "high"
-    },
-    {
-      "batch": "original_001_040",
-      "category": "probability",
-      "component_id": "survive_hp1_1",
-      "denko_id": "original:018",
-      "detail_zh": "probability 中仍混有多个 label。",
-      "evidence": {
-        "level": "96",
-        "probability": {
-          "発動率": "(1)40% (2)100%"
-        }
-      },
-      "fix_hint_zh": "按 component label 拆成独立 activation_probability。",
-      "issue": "mixed_labeled_probability",
-      "name": "汀良いちほ",
-      "severity": "high"
-    }
-  ],
+  "generated_at": "2026-07-06T03:42:49.383145+09:00",
+  "issues": [],
   "metrics": {
-    "category_counts": {
-      "probability": 13,
-      "value": 6
-    },
-    "issue_count": 19,
-    "severity_counts": {
-      "high": 19
-    },
+    "category_counts": {},
+    "issue_count": 0,
+    "severity_counts": {},
     "skill_file_count": 5,
     "skill_record_count": 167
   },
   "report_checks": {
+    "original_001_040": {
+      "ascii_only": true,
+      "double_question_count": 0,
+      "has_component_table": true,
+      "has_old_slot_matrix": false,
+      "has_vu_columns": true,
+      "mojibake_hits": {}
+    },
+    "original_040_080": {
+      "ascii_only": true,
+      "double_question_count": 0,
+      "has_component_table": true,
+      "has_old_slot_matrix": false,
+      "has_vu_columns": true,
+      "mojibake_hits": {}
+    },
+    "original_080_119": {
+      "ascii_only": true,
+      "double_question_count": 0,
+      "has_component_table": true,
+      "has_old_slot_matrix": false,
+      "has_vu_columns": true,
+      "mojibake_hits": {}
+    },
+    "original_120_163": {
+      "ascii_only": true,
+      "double_question_count": 0,
+      "has_component_table": true,
+      "has_old_slot_matrix": false,
+      "has_vu_columns": true,
+      "mojibake_hits": {}
+    },
     "original_164_165": {
       "ascii_only": true,
       "double_question_count": 0,

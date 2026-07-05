@@ -42,6 +42,7 @@ Date: 2026-07-06
 
 ## Remaining Watch Items
 
-- `original_001_165` full checklist audit still reports old-batch issues for `original:001`, `original:016`, and `original:018`; these are not caused by the 2026-07-06 increment and Step1 DB validation remains clean.
-- Direct UTF-8 scan found historical mojibake-like text in older Step1 rows: about 17 denko fact rows and 47 skill fact rows. This predates the 2026-07-06 increment and should be handled as a separate old-batch refetch/rebuild task, not by trusting terminal rendering.
+- Full checklist audits are clean: `original_001_165` issue_count = 0 and `extra` issue_count = 0.
+- Step2 semantic audit is clean: total_issue_rows = 0.
+- Direct UTF-8 mojibake scan across `data/records`, `data/step1_db`, and `data/prototype_db` is clean.
 - Some old tracked caches/reports are historical artifacts. If repository size becomes a problem, move large historical agent-run audits to an archive step, but do not delete canonical DB or batch provenance without a replacement manifest.

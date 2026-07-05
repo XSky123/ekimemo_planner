@@ -86,6 +86,15 @@ def is_vu_only(component: dict[str, Any]) -> bool:
     return bool((component.get("availability") or {}).get("vu_only"))
 
 
+def is_dynamic_unfixed_component(component: dict[str, Any]) -> bool:
+    scaling = component.get("scaling_conditions") or {}
+    return scaling.get("fixed_numeric_value_status") in {
+        "dynamic_by_film_effect",
+        "unquantified",
+        "dynamic_unfixed",
+    }
+
+
 def component_text(component: dict[str, Any]) -> str:
     parts: list[str] = []
     for key in ("condition_raw", "remarks_raw", "effect_kind", "target_scope"):
@@ -198,7 +207,7 @@ def audit_skill_row(batch: str, row: dict[str, Any], issues: list[dict[str, Any]
         levels = component_levels(component)
         if label_num == "1" and levels and levels.issubset(VU_LEVELS) and not is_vu_only(component):
             add_issue(issues, batch, denko_id, name, "high", "vu", "primary_label_only_vu", "(1) 主效果只有 VU 等级，通常说明基础效果漏抓。", component_id, fix_hint_zh="复查 Lv30/Lv50 和条件表。")
-        if not is_vu_only(component):
+        if not is_vu_only(component) and not is_dynamic_unfixed_component(component):
             for level in ("30", "50"):
                 if source_has_level(row, level) and level not in levels:
                     add_issue(issues, batch, denko_id, name, "high", "level", f"non_vu_missing_lv{level}", f"非 VU component 缺 Lv{level}。", component_id, fix_hint_zh="复查技能等级表，或确认该 component 应标为 vu_only。")
