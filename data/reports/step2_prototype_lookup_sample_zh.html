@@ -1,0 +1,468 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ekimemo 原型反查表</title>
+  <style>
+    body { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; margin: 24px; color: #1f2328; line-height: 1.45; }
+    h1 { margin-bottom: 6px; }
+    h2 { margin-top: 24px; border-bottom: 1px solid #d8dee4; padding-bottom: 6px; }
+    .meta, .note { color: #68707c; font-size: 12px; }
+    .note { margin: 12px 0; }
+    .directory { display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:12px; margin:16px 0 20px; }
+    .directory-card { border:1px solid #d8dee4; background:#fff; border-radius:4px; padding:10px; min-width:0; }
+    .directory-card h2 { margin:0 0 8px; font-size:15px; border:0; padding:0; }
+    .directory-card h2 span { color:#68707c; font-size:12px; }
+    .directory-tools { display:grid; grid-template-columns:minmax(0, 1fr) auto; gap:6px; margin-bottom:8px; }
+    .directory-tools input { min-width:0; border:1px solid #d0d7de; border-radius:4px; padding:5px 7px; font:inherit; font-size:12px; }
+    .directory-tools button { border:1px solid #d0d7de; border-radius:4px; background:#f6f8fa; color:#24292f; padding:5px 8px; font:inherit; font-size:12px; cursor:pointer; }
+    .directory-tools button:hover { background:#eef6ff; border-color:#8cbeef; }
+    .directory-quick { display:flex; flex-wrap:wrap; gap:4px; margin:0 0 8px; }
+    .directory-quick a { min-width:22px; text-align:center; border:1px solid #d0d7de; border-radius:4px; padding:1px 4px; color:#57606a; background:#fff; font-size:11px; font-weight:600; text-decoration:none; }
+    .directory-quick a:hover { background:#f6f8fa; color:#0969da; text-decoration:none; }
+    .directory-card ul { list-style:none; padding:0; margin:0; display:grid; gap:7px; }
+    .directory-list { max-height:280px; overflow:auto; overscroll-behavior:contain; padding-right:4px; scrollbar-gutter:stable; }
+    .directory-card li { display:grid; gap:3px; }
+    .directory-section { position:sticky; top:0; z-index:1; margin-top:2px; padding:2px 0; background:#fff; color:#68707c; font-size:11px; font-weight:700; border-bottom:1px solid #eef1f4; }
+    .directory-hit { outline:2px solid #f2cc60; outline-offset:2px; border-radius:4px; background:#fff8c5; }
+    .directory-key { font-weight:600; }
+    .directory-links { display:flex; flex-wrap:wrap; gap:6px; }
+    .denko-chip { display:inline-flex; align-items:center; gap:4px; border:1px solid #dbe7f3; border-radius:999px; padding:2px 6px; background:white; }
+    .detail-link, .back-top { font-size:12px; }
+    .back-top { font-weight:400; }
+    .entry-count { display:inline-block; margin-left:6px; color:#68707c; font-size:11px; font-weight:600; }
+    .directory-collapsed { display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:12px; margin:-8px 0 20px; }
+    .directory-details { border:1px dashed #d8dee4; border-radius:4px; background:#fff; padding:10px; }
+    .directory-details summary { cursor:pointer; font-weight:600; color:#68707c; }
+    .directory-details summary span { font-size:12px; }
+    .directory-details .directory-card { margin-top:10px; border:0; padding:0; background:transparent; }
+    .directory-details .directory-card h2 { display:none; }
+    .audit-card { border:1px solid #d8dee4; border-radius:6px; background:#fff; padding:12px; margin:14px 0 16px; }
+    .audit-card summary { cursor:pointer; font-weight:700; }
+    .audit-card summary span { color:#68707c; font-size:12px; font-weight:500; margin-left:8px; }
+    .audit-card h2 { margin:12px 0 8px; font-size:14px; border:0; padding:0; }
+    .audit-card ul { margin:0; padding-left:18px; }
+    .audit-card li { margin:4px 0; }
+    .audit-card li span { color:#68707c; margin-left:8px; }
+    .audit-grid { display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:10px; margin-top:10px; }
+    .audit-grid div { border:1px solid #d8dee4; border-radius:4px; padding:8px; background:#fbfcfe; }
+    .audit-grid p { margin:4px 0 0; color:#68707c; }
+    .empty { color:#68707c; margin:0; }
+    .character-list { display:grid; grid-template-columns:1fr; gap:14px; margin-top:18px; }
+    .character-card { border:1px solid #d8dee4; background:#fff; border-radius:6px; padding:14px; min-width:0; }
+    .character-card-header { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; border-bottom:1px solid #d8dee4; padding-bottom:8px; margin-bottom:10px; }
+    .character-card h2 { margin:0; border:0; padding:0; font-size:18px; }
+    .card-subtitle { color:#68707c; font-size:12px; margin-top:4px; }
+    .fact-grid { display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:8px 12px; margin:0 0 10px; }
+    .fact-grid div { min-width:0; }
+    .fact-grid dt { color:#68707c; font-size:12px; font-weight:600; }
+    .fact-grid dd { margin:2px 0 0; overflow-wrap:anywhere; }
+    .source-badge-list { display:flex; flex-wrap:wrap; gap:6px; }
+    .source-badge { display:inline-flex; align-items:center; min-height:22px; border:1px solid #d0d7de; background:#f6f8fa; color:#24292f; border-radius:999px; padding:2px 8px; font-size:12px; font-weight:600; text-decoration:none; }
+    .source-badge:hover { background:#eef6ff; border-color:#8cbeef; color:#0969da; text-decoration:none; }
+    .source-badge.muted { color:#68707c; font-weight:500; }
+    .source-text { border:1px solid #d8dee4; background:#fbfcfe; padding:12px; border-radius:6px; margin-top:10px; }
+    .source-text h3 { margin:0 0 8px; font-size:14px; color:#0969da; }
+    .source-text p { margin:0; line-height:1.65; white-space:pre-wrap; overflow-wrap:anywhere; }
+    .reference-notes ul { margin:0; padding-left:18px; }
+    .reference-notes li { margin:4px 0; }
+    .reference-notes span { color:#68707c; font-size:12px; margin-right:8px; }
+    .character-card footer { margin-top:10px; text-align:left; }
+    @media (max-width: 1400px) { .directory { grid-template-columns:repeat(3, minmax(0, 1fr)); } }
+    @media (max-width: 1000px) { .directory, .directory-collapsed { grid-template-columns:repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 900px) { .fact-grid { grid-template-columns:1fr; } }
+    @media (max-width: 760px) { .directory, .directory-collapsed { grid-template-columns:1fr; } }
+    code { background:#f6f8fa; padding:1px 4px; border-radius:4px; }
+    a { color: #0969da; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body id="top">
+  <header>
+    <h1>Ekimemo 原型反查表</h1>
+    <div class="meta">generated_at: 2026-07-06T00:36:18.687881+09:00 / sample: original 001-005 + extra 001-005</div>
+  </header>
+  <main>
+    <p class="note">展示层为中文；wiki 原文保留日语。当前为 sample: original 001-005 + extra 001-005。</p>
+    <details class="audit-card">
+      <summary>数据检查 <span>生日缺失 0 / 未知都道府県 1 / 外国でんこ 1 / 地名なし 3</span></summary>
+      <div class="audit-grid">
+        <div><strong>生日</strong><p>当前 10 条中缺失 0 条。</p></div>
+        <div><strong>都道府県</strong><p>国内 5 条，外国 1 条，地名なし 3 条，未知 1 条。</p></div>
+      </div>
+      <h2>未知都道府県</h2>
+      <ul><li><a href="#extra-005">extra:005 果鳴ツヅキ</a><span>参考页未命中；详情页没有可确认的都道府県/国家字段</span></li></ul>
+    </details>
+    <section class="directory">
+      <section class="directory-card">
+      <h2>都道府県入口 <span>5</span></h2>
+      <div class="directory-tools">
+        <input type="search" placeholder="搜索后跳转" aria-label="都道府県入口 搜索" data-directory-search>
+        <button type="button" data-directory-jump>跳转</button>
+      </div>
+      <nav class="directory-quick" aria-label="都道府県入口 快速选择"><a href="#dir-by_prefecture-616946bd55">あ</a><a href="#dir-by_prefecture-913fc07774">な</a><a href="#dir-by_prefecture-3d3e2c7d26">ま</a></nav>
+      <ul class="directory-list"><li class="directory-section" id="dir-by_prefecture-616946bd55">あ</li><li id="dir-by_prefecture-4fe30347ec" data-directory-item data-key="愛知県 あいちけん あいち 愛知 愛知県あいちけんあいち愛知"><span class="directory-key">愛知県</span><span class="directory-links"><span class="denko-chip"><a href="#original-001">original:001 黄陽セリア</a></span></span></li><li id="dir-by_prefecture-4d80a51f72" data-directory-item data-key="岩手県 いわてけん いわて 岩手 岩手県いわてけんいわて岩手"><span class="directory-key">岩手県</span><span class="directory-links"><span class="denko-chip"><a href="#original-004">original:004 恋浜みろく</a></span></span></li><li id="dir-by_prefecture-585ade67a2" data-directory-item data-key="大阪府 おおさかふ おおさか 大阪 大阪府おおさかふおおさか大阪"><span class="directory-key">大阪府</span><span class="directory-links"><span class="denko-chip"><a href="#original-003">original:003 新阪ルナ</a></span></span></li><li class="directory-section" id="dir-by_prefecture-913fc07774">な</li><li id="dir-by_prefecture-fe41f8368d" data-directory-item data-key="長野県 ながのけん ながの 長野 長野県ながのけんながの長野"><span class="directory-key">長野県</span><span class="directory-links"><span class="denko-chip"><a href="#original-002">original:002 為栗メロ</a></span></span></li><li class="directory-section" id="dir-by_prefecture-3d3e2c7d26">ま</li><li id="dir-by_prefecture-d188ac574e" data-directory-item data-key="宮城県 みやぎけん みやぎ 宮城 宮城県みやぎけんみやぎ宮城"><span class="directory-key">宮城県</span><span class="directory-links"><span class="denko-chip"><a href="#original-005">original:005 黄陽レイカ</a></span></span></li></ul>
+    </section>
+      <section class="directory-card">
+      <h2>外国でんこ入口 <span>1</span></h2>
+      <div class="directory-tools">
+        <input type="search" placeholder="搜索后跳转" aria-label="外国でんこ入口 搜索" data-directory-search>
+        <button type="button" data-directory-jump>跳转</button>
+      </div>
+      <nav class="directory-quick" aria-label="外国でんこ入口 快速选择"><a href="#dir-by_foreign_country-3a2604ddea">は</a></nav>
+      <ul class="directory-list"><li class="directory-section" id="dir-by_foreign_country-3a2604ddea">は</li><li id="dir-by_foreign_country-52635afa35" data-directory-item data-key="べるぎー ベルギー"><span class="directory-key">ベルギー</span><span class="directory-links"><span class="denko-chip"><a href="#extra-001">extra:001 エルミーヌ・ワロン</a></span></span></li></ul>
+    </section>
+      <section class="directory-card">
+      <h2>公司/运营者入口 <span>5</span></h2>
+      <div class="directory-tools">
+        <input type="search" placeholder="搜索后跳转" aria-label="公司/运营者入口 搜索" data-directory-search>
+        <button type="button" data-directory-jump>跳转</button>
+      </div>
+      <nav class="directory-quick" aria-label="公司/运营者入口 快速选择"><a href="#dir-by_operator-83e23e2ff0">か</a><a href="#dir-by_operator-d48b48038b">さ</a></nav>
+      <ul class="directory-list"><li class="directory-section" id="dir-by_operator-83e23e2ff0">か</li><li id="dir-by_operator-5755fc2d48" data-directory-item data-key="国鉄 こくてつ 国鉄こくてつ"><span class="directory-key">国鉄<span class="entry-count">3件</span></span><span class="directory-links"><span class="denko-chip"><a href="#original-002">original:002 為栗メロ</a></span> <span class="denko-chip"><a href="#original-003">original:003 新阪ルナ</a></span> <span class="denko-chip"><a href="#extra-002">extra:002 赤壕まひる</a></span></span></li><li class="directory-section" id="dir-by_operator-d48b48038b">さ</li><li id="dir-by_operator-ad5d0a06ab" data-directory-item data-key="三陸鉄道 さんりくてつどう 三陸鉄道さんりくてつどう"><span class="directory-key">三陸鉄道</span><span class="directory-links"><span class="denko-chip"><a href="#original-004">original:004 恋浜みろく</a></span></span></li><li id="dir-by_operator-4f64cbe193" data-directory-item data-key="jr東海 じぇいあーるとうかい jr東海じぇいあーるとうかい"><span class="directory-key">JR東海<span class="entry-count">2件</span></span><span class="directory-links"><span class="denko-chip"><a href="#original-003">original:003 新阪ルナ</a></span> <span class="denko-chip"><a href="#extra-004">extra:004 末永てすと</a></span></span></li><li id="dir-by_operator-595fb91f79" data-directory-item data-key="jr西日本 じぇいあーるにしにほん jr西日本じぇいあーるにしにほん"><span class="directory-key">JR西日本<span class="entry-count">3件</span></span><span class="directory-links"><span class="denko-chip"><a href="#original-001">original:001 黄陽セリア</a></span> <span class="denko-chip"><a href="#extra-003">extra:003 波篠すすぐ</a></span> <span class="denko-chip"><a href="#extra-005">extra:005 果鳴ツヅキ</a></span></span></li><li id="dir-by_operator-6863333d95" data-directory-item data-key="jr東日本 じぇいあーるひがしにほん jr東日本じぇいあーるひがしにほん"><span class="directory-key">JR東日本</span><span class="directory-links"><span class="denko-chip"><a href="#original-005">original:005 黄陽レイカ</a></span></span></li></ul>
+    </section>
+      <section class="directory-card">
+      <h2>线路入口 <span>7</span></h2>
+      <div class="directory-tools">
+        <input type="search" placeholder="搜索后跳转" aria-label="线路入口 搜索" data-directory-search>
+        <button type="button" data-directory-jump>跳转</button>
+      </div>
+      <nav class="directory-quick" aria-label="线路入口 快速选择"><a href="#dir-by_line-bbeba955c0">漢</a><a href="#dir-by_line-f749128fee">J</a></nav>
+      <ul class="directory-list"><li class="directory-section" id="dir-by_line-bbeba955c0">漢</li><li id="dir-by_line-d4403ab166" data-directory-item data-key="三陸鉄道りあす線 三陸鉄道リアス線"><span class="directory-key">三陸鉄道リアス線</span><span class="directory-links"><span class="denko-chip"><a href="#original-004">original:004 恋浜みろく</a></span></span></li><li id="dir-by_line-25cfc5ed70" data-directory-item data-key="山陽新幹線"><span class="directory-key">山陽新幹線</span><span class="directory-links"><span class="denko-chip"><a href="#original-003">original:003 新阪ルナ</a></span></span></li><li id="dir-by_line-fc7167660f" data-directory-item data-key="東海道新幹線"><span class="directory-key">東海道新幹線</span><span class="directory-links"><span class="denko-chip"><a href="#original-003">original:003 新阪ルナ</a></span></span></li><li id="dir-by_line-e11a617700" data-directory-item data-key="西名古屋港線(あおなみ線)"><span class="directory-key">西名古屋港線(あおなみ線)</span><span class="directory-links"><span class="denko-chip"><a href="#original-001">original:001 黄陽セリア</a></span></span></li><li class="directory-section" id="dir-by_line-f749128fee">J</li><li id="dir-by_line-fc3afb874b" data-directory-item data-key="jr東北本線(黒磯～利府・盛岡) jr東北本線(黒磯～利府盛岡)"><span class="directory-key">JR東北本線(黒磯～利府・盛岡)</span><span class="directory-links"><span class="denko-chip"><a href="#original-005">original:005 黄陽レイカ</a></span></span></li><li id="dir-by_line-d7ec8340cb" data-directory-item data-key="jr東海道本線(京都線)(京都～大阪)"><span class="directory-key">JR東海道本線(京都線)(京都～大阪)</span><span class="directory-links"><span class="denko-chip"><a href="#original-003">original:003 新阪ルナ</a></span></span></li><li id="dir-by_line-93cc9071de" data-directory-item data-key="jr飯田線(豊橋～天竜峡)"><span class="directory-key">JR飯田線(豊橋～天竜峡)</span><span class="directory-links"><span class="denko-chip"><a href="#original-002">original:002 為栗メロ</a></span></span></li></ul>
+    </section>
+      <section class="directory-card">
+      <h2>声优入口 <span>5</span></h2>
+      <div class="directory-tools">
+        <input type="search" placeholder="搜索后跳转" aria-label="声优入口 搜索" data-directory-search>
+        <button type="button" data-directory-jump>跳转</button>
+      </div>
+      <nav class="directory-quick" aria-label="声优入口 快速选择"><a href="#dir-by_voice_actor-8dea781a51">は</a><a href="#dir-by_voice_actor-e44e518e28">漢</a></nav>
+      <ul class="directory-list"><li class="directory-section" id="dir-by_voice_actor-8dea781a51">は</li><li id="dir-by_voice_actor-892d3e8f82" data-directory-item data-key="ぶりどかっとせーら恵美 ブリドカットセーラ恵美"><span class="directory-key">ブリドカットセーラ恵美</span><span class="directory-links"><span class="denko-chip"><a href="#original-001">original:001 黄陽セリア</a></span></span></li><li class="directory-section" id="dir-by_voice_actor-e44e518e28">漢</li><li id="dir-by_voice_actor-5c190cb292" data-directory-item data-key="会沢紗弥"><span class="directory-key">会沢紗弥</span><span class="directory-links"><span class="denko-chip"><a href="#original-002">original:002 為栗メロ</a></span></span></li><li id="dir-by_voice_actor-9912ea500a" data-directory-item data-key="柳原かなこ"><span class="directory-key">柳原かなこ</span><span class="directory-links"><span class="denko-chip"><a href="#original-004">original:004 恋浜みろく</a></span></span></li><li id="dir-by_voice_actor-6b704911ab" data-directory-item data-key="鈴代紗弓"><span class="directory-key">鈴代紗弓</span><span class="directory-links"><span class="denko-chip"><a href="#original-005">original:005 黄陽レイカ</a></span></span></li><li id="dir-by_voice_actor-4d3471db26" data-directory-item data-key="香里有佐"><span class="directory-key">香里有佐</span><span class="directory-links"><span class="denko-chip"><a href="#original-003">original:003 新阪ルナ</a></span></span></li></ul>
+    </section>
+      <section class="directory-card">
+      <h2>生日入口 <span>10</span></h2>
+      <div class="directory-tools">
+        <input type="search" placeholder="搜索后跳转" aria-label="生日入口 搜索" data-directory-search>
+        <button type="button" data-directory-jump>跳转</button>
+      </div>
+      <nav class="directory-quick" aria-label="生日入口 快速选择"><a href="#dir-by_birthday-43bd30b20e">1月</a><a href="#dir-by_birthday-69ab3ae30d">3月</a><a href="#dir-by_birthday-156451d5a0">4月</a><a href="#dir-by_birthday-8cc9b396f8">5月</a><a href="#dir-by_birthday-4dd01d36c8">7月</a><a href="#dir-by_birthday-eb56b5cb28">9月</a><a href="#dir-by_birthday-95b2503538">10月</a></nav>
+      <ul class="directory-list"><li class="directory-section" id="dir-by_birthday-43bd30b20e">1月</li><li id="dir-by_birthday-f47d0763e9" data-directory-item data-key="1月4日 1月 1/4 1-4 0104 1月4日1月1/41-40104"><span class="directory-key">1月4日</span><span class="directory-links"><span class="denko-chip"><a href="#extra-002">extra:002 赤壕まひる</a></span></span></li><li class="directory-section" id="dir-by_birthday-69ab3ae30d">3月</li><li id="dir-by_birthday-acb28fd6b5" data-directory-item data-key="3月5日 3月 3/5 3-5 0305 3月5日3月3/53-50305"><span class="directory-key">3月5日</span><span class="directory-links"><span class="denko-chip"><a href="#extra-003">extra:003 波篠すすぐ</a></span></span></li><li class="directory-section" id="dir-by_birthday-156451d5a0">4月</li><li id="dir-by_birthday-9d23f76481" data-directory-item data-key="4月1日 4月 4/1 4-1 0401 4月1日4月4/14-10401"><span class="directory-key">4月1日</span><span class="directory-links"><span class="denko-chip"><a href="#original-004">original:004 恋浜みろく</a></span></span></li><li id="dir-by_birthday-406e290cc3" data-directory-item data-key="4月6日 4月 4/6 4-6 0406 4月6日4月4/64-60406"><span class="directory-key">4月6日</span><span class="directory-links"><span class="denko-chip"><a href="#extra-005">extra:005 果鳴ツヅキ</a></span></span></li><li id="dir-by_birthday-b1b5165cae" data-directory-item data-key="4月26日 4月 4/26 4-26 0426 4月26日4月4/264-260426"><span class="directory-key">4月26日</span><span class="directory-links"><span class="denko-chip"><a href="#original-005">original:005 黄陽レイカ</a></span></span></li><li class="directory-section" id="dir-by_birthday-8cc9b396f8">5月</li><li id="dir-by_birthday-76f220f18c" data-directory-item data-key="5月8日 5月 5/8 5-8 0508 5月8日5月5/85-80508"><span class="directory-key">5月8日</span><span class="directory-links"><span class="denko-chip"><a href="#extra-004">extra:004 末永てすと</a></span></span></li><li class="directory-section" id="dir-by_birthday-4dd01d36c8">7月</li><li id="dir-by_birthday-1e881efbaf" data-directory-item data-key="7月15日 7月 7/15 7-15 0715 7月15日7月7/157-150715"><span class="directory-key">7月15日</span><span class="directory-links"><span class="denko-chip"><a href="#original-002">original:002 為栗メロ</a></span></span></li><li class="directory-section" id="dir-by_birthday-eb56b5cb28">9月</li><li id="dir-by_birthday-95a0803f49" data-directory-item data-key="9月30日 9月 9/30 9-30 0930 9月30日9月9/309-300930"><span class="directory-key">9月30日</span><span class="directory-links"><span class="denko-chip"><a href="#original-001">original:001 黄陽セリア</a></span></span></li><li class="directory-section" id="dir-by_birthday-95b2503538">10月</li><li id="dir-by_birthday-36596d8131" data-directory-item data-key="10月1日 10月 10/1 10-1 1001 10月1日10月10/110-11001"><span class="directory-key">10月1日</span><span class="directory-links"><span class="denko-chip"><a href="#original-003">original:003 新阪ルナ</a></span></span></li><li id="dir-by_birthday-ec95a69afa" data-directory-item data-key="10月4日 10月 10/4 10-4 1004 10月4日10月10/410-41004"><span class="directory-key">10月4日</span><span class="directory-links"><span class="denko-chip"><a href="#extra-001">extra:001 エルミーヌ・ワロン</a></span></span></li></ul>
+    </section>
+    </section>
+    <section class="directory-collapsed">
+      <details class="directory-details">
+      <summary>站点入口 <span>5</span></summary>
+      <section class="directory-card">
+      <h2>站点入口 <span>5</span></h2>
+      <div class="directory-tools">
+        <input type="search" placeholder="搜索后跳转" aria-label="站点入口 搜索" data-directory-search>
+        <button type="button" data-directory-jump>跳转</button>
+      </div>
+      <nav class="directory-quick" aria-label="站点入口 快速选择"><a href="#dir-by_station-60c50542f4">か</a><a href="#dir-by_station-e91b3633e6">さ</a></nav>
+      <ul class="directory-list"><li class="directory-section" id="dir-by_station-60c50542f4">か</li><li id="dir-by_station-ea69be7084" data-directory-item data-key="金城ふ頭駅 きんじょうふとうえき きんじょうふとう 金城ふ頭 金城ふ頭駅きんじょうふとうえききんじょうふとう金城ふ頭"><span class="directory-key">金城ふ頭駅</span><span class="directory-links"><span class="denko-chip"><a href="#original-001">original:001 黄陽セリア</a></span></span></li><li id="dir-by_station-eaec5bfbd8" data-directory-item data-key="恋し浜駅 こいしはまえき こいしはま 恋し浜 恋し浜駅こいしはまえきこいしはま恋し浜"><span class="directory-key">恋し浜駅</span><span class="directory-links"><span class="denko-chip"><a href="#original-004">original:004 恋浜みろく</a></span></span></li><li class="directory-section" id="dir-by_station-e91b3633e6">さ</li><li id="dir-by_station-55fbf97dc4" data-directory-item data-key="為栗駅 してぐりえき してぐり 為栗 為栗駅してぐりえきしてぐり為栗"><span class="directory-key">為栗駅</span><span class="directory-links"><span class="denko-chip"><a href="#original-002">original:002 為栗メロ</a></span></span></li><li id="dir-by_station-c023e6ab95" data-directory-item data-key="新大阪駅 しんおおさかえき しんおおさか 新大阪 新大阪駅しんおおさかえきしんおおさか新大阪"><span class="directory-key">新大阪駅</span><span class="directory-links"><span class="denko-chip"><a href="#original-003">original:003 新阪ルナ</a></span></span></li><li id="dir-by_station-dd9d619cde" data-directory-item data-key="新利府駅 しんりふえき しんりふ 新利府 新利府駅しんりふえきしんりふ新利府"><span class="directory-key">新利府駅</span><span class="directory-links"><span class="denko-chip"><a href="#original-005">original:005 黄陽レイカ</a></span></span></li></ul>
+    </section>
+    </details>
+      <details class="directory-details">
+      <summary>车辆入口 <span>13</span></summary>
+      <section class="directory-card">
+      <h2>车辆入口 <span>13</span></h2>
+      <div class="directory-tools">
+        <input type="search" placeholder="搜索后跳转" aria-label="车辆入口 搜索" data-directory-search>
+        <button type="button" data-directory-jump>跳转</button>
+      </div>
+      <nav class="directory-quick" aria-label="车辆入口 快速选择"><a href="#dir-by_vehicle-8e4fab8141">あ</a><a href="#dir-by_vehicle-c6638bec5d">さ</a><a href="#dir-by_vehicle-371913d89b">た</a><a href="#dir-by_vehicle-fc71fbf7fd">漢</a><a href="#dir-by_vehicle-81eab47d80">#</a><a href="#dir-by_vehicle-f107b626b4">E</a><a href="#dir-by_vehicle-f9b5d4bbdf">H</a><a href="#dir-by_vehicle-d26ebf84c4">R</a><a href="#dir-by_vehicle-a6cb993290">T</a></nav>
+      <ul class="directory-list"><li class="directory-section" id="dir-by_vehicle-8e4fab8141">あ</li><li id="dir-by_vehicle-44674cd9d0" data-directory-item data-key="おりえんと急行 オリエント急行"><span class="directory-key">オリエント急行</span><span class="directory-links"><span class="denko-chip"><a href="#extra-001">extra:001 エルミーヌ・ワロン</a></span></span></li><li class="directory-section" id="dir-by_vehicle-c6638bec5d">さ</li><li id="dir-by_vehicle-bb343525b6" data-directory-item data-key="すらぶ洗浄車 スラブ洗浄車"><span class="directory-key">スラブ洗浄車</span><span class="directory-links"><span class="denko-chip"><a href="#extra-003">extra:003 波篠すすぐ</a></span></span></li><li class="directory-section" id="dir-by_vehicle-371913d89b">た</li><li id="dir-by_vehicle-7c4c116477" data-directory-item data-key="どくたーいえろー ドクターイエロー"><span class="directory-key">ドクターイエロー</span><span class="directory-links"><span class="denko-chip"><a href="#original-001">original:001 黄陽セリア</a></span></span></li><li class="directory-section" id="dir-by_vehicle-fc71fbf7fd">漢</li><li id="dir-by_vehicle-f6891998e8" data-directory-item data-key="国鉄dd14形でぃーぜる機関車 国鉄dd14形ディーゼル機関車"><span class="directory-key">国鉄DD14形ディーゼル機関車</span><span class="directory-links"><span class="denko-chip"><a href="#extra-002">extra:002 赤壕まひる</a></span></span></li><li id="dir-by_vehicle-316b2c9f77" data-directory-item data-key="国鉄ed30形電気機関車"><span class="directory-key">国鉄ED30形電気機関車</span><span class="directory-links"><span class="denko-chip"><a href="#original-002">original:002 為栗メロ</a></span></span></li><li id="dir-by_vehicle-360d93746e" data-directory-item data-key="架線延線車"><span class="directory-key">架線延線車</span><span class="directory-links"><span class="denko-chip"><a href="#extra-005">extra:005 果鳴ツヅキ</a></span></span></li><li class="directory-section" id="dir-by_vehicle-81eab47d80">#</li><li id="dir-by_vehicle-d5c594be95" data-directory-item data-key="36形"><span class="directory-key">36形</span><span class="directory-links"><span class="denko-chip"><a href="#original-004">original:004 恋浜みろく</a></span></span></li><li id="dir-by_vehicle-a9edb981f8" data-directory-item data-key="581系"><span class="directory-key">581系</span><span class="directory-links"><span class="denko-chip"><a href="#original-003">original:003 新阪ルナ</a></span></span></li><li id="dir-by_vehicle-e3e13fd690" data-directory-item data-key="922形20番台 (t3編成) 922形20番台(t3編成)"><span class="directory-key">922形20番台 (T3編成)</span><span class="directory-links"><span class="denko-chip"><a href="#original-001">original:001 黄陽セリア</a></span></span></li><li class="directory-section" id="dir-by_vehicle-f107b626b4">E</li><li id="dir-by_vehicle-8f69821249" data-directory-item data-key="e926形"><span class="directory-key">E926形</span><span class="directory-links"><span class="denko-chip"><a href="#original-005">original:005 黄陽レイカ</a></span></span></li><li class="directory-section" id="dir-by_vehicle-f9b5d4bbdf">H</li><li id="dir-by_vehicle-9c21015fd4" data-directory-item data-key="htm350sw"><span class="directory-key">HTM350SW</span><span class="directory-links"><span class="denko-chip"><a href="#extra-003">extra:003 波篠すすぐ</a></span></span></li><li class="directory-section" id="dir-by_vehicle-d26ebf84c4">R</li><li id="dir-by_vehicle-86e6b2e0bd" data-directory-item data-key="r400形高速確認車"><span class="directory-key">R400形高速確認車</span><span class="directory-links"><span class="denko-chip"><a href="#extra-004">extra:004 末永てすと</a></span></span></li><li class="directory-section" id="dir-by_vehicle-a6cb993290">T</li><li id="dir-by_vehicle-99a661f3ee" data-directory-item data-key="tw4446"><span class="directory-key">TW4446</span><span class="directory-links"><span class="denko-chip"><a href="#extra-005">extra:005 果鳴ツヅキ</a></span></span></li></ul>
+    </section>
+    </details>
+    </section>
+    <section class="character-list">
+      <section class="character-card" id="original-001">
+      <header class="character-card-header">
+        <div>
+          <h2>original:001 黄陽セリア</h2>
+          <div class="card-subtitle"><a class="detail-link" href="https://newekimemo.wiki.fc2.com/wiki/%E9%BB%84%E9%99%BD%E3%82%BB%E3%83%AA%E3%82%A2" target="_blank" rel="noopener">wiki页</a></div>
+        </div>
+      </header>
+      <dl class="fact-grid">
+        <div><dt>生日</dt><dd>9月30日</dd></div>
+        <div><dt>声优</dt><dd>ブリドカットセーラ恵美 （のぞみ・グラフィリアと兼任）</dd></div>
+        <div><dt>都道府県</dt><dd>愛知県</dd></div>
+        <div><dt>国家/地区</dt><dd>-</dd></div>
+        <div><dt>公司/运营者</dt><dd>JR西日本</dd></div>
+        <div><dt>车辆候选</dt><dd>922形20番台 (T3編成)、ドクターイエロー</dd></div>
+        <div><dt>线路候选</dt><dd>西名古屋港線(あおなみ線)</dd></div>
+        <div><dt>站点候选</dt><dd>金城ふ頭駅</dd></div>
+        <div><dt>参考来源</dt><dd class="source-badge-list"><a class="source-badge" href="https://ek1mem0.wiki.fc2.com/wiki/%E3%81%A7%E3%82%93%E3%81%93%E3%81%A8%E5%85%A8%E5%9B%BD%E5%90%84%E5%9C%B0%E3%81%AE%E9%A7%85%E3%81%AB%E3%81%8A%E3%81%A7%E3%81%8B%E3%81%91%E3%81%97%E3%82%88%E3%81%86%20%EF%BD%9E10%E5%91%A8%E5%B9%B4ver.%EF%BD%9E" target="_blank" rel="noopener">返乡活动（10周年）</a></dd></div>
+      </dl>
+      <article class="source-text">
+        <h3>名前について</h3>
+        <p>苗字の読み方は『でんこな話&gt;セリアな話-その1-』より、「こよう」と読むことが判明している。 黄陽という名称の駅は2016年4月現在存在しない。「ドクターイエロー」のイメージと、運用されていた 山陽新幹線 から取られたと思われる。 名前の「セリア」はイタリア語で「真面目」を意味する。</p>
+      </article>
+      
+      <footer><a class="back-top" href="#top">返回顶部</a></footer>
+    </section><section class="character-card" id="original-002">
+      <header class="character-card-header">
+        <div>
+          <h2>original:002 為栗メロ</h2>
+          <div class="card-subtitle"><a class="detail-link" href="https://newekimemo.wiki.fc2.com/wiki/%E7%82%BA%E6%A0%97%E3%83%A1%E3%83%AD" target="_blank" rel="noopener">wiki页</a></div>
+        </div>
+      </header>
+      <dl class="fact-grid">
+        <div><dt>生日</dt><dd>7月15日</dd></div>
+        <div><dt>声优</dt><dd>会沢紗弥</dd></div>
+        <div><dt>都道府県</dt><dd>長野県</dd></div>
+        <div><dt>国家/地区</dt><dd>-</dd></div>
+        <div><dt>公司/运营者</dt><dd>国鉄</dd></div>
+        <div><dt>车辆候选</dt><dd>国鉄ED30形電気機関車</dd></div>
+        <div><dt>线路候选</dt><dd>JR飯田線(豊橋～天竜峡)</dd></div>
+        <div><dt>站点候选</dt><dd>為栗駅</dd></div>
+        <div><dt>参考来源</dt><dd class="source-badge-list"><a class="source-badge" href="https://ek1mem0.wiki.fc2.com/wiki/%E3%81%A7%E3%82%93%E3%81%93%E3%81%A8%E5%85%A8%E5%9B%BD%E5%90%84%E5%9C%B0%E3%81%AE%E9%A7%85%E3%81%AB%E3%81%8A%E3%81%A7%E3%81%8B%E3%81%91%E3%81%97%E3%82%88%E3%81%86%20%EF%BD%9E10%E5%91%A8%E5%B9%B4ver.%EF%BD%9E" target="_blank" rel="noopener">返乡活动（10周年）</a></dd></div>
+      </dl>
+      <article class="source-text">
+        <h3>名前について</h3>
+        <p>苗字は「してぐり」と読み、長野県下伊那郡天龍村にある JR飯田線の為栗駅が由来と思われる。</p>
+      </article>
+      
+      <footer><a class="back-top" href="#top">返回顶部</a></footer>
+    </section><section class="character-card" id="original-003">
+      <header class="character-card-header">
+        <div>
+          <h2>original:003 新阪ルナ</h2>
+          <div class="card-subtitle"><a class="detail-link" href="https://newekimemo.wiki.fc2.com/wiki/%E6%96%B0%E9%98%AA%E3%83%AB%E3%83%8A" target="_blank" rel="noopener">wiki页</a></div>
+        </div>
+      </header>
+      <dl class="fact-grid">
+        <div><dt>生日</dt><dd>10月1日</dd></div>
+        <div><dt>声优</dt><dd>香里有佐</dd></div>
+        <div><dt>都道府県</dt><dd>大阪府</dd></div>
+        <div><dt>国家/地区</dt><dd>-</dd></div>
+        <div><dt>公司/运营者</dt><dd>JR東海、国鉄</dd></div>
+        <div><dt>车辆候选</dt><dd>581系</dd></div>
+        <div><dt>线路候选</dt><dd>東海道新幹線、山陽新幹線、JR東海道本線(京都線)(京都～大阪)</dd></div>
+        <div><dt>站点候选</dt><dd>新大阪駅</dd></div>
+        <div><dt>参考来源</dt><dd class="source-badge-list"><a class="source-badge" href="https://ek1mem0.wiki.fc2.com/wiki/%E3%81%A7%E3%82%93%E3%81%93%E3%81%A8%E5%85%A8%E5%9B%BD%E5%90%84%E5%9C%B0%E3%81%AE%E9%A7%85%E3%81%AB%E3%81%8A%E3%81%A7%E3%81%8B%E3%81%91%E3%81%97%E3%82%88%E3%81%86%20%EF%BD%9E10%E5%91%A8%E5%B9%B4ver.%EF%BD%9E" target="_blank" rel="noopener">返乡活动（10周年）</a></dd></div>
+      </dl>
+      <article class="source-text">
+        <h3>名前について</h3>
+        <p>苗字は「しんさか」と読み、大阪市淀川区にある 東海道・山陽新幹線の新大阪駅が由来と思われる。 名前の「ルナ」は、1967年10月1日に運行を開始したかつての寝台特急「月光」が由来と思われる。（東海道新幹線開業も1964年の同日である） 車両基地などでの名前の英語表記も、月にちなんでか「luna」である。 JR東海コラボ企画第3弾！ ルナと巡る！月夜の浪漫紀行 の開催に伴い、クハネ581形「月光」がモチーフであると発表された。</p>
+      </article>
+      
+      <footer><a class="back-top" href="#top">返回顶部</a></footer>
+    </section><section class="character-card" id="original-004">
+      <header class="character-card-header">
+        <div>
+          <h2>original:004 恋浜みろく</h2>
+          <div class="card-subtitle"><a class="detail-link" href="https://newekimemo.wiki.fc2.com/wiki/%E6%81%8B%E6%B5%9C%E3%81%BF%E3%82%8D%E3%81%8F" target="_blank" rel="noopener">wiki页</a></div>
+        </div>
+      </header>
+      <dl class="fact-grid">
+        <div><dt>生日</dt><dd>4月1日</dd></div>
+        <div><dt>声优</dt><dd>柳原かなこ</dd></div>
+        <div><dt>都道府県</dt><dd>岩手県</dd></div>
+        <div><dt>国家/地区</dt><dd>-</dd></div>
+        <div><dt>公司/运营者</dt><dd>三陸鉄道</dd></div>
+        <div><dt>车辆候选</dt><dd>36形</dd></div>
+        <div><dt>线路候选</dt><dd>三陸鉄道リアス線</dd></div>
+        <div><dt>站点候选</dt><dd>恋し浜駅</dd></div>
+        <div><dt>参考来源</dt><dd class="source-badge-list"><a class="source-badge" href="https://ek1mem0.wiki.fc2.com/wiki/%E3%81%A7%E3%82%93%E3%81%93%E3%81%A8%E5%85%A8%E5%9B%BD%E5%90%84%E5%9C%B0%E3%81%AE%E9%A7%85%E3%81%AB%E3%81%8A%E3%81%A7%E3%81%8B%E3%81%91%E3%81%97%E3%82%88%E3%81%86%20%EF%BD%9E10%E5%91%A8%E5%B9%B4ver.%EF%BD%9E" target="_blank" rel="noopener">返乡活动（10周年）</a></dd></div>
+      </dl>
+      <article class="source-text">
+        <h3>名前について</h3>
+        <p>名字の読みが初めて判明した、 三国志乱舞コラボ での画像 岩手県大船渡市三陸町綾里小石浜にある 三陸鉄道リアス線の恋し浜駅が由来と思われる。 但し、南リアス線恋し浜駅の読みは「こいしはま」だが、みろくの苗字「恋浜」の読みは「こいがはま」である。公式サイトの「駅メモ！とは」のページでも、「koigahama」との読み仮名が振られている。 名前である「みろく」は、三陸鉄道の形式である36形（読みはさんりく）に由来すると思われる。</p>
+      </article>
+      
+      <footer><a class="back-top" href="#top">返回顶部</a></footer>
+    </section><section class="character-card" id="original-005">
+      <header class="character-card-header">
+        <div>
+          <h2>original:005 黄陽レイカ</h2>
+          <div class="card-subtitle"><a class="detail-link" href="https://newekimemo.wiki.fc2.com/wiki/%E9%BB%84%E9%99%BD%E3%83%AC%E3%82%A4%E3%82%AB" target="_blank" rel="noopener">wiki页</a></div>
+        </div>
+      </header>
+      <dl class="fact-grid">
+        <div><dt>生日</dt><dd>4月26日</dd></div>
+        <div><dt>声优</dt><dd>鈴代紗弓</dd></div>
+        <div><dt>都道府県</dt><dd>宮城県</dd></div>
+        <div><dt>国家/地区</dt><dd>-</dd></div>
+        <div><dt>公司/运营者</dt><dd>JR東日本</dd></div>
+        <div><dt>车辆候选</dt><dd>E926形</dd></div>
+        <div><dt>线路候选</dt><dd>JR東北本線(黒磯～利府・盛岡)</dd></div>
+        <div><dt>站点候选</dt><dd>新利府駅</dd></div>
+        <div><dt>参考来源</dt><dd class="source-badge-list"><a class="source-badge" href="https://ek1mem0.wiki.fc2.com/wiki/%E3%81%A7%E3%82%93%E3%81%93%E3%81%A8%E5%85%A8%E5%9B%BD%E5%90%84%E5%9C%B0%E3%81%AE%E9%A7%85%E3%81%AB%E3%81%8A%E3%81%A7%E3%81%8B%E3%81%91%E3%81%97%E3%82%88%E3%81%86%20%EF%BD%9E10%E5%91%A8%E5%B9%B4ver.%EF%BD%9E" target="_blank" rel="noopener">返乡活动（10周年）</a></dd></div>
+      </dl>
+      <article class="source-text">
+        <h3>名前について</h3>
+        <p>苗字の読み方は“でんこな話&gt;セリアな話-その1-”より、「こよう」と読むことが判明している。 なお、黄陽という名称の駅は2017年2月現在存在しない。</p>
+      </article>
+      
+      <footer><a class="back-top" href="#top">返回顶部</a></footer>
+    </section><section class="character-card" id="extra-001">
+      <header class="character-card-header">
+        <div>
+          <h2>extra:001 エルミーヌ・ワロン</h2>
+          <div class="card-subtitle"><a class="detail-link" href="https://newekimemo.wiki.fc2.com/wiki/%E3%82%A8%E3%83%AB%E3%83%9F%E3%83%BC%E3%83%8C%E3%83%BB%E3%83%AF%E3%83%AD%E3%83%B3" target="_blank" rel="noopener">wiki页</a></div>
+        </div>
+      </header>
+      <dl class="fact-grid">
+        <div><dt>生日</dt><dd>10月4日</dd></div>
+        <div><dt>声优</dt><dd>未実装</dd></div>
+        <div><dt>都道府県</dt><dd>-</dd></div>
+        <div><dt>国家/地区</dt><dd>ベルギー</dd></div>
+        <div><dt>公司/运营者</dt><dd>-</dd></div>
+        <div><dt>车辆候选</dt><dd>オリエント急行</dd></div>
+        <div><dt>线路候选</dt><dd>-</dd></div>
+        <div><dt>站点候选</dt><dd>-</dd></div>
+        <div><dt>参考来源</dt><dd class="source-badge-list"><a class="source-badge" href="https://newekimemo.wiki.fc2.com/wiki/%E3%81%A7%E3%82%93%E3%81%93%E4%B8%80%E8%A6%A7%2F%E9%83%BD%E9%81%93%E5%BA%9C%E7%9C%8C%E5%88%A5" target="_blank" rel="noopener">都道府県別一览</a></dd></div>
+      </dl>
+      <article class="source-text">
+        <h3>名前について</h3>
+        <p>でんこ一覧等で見られる通り、スペルは「Hermine」。これに「エルミーヌ」の読みを充てるのは慣例的にフランス人名 (*2)。 ちなみにフランス語では「オコジョ」もこの綴りであり、英語で冬毛のオコジョの毛皮ならびに紋章の模様を指す「アーミン（Ermine）」と同じルーツ。 「ワロン（仏：Wallonne）」はベルギー南部の地域名。その多くがフランス語圏（ワロン語）に属し、探偵エルキュール・ポアロもこの地域の出身という設定。 いずれもエルキュール・ポアロを意識したものと見られる。 でんこの元ネタ も参照。</p>
+      </article>
+      
+      <footer><a class="back-top" href="#top">返回顶部</a></footer>
+    </section><section class="character-card" id="extra-002">
+      <header class="character-card-header">
+        <div>
+          <h2>extra:002 赤壕まひる</h2>
+          <div class="card-subtitle"><a class="detail-link" href="https://newekimemo.wiki.fc2.com/wiki/%E8%B5%A4%E5%A3%95%E3%81%BE%E3%81%B2%E3%82%8B" target="_blank" rel="noopener">wiki页</a></div>
+        </div>
+      </header>
+      <dl class="fact-grid">
+        <div><dt>生日</dt><dd>1月4日</dd></div>
+        <div><dt>声优</dt><dd>未実装</dd></div>
+        <div><dt>都道府県</dt><dd>-</dd></div>
+        <div><dt>国家/地区</dt><dd>-</dd></div>
+        <div><dt>公司/运营者</dt><dd>国鉄</dd></div>
+        <div><dt>车辆候选</dt><dd>国鉄DD14形ディーゼル機関車</dd></div>
+        <div><dt>线路候选</dt><dd>-</dd></div>
+        <div><dt>站点候选</dt><dd>-</dd></div>
+        <div><dt>参考来源</dt><dd class="source-badge-list"><a class="source-badge" href="https://newekimemo.wiki.fc2.com/wiki/%E3%81%A7%E3%82%93%E3%81%93%E4%B8%80%E8%A6%A7%2F%E9%83%BD%E9%81%93%E5%BA%9C%E7%9C%8C%E5%88%A5" target="_blank" rel="noopener">都道府県別一览</a></dd></div>
+      </dl>
+      <article class="source-text">
+        <h3>名前について</h3>
+        <p>「赤壕」(せきごう)という駅は存在しない。モデルとなった国鉄DD14形ディーゼル機関車の車体色からの命名か。</p>
+      </article>
+      
+      <footer><a class="back-top" href="#top">返回顶部</a></footer>
+    </section><section class="character-card" id="extra-003">
+      <header class="character-card-header">
+        <div>
+          <h2>extra:003 波篠すすぐ</h2>
+          <div class="card-subtitle"><a class="detail-link" href="https://newekimemo.wiki.fc2.com/wiki/%E6%B3%A2%E7%AF%A0%E3%81%99%E3%81%99%E3%81%90" target="_blank" rel="noopener">wiki页</a></div>
+        </div>
+      </header>
+      <dl class="fact-grid">
+        <div><dt>生日</dt><dd>3月5日</dd></div>
+        <div><dt>声优</dt><dd>未実装</dd></div>
+        <div><dt>都道府県</dt><dd>-</dd></div>
+        <div><dt>国家/地区</dt><dd>-</dd></div>
+        <div><dt>公司/运营者</dt><dd>JR西日本</dd></div>
+        <div><dt>车辆候选</dt><dd>HTM350SW、スラブ洗浄車</dd></div>
+        <div><dt>线路候选</dt><dd>-</dd></div>
+        <div><dt>站点候选</dt><dd>-</dd></div>
+        <div><dt>参考来源</dt><dd class="source-badge-list"><a class="source-badge" href="https://newekimemo.wiki.fc2.com/wiki/%E3%81%A7%E3%82%93%E3%81%93%E4%B8%80%E8%A6%A7%2F%E9%83%BD%E9%81%93%E5%BA%9C%E7%9C%8C%E5%88%A5" target="_blank" rel="noopener">都道府県別一览</a></dd></div>
+      </dl>
+      <article class="source-text">
+        <h3>名前について</h3>
+        <p>「波篠」(なみしの)という駅は存在しない。 スラブ洗浄車の掃除をするというところの『すすぐ』から来ていると思われる。</p>
+      </article>
+      
+      <footer><a class="back-top" href="#top">返回顶部</a></footer>
+    </section><section class="character-card" id="extra-004">
+      <header class="character-card-header">
+        <div>
+          <h2>extra:004 末永てすと</h2>
+          <div class="card-subtitle"><a class="detail-link" href="https://newekimemo.wiki.fc2.com/wiki/%E6%9C%AB%E6%B0%B8%E3%81%A6%E3%81%99%E3%81%A8" target="_blank" rel="noopener">wiki页</a></div>
+        </div>
+      </header>
+      <dl class="fact-grid">
+        <div><dt>生日</dt><dd>5月8日</dd></div>
+        <div><dt>声优</dt><dd>未実装</dd></div>
+        <div><dt>都道府県</dt><dd>-</dd></div>
+        <div><dt>国家/地区</dt><dd>-</dd></div>
+        <div><dt>公司/运营者</dt><dd>JR東海</dd></div>
+        <div><dt>车辆候选</dt><dd>R400形高速確認車</dd></div>
+        <div><dt>线路候选</dt><dd>-</dd></div>
+        <div><dt>站点候选</dt><dd>-</dd></div>
+        <div><dt>参考来源</dt><dd class="source-badge-list"><a class="source-badge" href="https://newekimemo.wiki.fc2.com/wiki/%E3%81%A7%E3%82%93%E3%81%93%E4%B8%80%E8%A6%A7%2F%E9%83%BD%E9%81%93%E5%BA%9C%E7%9C%8C%E5%88%A5" target="_blank" rel="noopener">都道府県別一览</a></dd></div>
+      </dl>
+      <article class="source-text">
+        <h3>名前について</h3>
+        <p>苗字の「末永」は、末永く運行するから来ていると思われる。「末永」という駅は存在しない。 名前の「てすと」は「テスト」から来ており、検査車両であることから。</p>
+      </article>
+      
+      <footer><a class="back-top" href="#top">返回顶部</a></footer>
+    </section><section class="character-card" id="extra-005">
+      <header class="character-card-header">
+        <div>
+          <h2>extra:005 果鳴ツヅキ</h2>
+          <div class="card-subtitle"><a class="detail-link" href="https://newekimemo.wiki.fc2.com/wiki/%E6%9E%9C%E9%B3%B4%E3%83%84%E3%83%85%E3%82%AD" target="_blank" rel="noopener">wiki页</a></div>
+        </div>
+      </header>
+      <dl class="fact-grid">
+        <div><dt>生日</dt><dd>4月6日</dd></div>
+        <div><dt>声优</dt><dd>未実装</dd></div>
+        <div><dt>都道府県</dt><dd>-</dd></div>
+        <div><dt>国家/地区</dt><dd>-</dd></div>
+        <div><dt>公司/运营者</dt><dd>JR西日本</dd></div>
+        <div><dt>车辆候选</dt><dd>TW4446、架線延線車</dd></div>
+        <div><dt>线路候选</dt><dd>-</dd></div>
+        <div><dt>站点候选</dt><dd>-</dd></div>
+        <div><dt>参考来源</dt><dd class="source-badge-list"><a class="source-badge muted" href="https://newekimemo.wiki.fc2.com/wiki/%E6%9E%9C%E9%B3%B4%E3%83%84%E3%83%85%E3%82%AD" target="_blank" rel="noopener">详情页</a></dd></div>
+      </dl>
+      <article class="source-text">
+        <h3>名前について</h3>
+        <p>苗字は「はてなき」と読むが、「果鳴」という駅は存在しない。架線延線車の架線を敷設するイメージが由来か。</p>
+      </article>
+      
+      <footer><a class="back-top" href="#top">返回顶部</a></footer>
+    </section>
+    </section>
+  </main>
+  <script>
+    (() => {
+      const normalizeQuery = (value) => {
+        return value.trim().toLowerCase()
+          .replace(/[ァ-ヶ]/g, (ch) => String.fromCharCode(ch.charCodeAt(0) - 0x60))
+          .replace(/[ ・＝=]/g, '');
+      };
+      const jumpInCard = (card) => {
+        const input = card.querySelector('[data-directory-search]');
+        const list = card.querySelector('.directory-list');
+        if (!input || !list) return;
+        const q = normalizeQuery(input.value);
+        if (!q) return;
+        const items = Array.from(list.querySelectorAll('[data-directory-item]'));
+        const target = items.find((item) => (item.dataset.key || '').includes(q));
+        if (!target) return;
+        list.querySelectorAll('.directory-hit').forEach((item) => item.classList.remove('directory-hit'));
+        target.classList.add('directory-hit');
+        target.scrollIntoView({ block: 'center', behavior: 'smooth' });
+      };
+      document.querySelectorAll('.directory-card').forEach((card) => {
+        const button = card.querySelector('[data-directory-jump]');
+        const input = card.querySelector('[data-directory-search]');
+        if (button) button.addEventListener('click', () => jumpInCard(card));
+        if (input) input.addEventListener('keydown', (event) => {
+          if (event.key === 'Enter') {
+            event.preventDefault();
+            jumpInCard(card);
+          }
+        });
+      });
+      document.querySelectorAll('.directory-quick a').forEach((link) => {
+        link.addEventListener('click', (event) => {
+          const id = link.getAttribute('href')?.slice(1);
+          if (!id) return;
+          const target = document.getElementById(id);
+          const list = link.closest('.directory-card')?.querySelector('.directory-list');
+          if (!target || !list) return;
+          event.preventDefault();
+          target.scrollIntoView({ block: 'start' });
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -14,6 +14,9 @@ __pycache__/
 # Runtime outputs
 logs/
 tmp/
+cache/prototype_extract/
+cache/prototype_pages/
+cache/prototype_reference_pages/
 
 # Keep data structure, but avoid committing bulky fetched pages by default
 data/raw_pages/*
