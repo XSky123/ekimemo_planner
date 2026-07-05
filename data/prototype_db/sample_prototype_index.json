@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-07-06T00:36:18.686881+09:00",
+  "generated_at": "2026-07-06T01:00:58.782584+09:00",
   "source_records": "data\\prototype_db\\sample_prototype_records.jsonl",
   "groups": {
     "by_prefecture": {
@@ -85,12 +85,6 @@
         }
       ],
       "JR東海": [
-        {
-          "denko_id": "original:003",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%96%B0%E9%98%AA%E3%83%AB%E3%83%8A",
-          "name": "新阪ルナ",
-          "href": "#original-003"
-        },
         {
           "denko_id": "extra:004",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%9C%AB%E6%B0%B8%E3%81%A6%E3%81%99%E3%81%A8",
@@ -186,14 +180,6 @@
       ]
     },
     "by_voice_actor": {
-      "ブリドカットセーラ恵美": [
-        {
-          "denko_id": "original:001",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E9%BB%84%E9%99%BD%E3%82%BB%E3%83%AA%E3%82%A2",
-          "name": "黄陽セリア",
-          "href": "#original-001"
-        }
-      ],
       "会沢紗弥": [
         {
           "denko_id": "original:002",
@@ -202,12 +188,12 @@
           "href": "#original-002"
         }
       ],
-      "柳原かなこ": [
+      "香里有佐": [
         {
-          "denko_id": "original:004",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%81%8B%E6%B5%9C%E3%81%BF%E3%82%8D%E3%81%8F",
-          "name": "恋浜みろく",
-          "href": "#original-004"
+          "denko_id": "original:003",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%96%B0%E9%98%AA%E3%83%AB%E3%83%8A",
+          "name": "新阪ルナ",
+          "href": "#original-003"
         }
       ],
       "鈴代紗弓": [
@@ -218,12 +204,20 @@
           "href": "#original-005"
         }
       ],
-      "香里有佐": [
+      "ブリドカットセーラ恵美": [
         {
-          "denko_id": "original:003",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%96%B0%E9%98%AA%E3%83%AB%E3%83%8A",
-          "name": "新阪ルナ",
-          "href": "#original-003"
+          "denko_id": "original:001",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E9%BB%84%E9%99%BD%E3%82%BB%E3%83%AA%E3%82%A2",
+          "name": "黄陽セリア",
+          "href": "#original-001"
+        }
+      ],
+      "柳原かなこ": [
+        {
+          "denko_id": "original:004",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%81%8B%E6%B5%9C%E3%81%BF%E3%82%8D%E3%81%8F",
+          "name": "恋浜みろく",
+          "href": "#original-004"
         }
       ]
     },
@@ -378,30 +372,6 @@
           "href": "#original-001"
         }
       ],
-      "国鉄DD14形ディーゼル機関車": [
-        {
-          "denko_id": "extra:002",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E8%B5%A4%E5%A3%95%E3%81%BE%E3%81%B2%E3%82%8B",
-          "name": "赤壕まひる",
-          "href": "#extra-002"
-        }
-      ],
-      "国鉄ED30形電気機関車": [
-        {
-          "denko_id": "original:002",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E7%82%BA%E6%A0%97%E3%83%A1%E3%83%AD",
-          "name": "為栗メロ",
-          "href": "#original-002"
-        }
-      ],
-      "架線延線車": [
-        {
-          "denko_id": "extra:005",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%9E%9C%E9%B3%B4%E3%83%84%E3%83%85%E3%82%AD",
-          "name": "果鳴ツヅキ",
-          "href": "#extra-005"
-        }
-      ],
       "36形": [
         {
           "denko_id": "original:004",
@@ -424,6 +394,30 @@
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E9%BB%84%E9%99%BD%E3%82%BB%E3%83%AA%E3%82%A2",
           "name": "黄陽セリア",
           "href": "#original-001"
+        }
+      ],
+      "国鉄DD14形ディーゼル機関車": [
+        {
+          "denko_id": "extra:002",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E8%B5%A4%E5%A3%95%E3%81%BE%E3%81%B2%E3%82%8B",
+          "name": "赤壕まひる",
+          "href": "#extra-002"
+        }
+      ],
+      "国鉄ED30形電気機関車": [
+        {
+          "denko_id": "original:002",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E7%82%BA%E6%A0%97%E3%83%A1%E3%83%AD",
+          "name": "為栗メロ",
+          "href": "#original-002"
+        }
+      ],
+      "架線延線車": [
+        {
+          "denko_id": "extra:005",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%9E%9C%E9%B3%B4%E3%83%84%E3%83%85%E3%82%AD",
+          "name": "果鳴ツヅキ",
+          "href": "#extra-005"
         }
       ],
       "E926形": [

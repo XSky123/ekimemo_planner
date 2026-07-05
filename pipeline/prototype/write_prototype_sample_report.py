@@ -52,6 +52,13 @@ REFERENCE_PAGES = [
         "url": "https://newekimemo.wiki.fc2.com/wiki/%E3%81%A7%E3%82%93%E3%81%93%E4%B8%80%E8%A6%A7%2F%E9%83%BD%E9%81%93%E5%BA%9C%E7%9C%8C%E5%88%A5",
     },
 ]
+BIRTHDAY_PROFILE_PAGE = {
+    "cache_name": "birthday_profile.html",
+    "source_kind": "birthday_profile",
+    "label": "生日・プロフィール一览",
+    "priority": 110,
+    "url": "https://newekimemo.wiki.fc2.com/wiki/%E3%81%A7%E3%82%93%E3%81%93%E4%B8%80%E8%A6%A7%2F%E8%AA%95%E7%94%9F%E6%97%A5%E3%83%BB%E3%83%97%E3%83%AD%E3%83%95%E3%82%A3%E3%83%BC%E3%83%AB",
+}
 PROFILE_LABELS = ["タイプ", "属性", "でんこカラー", "誕生日", "声の担当", "キャラクターデザイン", "モデル車両・列車", "モデル車両"]
 SECTION_STOP_WORDS = ["セリフ", "スキル", "ステータス詳細", "ラッピング", "名前について", "その他"]
 
@@ -200,6 +207,76 @@ STATION_READINGS = {
     "タスケーニャ駅": "たすけーにゃえき",
     "パリ北駅": "ぱりきたえき",
     "ニューデリー駅": "にゅーでりーえき",
+}
+
+VOICE_ACTOR_READINGS = {
+    "ブリドカットセーラ恵美": "ぶりどかっとせーらえみ",
+    "三上枝織": "みかみしおり",
+    "中村カンナ": "なかむらかんな",
+    "伊藤ゆいな": "いとうゆいな",
+    "会沢紗弥": "あいざわさや",
+    "佐々木未来": "ささきみこい",
+    "内田秀": "うちだしゅう",
+    "前田佳織里": "まえだかおり",
+    "吉武千颯": "よしたけちはや",
+    "和泉風花": "いずみふうか",
+    "坂倉花": "さかくらさくら",
+    "大坪由佳": "おおつぼゆか",
+    "富田美憂": "とみたみゆ",
+    "小岩井ことり": "こいわいことり",
+    "小泉萌香": "こいずみもえか",
+    "山本彩乃": "やまもとあやの",
+    "山田麻莉奈": "やまだまりな",
+    "徳井青空": "とくいそら",
+    "日向未南": "ひなたみなみ",
+    "星守紗凪": "ほしもりさな",
+    "月城日花": "つきしろひな",
+    "松井恵理子": "まついえりこ",
+    "林鼓子": "はやしここ",
+    "柳原かなこ": "やなぎはらかなこ",
+    "水野朔": "みずのさく",
+    "汐入あすか": "しおいりあすか",
+    "河実里夏": "かわみりか",
+    "田中ちえ美": "たなかちえみ",
+    "田村佳奈": "たむらかな",
+    "白城なお": "しらきなお",
+    "直田姫奈": "すぐたひな",
+    "礒部花凜": "いそべかりん",
+    "立花理香": "たちばなりか",
+    "紡木吏佐": "つむぎりさ",
+    "船戸ゆり絵": "ふなとゆりえ",
+    "花守ゆみり": "はなもりゆみり",
+    "茅野愛衣": "かやのあい",
+    "荒井麻那": "あらいまな",
+    "荻野葉月": "おぎのはづき",
+    "西本りみ": "にしもとりみ",
+    "赤尾ひかる": "あかおひかる",
+    "進藤あまね": "しんどうあまね",
+    "鈴代紗弓": "すずしろさゆみ",
+    "長江里加": "ながえりか",
+    "関根明良": "せきねあきら",
+    "陽高真白": "ひだかましろ",
+    "青山なぎさ": "あおやまなぎさ",
+    "香里有佐": "こうりありさ",
+    "鳴沢優海": "なるさわゆうみ",
+    "黒木ほの香": "くろきほのか",
+    "野中ここな": "のなかここな",
+}
+
+FOREIGN_REGION_PREFIXES = {
+    "アメリカ",
+    "イギリス",
+    "インド",
+    "エジプト",
+    "オランダ",
+    "スイス",
+    "タイ",
+    "トルコ",
+    "ドイツ",
+    "ニュージーランド",
+    "フランス",
+    "ベトナム",
+    "メキシコ",
 }
 
 
@@ -487,7 +564,12 @@ def note_records(note_ids: list[str], notes: dict[str, str]) -> list[dict[str, s
 def reference_cache_text(page: dict[str, Any]) -> str:
     path = REFERENCE_CACHE_DIR / page["cache_name"]
     if not path.exists():
-        raise FileNotFoundError(f"reference cache missing: {path.relative_to(ROOT)}")
+        REFERENCE_CACHE_DIR.mkdir(parents=True, exist_ok=True)
+        request = Request(page["url"], headers={"User-Agent": "Mozilla/5.0 prototype-reference-parser/0.1"})
+        with urlopen(request, timeout=25) as response:
+            content = response.read().decode(response.headers.get_content_charset() or "utf-8", errors="replace")
+        path.write_text(content, encoding="utf-8")
+        time.sleep(0.25)
     return path.read_text(encoding="utf-8-sig", errors="replace")
 
 
@@ -571,6 +653,50 @@ def parse_prefecture_reference(page: dict[str, Any], known_names: set[str], alia
                             "notes": [],
                         }
                     )
+    return records
+
+
+def birthday_profile_denko_id(raw_no: str) -> str | None:
+    raw_no = compact_text(raw_no)
+    if not raw_no:
+        return None
+    if match := re.match(r"EX\s*(\d+)", raw_no, flags=re.IGNORECASE):
+        return f"extra:{int(match.group(1)):03d}"
+    if raw_no.isdigit():
+        number = int(raw_no)
+        if number > 0:
+            return f"original:{number:03d}"
+    return None
+
+
+def parse_birthday_profile_reference(page: dict[str, Any]) -> dict[str, dict[str, Any]]:
+    soup = BeautifulSoup(reference_cache_text(page), "html.parser")
+    records: dict[str, dict[str, Any]] = {}
+    for table in soup.find_all("table"):
+        rows = table_to_grid(table)
+        if not rows:
+            continue
+        header = rows[0]
+        if not {"No.", "名前", "誕生日", "プロフィール"}.issubset(set(header)):
+            continue
+        columns = {name: header.index(name) for name in ["No.", "名前", "誕生日", "プロフィール"]}
+        for row in rows[1:]:
+            if len(row) <= max(columns.values()):
+                continue
+            denko_id = birthday_profile_denko_id(row[columns["No."]])
+            if not denko_id:
+                continue
+            profile = compact_text(row[columns["プロフィール"]])
+            full_name = profile.split("：", 1)[0] if "：" in profile else None
+            records[denko_id] = {
+                "denko_id": denko_id,
+                "short_name": compact_text(row[columns["名前"]]),
+                "full_name": full_name,
+                "birthday": birthday_key(row[columns["誕生日"]]) or compact_text(row[columns["誕生日"]]),
+                "profile_summary_raw": profile,
+                "source_label": page["label"],
+                "source_url": page["url"],
+            }
     return records
 
 
@@ -672,6 +798,14 @@ def has_sentence_fragment_noise(value: str) -> bool:
     return any(word in value for word in noise_words)
 
 
+def strip_foreign_region_prefix(value: str) -> str:
+    for prefix in FOREIGN_REGION_PREFIXES:
+        dotted = f"{prefix}・"
+        if value.startswith(dotted):
+            return value.removeprefix(dotted)
+    return value
+
+
 def cleanup_station_candidate(value: str) -> str | None:
     value = compact_text(value)
     if "駅である" in value:
@@ -701,6 +835,7 @@ def cleanup_station_candidate(value: str) -> str | None:
 def cleanup_line_candidate(value: str) -> str | None:
     value = compact_text(value)
     value = re.sub(r"^[・\s]+", "", value)
+    value = strip_foreign_region_prefix(value)
     if re.match(r"^[のはをやと]", value):
         return None
     salvage_patterns = [
@@ -725,7 +860,9 @@ def cleanup_line_candidate(value: str) -> str | None:
         value = value.split("スカイトレインの", 1)[1]
     if any(fragment in value for fragment in ["モチーフ路線", "サッカー好き", "航空機の性能", "治安の悪さ", "開催を機に", "結ぶ路線", "繋がる路線"]):
         return None
-    if any(fragment in value for fragment in ["営業廃止", "太陽光発電", "当路線", "保存鉄道", "元ネタ車両も", "株式会社の子会社"]):
+    if any(fragment in value for fragment in ["営業廃止", "太陽光発電", "当路線", "保存鉄道", "元ネタ車両も", "株式会社の子会社", "協会の路線", "の線"]):
+        return None
+    if value in {"鉄道", "高架鉄道", "路線"}:
         return None
     if "駅は" in value:
         value = value.split("駅は", 1)[1]
@@ -739,6 +876,7 @@ def cleanup_line_candidate(value: str) -> str | None:
 def cleanup_operator_candidate(value: str) -> str | None:
     value = compact_text(value)
     value = re.sub(r"^[・\s]+", "", value)
+    value = strip_foreign_region_prefix(value)
     if value in {"JR北海道", "JR東日本", "JR東海", "JR西日本", "JR四国", "JR九州", "JR貨物", "国鉄"}:
         return value
     if re.match(r"^[のはをやと]", value):
@@ -810,10 +948,12 @@ def extract_operators(text: str) -> list[str]:
         return []
     patterns = [
         r"(JR北海道|JR東日本|JR東海|JR西日本|JR四国|JR九州|JR貨物)",
+        r"([一-龥ぁ-んァ-ヶA-Za-z0-9・ー]+国鉄)",
         r"(国鉄)",
+        r"([一-龥ぁ-んァ-ヶA-Za-z0-9・ー]+交通局)",
         r"([一-龥ぁ-んァ-ヶA-Za-z0-9・ー]+鉄道)",
         r"([一-龥ぁ-んァ-ヶA-Za-z0-9・ー]+電鉄)",
-        r"(De\s*Lijn|TEC|MIVB|SNCB|NMBS|SNCF)",
+        r"(キウイレール|バンコク・スカイトレイン|ドバイメトロ|De\s*Lijn|TEC|MIVB|SNCB|NMBS|SNCF)",
     ]
     found: list[str] = []
     for pattern in patterns:
@@ -854,17 +994,20 @@ def build_record(
     html_text: str,
     cache_meta: dict[str, Any],
     reference_lookup: dict[str, list[dict[str, Any]]],
+    birthday_profile_lookup: dict[str, dict[str, Any]],
 ) -> dict[str, Any]:
     identity = row["identity"]
     soup = BeautifulSoup(html_text, "html.parser")
     profile_raw = extract_section_text(soup, "プロフィール", max_chars=2500)
     name_origin_raw = extract_section_text(soup, "名前について", max_chars=1600)
     model_vehicle_raw = profile_field(profile_raw, "モデル車両・列車") or profile_field(profile_raw, "モデル車両")
-    birthday = profile_field(profile_raw, "誕生日")
-    voice_actor = profile_field(profile_raw, "声の担当")
+    birthday_profile = birthday_profile_lookup.get(identity["denko_id"], {})
+    detail_birthday = profile_field(profile_raw, "誕生日")
+    birthday = birthday_profile.get("birthday") or detail_birthday
+    voice_actor = profile_field(profile_raw, "声の担当") or profile_field(profile_raw, "担当声優")
     designer = profile_field(profile_raw, "キャラクターデザイン")
     combined = " ".join(item for item in [model_vehicle_raw, name_origin_raw] if item)
-    operators = extract_operators(combined)
+    operators = extract_operators(model_vehicle_raw or "") or extract_operators(combined)
     lines = extract_lines(combined)
     vehicles = extract_vehicles(model_vehicle_raw or combined)
     stations = extract_stations(name_origin_raw or "")
@@ -914,11 +1057,21 @@ def build_record(
     for field, source, text in [
         ("model_vehicle_raw", "プロフィール/モデル車両", model_vehicle_raw),
         ("name_origin_raw", "名前について", name_origin_raw),
-        ("birthday", "プロフィール/誕生日", birthday),
+        ("birthday", "生日・プロフィール一览/誕生日" if birthday_profile.get("birthday") else "プロフィール/誕生日", birthday),
         ("voice_actor", "プロフィール/声の担当", voice_actor),
     ]:
         if text:
             evidence.append({"field": field, "source_section": source, "text": text[:280], "confidence": "high"})
+    if birthday_profile.get("profile_summary_raw"):
+        evidence.append(
+            {
+                "field": "profile_summary_raw",
+                "source_section": birthday_profile["source_label"],
+                "source_url": birthday_profile["source_url"],
+                "text": birthday_profile["profile_summary_raw"][:280],
+                "confidence": "high",
+            }
+        )
     for match in unique_by_key(reference_matches, "source_kind"):
         evidence.append(
             {
@@ -956,8 +1109,11 @@ def build_record(
         "pool": identity["pool"],
         "detail_url": identity["detail_url"],
         "birthday": birthday,
+        "detail_birthday": detail_birthday,
         "voice_actor": voice_actor,
         "character_designer": designer,
+        "profile_full_name": birthday_profile.get("full_name"),
+        "profile_summary_raw": birthday_profile.get("profile_summary_raw"),
         "profile_section_raw": profile_raw,
         "model_vehicle_raw": model_vehicle_raw,
         "name_origin_raw": name_origin_raw,
@@ -1076,6 +1232,9 @@ def reading_aliases(group: str, key: str) -> list[str]:
         if reading := STATION_READINGS.get(key):
             aliases.extend([reading, reading.removesuffix("えき")])
         aliases.append(key.removesuffix("駅"))
+    elif group == "by_voice_actor":
+        if reading := VOICE_ACTOR_READINGS.get(key):
+            aliases.append(reading)
     elif group == "by_birthday":
         match = re.search(r"(\d{1,2})月(\d{1,2})日", key)
         if match:
@@ -1096,6 +1255,8 @@ def directory_primary_reading(group: str, key: str) -> str:
                 return reading
     if group == "by_station":
         return STATION_READINGS.get(key) or key
+    if group == "by_voice_actor":
+        return VOICE_ACTOR_READINGS.get(key) or key
     return key
 
 
@@ -1108,7 +1269,10 @@ def directory_section_label(group: str, key: str) -> str:
     if group == "by_birthday":
         month, _, _ = birthday_sort_key(key)
         return f"{month}月" if month != 99 else "#"
-    return kana_initial(directory_primary_reading(group, key))
+    initial = kana_initial(directory_primary_reading(group, key))
+    if group in {"by_operator", "by_line", "by_voice_actor", "by_station", "by_vehicle", "by_absent_station_name"} and initial == "漢":
+        return "#"
+    return initial
 
 
 def kana_initial(value: str) -> str:
@@ -1147,6 +1311,8 @@ def directory_sort_key(group: str, key: str) -> tuple[Any, ...]:
     sort_text = directory_primary_reading(group, key)
     initial = kana_initial(sort_text)
     order = ["あ", "か", "さ", "た", "な", "は", "ま", "や", "ら", "わ", "漢", "#"]
+    if group in {"by_operator", "by_line", "by_voice_actor", "by_station", "by_vehicle", "by_absent_station_name"}:
+        order = ["あ", "か", "さ", "た", "な", "は", "ま", "や", "ら", "わ", "#", "漢"]
     rank = order.index(initial) if initial in order else 20
     return (rank, initial, sort_text, key)
 
@@ -1351,7 +1517,7 @@ def render_directory_group(group: str, title: str, entries: dict[str, list[dict[
         )
     quick = f"""<nav class="directory-quick" aria-label="{esc(title)} 快速选择">{''.join(quick_links)}</nav>"""
     return f"""<section class="directory-card">
-      <h2>{esc(title)} <span>{len(entries)}</span></h2>
+      <h2>{esc(title)}{'' if group == 'by_birthday' else f' <span>{len(entries)}</span>'}</h2>
       <div class="directory-tools">
         <input type="search" placeholder="搜索后跳转" aria-label="{esc(title)} 搜索" data-directory-search>
         <button type="button" data-directory-jump>跳转</button>
@@ -1482,7 +1648,7 @@ def render_html(records: list[dict[str, Any]], dataset_label: str, source_record
     .directory-quick a {{ min-width:22px; text-align:center; border:1px solid #d0d7de; border-radius:4px; padding:1px 4px; color:#57606a; background:#fff; font-size:11px; font-weight:600; text-decoration:none; }}
     .directory-quick a:hover {{ background:#f6f8fa; color:#0969da; text-decoration:none; }}
     .directory-card ul {{ list-style:none; padding:0; margin:0; display:grid; gap:7px; }}
-    .directory-list {{ max-height:280px; overflow:auto; overscroll-behavior:contain; padding-right:4px; scrollbar-gutter:stable; }}
+    .directory-list {{ max-height:520px; overflow:auto; overscroll-behavior:contain; padding-right:4px; scrollbar-gutter:stable; }}
     .directory-card li {{ display:grid; gap:3px; }}
     .directory-section {{ position:sticky; top:0; z-index:1; margin-top:2px; padding:2px 0; background:#fff; color:#68707c; font-size:11px; font-weight:700; border-bottom:1px solid #eef1f4; }}
     .directory-hit {{ outline:2px solid #f2cc60; outline-offset:2px; border-radius:4px; background:#fff8c5; }}
@@ -1558,6 +1724,13 @@ def render_html(records: list[dict[str, Any]], dataset_label: str, source_record
           .replace(/[\u30a1-\u30f6]/g, (ch) => String.fromCharCode(ch.charCodeAt(0) - 0x60))
           .replace(/[ ・＝=]/g, '');
       }};
+      const scrollWithinList = (list, target, block = 'center') => {{
+        const listRect = list.getBoundingClientRect();
+        const targetRect = target.getBoundingClientRect();
+        const current = list.scrollTop + targetRect.top - listRect.top;
+        const offset = block === 'center' ? (list.clientHeight - target.offsetHeight) / 2 : 0;
+        list.scrollTo({{ top: Math.max(0, current - offset), behavior: 'smooth' }});
+      }};
       const jumpInCard = (card) => {{
         const input = card.querySelector('[data-directory-search]');
         const list = card.querySelector('.directory-list');
@@ -1569,7 +1742,7 @@ def render_html(records: list[dict[str, Any]], dataset_label: str, source_record
         if (!target) return;
         list.querySelectorAll('.directory-hit').forEach((item) => item.classList.remove('directory-hit'));
         target.classList.add('directory-hit');
-        target.scrollIntoView({{ block: 'center', behavior: 'smooth' }});
+        scrollWithinList(list, target);
       }};
       document.querySelectorAll('.directory-card').forEach((card) => {{
         const button = card.querySelector('[data-directory-jump]');
@@ -1590,7 +1763,7 @@ def render_html(records: list[dict[str, Any]], dataset_label: str, source_record
           const list = link.closest('.directory-card')?.querySelector('.directory-list');
           if (!target || !list) return;
           event.preventDefault();
-          target.scrollIntoView({{ block: 'start' }});
+          scrollWithinList(list, target, 'start');
         }});
       }});
     }})();
@@ -1633,12 +1806,13 @@ def main() -> None:
         out_html = OUT_HTML
         dataset_label = "sample: original 001-005 + extra 001-005" if selected_ids == SAMPLE_IDS else f"subset: {len(selected_ids)} denko"
     reference_lookup = build_reference_lookup({row["identity"]["name"] for row in denko_rows})
+    birthday_profile_lookup = parse_birthday_profile_reference(BIRTHDAY_PROFILE_PAGE)
     state = load_state()
     records: list[dict[str, Any]] = []
     for denko_id in selected_ids:
         row = by_id[denko_id]
         html_text, cache_meta = fetch_html(denko_id, row["identity"]["detail_url"], state, refresh=args.refresh)
-        records.append(build_record(row, html_text, cache_meta, reference_lookup))
+        records.append(build_record(row, html_text, cache_meta, reference_lookup, birthday_profile_lookup))
     write_jsonl(out_jsonl, records)
     out_index_json.write_text(json.dumps(build_index(records, source_records_path=out_jsonl), ensure_ascii=False, indent=2), encoding="utf-8")
     out_html.parent.mkdir(parents=True, exist_ok=True)

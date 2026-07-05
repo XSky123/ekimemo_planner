@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-07-06T00:36:39.585829+09:00",
+  "generated_at": "2026-07-06T01:00:57.336892+09:00",
   "source_records": "data\\prototype_db\\prototype_records.jsonl",
   "groups": {
     "by_prefecture": {
@@ -1828,25 +1828,13 @@
       ],
       "あいの風とやま鉄道": [
         {
-          "denko_id": "original:060",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E5%80%B6%E5%88%A9%E4%BC%BD%E7%BE%85%E3%81%97%E3%81%8A%E3%82%8A",
-          "name": "倶利伽羅しおり",
-          "href": "#original-060"
-        },
-        {
           "denko_id": "original:073",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E9%AB%98%E5%B2%A1%E3%82%84%E3%81%BE%E3%81%A8",
           "name": "高岡やまと",
           "href": "#original-073"
-        },
-        {
-          "denko_id": "extra:017",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E9%BB%92%E9%83%A8%E3%82%8B%E3%81%84",
-          "name": "黒部るい",
-          "href": "#extra-017"
         }
       ],
-      "JR津軽線・青い森鉄道": [
+      "青い森鉄道": [
         {
           "denko_id": "original:119",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E9%9D%92%E6%A3%AE%E3%81%9B%E3%81%84%E3%82%89%E3%82%93",
@@ -1854,21 +1842,7 @@
           "href": "#original-119"
         }
       ],
-      "青い森鉄道": [
-        {
-          "denko_id": "original:102",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E5%85%AB%E6%88%B8%E3%81%BE%E3%81%97%E3%82%8D",
-          "name": "八戸ましろ",
-          "href": "#original-102"
-        }
-      ],
       "秋田内陸縦貫鉄道": [
-        {
-          "denko_id": "original:064",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E8%A7%92%E9%A4%A8%E3%81%82%E3%81%91%E3%81%B2",
-          "name": "角館あけひ",
-          "href": "#original-064"
-        },
         {
           "denko_id": "original:157",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E9%98%BF%E4%BB%81%E5%90%88%E3%81%AB%E3%81%82",
@@ -1912,7 +1886,7 @@
           "href": "#original-038"
         }
       ],
-      "北陸新幹線・JR大糸線・えちごトキめき鉄道": [
+      "えちごトキめき鉄道": [
         {
           "denko_id": "original:111",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E7%B3%B8%E9%AD%9A%E5%B7%9D%E3%81%9B%E3%81%A4%E3%81%8B",
@@ -1922,18 +1896,16 @@
       ],
       "えちぜん鉄道": [
         {
-          "denko_id": "original:108",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E5%8B%9D%E5%B1%B1%E3%81%A6%E3%81%84%E3%82%89",
-          "name": "勝山ていら",
-          "href": "#original-108"
-        }
-      ],
-      "えちぜん鉄道・福井鉄道": [
-        {
           "denko_id": "original:101",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E7%94%B0%E5%8E%9F%E7%94%BA%E3%81%A4%E3%81%B0%E3%81%95",
           "name": "田原町つばさ",
           "href": "#original-101"
+        },
+        {
+          "denko_id": "original:108",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E5%8B%9D%E5%B1%B1%E3%81%A6%E3%81%84%E3%82%89",
+          "name": "勝山ていら",
+          "href": "#original-108"
         }
       ],
       "江ノ島電鉄": [
@@ -1970,22 +1942,6 @@
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E8%95%97%E3%81%A4%E3%81%90%E3%81%BF",
           "name": "蕗つぐみ",
           "href": "#extra-127"
-        }
-      ],
-      "小田急箱根鉄道": [
-        {
-          "denko_id": "original:109",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E5%B0%8F%E6%B6%8C%E8%B0%B7%E3%81%82%E3%81%99%E3%81%8B",
-          "name": "小涌谷あすか",
-          "href": "#original-109"
-        }
-      ],
-      "アメリカ・グランドキャニオン鉄道": [
-        {
-          "denko_id": "extra:023",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%83%99%E3%83%86%E3%82%A3%E3%83%BC%E3%83%BB%E3%82%A6%E3%82%A3%E3%83%AA%E3%82%A2%E3%83%A0%E3%82%B9",
-          "name": "ベティー・ウィリアムス",
-          "href": "#extra-023"
         }
       ],
       "アラスカ鉄道": [
@@ -2078,12 +2034,86 @@
           "href": "#original-042"
         }
       ],
-      "元ネタの韓国鉄道": [
+      "アイルランド国鉄": [
         {
-          "denko_id": "extra:112",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%BD%E3%82%A6%E3%83%AB%E3%83%BB%E3%83%9E%E3%82%A6%E3%83%A0",
-          "name": "ソウル・マウム",
-          "href": "#extra-112"
+          "denko_id": "extra:103",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%A2%E3%82%A4%E3%83%A9%E3%83%BB%E3%83%92%E3%83%A5%E3%83%BC%E3%82%B9%E3%83%88%E3%83%B3",
+          "name": "アイラ・ヒューストン",
+          "href": "#extra-103"
+        }
+      ],
+      "アルゼンチン国鉄": [
+        {
+          "denko_id": "extra:052",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%83%A1%E3%83%AA%E3%83%8A%E3%83%BB%E3%83%AC%E3%83%86%E3%82%A3%E3%83%BC%E3%83%AD",
+          "name": "メリナ・レティーロ",
+          "href": "#extra-052"
+        }
+      ],
+      "イタリア国鉄": [
+        {
+          "denko_id": "extra:081",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%83%AD%E3%83%83%E3%82%B5%E3%83%BB%E3%83%AD%E3%83%BC%E3%83%9E",
+          "name": "ロッサ・ローマ",
+          "href": "#extra-081"
+        },
+        {
+          "denko_id": "extra:082",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%83%AB%E3%82%B8%E3%82%A7%E3%83%B3%E3%83%88%E3%83%BB%E3%83%AD%E3%83%BC%E3%83%9E",
+          "name": "ルジェント・ローマ",
+          "href": "#extra-082"
+        },
+        {
+          "denko_id": "extra:083",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%83%93%E3%82%A2%E3%83%B3%E3%82%AB%E3%83%BB%E3%83%AD%E3%83%BC%E3%83%9E",
+          "name": "ビアンカ・ローマ",
+          "href": "#extra-083"
+        }
+      ],
+      "インド国鉄": [
+        {
+          "denko_id": "extra:032",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%B7%E3%83%A3%E3%83%B3%E3%83%86%E3%82%A3%E3%83%BB%E3%83%80%E3%83%BC%E3%82%B8%E3%83%AA%E3%83%B3",
+          "name": "シャンティ・ダージリン",
+          "href": "#extra-032"
+        }
+      ],
+      "エストニア国鉄": [
+        {
+          "denko_id": "extra:119",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%A2%E3%83%8B%E3%82%AB%E3%83%BB%E3%82%BF%E3%83%AB%E3%83%88%E3%82%A5",
+          "name": "アニカ・タルトゥ",
+          "href": "#extra-119"
+        }
+      ],
+      "スペイン国鉄": [
+        {
+          "denko_id": "extra:064",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%83%AA%E3%82%BF%E3%83%BB%E3%83%9E%E3%83%89%E3%83%AA%E3%83%BC%E3%83%89",
+          "name": "リタ・マドリード",
+          "href": "#extra-064"
+        }
+      ],
+      "フランス国鉄": [
+        {
+          "denko_id": "extra:106",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%83%9E%E3%83%AD%E3%83%B3%E3%83%BB%E3%83%9E%E3%83%AB%E3%83%86%E3%82%A3%E3%83%8B",
+          "name": "マロン・マルティニ",
+          "href": "#extra-106"
+        },
+        {
+          "denko_id": "extra:126",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%B3%E3%82%B3%E3%83%BB%E3%83%B4%E3%82%A7%E3%83%AB%E3%82%B5%E3%82%A4%E3%83%A6",
+          "name": "ココ・ヴェルサイユ",
+          "href": "#extra-126"
+        }
+      ],
+      "ベルギー国鉄": [
+        {
+          "denko_id": "extra:107",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%AC%E3%83%96%E3%83%AA%E3%82%A8%E3%83%A9%E3%83%BB%E3%82%A2%E3%83%B3%E3%83%88%E3%83%AF%E3%83%BC%E3%83%97",
+          "name": "ガブリエラ・アントワープ",
+          "href": "#extra-107"
         }
       ],
       "国鉄": [
@@ -2098,12 +2128,6 @@
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%96%B0%E9%98%AA%E3%83%AB%E3%83%8A",
           "name": "新阪ルナ",
           "href": "#original-003"
-        },
-        {
-          "denko_id": "original:011",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E7%B2%9F%E7%94%9F%E6%B4%A5%E3%81%97%E3%81%84%E3%82%89",
-          "name": "粟生津しいら",
-          "href": "#original-011"
         },
         {
           "denko_id": "original:032",
@@ -2172,12 +2196,6 @@
           "href": "#original-130"
         },
         {
-          "denko_id": "original:131",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E5%8B%9D%E7%94%B0%E3%83%9F%E3%82%AD",
-          "name": "勝田ミキ",
-          "href": "#original-131"
-        },
-        {
           "denko_id": "original:136",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E4%BD%86%E9%A6%AC%E3%81%B2%E3%82%87%E3%81%86%E3%81%93",
           "name": "但馬ひょうこ",
@@ -2200,78 +2218,6 @@
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E8%B5%A4%E5%A3%95%E3%81%BE%E3%81%B2%E3%82%8B",
           "name": "赤壕まひる",
           "href": "#extra-002"
-        },
-        {
-          "denko_id": "extra:011",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%9C%A8%E5%B1%8B%E3%81%AF%E3%81%8B%E3%82%8A",
-          "name": "木屋はかり",
-          "href": "#extra-011"
-        },
-        {
-          "denko_id": "extra:032",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%B7%E3%83%A3%E3%83%B3%E3%83%86%E3%82%A3%E3%83%BB%E3%83%80%E3%83%BC%E3%82%B8%E3%83%AA%E3%83%B3",
-          "name": "シャンティ・ダージリン",
-          "href": "#extra-032"
-        },
-        {
-          "denko_id": "extra:052",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%83%A1%E3%83%AA%E3%83%8A%E3%83%BB%E3%83%AC%E3%83%86%E3%82%A3%E3%83%BC%E3%83%AD",
-          "name": "メリナ・レティーロ",
-          "href": "#extra-052"
-        },
-        {
-          "denko_id": "extra:064",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%83%AA%E3%82%BF%E3%83%BB%E3%83%9E%E3%83%89%E3%83%AA%E3%83%BC%E3%83%89",
-          "name": "リタ・マドリード",
-          "href": "#extra-064"
-        },
-        {
-          "denko_id": "extra:081",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%83%AD%E3%83%83%E3%82%B5%E3%83%BB%E3%83%AD%E3%83%BC%E3%83%9E",
-          "name": "ロッサ・ローマ",
-          "href": "#extra-081"
-        },
-        {
-          "denko_id": "extra:082",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%83%AB%E3%82%B8%E3%82%A7%E3%83%B3%E3%83%88%E3%83%BB%E3%83%AD%E3%83%BC%E3%83%9E",
-          "name": "ルジェント・ローマ",
-          "href": "#extra-082"
-        },
-        {
-          "denko_id": "extra:083",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%83%93%E3%82%A2%E3%83%B3%E3%82%AB%E3%83%BB%E3%83%AD%E3%83%BC%E3%83%9E",
-          "name": "ビアンカ・ローマ",
-          "href": "#extra-083"
-        },
-        {
-          "denko_id": "extra:103",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%A2%E3%82%A4%E3%83%A9%E3%83%BB%E3%83%92%E3%83%A5%E3%83%BC%E3%82%B9%E3%83%88%E3%83%B3",
-          "name": "アイラ・ヒューストン",
-          "href": "#extra-103"
-        },
-        {
-          "denko_id": "extra:106",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%83%9E%E3%83%AD%E3%83%B3%E3%83%BB%E3%83%9E%E3%83%AB%E3%83%86%E3%82%A3%E3%83%8B",
-          "name": "マロン・マルティニ",
-          "href": "#extra-106"
-        },
-        {
-          "denko_id": "extra:107",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%AC%E3%83%96%E3%83%AA%E3%82%A8%E3%83%A9%E3%83%BB%E3%82%A2%E3%83%B3%E3%83%88%E3%83%AF%E3%83%BC%E3%83%97",
-          "name": "ガブリエラ・アントワープ",
-          "href": "#extra-107"
-        },
-        {
-          "denko_id": "extra:119",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%A2%E3%83%8B%E3%82%AB%E3%83%BB%E3%82%BF%E3%83%AB%E3%83%88%E3%82%A5",
-          "name": "アニカ・タルトゥ",
-          "href": "#extra-119"
-        },
-        {
-          "denko_id": "extra:126",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%B3%E3%82%B3%E3%83%BB%E3%83%B4%E3%82%A7%E3%83%AB%E3%82%B5%E3%82%A4%E3%83%A6",
-          "name": "ココ・ヴェルサイユ",
-          "href": "#extra-126"
         }
       ],
       "旧メキシコ国鉄のうちの太平洋北部鉄道": [
@@ -2288,9 +2234,7 @@
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%83%A8%E3%83%B3%E3%82%B5%E3%83%B3%E3%83%BB%E3%82%BD%E3%82%A6",
           "name": "ヨンサン・ソウ",
           "href": "#extra-110"
-        }
-      ],
-      "韓国鉄道公社・空港鉄道": [
+        },
         {
           "denko_id": "extra:112",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%BD%E3%82%A6%E3%83%AB%E3%83%BB%E3%83%9E%E3%82%A6%E3%83%A0",
@@ -2322,6 +2266,22 @@
           "href": "#original-143"
         }
       ],
+      "キウイレール": [
+        {
+          "denko_id": "extra:086",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%A2%E3%83%93%E3%83%BC%E3%83%BB%E3%82%B9%E3%83%97%E3%83%AA%E3%83%B3%E3%82%B0%E3%83%95%E3%82%A3%E3%83%BC%E3%83%AB%E3%83%89",
+          "name": "アビー・スプリングフィールド",
+          "href": "#extra-086"
+        }
+      ],
+      "グランドキャニオン鉄道": [
+        {
+          "denko_id": "extra:023",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%83%99%E3%83%86%E3%82%A3%E3%83%BC%E3%83%BB%E3%82%A6%E3%82%A3%E3%83%AA%E3%82%A2%E3%83%A0%E3%82%B9",
+          "name": "ベティー・ウィリアムス",
+          "href": "#extra-023"
+        }
+      ],
       "グレート・ウェスタン鉄道": [
         {
           "denko_id": "extra:021",
@@ -2344,20 +2304,6 @@
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E9%98%BF%E4%B8%8B%E5%96%9C%E3%83%8B%E3%83%8A",
           "name": "阿下喜ニナ",
           "href": "#original-075"
-        },
-        {
-          "denko_id": "extra:008",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E9%98%BF%E4%B8%8B%E5%96%9C%E3%82%B1%E3%82%A4",
-          "name": "阿下喜ケイ",
-          "href": "#extra-008"
-        }
-      ],
-      "山陽電鉄": [
-        {
-          "denko_id": "original:139",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E8%8D%92%E4%BA%95%E3%81%BE%E3%82%84%E3%81%8B",
-          "name": "荒井まやか",
-          "href": "#original-139"
         }
       ],
       "三陸鉄道": [
@@ -2374,14 +2320,6 @@
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E8%B1%8A%E9%87%8E%E3%81%93%E3%81%AE%E3%81%AF",
           "name": "豊野このは",
           "href": "#original-155"
-        }
-      ],
-      "JR大村線・島原鉄道": [
-        {
-          "denko_id": "original:123",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E8%AB%AB%E6%97%A9%E3%81%A1%E3%81%A9%E3%82%8A",
-          "name": "諫早ちどり",
-          "href": "#original-123"
         }
       ],
       "島原鉄道": [
@@ -2486,12 +2424,6 @@
       ],
       "JR東海": [
         {
-          "denko_id": "original:003",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%96%B0%E9%98%AA%E3%83%AB%E3%83%8A",
-          "name": "新阪ルナ",
-          "href": "#original-003"
-        },
-        {
           "denko_id": "original:043",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E5%9D%82%E5%87%BA%E3%82%A2%E3%82%B5",
           "name": "坂出アサ",
@@ -2504,22 +2436,10 @@
           "href": "#original-112"
         },
         {
-          "denko_id": "original:124",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%A8%AA%E6%B5%9C%E3%81%BF%E3%81%A1%E3%82%8B",
-          "name": "横浜みちる",
-          "href": "#original-124"
-        },
-        {
           "denko_id": "original:132",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%9D%B1%E6%B5%B7%E3%81%AA%E3%81%AA",
           "name": "東海なな",
           "href": "#original-132"
-        },
-        {
-          "denko_id": "original:163",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E8%B1%8A%E6%A9%8B%E3%81%A1%E3%82%8F",
-          "name": "豊橋ちわ",
-          "href": "#original-163"
         },
         {
           "denko_id": "extra:004",
@@ -2606,12 +2526,6 @@
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E5%8D%83%E6%97%A6%E3%81%82%E3%81%9A%E3%81%95",
           "name": "千旦あずさ",
           "href": "#original-127"
-        },
-        {
-          "denko_id": "original:130",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E7%AB%B9%E5%8E%9F%E3%81%9B%E3%81%A8%E3%82%89",
-          "name": "竹原せとら",
-          "href": "#original-130"
         },
         {
           "denko_id": "original:133",
@@ -2760,18 +2674,6 @@
           "href": "#original-102"
         },
         {
-          "denko_id": "original:132",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%9D%B1%E6%B5%B7%E3%81%AA%E3%81%AA",
-          "name": "東海なな",
-          "href": "#original-132"
-        },
-        {
-          "denko_id": "original:142",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E5%8D%97%E5%B0%8F%E8%B0%B7%E3%82%8C%E3%82%93%E3%81%92",
-          "name": "南小谷れんげ",
-          "href": "#original-142"
-        },
-        {
           "denko_id": "original:146",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%A1%91%E5%B7%9D%E3%82%86%E3%81%86%E3%82%8A",
           "name": "桑川ゆうり",
@@ -2852,14 +2754,6 @@
           "href": "#original-044"
         }
       ],
-      "シベリア鉄道": [
-        {
-          "denko_id": "extra:037",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%83%8B%E3%83%BC%E3%82%AB%E3%83%BB%E3%83%A4%E3%83%AD%E3%82%B9%E3%83%A9%E3%83%95%E3%82%B9%E3%82%AD%E3%83%BC",
-          "name": "ニーカ・ヤロスラフスキー",
-          "href": "#extra-037"
-        }
-      ],
       "スイスMOB鉄道": [
         {
           "denko_id": "extra:104",
@@ -2874,14 +2768,6 @@
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%A8%BD%E8%A6%8B%E3%81%82%E3%82%86",
           "name": "樽見あゆ",
           "href": "#original-114"
-        }
-      ],
-      "タイエリ峡谷鉄道": [
-        {
-          "denko_id": "extra:085",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%A8%E3%83%AA%E3%83%BB%E3%83%80%E3%83%8B%E3%83%BC%E3%83%87%E3%83%B3",
-          "name": "エリ・ダニーデン",
-          "href": "#extra-085"
         }
       ],
       "ダニーデン鉄道": [
@@ -2900,24 +2786,48 @@
           "href": "#extra-032"
         }
       ],
-      "ドイツ鉄道": [
+      "チューリッヒ市交通局": [
         {
-          "denko_id": "original:006",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%B7%E3%83%A3%E3%83%AB%E3%83%AD%E3%83%83%E3%83%86%EF%BC%9D%E3%83%95%E3%82%A9%E3%83%B3%EF%BC%9D%E3%83%8F%E3%83%8E%E3%83%BC%E3%83%95%E3%82%A1%E3%83%BC",
-          "name": "シャルロッテ＝フォン＝ハノーファー",
-          "href": "#original-006"
-        },
+          "denko_id": "extra:105",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%83%9D%E3%83%A0%E3%83%BB%E3%83%99%E3%83%AB%E3%83%93%E3%83%A5%E3%83%BC",
+          "name": "ポム・ベルビュー",
+          "href": "#extra-105"
+        }
+      ],
+      "ドイツ鉄道": [
         {
           "denko_id": "extra:093",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%83%8B%E3%82%AF%E3%82%B7%E3%83%BC%E3%83%BB%E3%83%96%E3%83%AC%E3%83%BC%E3%83%9E%E3%83%BC%E3%83%95%E3%82%A7%E3%83%AB%E3%83%87",
           "name": "ニクシー・ブレーマーフェルデ",
           "href": "#extra-093"
+        }
+      ],
+      "ドバイメトロ": [
+        {
+          "denko_id": "extra:115",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%A2%E3%83%BC%E3%82%A4%E3%83%80%E3%83%BB%E3%83%96%E3%83%AB%E3%82%B8%E3%83%A5%E3%83%9E%E3%83%BC%E3%83%B3",
+          "name": "アーイダ・ブルジュマーン",
+          "href": "#extra-115"
+        }
+      ],
+      "ドバイ道路交通局": [
+        {
+          "denko_id": "extra:115",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%A2%E3%83%BC%E3%82%A4%E3%83%80%E3%83%BB%E3%83%96%E3%83%AB%E3%82%B8%E3%83%A5%E3%83%9E%E3%83%BC%E3%83%B3",
+          "name": "アーイダ・ブルジュマーン",
+          "href": "#extra-115"
         },
         {
-          "denko_id": "extra:095",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%AF%E3%83%A9%E3%83%A9%E3%83%BB%E3%83%B4%E3%83%83%E3%83%91%E3%83%BC%E3%83%95%E3%82%A7%E3%83%AB%E3%83%88",
-          "name": "クララ・ヴッパーフェルト",
-          "href": "#extra-095"
+          "denko_id": "extra:116",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%AE%E3%83%8A%E3%83%BC%E3%83%BB%E3%82%B8%E3%83%A5%E3%83%A1%E3%82%A4%E3%83%A9",
+          "name": "ギナー・ジュメイラ",
+          "href": "#extra-116"
+        },
+        {
+          "denko_id": "extra:117",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%B8%E3%83%A5%E3%83%9E%E3%83%BC%E3%83%8A%E3%83%BB%E3%82%A2%E3%83%88%E3%83%A9%E3%83%B3%E3%83%86%E3%82%A3%E3%82%B9",
+          "name": "ジュマーナ・アトランティス",
+          "href": "#extra-117"
         }
       ],
       "長良川鉄道": [
@@ -2936,20 +2846,18 @@
           "href": "#original-008"
         }
       ],
-      "JR常磐線・ひたちなか海浜鉄道": [
-        {
-          "denko_id": "original:131",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E5%8B%9D%E7%94%B0%E3%83%9F%E3%82%AD",
-          "name": "勝田ミキ",
-          "href": "#original-131"
-        }
-      ],
       "ひたちなか海浜鉄道": [
         {
           "denko_id": "original:080",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E9%82%A3%E7%8F%82%E6%B9%8A%E3%81%AD%E3%82%82",
           "name": "那珂湊ねも",
           "href": "#original-080"
+        },
+        {
+          "denko_id": "original:131",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E5%8B%9D%E7%94%B0%E3%83%9F%E3%82%AD",
+          "name": "勝田ミキ",
+          "href": "#original-131"
         }
       ],
       "広島電鉄": [
@@ -3004,6 +2912,14 @@
           "href": "#extra-034"
         }
       ],
+      "バンコク・スカイトレイン": [
+        {
+          "denko_id": "extra:074",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%B9%E3%83%AF%E3%82%A4%E3%83%BB%E3%82%B5%E3%82%A4%E3%82%A2%E3%83%A0",
+          "name": "スワイ・サイアム",
+          "href": "#extra-074"
+        }
+      ],
       "パッフィンビリー鉄道": [
         {
           "denko_id": "extra:035",
@@ -3036,15 +2952,7 @@
           "href": "#extra-051"
         }
       ],
-      "JR佐世保線・松浦鉄道": [
-        {
-          "denko_id": "original:150",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%9C%89%E7%94%B0%E3%81%84%E3%81%BE%E3%82%8A",
-          "name": "有田いまり",
-          "href": "#original-150"
-        }
-      ],
-      "JR筑肥線・松浦鉄道": [
+      "松浦鉄道": [
         {
           "denko_id": "original:150",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%9C%89%E7%94%B0%E3%81%84%E3%81%BE%E3%82%8A",
@@ -3084,6 +2992,14 @@
           "href": "#original-095"
         }
       ],
+      "リガ交通局": [
+        {
+          "denko_id": "extra:118",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%83%AA%E3%83%BC%E3%82%AC%E3%83%BB%E3%82%A4%E3%83%9E%E3%83%B3%E3%82%BF",
+          "name": "リーガ・イマンタ",
+          "href": "#extra-118"
+        }
+      ],
       "リトアニア鉄道": [
         {
           "denko_id": "extra:120",
@@ -3116,12 +3032,28 @@
           "href": "#extra-092"
         }
       ],
-      "三木鉄道": [
+      "ヴィトーリア・ミナス鉄道": [
         {
-          "denko_id": "original:131",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E5%8B%9D%E7%94%B0%E3%83%9F%E3%82%AD",
-          "name": "勝田ミキ",
-          "href": "#original-131"
+          "denko_id": "extra:050",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%83%AB%E3%82%A4%E3%82%B6%E3%83%BB%E3%83%99%E3%83%AD%E3%83%BB%E3%82%AA%E3%83%AA%E3%82%BE%E3%83%B3%E3%83%86",
+          "name": "ルイザ・ベロ・オリゾンテ",
+          "href": "#extra-050"
+        }
+      ],
+      "ヴェルデ・キャニオン鉄道": [
+        {
+          "denko_id": "extra:121",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%B3%E3%83%8B%E3%83%BC%E3%83%BB%E3%82%AF%E3%83%A9%E3%83%BC%E3%82%AF%E3%83%87%E3%83%BC%E3%83%AB",
+          "name": "コニー・クラークデール",
+          "href": "#extra-121"
+        }
+      ],
+      "ヴッパータール空中鉄道": [
+        {
+          "denko_id": "extra:095",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%AF%E3%83%A9%E3%83%A9%E3%83%BB%E3%83%B4%E3%83%83%E3%83%91%E3%83%BC%E3%83%95%E3%82%A7%E3%83%AB%E3%83%88",
+          "name": "クララ・ヴッパーフェルト",
+          "href": "#extra-095"
         }
       ],
       "上田電鉄": [
@@ -3140,26 +3072,12 @@
           "href": "#original-012"
         }
       ],
-      "京福電鉄": [
+      "仙台市交通局": [
         {
-          "denko_id": "original:012",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%9C%89%E6%A0%96%E5%B7%9D%E3%82%82%E3%81%BC",
-          "name": "有栖川もぼ",
-          "href": "#original-012"
-        },
-        {
-          "denko_id": "original:059",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E5%B5%AF%E5%B3%A8%E9%87%8E%E3%82%82%E3%81%BF%E3%81%98",
-          "name": "嵯峨野もみじ",
-          "href": "#original-059"
-        }
-      ],
-      "元ネタの豊橋鉄道": [
-        {
-          "denko_id": "original:154",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%9D%B1%E7%94%B0%E5%9D%82%E4%B8%8A%E3%81%BB%E3%81%AA%E3%81%BF",
-          "name": "東田坂上ほなみ",
-          "href": "#original-154"
+          "denko_id": "original:139",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E8%8D%92%E4%BA%95%E3%81%BE%E3%82%84%E3%81%8B",
+          "name": "荒井まやか",
+          "href": "#original-139"
         }
       ],
       "北勢鉄道": [
@@ -3168,14 +3086,6 @@
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E9%98%BF%E4%B8%8B%E5%96%9C%E3%82%B1%E3%82%A4",
           "name": "阿下喜ケイ",
           "href": "#extra-008"
-        }
-      ],
-      "北近畿タンゴ鉄道": [
-        {
-          "denko_id": "original:136",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E4%BD%86%E9%A6%AC%E3%81%B2%E3%82%87%E3%81%86%E3%81%93",
-          "name": "但馬ひょうこ",
-          "href": "#original-136"
         }
       ],
       "南アフリカの旅客鉄道": [
@@ -3194,6 +3104,14 @@
           "href": "#extra-069"
         }
       ],
+      "名古屋市交通局": [
+        {
+          "denko_id": "original:104",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E7%A0%82%E7%94%B0%E6%A9%8B%E3%81%82%E3%81%8D%E3%82%89",
+          "name": "砂田橋あきら",
+          "href": "#original-104"
+        }
+      ],
       "国内最大の鉄道": [
         {
           "denko_id": "extra:072",
@@ -3202,12 +3120,12 @@
           "href": "#extra-072"
         }
       ],
-      "大阪の阪急電鉄": [
+      "大阪市交通局": [
         {
-          "denko_id": "original:074",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E4%B8%AD%E6%B4%A5%E3%82%B3%E3%83%A8%E3%82%A4",
-          "name": "中津コヨイ",
-          "href": "#original-074"
+          "denko_id": "original:022",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E5%B7%BD%E3%83%AC%E3%83%B3",
+          "name": "巽レン",
+          "href": "#original-022"
         }
       ],
       "富士山麓鉄道": [
@@ -3226,20 +3144,32 @@
           "href": "#extra-018"
         }
       ],
-      "愛知環状鉄道": [
+      "札幌市交通局": [
         {
-          "denko_id": "original:140",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E5%B1%B1%E5%8F%A3%E3%82%86%E3%81%A5%E3%82%8B",
-          "name": "山口ゆづる",
-          "href": "#original-140"
+          "denko_id": "original:162",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E7%A6%8F%E4%BD%8F%E3%81%BF%E3%81%9E%E3%82%8C",
+          "name": "福住みぞれ",
+          "href": "#original-162"
+        },
+        {
+          "denko_id": "extra:113",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E5%8C%97%E4%B9%83%E3%81%95%E3%81%95%E3%82%89",
+          "name": "北乃ささら",
+          "href": "#extra-113"
         }
       ],
-      "東急東横線・横浜高速鉄道": [
+      "東京都交通局": [
         {
-          "denko_id": "original:124",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%A8%AA%E6%B5%9C%E3%81%BF%E3%81%A1%E3%82%8B",
-          "name": "横浜みちる",
-          "href": "#original-124"
+          "denko_id": "original:149",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%97%A5%E6%9A%AE%E9%87%8C%E3%83%8F%E3%83%AB%E3%82%AB%E3%82%BC",
+          "name": "日暮里ハルカゼ",
+          "href": "#original-149"
+        },
+        {
+          "denko_id": "extra:014",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%B1%90%E7%95%99%E3%81%84%E3%81%A1%E3%81%94",
+          "name": "汐留いちご",
+          "href": "#extra-014"
         }
       ],
       "松本電鉄": [
@@ -3250,12 +3180,12 @@
           "href": "#original-094"
         }
       ],
-      "森と水とロマンの鉄道": [
+      "横浜高速鉄道": [
         {
-          "denko_id": "original:158",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E4%BC%9A%E6%B4%A5%E3%81%82%E3%82%84%E3%81%8B",
-          "name": "会津あやか",
-          "href": "#original-158"
+          "denko_id": "original:124",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%A8%AA%E6%B5%9C%E3%81%BF%E3%81%A1%E3%82%8B",
+          "name": "横浜みちる",
+          "href": "#original-124"
         }
       ],
       "水西高速鉄道": [
@@ -3264,6 +3194,20 @@
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%83%88%E3%83%B3%E3%82%BF%E3%83%B3%E3%83%BB%E3%83%81%E3%82%A7%E3%83%AA%E3%83%B3",
           "name": "トンタン・チェリン",
           "href": "#extra-111"
+        }
+      ],
+      "神戸市交通局": [
+        {
+          "denko_id": "original:107",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E9%A7%92%E3%83%B6%E6%9E%97%E3%82%B7%E3%82%AD%E3%83%8D",
+          "name": "駒ヶ林シキネ",
+          "href": "#original-107"
+        },
+        {
+          "denko_id": "original:161",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E4%BC%8A%E5%B7%9D%E8%B0%B7%E3%81%95%E3%81%A8%E3%82%8A",
+          "name": "伊川谷さとり",
+          "href": "#original-161"
         }
       ],
       "秦皇島山海観光鉄道": [
@@ -3282,6 +3226,14 @@
           "href": "#original-109"
         }
       ],
+      "豊橋鉄道": [
+        {
+          "denko_id": "original:154",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%9D%B1%E7%94%B0%E5%9D%82%E4%B8%8A%E3%81%BB%E3%81%AA%E3%81%BF",
+          "name": "東田坂上ほなみ",
+          "href": "#original-154"
+        }
+      ],
       "車両はベルリンの鉄道": [
         {
           "denko_id": "extra:094",
@@ -3290,12 +3242,12 @@
           "href": "#extra-094"
         }
       ],
-      "車両を運行しているツアー鉄道": [
+      "軽便鉄道": [
         {
-          "denko_id": "extra:092",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%A2%E3%83%AA%E3%82%A2%E3%83%8A%E3%83%BB%E3%82%B8%E3%83%A3%E3%82%B9%E3%83%91%E3%83%BC",
-          "name": "アリアナ・ジャスパー",
-          "href": "#extra-092"
+          "denko_id": "extra:008",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E9%98%BF%E4%B8%8B%E5%96%9C%E3%82%B1%E3%82%A4",
+          "name": "阿下喜ケイ",
+          "href": "#extra-008"
         }
       ],
       "軽電鉄": [
@@ -3306,28 +3258,12 @@
           "href": "#extra-077"
         }
       ],
-      "道南いさりび鉄道": [
-        {
-          "denko_id": "original:044",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%9C%A8%E5%8F%A4%E5%86%85%E3%81%95%E3%81%84%E3%81%8B",
-          "name": "木古内さいか",
-          "href": "#original-044"
-        }
-      ],
       "野岩鉄道": [
         {
           "denko_id": "original:120",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%96%B0%E8%97%A4%E5%8E%9F%E3%81%BC%E3%81%9F%E3%82%93",
           "name": "新藤原ぼたん",
           "href": "#original-120"
-        }
-      ],
-      "阿下喜駅の軽便鉄道": [
-        {
-          "denko_id": "extra:008",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E9%98%BF%E4%B8%8B%E5%96%9C%E3%82%B1%E3%82%A4",
-          "name": "阿下喜ケイ",
-          "href": "#extra-008"
         }
       ],
       "阿佐海岸鉄道": [
@@ -3338,12 +3274,12 @@
           "href": "#original-078"
         }
       ],
-      "高架鉄道": [
+      "鹿児島市交通局": [
         {
-          "denko_id": "extra:074",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%B9%E3%83%AF%E3%82%A4%E3%83%BB%E3%82%B5%E3%82%A4%E3%82%A2%E3%83%A0",
-          "name": "スワイ・サイアム",
-          "href": "#extra-074"
+          "denko_id": "original:081",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E9%83%A1%E5%85%83%E3%82%86%E3%81%86",
+          "name": "郡元ゆう",
+          "href": "#original-081"
         }
       ],
       "黒部峡谷鉄道": [
@@ -3352,38 +3288,6 @@
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E9%BB%92%E9%83%A8%E3%82%8B%E3%81%84",
           "name": "黒部るい",
           "href": "#extra-017"
-        }
-      ],
-      "ヴィトーリア・ミナス鉄道": [
-        {
-          "denko_id": "extra:050",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%83%AB%E3%82%A4%E3%82%B6%E3%83%BB%E3%83%99%E3%83%AD%E3%83%BB%E3%82%AA%E3%83%AA%E3%82%BE%E3%83%B3%E3%83%86",
-          "name": "ルイザ・ベロ・オリゾンテ",
-          "href": "#extra-050"
-        }
-      ],
-      "ヴィリニュス鉄道": [
-        {
-          "denko_id": "extra:120",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%83%9E%E3%83%AB%E3%83%86%E3%82%A3%E3%83%8A%E3%83%BB%E3%83%B4%E3%82%A3%E3%83%AA%E3%83%8B%E3%83%A5%E3%82%B9",
-          "name": "マルティナ・ヴィリニュス",
-          "href": "#extra-120"
-        }
-      ],
-      "ヴェルデ・キャニオン鉄道": [
-        {
-          "denko_id": "extra:121",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%B3%E3%83%8B%E3%83%BC%E3%83%BB%E3%82%AF%E3%83%A9%E3%83%BC%E3%82%AF%E3%83%87%E3%83%BC%E3%83%AB",
-          "name": "コニー・クラークデール",
-          "href": "#extra-121"
-        }
-      ],
-      "ヴッパータール空中鉄道": [
-        {
-          "denko_id": "extra:095",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%AF%E3%83%A9%E3%83%A9%E3%83%BB%E3%83%B4%E3%83%83%E3%83%91%E3%83%BC%E3%83%95%E3%82%A7%E3%83%AB%E3%83%88",
-          "name": "クララ・ヴッパーフェルト",
-          "href": "#extra-095"
         }
       ]
     },
@@ -3446,14 +3350,6 @@
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%A2%E3%83%BC%E3%82%A4%E3%83%80%E3%83%BB%E3%83%96%E3%83%AB%E3%82%B8%E3%83%A5%E3%83%9E%E3%83%BC%E3%83%B3",
           "name": "アーイダ・ブルジュマーン",
           "href": "#extra-115"
-        }
-      ],
-      "アメリカ・グランドキャニオン鉄道": [
-        {
-          "denko_id": "extra:023",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%83%99%E3%83%86%E3%82%A3%E3%83%BC%E3%83%BB%E3%82%A6%E3%82%A3%E3%83%AA%E3%82%A2%E3%83%A0%E3%82%B9",
-          "name": "ベティー・ウィリアムス",
-          "href": "#extra-023"
         }
       ],
       "アラスカ鉄道": [
@@ -3581,14 +3477,6 @@
         }
       ],
       "しなの鉄道": [
-        {
-          "denko_id": "original:155",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E8%B1%8A%E9%87%8E%E3%81%93%E3%81%AE%E3%81%AF",
-          "name": "豊野このは",
-          "href": "#original-155"
-        }
-      ],
-      "しなの鉄道北しなの線・JR飯山線": [
         {
           "denko_id": "original:155",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E8%B1%8A%E9%87%8E%E3%81%93%E3%81%AE%E3%81%AF",
@@ -3792,14 +3680,6 @@
           "href": "#extra-089"
         }
       ],
-      "ハワイ鉄道協会の路線": [
-        {
-          "denko_id": "extra:089",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%83%AA%E3%83%AD%E3%83%BB%E3%82%B3%E3%82%AA%E3%83%AA%E3%83%8A",
-          "name": "リロ・コオリナ",
-          "href": "#extra-089"
-        }
-      ],
       "バイロンベイ鉄道": [
         {
           "denko_id": "extra:034",
@@ -3950,6 +3830,54 @@
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%A2%E3%83%AA%E3%82%A2%E3%83%8A%E3%83%BB%E3%82%B8%E3%83%A3%E3%82%B9%E3%83%91%E3%83%BC",
           "name": "アリアナ・ジャスパー",
           "href": "#extra-092"
+        }
+      ],
+      "9号線": [
+        {
+          "denko_id": "extra:076",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%83%89%E3%82%A5%E3%83%AB%E3%82%BB%E3%83%BB%E3%82%BF%E3%82%AF%E3%83%90%E3%83%A4",
+          "name": "ドゥルセ・タクバヤ",
+          "href": "#extra-076"
+        }
+      ],
+      "ヴィトーリア・ミナス鉄道": [
+        {
+          "denko_id": "extra:050",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%83%AB%E3%82%A4%E3%82%B6%E3%83%BB%E3%83%99%E3%83%AD%E3%83%BB%E3%82%AA%E3%83%AA%E3%82%BE%E3%83%B3%E3%83%86",
+          "name": "ルイザ・ベロ・オリゾンテ",
+          "href": "#extra-050"
+        }
+      ],
+      "ヴィリニュス鉄道": [
+        {
+          "denko_id": "extra:120",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%83%9E%E3%83%AB%E3%83%86%E3%82%A3%E3%83%8A%E3%83%BB%E3%83%B4%E3%82%A3%E3%83%AA%E3%83%8B%E3%83%A5%E3%82%B9",
+          "name": "マルティナ・ヴィリニュス",
+          "href": "#extra-120"
+        }
+      ],
+      "ヴェルデ・キャニオン鉄道": [
+        {
+          "denko_id": "extra:121",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%B3%E3%83%8B%E3%83%BC%E3%83%BB%E3%82%AF%E3%83%A9%E3%83%BC%E3%82%AF%E3%83%87%E3%83%BC%E3%83%AB",
+          "name": "コニー・クラークデール",
+          "href": "#extra-121"
+        }
+      ],
+      "ヴッパータール空中鉄道": [
+        {
+          "denko_id": "extra:095",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%AF%E3%83%A9%E3%83%A9%E3%83%BB%E3%83%B4%E3%83%83%E3%83%91%E3%83%BC%E3%83%95%E3%82%A7%E3%83%AB%E3%83%88",
+          "name": "クララ・ヴッパーフェルト",
+          "href": "#extra-095"
+        }
+      ],
+      "（JR東海道本線(東京～熱海)）": [
+        {
+          "denko_id": "original:020",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E4%B8%B8%E5%9C%B0%E3%81%AB%E3%81%93%E3%82%8D",
+          "name": "丸地にころ",
+          "href": "#original-020"
         }
       ],
       "一畑電車北松江線": [
@@ -5058,14 +4986,6 @@
           "href": "#extra-018"
         }
       ],
-      "路線": [
-        {
-          "denko_id": "extra:024",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%A2%E3%83%A1%E3%83%AA%E3%82%A2%E3%83%BB%E3%83%91%E3%82%A6%E3%82%A8%E3%83%AB",
-          "name": "アメリア・パウエル",
-          "href": "#extra-024"
-        }
-      ],
       "車両はベルリンの鉄道": [
         {
           "denko_id": "extra:094",
@@ -5322,14 +5242,6 @@
           "href": "#extra-094"
         }
       ],
-      "高架鉄道": [
-        {
-          "denko_id": "extra:074",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%B9%E3%83%AF%E3%82%A4%E3%83%BB%E3%82%B5%E3%82%A4%E3%82%A2%E3%83%A0",
-          "name": "スワイ・サイアム",
-          "href": "#extra-074"
-        }
-      ],
       "鹿児島市電１系統": [
         {
           "denko_id": "original:081",
@@ -5352,54 +5264,6 @@
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E9%BB%92%E9%83%A8%E3%82%8B%E3%81%84",
           "name": "黒部るい",
           "href": "#extra-017"
-        }
-      ],
-      "9号線": [
-        {
-          "denko_id": "extra:076",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%83%89%E3%82%A5%E3%83%AB%E3%82%BB%E3%83%BB%E3%82%BF%E3%82%AF%E3%83%90%E3%83%A4",
-          "name": "ドゥルセ・タクバヤ",
-          "href": "#extra-076"
-        }
-      ],
-      "ヴィトーリア・ミナス鉄道": [
-        {
-          "denko_id": "extra:050",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%83%AB%E3%82%A4%E3%82%B6%E3%83%BB%E3%83%99%E3%83%AD%E3%83%BB%E3%82%AA%E3%83%AA%E3%82%BE%E3%83%B3%E3%83%86",
-          "name": "ルイザ・ベロ・オリゾンテ",
-          "href": "#extra-050"
-        }
-      ],
-      "ヴィリニュス鉄道": [
-        {
-          "denko_id": "extra:120",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%83%9E%E3%83%AB%E3%83%86%E3%82%A3%E3%83%8A%E3%83%BB%E3%83%B4%E3%82%A3%E3%83%AA%E3%83%8B%E3%83%A5%E3%82%B9",
-          "name": "マルティナ・ヴィリニュス",
-          "href": "#extra-120"
-        }
-      ],
-      "ヴェルデ・キャニオン鉄道": [
-        {
-          "denko_id": "extra:121",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%B3%E3%83%8B%E3%83%BC%E3%83%BB%E3%82%AF%E3%83%A9%E3%83%BC%E3%82%AF%E3%83%87%E3%83%BC%E3%83%AB",
-          "name": "コニー・クラークデール",
-          "href": "#extra-121"
-        }
-      ],
-      "ヴッパータール空中鉄道": [
-        {
-          "denko_id": "extra:095",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%AF%E3%83%A9%E3%83%A9%E3%83%BB%E3%83%B4%E3%83%83%E3%83%91%E3%83%BC%E3%83%95%E3%82%A7%E3%83%AB%E3%83%88",
-          "name": "クララ・ヴッパーフェルト",
-          "href": "#extra-095"
-        }
-      ],
-      "（JR東海道本線(東京～熱海)）": [
-        {
-          "denko_id": "original:020",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E4%B8%B8%E5%9C%B0%E3%81%AB%E3%81%93%E3%82%8D",
-          "name": "丸地にころ",
-          "href": "#original-020"
         }
       ],
       "A線": [
@@ -6094,14 +5958,6 @@
           "href": "#original-146"
         }
       ],
-      "JR西日本の線": [
-        {
-          "denko_id": "extra:006",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%83%81%E3%82%A7%E3%83%AB%E3%83%BB%E3%82%AB%E3%83%BC%E3%83%AC",
-          "name": "チェル・カーレ",
-          "href": "#extra-006"
-        }
-      ],
       "JR越後線": [
         {
           "denko_id": "original:011",
@@ -6252,38 +6108,6 @@
       ]
     },
     "by_voice_actor": {
-      "ブリドカットセーラ恵美": [
-        {
-          "denko_id": "original:001",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E9%BB%84%E9%99%BD%E3%82%BB%E3%83%AA%E3%82%A2",
-          "name": "黄陽セリア",
-          "href": "#original-001"
-        }
-      ],
-      "三上枝織": [
-        {
-          "denko_id": "original:078",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%B5%B7%E9%83%A8%E3%81%AA%E3%82%8B",
-          "name": "海部なる",
-          "href": "#original-078"
-        }
-      ],
-      "中村カンナ": [
-        {
-          "denko_id": "original:014",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E7%BE%8E%E6%B7%B1%E3%81%B5%E3%81%B6",
-          "name": "美深ふぶ",
-          "href": "#original-014"
-        }
-      ],
-      "伊藤ゆいな": [
-        {
-          "denko_id": "original:044",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%9C%A8%E5%8F%A4%E5%86%85%E3%81%95%E3%81%84%E3%81%8B",
-          "name": "木古内さいか",
-          "href": "#original-044"
-        }
-      ],
       "会沢紗弥": [
         {
           "denko_id": "original:002",
@@ -6292,36 +6116,28 @@
           "href": "#original-002"
         }
       ],
-      "佐々木未来": [
+      "青山なぎさ": [
         {
-          "denko_id": "original:058",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E5%A6%B9%E5%B0%BE%E3%81%BE%E3%82%8A%E3%81%8B",
-          "name": "妹尾まりか",
-          "href": "#original-058"
+          "denko_id": "original:061",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%B7%B1%E9%81%8A%E3%81%A1%E3%81%A8%E3%81%9B",
+          "name": "深遊ちとせ",
+          "href": "#original-061"
         }
       ],
-      "内田秀": [
+      "赤尾ひかる": [
         {
-          "denko_id": "original:132",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%9D%B1%E6%B5%B7%E3%81%AA%E3%81%AA",
-          "name": "東海なな",
-          "href": "#original-132"
+          "denko_id": "original:031",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%96%B0%E5%B1%85%E6%B5%9C%E3%81%82%E3%82%8A%E3%81%99",
+          "name": "新居浜ありす",
+          "href": "#original-031"
         }
       ],
-      "前田佳織里": [
+      "荒井麻那": [
         {
-          "denko_id": "original:009",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E8%8A%B1%E7%95%91%E3%82%82%E3%81%88",
-          "name": "花畑もえ",
-          "href": "#original-009"
-        }
-      ],
-      "吉武千颯": [
-        {
-          "denko_id": "original:047",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E4%B8%89%E6%9D%A1%E3%81%AA%E3%81%A4%E3%82%81",
-          "name": "三条なつめ",
-          "href": "#original-047"
+          "denko_id": "original:016",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%83%8B%E3%83%A3%E3%83%83%E3%82%B7%E3%83%A5",
+          "name": "ニャッシュ",
+          "href": "#original-016"
         }
       ],
       "和泉風花": [
@@ -6332,12 +6148,28 @@
           "href": "#original-054"
         }
       ],
-      "坂倉花": [
+      "礒部花凜": [
         {
-          "denko_id": "original:026",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%96%B0%E7%99%BE%E5%90%88%E3%81%BB%E3%81%93%E3%81%AD",
-          "name": "新百合ほこね",
-          "href": "#original-026"
+          "denko_id": "original:086",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E8%93%AE%E5%8F%B0%E5%AF%BA%E3%83%9F%E3%83%8A%E3%83%88",
+          "name": "蓮台寺ミナト",
+          "href": "#original-086"
+        }
+      ],
+      "伊藤ゆいな": [
+        {
+          "denko_id": "original:044",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%9C%A8%E5%8F%A4%E5%86%85%E3%81%95%E3%81%84%E3%81%8B",
+          "name": "木古内さいか",
+          "href": "#original-044"
+        }
+      ],
+      "内田秀": [
+        {
+          "denko_id": "original:132",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%9D%B1%E6%B5%B7%E3%81%AA%E3%81%AA",
+          "name": "東海なな",
+          "href": "#original-132"
         }
       ],
       "大坪由佳": [
@@ -6348,20 +6180,36 @@
           "href": "#original-082"
         }
       ],
-      "富田美憂": [
+      "荻野葉月": [
         {
-          "denko_id": "original:010",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E8%B1%A1%E6%BD%9F%E3%81%84%E3%82%8D%E3%81%AF",
-          "name": "象潟いろは",
-          "href": "#original-010"
+          "denko_id": "original:048",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E5%B0%8F%E9%B3%A5%E8%B0%B7%E3%82%B9%E3%83%94%E3%82%AB",
+          "name": "小鳥谷スピカ",
+          "href": "#original-048"
         }
       ],
-      "小岩井ことり": [
+      "茅野愛衣": [
         {
-          "denko_id": "original:029",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E4%BD%9C%E8%8D%89%E9%83%A8%E3%83%81%E3%82%B3",
-          "name": "作草部チコ",
-          "href": "#original-029"
+          "denko_id": "original:092",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E8%AB%B8%E6%98%9F%E3%81%99%E3%81%B0%E3%82%8B",
+          "name": "諸星すばる",
+          "href": "#original-092"
+        }
+      ],
+      "河実里夏": [
+        {
+          "denko_id": "original:013",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%96%B0%E5%B1%85%E6%B5%9C%E3%81%84%E3%81%9A%E3%81%AA",
+          "name": "新居浜いずな",
+          "href": "#original-013"
+        }
+      ],
+      "黒木ほの香": [
+        {
+          "denko_id": "original:021",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E7%8E%8B%E5%AD%90%E3%81%97%E3%81%90%E3%82%8C",
+          "name": "王子しぐれ",
+          "href": "#original-021"
         }
       ],
       "小泉萌香": [
@@ -6372,84 +6220,36 @@
           "href": "#original-036"
         }
       ],
-      "山本彩乃": [
+      "小岩井ことり": [
         {
-          "denko_id": "original:077",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%83%AA%E3%83%88%3D%E3%83%95%E3%82%A9%E3%83%B3%3D%E3%82%B7%E3%83%A5%E3%83%88%E3%82%A5%E3%83%83%E3%83%88%E3%82%AC%E3%83%AB%E3%83%88",
-          "name": "リト=フォン=シュトゥットガルト",
-          "href": "#original-077"
+          "denko_id": "original:029",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E4%BD%9C%E8%8D%89%E9%83%A8%E3%83%81%E3%82%B3",
+          "name": "作草部チコ",
+          "href": "#original-029"
         }
       ],
-      "山田麻莉奈": [
+      "香里有佐": [
         {
-          "denko_id": "original:011",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E7%B2%9F%E7%94%9F%E6%B4%A5%E3%81%97%E3%81%84%E3%82%89",
-          "name": "粟生津しいら",
-          "href": "#original-011"
+          "denko_id": "original:003",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%96%B0%E9%98%AA%E3%83%AB%E3%83%8A",
+          "name": "新阪ルナ",
+          "href": "#original-003"
         }
       ],
-      "徳井青空": [
+      "坂倉花": [
         {
-          "denko_id": "original:069",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E7%BE%BD%E8%B2%AB%E3%83%9F%E3%83%A6",
-          "name": "羽貫ミユ",
-          "href": "#original-069"
+          "denko_id": "original:026",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%96%B0%E7%99%BE%E5%90%88%E3%81%BB%E3%81%93%E3%81%AD",
+          "name": "新百合ほこね",
+          "href": "#original-026"
         }
       ],
-      "日向未南": [
+      "佐々木未来": [
         {
-          "denko_id": "original:008",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E5%A4%A9%E4%B8%8B%E3%81%95%E3%82%84",
-          "name": "天下さや",
-          "href": "#original-008"
-        }
-      ],
-      "星守紗凪": [
-        {
-          "denko_id": "original:020",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E4%B8%B8%E5%9C%B0%E3%81%AB%E3%81%93%E3%82%8D",
-          "name": "丸地にころ",
-          "href": "#original-020"
-        }
-      ],
-      "月城日花": [
-        {
-          "denko_id": "original:098",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%96%B0%E9%B6%B4%E3%81%BE%E3%81%B5%E3%82%86",
-          "name": "新鶴まふゆ",
-          "href": "#original-098"
-        }
-      ],
-      "松井恵理子": [
-        {
-          "denko_id": "original:028",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E4%BA%AC%E6%A9%8B%E3%83%AA%E3%82%AA%E3%83%8A",
-          "name": "京橋リオナ",
-          "href": "#original-028"
-        }
-      ],
-      "林鼓子": [
-        {
-          "denko_id": "original:064",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E8%A7%92%E9%A4%A8%E3%81%82%E3%81%91%E3%81%B2",
-          "name": "角館あけひ",
-          "href": "#original-064"
-        }
-      ],
-      "柳原かなこ": [
-        {
-          "denko_id": "original:004",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%81%8B%E6%B5%9C%E3%81%BF%E3%82%8D%E3%81%8F",
-          "name": "恋浜みろく",
-          "href": "#original-004"
-        }
-      ],
-      "水野朔": [
-        {
-          "denko_id": "original:115",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E8%AA%BF%E5%B8%83%E3%81%BF%E3%81%9A%E3%81%8B",
-          "name": "調布みずか",
-          "href": "#original-115"
+          "denko_id": "original:058",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E5%A6%B9%E5%B0%BE%E3%81%BE%E3%82%8A%E3%81%8B",
+          "name": "妹尾まりか",
+          "href": "#original-058"
         }
       ],
       "汐入あすか": [
@@ -6460,12 +6260,52 @@
           "href": "#original-062"
         }
       ],
-      "河実里夏": [
+      "白城なお": [
         {
-          "denko_id": "original:013",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%96%B0%E5%B1%85%E6%B5%9C%E3%81%84%E3%81%9A%E3%81%AA",
-          "name": "新居浜いずな",
-          "href": "#original-013"
+          "denko_id": "original:039",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E5%B0%BA%E5%9C%9F%E3%82%8B%E3%82%8B",
+          "name": "尺土るる",
+          "href": "#original-039"
+        }
+      ],
+      "進藤あまね": [
+        {
+          "denko_id": "original:099",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%8C%87%E5%AE%BF%E3%81%8A%E3%81%A8%E3%82%81",
+          "name": "指宿おとめ",
+          "href": "#original-099"
+        }
+      ],
+      "直田姫奈": [
+        {
+          "denko_id": "original:085",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E5%93%81%E5%B7%9D%E3%82%81%E3%81%90%E3%82%8B",
+          "name": "品川めぐる",
+          "href": "#original-085"
+        }
+      ],
+      "鈴代紗弓": [
+        {
+          "denko_id": "original:005",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E9%BB%84%E9%99%BD%E3%83%AC%E3%82%A4%E3%82%AB",
+          "name": "黄陽レイカ",
+          "href": "#original-005"
+        }
+      ],
+      "関根明良": [
+        {
+          "denko_id": "original:096",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E8%8D%BB%E7%AA%AA%E3%82%A2%E3%83%A4",
+          "name": "荻窪アヤ",
+          "href": "#original-096"
+        }
+      ],
+      "立花理香": [
+        {
+          "denko_id": "original:030",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E5%85%AB%E9%9B%B2%E3%83%AC%E3%83%BC%E3%83%8E",
+          "name": "八雲レーノ",
+          "href": "#original-030"
         }
       ],
       "田中ちえ美": [
@@ -6484,36 +6324,12 @@
           "href": "#original-017"
         }
       ],
-      "白城なお": [
+      "月城日花": [
         {
-          "denko_id": "original:039",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E5%B0%BA%E5%9C%9F%E3%82%8B%E3%82%8B",
-          "name": "尺土るる",
-          "href": "#original-039"
-        }
-      ],
-      "直田姫奈": [
-        {
-          "denko_id": "original:085",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E5%93%81%E5%B7%9D%E3%82%81%E3%81%90%E3%82%8B",
-          "name": "品川めぐる",
-          "href": "#original-085"
-        }
-      ],
-      "礒部花凜": [
-        {
-          "denko_id": "original:086",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E8%93%AE%E5%8F%B0%E5%AF%BA%E3%83%9F%E3%83%8A%E3%83%88",
-          "name": "蓮台寺ミナト",
-          "href": "#original-086"
-        }
-      ],
-      "立花理香": [
-        {
-          "denko_id": "original:030",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E5%85%AB%E9%9B%B2%E3%83%AC%E3%83%BC%E3%83%8E",
-          "name": "八雲レーノ",
-          "href": "#original-030"
+          "denko_id": "original:098",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%96%B0%E9%B6%B4%E3%81%BE%E3%81%B5%E3%82%86",
+          "name": "新鶴まふゆ",
+          "href": "#original-098"
         }
       ],
       "紡木吏佐": [
@@ -6524,76 +6340,28 @@
           "href": "#original-057"
         }
       ],
-      "船戸ゆり絵": [
+      "徳井青空": [
         {
-          "denko_id": "original:104",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E7%A0%82%E7%94%B0%E6%A9%8B%E3%81%82%E3%81%8D%E3%82%89",
-          "name": "砂田橋あきら",
-          "href": "#original-104"
+          "denko_id": "original:069",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E7%BE%BD%E8%B2%AB%E3%83%9F%E3%83%A6",
+          "name": "羽貫ミユ",
+          "href": "#original-069"
         }
       ],
-      "花守ゆみり": [
+      "富田美憂": [
         {
-          "denko_id": "original:018",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%B1%80%E8%89%AF%E3%81%84%E3%81%A1%E3%81%BB",
-          "name": "汀良いちほ",
-          "href": "#original-018"
+          "denko_id": "original:010",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E8%B1%A1%E6%BD%9F%E3%81%84%E3%82%8D%E3%81%AF",
+          "name": "象潟いろは",
+          "href": "#original-010"
         }
       ],
-      "茅野愛衣": [
+      "中村カンナ": [
         {
-          "denko_id": "original:092",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E8%AB%B8%E6%98%9F%E3%81%99%E3%81%B0%E3%82%8B",
-          "name": "諸星すばる",
-          "href": "#original-092"
-        }
-      ],
-      "荒井麻那": [
-        {
-          "denko_id": "original:016",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%83%8B%E3%83%A3%E3%83%83%E3%82%B7%E3%83%A5",
-          "name": "ニャッシュ",
-          "href": "#original-016"
-        }
-      ],
-      "荻野葉月": [
-        {
-          "denko_id": "original:048",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E5%B0%8F%E9%B3%A5%E8%B0%B7%E3%82%B9%E3%83%94%E3%82%AB",
-          "name": "小鳥谷スピカ",
-          "href": "#original-048"
-        }
-      ],
-      "西本りみ": [
-        {
-          "denko_id": "original:072",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E8%93%AE%E5%8F%B0%E5%AF%BA%E3%83%8A%E3%82%AE%E3%82%B5",
-          "name": "蓮台寺ナギサ",
-          "href": "#original-072"
-        }
-      ],
-      "赤尾ひかる": [
-        {
-          "denko_id": "original:031",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%96%B0%E5%B1%85%E6%B5%9C%E3%81%82%E3%82%8A%E3%81%99",
-          "name": "新居浜ありす",
-          "href": "#original-031"
-        }
-      ],
-      "進藤あまね": [
-        {
-          "denko_id": "original:099",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%8C%87%E5%AE%BF%E3%81%8A%E3%81%A8%E3%82%81",
-          "name": "指宿おとめ",
-          "href": "#original-099"
-        }
-      ],
-      "鈴代紗弓": [
-        {
-          "denko_id": "original:005",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E9%BB%84%E9%99%BD%E3%83%AC%E3%82%A4%E3%82%AB",
-          "name": "黄陽レイカ",
-          "href": "#original-005"
+          "denko_id": "original:014",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E7%BE%8E%E6%B7%B1%E3%81%B5%E3%81%B6",
+          "name": "美深ふぶ",
+          "href": "#original-014"
         }
       ],
       "長江里加": [
@@ -6604,12 +6372,44 @@
           "href": "#original-006"
         }
       ],
-      "関根明良": [
+      "鳴沢優海": [
         {
-          "denko_id": "original:096",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E8%8D%BB%E7%AA%AA%E3%82%A2%E3%83%A4",
-          "name": "荻窪アヤ",
-          "href": "#original-096"
+          "denko_id": "original:022",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E5%B7%BD%E3%83%AC%E3%83%B3",
+          "name": "巽レン",
+          "href": "#original-022"
+        }
+      ],
+      "西本りみ": [
+        {
+          "denko_id": "original:072",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E8%93%AE%E5%8F%B0%E5%AF%BA%E3%83%8A%E3%82%AE%E3%82%B5",
+          "name": "蓮台寺ナギサ",
+          "href": "#original-072"
+        }
+      ],
+      "野中ここな": [
+        {
+          "denko_id": "original:025",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%96%B0%E7%99%BE%E5%90%88%E3%81%86%E3%82%89%E3%82%89",
+          "name": "新百合うらら",
+          "href": "#original-025"
+        }
+      ],
+      "花守ゆみり": [
+        {
+          "denko_id": "original:018",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%B1%80%E8%89%AF%E3%81%84%E3%81%A1%E3%81%BB",
+          "name": "汀良いちほ",
+          "href": "#original-018"
+        }
+      ],
+      "林鼓子": [
+        {
+          "denko_id": "original:064",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E8%A7%92%E9%A4%A8%E3%81%82%E3%81%91%E3%81%B2",
+          "name": "角館あけひ",
+          "href": "#original-064"
         }
       ],
       "陽高真白": [
@@ -6620,36 +6420,100 @@
           "href": "#original-007"
         }
       ],
-      "青山なぎさ": [
+      "日向未南": [
         {
-          "denko_id": "original:061",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%B7%B1%E9%81%8A%E3%81%A1%E3%81%A8%E3%81%9B",
-          "name": "深遊ちとせ",
-          "href": "#original-061"
+          "denko_id": "original:008",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E5%A4%A9%E4%B8%8B%E3%81%95%E3%82%84",
+          "name": "天下さや",
+          "href": "#original-008"
         }
       ],
-      "香里有佐": [
+      "船戸ゆり絵": [
         {
-          "denko_id": "original:003",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%96%B0%E9%98%AA%E3%83%AB%E3%83%8A",
-          "name": "新阪ルナ",
-          "href": "#original-003"
+          "denko_id": "original:104",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E7%A0%82%E7%94%B0%E6%A9%8B%E3%81%82%E3%81%8D%E3%82%89",
+          "name": "砂田橋あきら",
+          "href": "#original-104"
         }
       ],
-      "鳴沢優海": [
+      "ブリドカットセーラ恵美": [
         {
-          "denko_id": "original:022",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E5%B7%BD%E3%83%AC%E3%83%B3",
-          "name": "巽レン",
-          "href": "#original-022"
+          "denko_id": "original:001",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E9%BB%84%E9%99%BD%E3%82%BB%E3%83%AA%E3%82%A2",
+          "name": "黄陽セリア",
+          "href": "#original-001"
         }
       ],
-      "黒木ほの香": [
+      "星守紗凪": [
         {
-          "denko_id": "original:021",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E7%8E%8B%E5%AD%90%E3%81%97%E3%81%90%E3%82%8C",
-          "name": "王子しぐれ",
-          "href": "#original-021"
+          "denko_id": "original:020",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E4%B8%B8%E5%9C%B0%E3%81%AB%E3%81%93%E3%82%8D",
+          "name": "丸地にころ",
+          "href": "#original-020"
+        }
+      ],
+      "前田佳織里": [
+        {
+          "denko_id": "original:009",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E8%8A%B1%E7%95%91%E3%82%82%E3%81%88",
+          "name": "花畑もえ",
+          "href": "#original-009"
+        }
+      ],
+      "松井恵理子": [
+        {
+          "denko_id": "original:028",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E4%BA%AC%E6%A9%8B%E3%83%AA%E3%82%AA%E3%83%8A",
+          "name": "京橋リオナ",
+          "href": "#original-028"
+        }
+      ],
+      "三上枝織": [
+        {
+          "denko_id": "original:078",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%B5%B7%E9%83%A8%E3%81%AA%E3%82%8B",
+          "name": "海部なる",
+          "href": "#original-078"
+        }
+      ],
+      "水野朔": [
+        {
+          "denko_id": "original:115",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E8%AA%BF%E5%B8%83%E3%81%BF%E3%81%9A%E3%81%8B",
+          "name": "調布みずか",
+          "href": "#original-115"
+        }
+      ],
+      "柳原かなこ": [
+        {
+          "denko_id": "original:004",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%81%8B%E6%B5%9C%E3%81%BF%E3%82%8D%E3%81%8F",
+          "name": "恋浜みろく",
+          "href": "#original-004"
+        }
+      ],
+      "山田麻莉奈": [
+        {
+          "denko_id": "original:011",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E7%B2%9F%E7%94%9F%E6%B4%A5%E3%81%97%E3%81%84%E3%82%89",
+          "name": "粟生津しいら",
+          "href": "#original-011"
+        }
+      ],
+      "山本彩乃": [
+        {
+          "denko_id": "original:077",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%83%AA%E3%83%88%3D%E3%83%95%E3%82%A9%E3%83%B3%3D%E3%82%B7%E3%83%A5%E3%83%88%E3%82%A5%E3%83%83%E3%83%88%E3%82%AC%E3%83%AB%E3%83%88",
+          "name": "リト=フォン=シュトゥットガルト",
+          "href": "#original-077"
+        }
+      ],
+      "吉武千颯": [
+        {
+          "denko_id": "original:047",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E4%B8%89%E6%9D%A1%E3%81%AA%E3%81%A4%E3%82%81",
+          "name": "三条なつめ",
+          "href": "#original-047"
         }
       ]
     },
@@ -9600,6 +9464,46 @@
           "href": "#extra-052"
         }
       ],
+      "ヴァンセンヌ駅": [
+        {
+          "denko_id": "extra:124",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%A2%E3%83%99%E3%83%A9%E3%83%BB%E3%83%B4%E3%82%A1%E3%83%B3%E3%82%BB%E3%83%B3%E3%83%8C",
+          "name": "アベラ・ヴァンセンヌ",
+          "href": "#extra-124"
+        }
+      ],
+      "ヴィリニュス駅": [
+        {
+          "denko_id": "extra:120",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%83%9E%E3%83%AB%E3%83%86%E3%82%A3%E3%83%8A%E3%83%BB%E3%83%B4%E3%82%A3%E3%83%AA%E3%83%8B%E3%83%A5%E3%82%B9",
+          "name": "マルティナ・ヴィリニュス",
+          "href": "#extra-120"
+        }
+      ],
+      "ヴィルパント駅": [
+        {
+          "denko_id": "extra:125",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%83%99%E3%83%AB%E3%83%8A%E3%83%87%E3%83%83%E3%83%88%E3%83%BB%E3%83%B4%E3%82%A3%E3%83%AB%E3%83%91%E3%83%B3%E3%83%88",
+          "name": "ベルナデット・ヴィルパント",
+          "href": "#extra-125"
+        }
+      ],
+      "ヴッパータール中央駅": [
+        {
+          "denko_id": "extra:095",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%AF%E3%83%A9%E3%83%A9%E3%83%BB%E3%83%B4%E3%83%83%E3%83%91%E3%83%BC%E3%83%95%E3%82%A7%E3%83%AB%E3%83%88",
+          "name": "クララ・ヴッパーフェルト",
+          "href": "#extra-095"
+        }
+      ],
+      "ヴッパーフェルト駅": [
+        {
+          "denko_id": "extra:095",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%AF%E3%83%A9%E3%83%A9%E3%83%BB%E3%83%B4%E3%83%83%E3%83%91%E3%83%BC%E3%83%95%E3%82%A7%E3%83%AB%E3%83%88",
+          "name": "クララ・ヴッパーフェルト",
+          "href": "#extra-095"
+        }
+      ],
       "三条駅": [
         {
           "denko_id": "original:047",
@@ -10849,46 +10753,6 @@
           "name": "ロン・リンファ",
           "href": "#extra-028"
         }
-      ],
-      "ヴァンセンヌ駅": [
-        {
-          "denko_id": "extra:124",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%A2%E3%83%99%E3%83%A9%E3%83%BB%E3%83%B4%E3%82%A1%E3%83%B3%E3%82%BB%E3%83%B3%E3%83%8C",
-          "name": "アベラ・ヴァンセンヌ",
-          "href": "#extra-124"
-        }
-      ],
-      "ヴィリニュス駅": [
-        {
-          "denko_id": "extra:120",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%83%9E%E3%83%AB%E3%83%86%E3%82%A3%E3%83%8A%E3%83%BB%E3%83%B4%E3%82%A3%E3%83%AA%E3%83%8B%E3%83%A5%E3%82%B9",
-          "name": "マルティナ・ヴィリニュス",
-          "href": "#extra-120"
-        }
-      ],
-      "ヴィルパント駅": [
-        {
-          "denko_id": "extra:125",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%83%99%E3%83%AB%E3%83%8A%E3%83%87%E3%83%83%E3%83%88%E3%83%BB%E3%83%B4%E3%82%A3%E3%83%AB%E3%83%91%E3%83%B3%E3%83%88",
-          "name": "ベルナデット・ヴィルパント",
-          "href": "#extra-125"
-        }
-      ],
-      "ヴッパータール中央駅": [
-        {
-          "denko_id": "extra:095",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%AF%E3%83%A9%E3%83%A9%E3%83%BB%E3%83%B4%E3%83%83%E3%83%91%E3%83%BC%E3%83%95%E3%82%A7%E3%83%AB%E3%83%88",
-          "name": "クララ・ヴッパーフェルト",
-          "href": "#extra-095"
-        }
-      ],
-      "ヴッパーフェルト駅": [
-        {
-          "denko_id": "extra:095",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%AF%E3%83%A9%E3%83%A9%E3%83%BB%E3%83%B4%E3%83%83%E3%83%91%E3%83%BC%E3%83%95%E3%82%A7%E3%83%AB%E3%83%88",
-          "name": "クララ・ヴッパーフェルト",
-          "href": "#extra-095"
-        }
       ]
     },
     "by_vehicle": {
@@ -11282,132 +11146,6 @@
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%A2%E3%83%80%E3%83%AA%E3%83%A4%E3%83%BB%E3%83%93%E3%82%AF%E3%83%88%E3%83%AA%E3%82%A2",
           "name": "アダリヤ・ビクトリア",
           "href": "#extra-068"
-        }
-      ],
-      "上海トランスラピッド": [
-        {
-          "denko_id": "extra:028",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%83%AD%E3%83%B3%E3%83%BB%E3%83%AA%E3%83%B3%E3%83%95%E3%82%A1",
-          "name": "ロン・リンファ",
-          "href": "#extra-028"
-        }
-      ],
-      "京成電鉄AE形 (2代) 「スカイライナー」": [
-        {
-          "denko_id": "original:042",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E9%9D%92%E7%A0%A5%E3%81%9D%E3%82%89",
-          "name": "青砥そら",
-          "href": "#original-042"
-        }
-      ],
-      "千葉都市モノレール 0形": [
-        {
-          "denko_id": "original:062",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E4%BD%9C%E8%8D%89%E9%83%A8%E3%83%9E%E3%82%B3",
-          "name": "作草部マコ",
-          "href": "#original-062"
-        }
-      ],
-      "千葉都市モノレール 軌道作業車": [
-        {
-          "denko_id": "extra:016",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E5%A4%A9%E5%8F%B0%E3%83%A4%E3%82%B3",
-          "name": "天台ヤコ",
-          "href": "#extra-016"
-        }
-      ],
-      "国鉄8620形蒸気機関車": [
-        {
-          "denko_id": "original:118",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E5%BE%B3%E5%B3%B6%E3%82%8B%E3%81%A8",
-          "name": "徳島ると",
-          "href": "#original-118"
-        }
-      ],
-      "国鉄C11形蒸気機関車": [
-        {
-          "denko_id": "original:110",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E8%8C%85%E6%B2%BC%E3%81%BF%E3%82%86%E3%81%8D",
-          "name": "茅沼みゆき",
-          "href": "#original-110"
-        }
-      ],
-      "国鉄C61形蒸気機関車": [
-        {
-          "denko_id": "original:051",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%95%B7%E5%B3%B6%E3%83%92%E3%83%A1%E3%82%AE",
-          "name": "敷島ヒメギ",
-          "href": "#original-051"
-        }
-      ],
-      "国鉄D51形蒸気機関車": [
-        {
-          "denko_id": "original:032",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E7%A5%9E%E5%B1%85%E3%82%B3%E3%82%BF%E3%83%B3",
-          "name": "神居コタン",
-          "href": "#original-032"
-        },
-        {
-          "denko_id": "original:140",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E5%B1%B1%E5%8F%A3%E3%82%86%E3%81%A5%E3%82%8B",
-          "name": "山口ゆづる",
-          "href": "#original-140"
-        }
-      ],
-      "国鉄DD14形ディーゼル機関車": [
-        {
-          "denko_id": "extra:002",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E8%B5%A4%E5%A3%95%E3%81%BE%E3%81%B2%E3%82%8B",
-          "name": "赤壕まひる",
-          "href": "#extra-002"
-        }
-      ],
-      "国鉄ED30形電気機関車": [
-        {
-          "denko_id": "original:002",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E7%82%BA%E6%A0%97%E3%83%A1%E3%83%AD",
-          "name": "為栗メロ",
-          "href": "#original-002"
-        }
-      ],
-      "天津開発区導軌電車 トランスロール": [
-        {
-          "denko_id": "extra:026",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%B8%E3%83%B3%E3%83%BB%E3%83%86%E3%82%A3%E3%82%A8%E3%83%B3",
-          "name": "ジン・ティエン",
-          "href": "#extra-026"
-        }
-      ],
-      "架線延線車": [
-        {
-          "denko_id": "extra:005",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%9E%9C%E9%B3%B4%E3%83%84%E3%83%85%E3%82%AD",
-          "name": "果鳴ツヅキ",
-          "href": "#extra-005"
-        }
-      ],
-      "沖縄都市モノレール（ゆいレール） MB形工作車「MB-1」･「MB-2」･「MB-3」": [
-        {
-          "denko_id": "extra:114",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E5%8D%97%E4%B9%83%E3%82%8C%E3%81%84%E3%82%8B",
-          "name": "南乃れいる",
-          "href": "#extra-114"
-        }
-      ],
-      "秦皇島山海観光鉄道 秦旅山海号": [
-        {
-          "denko_id": "extra:027",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%83%84%E3%83%BC%E3%83%BB%E3%82%B9%E3%82%A4%E3%83%A9%E3%83%B3",
-          "name": "ツー・スイラン",
-          "href": "#extra-027"
-        }
-      ],
-      "黒部峡谷鉄道 EDR形": [
-        {
-          "denko_id": "extra:017",
-          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E9%BB%92%E9%83%A8%E3%82%8B%E3%81%84",
-          "name": "黒部るい",
-          "href": "#extra-017"
         }
       ],
       "0000形": [
@@ -12566,6 +12304,132 @@
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E9%BB%84%E9%99%BD%E3%82%BB%E3%83%AA%E3%82%A2",
           "name": "黄陽セリア",
           "href": "#original-001"
+        }
+      ],
+      "上海トランスラピッド": [
+        {
+          "denko_id": "extra:028",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%83%AD%E3%83%B3%E3%83%BB%E3%83%AA%E3%83%B3%E3%83%95%E3%82%A1",
+          "name": "ロン・リンファ",
+          "href": "#extra-028"
+        }
+      ],
+      "京成電鉄AE形 (2代) 「スカイライナー」": [
+        {
+          "denko_id": "original:042",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E9%9D%92%E7%A0%A5%E3%81%9D%E3%82%89",
+          "name": "青砥そら",
+          "href": "#original-042"
+        }
+      ],
+      "千葉都市モノレール 0形": [
+        {
+          "denko_id": "original:062",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E4%BD%9C%E8%8D%89%E9%83%A8%E3%83%9E%E3%82%B3",
+          "name": "作草部マコ",
+          "href": "#original-062"
+        }
+      ],
+      "千葉都市モノレール 軌道作業車": [
+        {
+          "denko_id": "extra:016",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E5%A4%A9%E5%8F%B0%E3%83%A4%E3%82%B3",
+          "name": "天台ヤコ",
+          "href": "#extra-016"
+        }
+      ],
+      "国鉄8620形蒸気機関車": [
+        {
+          "denko_id": "original:118",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E5%BE%B3%E5%B3%B6%E3%82%8B%E3%81%A8",
+          "name": "徳島ると",
+          "href": "#original-118"
+        }
+      ],
+      "国鉄C11形蒸気機関車": [
+        {
+          "denko_id": "original:110",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E8%8C%85%E6%B2%BC%E3%81%BF%E3%82%86%E3%81%8D",
+          "name": "茅沼みゆき",
+          "href": "#original-110"
+        }
+      ],
+      "国鉄C61形蒸気機関車": [
+        {
+          "denko_id": "original:051",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%95%B7%E5%B3%B6%E3%83%92%E3%83%A1%E3%82%AE",
+          "name": "敷島ヒメギ",
+          "href": "#original-051"
+        }
+      ],
+      "国鉄D51形蒸気機関車": [
+        {
+          "denko_id": "original:032",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E7%A5%9E%E5%B1%85%E3%82%B3%E3%82%BF%E3%83%B3",
+          "name": "神居コタン",
+          "href": "#original-032"
+        },
+        {
+          "denko_id": "original:140",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E5%B1%B1%E5%8F%A3%E3%82%86%E3%81%A5%E3%82%8B",
+          "name": "山口ゆづる",
+          "href": "#original-140"
+        }
+      ],
+      "国鉄DD14形ディーゼル機関車": [
+        {
+          "denko_id": "extra:002",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E8%B5%A4%E5%A3%95%E3%81%BE%E3%81%B2%E3%82%8B",
+          "name": "赤壕まひる",
+          "href": "#extra-002"
+        }
+      ],
+      "国鉄ED30形電気機関車": [
+        {
+          "denko_id": "original:002",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E7%82%BA%E6%A0%97%E3%83%A1%E3%83%AD",
+          "name": "為栗メロ",
+          "href": "#original-002"
+        }
+      ],
+      "天津開発区導軌電車 トランスロール": [
+        {
+          "denko_id": "extra:026",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%B8%E3%83%B3%E3%83%BB%E3%83%86%E3%82%A3%E3%82%A8%E3%83%B3",
+          "name": "ジン・ティエン",
+          "href": "#extra-026"
+        }
+      ],
+      "架線延線車": [
+        {
+          "denko_id": "extra:005",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%9E%9C%E9%B3%B4%E3%83%84%E3%83%85%E3%82%AD",
+          "name": "果鳴ツヅキ",
+          "href": "#extra-005"
+        }
+      ],
+      "沖縄都市モノレール（ゆいレール） MB形工作車「MB-1」･「MB-2」･「MB-3」": [
+        {
+          "denko_id": "extra:114",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E5%8D%97%E4%B9%83%E3%82%8C%E3%81%84%E3%82%8B",
+          "name": "南乃れいる",
+          "href": "#extra-114"
+        }
+      ],
+      "秦皇島山海観光鉄道 秦旅山海号": [
+        {
+          "denko_id": "extra:027",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%83%84%E3%83%BC%E3%83%BB%E3%82%B9%E3%82%A4%E3%83%A9%E3%83%B3",
+          "name": "ツー・スイラン",
+          "href": "#extra-027"
+        }
+      ],
+      "黒部峡谷鉄道 EDR形": [
+        {
+          "denko_id": "extra:017",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E9%BB%92%E9%83%A8%E3%82%8B%E3%81%84",
+          "name": "黒部るい",
+          "href": "#extra-017"
         }
       ],
       "A9500系ディーゼル機関車": [
