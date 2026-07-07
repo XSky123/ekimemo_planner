@@ -512,6 +512,15 @@ def backfill_misc_tags(row: dict[str, Any]) -> int:
             component["target_scope"] = ["self"]
             changed += 1
             mark_component(component, "step2_mutsumi_self_reboot_target")
+    elif denko_id == "extra:026":
+        component = component_by_id(row, "exp_gain")
+        if component:
+            if component.get("target_scope") != ["opponent_denko"]:
+                component["target_scope"] = ["opponent_denko"]
+                changed += 1
+            changed += update_dict(component, "target_filters", {"benefits_side": "opponent", "exp_recipient": "opponent_denko"})
+            changed += set_tag(component, "opponent_exp_grant", "not_own_exp_support")
+            mark_component(component, "step2_tien_opponent_exp_grant")
     elif denko_id == "extra:029":
         component = component_by_id(row, "reboot_1")
         if component and component.get("target_scope") != ["opponent_denko"]:

@@ -522,8 +522,17 @@ def metric_type(component: dict[str, Any], value: dict[str, Any]) -> str:
     kind = str(component.get("effect_kind") or "")
     raw = str(value.get("value_raw") or "")
     unit = str(value.get("unit") or "")
+    target_filters = component.get("target_filters") or {}
+    target_scope = component.get("target_scope") or []
 
     if unit == "report_ignore":
+        return "ignore"
+    if (
+        target_filters.get("benefits_side") == "opponent"
+        or target_filters.get("exp_recipient") == "opponent_denko"
+        or (kind == "exp_gain" and target_scope == ["opponent_denko"])
+        or raw.startswith("相手に+")
+    ):
         return "ignore"
     if kind == "effect_multiplier":
         return "effect_boost" if is_positive_effect_multiplier(component) else "ignore"
@@ -896,13 +905,17 @@ def render_table(tab_id: str, candidates: list[dict[str, Any]]) -> str:
 def main() -> None:
     rows = base.read_jsonl(SKILL_PATH)
     metadata = base.denko_metadata()
-    candidates_by_tab = {tab_id: build_candidates(tab_id, rows, metadata) for tab_id in TABS}
+    candidates_by_tab_all = {tab_id: build_candidates(tab_id, rows, metadata) for tab_id in TABS}
+    visible_tabs = [tab_id for tab_id in TABS if candidates_by_tab_all[tab_id]]
+    candidates_by_tab = {tab_id: candidates_by_tab_all[tab_id] for tab_id in visible_tabs}
     tab_buttons = "\n".join(
         f'<button class="tab-button" type="button" data-tab="{esc(tab_id)}">{esc(tab["title"])} {base.tab_count_html(candidates_by_tab[tab_id])}</button>'
-        for tab_id, tab in TABS.items()
+        for tab_id in visible_tabs
+        for tab in [TABS[tab_id]]
     )
-    sections = "\n".join(render_table(tab_id, candidates_by_tab[tab_id]) for tab_id in TABS)
-    counts = {tab_id: len(candidates) for tab_id, candidates in candidates_by_tab.items()}
+    sections = "\n".join(render_table(tab_id, candidates_by_tab[tab_id]) for tab_id in visible_tabs)
+    counts = {tab_id: len(candidates_by_tab_all[tab_id]) for tab_id in TABS}
+    default_tab = visible_tabs[0] if visible_tabs else "fixed_exp"
 
     html_text = f"""<!doctype html>
 <html lang="zh-CN">
@@ -944,7 +957,7 @@ def main() -> None:
 </head>
 <body>
   <h1>Ekimemo Step2 经验/PT辅助排行</h1>
-  <p>从 Step1 DB 自动整理，分类参考 wiki「経験値、スコア系スキル」。固定值、百分比/倍率、条件型待确认分开排行；默认按 Lv50 查看，可切换 Lv30/Lv80/Lv92/Lv100；仅 VU 后生效的项目默认隐藏。</p>
+  <p>从 Step1 DB 自动整理，分类参考 wiki「経験値、スコア系スキル」。固定值、百分比/倍率、ねこぱんち专用、效果量强化分开排行；默认按 Lv50 查看，可切换 Lv30/Lv80/Lv92/Lv100。</p>
   <div class="tabs">{tab_buttons}</div>
   <div class="toolbar">
     <input id="q" placeholder="搜索ID、名字、条件、效果" size="34">
@@ -977,7 +990,7 @@ def main() -> None:
     </select>
   </div>
   {sections}
-  {base.interactive_script('fixed_exp')}
+  {base.interactive_script(default_tab)}
 </body>
 </html>
 """
