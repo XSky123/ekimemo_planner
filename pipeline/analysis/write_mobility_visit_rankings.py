@@ -119,8 +119,8 @@ def metric_text(kind: str, number: float | None, raw: str) -> str:
 
 
 def level_value_text(level: str, value: dict[str, Any]) -> str:
-    raw = str(value.get("value_raw") or "-")
-    return raw if level == base.DEFAULT_LEVEL else f"※Lv{level}: {raw}"
+    raw = base.clean_display_text(value.get("value_raw") or "-")
+    return raw if level == base.DEFAULT_LEVEL else f"Lv{level}: {raw}"
 
 
 def level_metrics(component: dict[str, Any], level: str) -> dict[str, Any] | None:
@@ -241,6 +241,8 @@ def build_candidates(tab_id: str, rows: list[dict[str, Any]], metadata: dict[str
 def render_rows(tab_id: str, candidates: list[dict[str, Any]]) -> str:
     rows = []
     for rank, item in enumerate(candidates, 1):
+        component_label = base.component_display_label(item["component_id"], item["kind"])
+        component_html = f'<br><span class="muted">{esc(component_label)}</span>' if component_label else ""
         rows.append(
             "\n".join(
                 [
@@ -249,7 +251,7 @@ def render_rows(tab_id: str, candidates: list[dict[str, Any]]) -> str:
                     f'<td><strong>{esc(item["denko_id"])}</strong><br><a href="{esc(item["url"])}">{esc(item["name"])}</a></td>',
                     f'<td>{esc(item["attribute"])}</td>',
                     f'<td>{esc(item["type_key"])}</td>',
-                    f'<td>{esc(EFFECT_LABELS.get(item["kind"], item["kind"]))}<br><span class="muted">{esc(item["component_id"])}</span></td>',
+                    f'<td>{esc(EFFECT_LABELS.get(item["kind"], item["kind"]))}{component_html}</td>',
                     f'<td>{esc(item["use_case"])}</td>',
                     f'<td class="metric max-cell">{esc(item["max_text"])}</td>',
                     f'<td class="metric avg-cell">{esc(item["avg_text"])}</td>',
@@ -328,6 +330,10 @@ def main() -> None:
     .count-main {{ font-weight: 700; }}
     .vu-count {{ margin-left: 4px; color: #68707c; font-size: 12px; font-weight: 500; }}
     .tab-button.active .vu-count {{ color: rgba(255,255,255,.78); }}
+    .sortable {{ cursor: pointer; user-select: none; }}
+    .sortable::after {{ content: "\\2195"; margin-left: 4px; color: #8c959f; font-size: 11px; }}
+    .sortable.sort-desc::after {{ content: "\\2193"; color: #0969da; }}
+    .sortable.sort-asc::after {{ content: "\\2191"; color: #0969da; }}
     .toggle {{ display: inline-flex; align-items: center; gap: 5px; font-size: 13px; color: #444c56; }}
     .toggle input {{ padding: 0; }}
     table {{ border-collapse: collapse; width: 100%; font-size: 13px; margin-top: 12px; }}
@@ -355,14 +361,11 @@ def main() -> None:
       <option value="92">Lv92(VU)</option>
       <option value="100">Lv100(VU)</option>
     </select>
-    <select id="sortMode">
-      <option value="max">按理论值排序</option>
-      <option value="avg">按粗略期望排序</option>
-    </select>
     <select id="activation">
       <option value="">全部发动</option>
       <option value="always">常驻</option>
       <option value="manual">手动</option>
+      <option value="non_probability">非概率触发</option>
       <option value="probability">概率/自动</option>
     </select>
     <select id="attr">
@@ -378,92 +381,9 @@ def main() -> None:
       <option value="supporter">supporter</option>
       <option value="trickster">trickster</option>
     </select>
-    <label class="toggle"><input id="showVu" type="checkbox">显示仅VU后生效</label>
   </div>
   {sections}
-  <script>
-    const state = {{ activeTab: 'extra_access' }};
-    const q = document.getElementById('q');
-    const levelMode = document.getElementById('levelMode');
-    const sortMode = document.getElementById('sortMode');
-    const activation = document.getElementById('activation');
-    const attr = document.getElementById('attr');
-    const type = document.getElementById('type');
-    const showVu = document.getElementById('showVu');
-    const tabButtons = [...document.querySelectorAll('.tab-button')];
-    const panels = [...document.querySelectorAll('[data-tab-panel]')];
-    const rowCache = new Map();
-
-    for (const panel of panels) {{
-      const rows = [...panel.querySelectorAll('tbody tr')];
-      for (const row of rows) {{
-        try {{
-          row.levels = JSON.parse(row.dataset.levels || '{{}}');
-        }} catch (_error) {{
-          row.levels = {{}};
-        }}
-      }}
-      rowCache.set(panel.dataset.tabPanel, rows);
-    }}
-
-    function activeRows() {{
-      return rowCache.get(state.activeTab) || [];
-    }}
-
-    function applyLevel(row) {{
-      const data = row.levels[levelMode.value];
-      row.dataset.hasLevel = data ? 'true' : 'false';
-      row.dataset.sortMax = data && data.sort_max !== null ? data.sort_max : -1;
-      row.dataset.sortAvg = data && data.sort_avg !== null ? data.sort_avg : -1;
-      row.querySelector('.max-cell').textContent = data ? data.max_text : '-';
-      row.querySelector('.avg-cell').textContent = data ? data.avg_text : '-';
-      row.querySelector('.level-cell').textContent = data ? data.value_text : '-';
-      row.querySelector('.probability-cell').textContent = data ? data.probability : '-';
-      row.querySelector('.duration-cell').textContent = data ? data.duration : '-';
-      row.querySelector('.cooldown-cell').textContent = data ? data.cooldown : '-';
-    }}
-
-    function sortActiveRows() {{
-      const rows = activeRows();
-      for (const row of rows) applyLevel(row);
-      const key = sortMode.value === 'avg' ? 'sortAvg' : 'sortMax';
-      rows.sort((a, b) => Number(b.dataset[key]) - Number(a.dataset[key]));
-      const tbody = document.querySelector(`#panel-${{state.activeTab}} tbody`);
-      for (const row of rows) tbody.appendChild(row);
-    }}
-
-    function applyFilter() {{
-      const needle = q.value.trim().toLowerCase();
-      sortActiveRows();
-      let visibleRank = 1;
-      for (const row of activeRows()) {{
-        const okText = !needle || row.dataset.search.includes(needle);
-        const okActivation = !activation.value || row.dataset.activation === activation.value;
-        const okAttr = !attr.value || row.dataset.attr === attr.value;
-        const okType = !type.value || row.dataset.type === type.value;
-        const okVu = showVu.checked || row.dataset.vuOnly !== 'true';
-        const okLevel = row.dataset.hasLevel === 'true';
-        const visible = okText && okActivation && okAttr && okType && okVu && okLevel;
-        row.style.display = visible ? '' : 'none';
-        if (visible) row.querySelector('.rank').textContent = visibleRank++;
-      }}
-    }}
-
-    function setActiveTab(tabId) {{
-      state.activeTab = tabId;
-      for (const button of tabButtons) button.classList.toggle('active', button.dataset.tab === tabId);
-      for (const panel of panels) panel.classList.toggle('active', panel.dataset.tabPanel === tabId);
-      applyFilter();
-    }}
-
-    for (const button of tabButtons) {{
-      button.addEventListener('click', () => setActiveTab(button.dataset.tab));
-    }}
-    for (const input of [q, levelMode, sortMode, activation, attr, type, showVu]) {{
-      input.addEventListener('input', applyFilter);
-    }}
-    setActiveTab(state.activeTab);
-  </script>
+  {base.interactive_script('extra_access')}
 </body>
 </html>
 """

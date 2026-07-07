@@ -223,6 +223,13 @@ def is_probability_trigger(component: dict[str, Any]) -> bool:
     return False
 
 
+def probability_factor(value: dict[str, Any]) -> float:
+    nums = probability_numbers(value)
+    if not nums:
+        return 100.0
+    return min(max(nums), 100.0)
+
+
 def activation_group(row: dict[str, Any], component: dict[str, Any]) -> tuple[str, str]:
     activation_type = str(component.get("activation_type") or row.get("activation_type") or "")
     activation_mode = str((row.get("normalized_skill") or {}).get("activation_mode") or "")
@@ -238,6 +245,29 @@ def activation_group(row: dict[str, Any], component: dict[str, Any]) -> tuple[st
 def all_level_values(component: dict[str, Any]) -> list[tuple[str, dict[str, Any]]]:
     values = component.get("values_by_denko_level") or {}
     return sorted(values.items(), key=lambda item: int(item[0]) if str(item[0]).isdigit() else 999)
+
+
+def clean_display_text(text: Any) -> str:
+    out = str(text or "")
+    out = re.sub(r"(^|[\s　])[\(（]\d+[\)）]\s*", r"\1", out)
+    out = re.sub(r"(^|[\s　/／、，。])[\(（]\d+[\)）]\s*", r"\1", out)
+    out = out.replace("※", "")
+    return re.sub(r"\s+", " ", out).strip()
+
+
+def component_display_label(component_id: Any, kind: Any = None) -> str:
+    text = str(component_id or "")
+    kind_text = str(kind or "")
+    if not text or text == kind_text:
+        return ""
+    if kind_text and text.startswith(f"{kind_text}_"):
+        suffix = text[len(kind_text) + 1 :]
+        if suffix.isdigit():
+            return f"效果分支 {suffix}"
+    match = re.search(r"_(\d+)$", text)
+    if match:
+        return f"效果分支 {match.group(1)}"
+    return ""
 
 
 def basis_value(component: dict[str, Any]) -> tuple[str, dict[str, Any]]:
@@ -367,9 +397,9 @@ def format_metric(value: float | None) -> str:
 def level_value_text(basis_level: str, value: dict[str, Any]) -> str:
     if not value:
         return "-"
-    raw = str(value.get("value_raw") or "-")
+    raw = clean_display_text(value.get("value_raw") or "-")
     if basis_level != DEFAULT_LEVEL:
-        return f"※Lv{basis_level}: {raw}"
+        return f"Lv{basis_level}: {raw}"
     return raw
 
 
@@ -382,7 +412,8 @@ def level_metrics(tab_id: str, row: dict[str, Any], component: dict[str, Any], l
     if value_max is None:
         return None
     avg_value = mean_value(value_min, value_max)
-    max_text, avg_text, sort_max, sort_avg = metric_display(tab_id, row, level, value_max, avg_value)
+    expected_value = avg_value * probability_factor(value) / 100 if avg_value is not None else None
+    max_text, avg_text, sort_max, sort_avg = metric_display(tab_id, row, level, value_max, expected_value)
     return {
         "level": level,
         "sort_max": sort_max,
@@ -545,7 +576,7 @@ def display_condition_text(component: dict[str, Any]) -> str:
         condition = condition.replace(" と のみの編成", f"{attrs[0]}と{attrs[1]}のみの編成", 1)
     if filters.get("target_denko_name"):
         condition = condition.replace("のHPが30%以下", f"{filters['target_denko_name']}のHPが30%以下")
-    return condition
+    return clean_display_text(condition)
 
 
 def is_self_only_atk(component: dict[str, Any]) -> bool:
@@ -664,6 +695,8 @@ def build_candidates(tab_id: str, rows: list[dict[str, Any]], metadata: dict[str
 def render_rows(tab_id: str, candidates: list[dict[str, Any]]) -> str:
     rows = []
     for rank, item in enumerate(candidates, 1):
+        component_label = component_display_label(item["component_id"], item["kind"])
+        component_html = f'<br><span class="muted">{esc(component_label)}</span>' if component_label else ""
         rows.append(
             "\n".join(
                 [
@@ -672,7 +705,7 @@ def render_rows(tab_id: str, candidates: list[dict[str, Any]]) -> str:
                     f'<td><strong>{esc(item["denko_id"])}</strong><br><a href="{esc(item["url"])}">{esc(item["name"])}</a></td>',
                     f'<td>{esc(item["attribute"])}</td>',
                     f'<td>{esc(item["type_key"])}</td>',
-                    f'<td>{esc(EFFECT_LABELS.get(item["kind"], item["kind"]))}<br><span class="muted">{esc(item["component_id"])}</span></td>',
+                    f'<td>{esc(EFFECT_LABELS.get(item["kind"], item["kind"]))}{component_html}</td>',
                     f'<td class="metric max-cell">{esc(item["max_text"])}</td>',
                     f'<td class="metric avg-cell">{esc(item["avg_text"])}</td>',
                     f'<td class="level-cell">{esc(item["level_value"])}</td>',
@@ -687,6 +720,188 @@ def render_rows(tab_id: str, candidates: list[dict[str, Any]]) -> str:
             )
         )
     return "".join(rows)
+
+
+REPORT_SCRIPT_TEMPLATE = """
+  <script>
+    const state = { activeTab: '__DEFAULT_TAB__', sortKey: 'avg', sortDirection: 'desc' };
+    const q = document.getElementById('q');
+    const levelMode = document.getElementById('levelMode');
+    const activation = document.getElementById('activation');
+    const attr = document.getElementById('attr');
+    const type = document.getElementById('type');
+    const tabButtons = [...document.querySelectorAll('.tab-button')];
+    const panels = [...document.querySelectorAll('[data-tab-panel]')];
+    const rowCache = new Map();
+    const sortKeysByColumn = ['rank', 'name', 'attr', 'type', 'effect', 'max', 'avg', 'level', 'probability', 'duration', 'cooldown', 'activation', 'target', 'condition'];
+    const missingText = '未记载';
+
+    for (const panel of panels) {
+      const rows = [...panel.querySelectorAll('tbody tr')];
+      rows.forEach((row, index) => {
+        row.dataset.originalIndex = String(index);
+        try {
+          row.levels = JSON.parse(row.dataset.levels || '{}');
+        } catch (_error) {
+          row.levels = {};
+        }
+      });
+      rowCache.set(panel.dataset.tabPanel, rows);
+    }
+
+    function activePanel() {
+      return document.querySelector(`#panel-${state.activeTab}`);
+    }
+
+    function activeRows() {
+      return rowCache.get(state.activeTab) || [];
+    }
+
+    function hasAnyVuLevel(row) {
+      return Boolean(row.levels['92'] || row.levels['96'] || row.levels['100']);
+    }
+
+    function shouldShowMissingVu(row) {
+      return !row.levels[levelMode.value]
+        && ['92', '100'].includes(levelMode.value)
+        && (row.dataset.vuOnly === 'true' || hasAnyVuLevel(row));
+    }
+
+    function applyLevel(row) {
+      const data = row.levels[levelMode.value];
+      const missingVu = shouldShowMissingVu(row);
+      row.dataset.hasLevel = data || missingVu ? 'true' : 'false';
+      row.dataset.sortMax = data && data.sort_max !== null ? data.sort_max : -1;
+      row.dataset.sortAvg = data && data.sort_avg !== null ? data.sort_avg : -1;
+      row.querySelector('.max-cell').textContent = data ? data.max_text : (missingVu ? missingText : '-');
+      row.querySelector('.avg-cell').textContent = data ? data.avg_text : (missingVu ? missingText : '-');
+      row.querySelector('.level-cell').textContent = data ? data.value_text : (missingVu ? missingText : '-');
+      row.querySelector('.probability-cell').textContent = data ? data.probability : '-';
+      row.querySelector('.duration-cell').textContent = data ? data.duration : '-';
+      row.querySelector('.cooldown-cell').textContent = data ? data.cooldown : '-';
+    }
+
+    function textAt(row, index) {
+      return (row.children[index]?.textContent || '').trim().toLowerCase();
+    }
+
+    function numberFromText(text) {
+      const match = String(text || '').replace(/,/g, '').match(/-?\\d+(?:\\.\\d+)?/);
+      return match ? Number(match[0]) : Number.NEGATIVE_INFINITY;
+    }
+
+    function sortValue(row, key) {
+      if (key === 'rank') return Number(row.dataset.originalIndex);
+      if (key === 'max') return Number(row.dataset.sortMax);
+      if (key === 'avg') return Number(row.dataset.sortAvg);
+      if (key === 'probability') return numberFromText(textAt(row, 8));
+      if (key === 'duration') return textAt(row, 9);
+      if (key === 'cooldown') return textAt(row, 10);
+      const indexMap = { name: 1, attr: 2, type: 3, effect: 4, level: 7, activation: 11, target: 12, condition: 13 };
+      return textAt(row, indexMap[key] ?? 0);
+    }
+
+    function sortActiveRows() {
+      const rows = activeRows();
+      for (const row of rows) applyLevel(row);
+      if (state.sortKey) {
+        const direction = state.sortDirection === 'asc' ? 1 : -1;
+        rows.sort((a, b) => {
+          const av = sortValue(a, state.sortKey);
+          const bv = sortValue(b, state.sortKey);
+          if (typeof av === 'number' && typeof bv === 'number') {
+            return (av - bv) * direction || Number(a.dataset.originalIndex) - Number(b.dataset.originalIndex);
+          }
+          return String(av).localeCompare(String(bv), 'ja') * direction || Number(a.dataset.originalIndex) - Number(b.dataset.originalIndex);
+        });
+      } else {
+        rows.sort((a, b) => Number(a.dataset.originalIndex) - Number(b.dataset.originalIndex));
+      }
+      const tbody = document.querySelector(`#panel-${state.activeTab} tbody`);
+      for (const row of rows) tbody.appendChild(row);
+    }
+
+    function updateSortHeaders() {
+      for (const th of document.querySelectorAll('th[data-sort-key]')) {
+        th.classList.remove('sort-asc', 'sort-desc');
+        if (th.dataset.sortKey === state.sortKey && th.closest('[data-tab-panel]')?.dataset.tabPanel === state.activeTab) {
+          th.classList.add(state.sortDirection === 'asc' ? 'sort-asc' : 'sort-desc');
+        }
+      }
+    }
+
+    function applyFilter() {
+      const needle = q.value.trim().toLowerCase();
+      sortActiveRows();
+      let visibleRank = 1;
+      for (const row of activeRows()) {
+        const okText = !needle || row.dataset.search.includes(needle);
+        const okActivation = !activation.value
+          || row.dataset.activation === activation.value
+          || (activation.value === 'non_probability' && ['always', 'manual'].includes(row.dataset.activation));
+        const okAttr = !attr.value || row.dataset.attr === attr.value;
+        const okType = !type.value || row.dataset.type === type.value;
+        const okLevel = row.dataset.hasLevel === 'true';
+        const visible = okText && okActivation && okAttr && okType && okLevel;
+        row.style.display = visible ? '' : 'none';
+        if (visible) row.querySelector('.rank').textContent = visibleRank++;
+      }
+      updateSortHeaders();
+    }
+
+    function setActiveTab(tabId) {
+      state.activeTab = tabId;
+      for (const button of tabButtons) button.classList.toggle('active', button.dataset.tab === tabId);
+      for (const panel of panels) panel.classList.toggle('active', panel.dataset.tabPanel === tabId);
+      applyFilter();
+    }
+
+    function initSortableHeaders() {
+      for (const panel of panels) {
+        const headers = [...panel.querySelectorAll('thead th')];
+        headers.forEach((th, index) => {
+          const key = sortKeysByColumn[index];
+          if (!key) return;
+          th.dataset.sortKey = key;
+          th.classList.add('sortable');
+          let clickTimer = null;
+          th.addEventListener('click', () => {
+            clearTimeout(clickTimer);
+            clickTimer = setTimeout(() => {
+              if (state.sortKey === key) {
+                state.sortDirection = state.sortDirection === 'desc' ? 'asc' : 'desc';
+              } else {
+                state.sortKey = key;
+                state.sortDirection = ['name', 'attr', 'type', 'effect', 'level', 'activation', 'target', 'condition'].includes(key) ? 'asc' : 'desc';
+              }
+              applyFilter();
+            }, 180);
+          });
+          th.addEventListener('dblclick', event => {
+            event.preventDefault();
+            clearTimeout(clickTimer);
+            state.sortKey = null;
+            state.sortDirection = 'desc';
+            applyFilter();
+          });
+        });
+      }
+    }
+
+    for (const button of tabButtons) {
+      button.addEventListener('click', () => setActiveTab(button.dataset.tab));
+    }
+    for (const input of [q, levelMode, activation, attr, type]) {
+      input.addEventListener('input', applyFilter);
+    }
+    initSortableHeaders();
+    setActiveTab(state.activeTab);
+  </script>
+"""
+
+
+def interactive_script(default_tab: str) -> str:
+    return REPORT_SCRIPT_TEMPLATE.replace("__DEFAULT_TAB__", default_tab)
 
 
 def render_table(tab_id: str, candidates: list[dict[str, Any]]) -> str:
@@ -749,6 +964,10 @@ def main() -> None:
     .count-main {{ font-weight: 700; }}
     .vu-count {{ margin-left: 4px; color: #68707c; font-size: 12px; font-weight: 500; }}
     .tab-button.active .vu-count {{ color: rgba(255,255,255,.78); }}
+    .sortable {{ cursor: pointer; user-select: none; }}
+    .sortable::after {{ content: "\\2195"; margin-left: 4px; color: #8c959f; font-size: 11px; }}
+    .sortable.sort-desc::after {{ content: "\\2193"; color: #0969da; }}
+    .sortable.sort-asc::after {{ content: "\\2191"; color: #0969da; }}
     .toggle {{ display: inline-flex; align-items: center; gap: 5px; font-size: 13px; color: #444c56; }}
     .toggle input {{ padding: 0; }}
     table {{ border-collapse: collapse; width: 100%; font-size: 13px; margin-top: 12px; }}
@@ -776,14 +995,11 @@ def main() -> None:
       <option value="92">Lv92(VU)</option>
       <option value="100">Lv100(VU)</option>
     </select>
-    <select id="sortMode">
-      <option value="max">按理论最大排序</option>
-      <option value="avg">按平均值排序</option>
-    </select>
     <select id="activation">
       <option value="">全部发动</option>
       <option value="always">常驻</option>
       <option value="manual">手动</option>
+      <option value="non_probability">非概率触发</option>
       <option value="probability">概率/自动</option>
     </select>
     <select id="attr">
@@ -799,92 +1015,9 @@ def main() -> None:
       <option value="supporter">supporter</option>
       <option value="trickster">trickster</option>
     </select>
-    <label class="toggle"><input id="showVu" type="checkbox">显示仅VU后生效</label>
   </div>
   {sections}
-  <script>
-    const state = {{ activeTab: 'self_atk' }};
-    const q = document.getElementById('q');
-    const levelMode = document.getElementById('levelMode');
-    const sortMode = document.getElementById('sortMode');
-    const activation = document.getElementById('activation');
-    const attr = document.getElementById('attr');
-    const type = document.getElementById('type');
-    const showVu = document.getElementById('showVu');
-    const tabButtons = [...document.querySelectorAll('.tab-button')];
-    const panels = [...document.querySelectorAll('[data-tab-panel]')];
-    const rowCache = new Map();
-
-    for (const panel of panels) {{
-      const rows = [...panel.querySelectorAll('tbody tr')];
-      for (const row of rows) {{
-        try {{
-          row.levels = JSON.parse(row.dataset.levels || '{{}}');
-        }} catch (_error) {{
-          row.levels = {{}};
-        }}
-      }}
-      rowCache.set(panel.dataset.tabPanel, rows);
-    }}
-
-    function activeRows() {{
-      return rowCache.get(state.activeTab) || [];
-    }}
-
-    function applyLevel(row) {{
-      const data = row.levels[levelMode.value];
-      row.dataset.hasLevel = data ? 'true' : 'false';
-      row.dataset.sortMax = data && data.sort_max !== null ? data.sort_max : -1;
-      row.dataset.sortAvg = data && data.sort_avg !== null ? data.sort_avg : -1;
-      row.querySelector('.max-cell').textContent = data ? data.max_text : '-';
-      row.querySelector('.avg-cell').textContent = data ? data.avg_text : '-';
-      row.querySelector('.level-cell').textContent = data ? data.value_text : '-';
-      row.querySelector('.probability-cell').textContent = data ? data.probability : '-';
-      row.querySelector('.duration-cell').textContent = data ? data.duration : '-';
-      row.querySelector('.cooldown-cell').textContent = data ? data.cooldown : '-';
-    }}
-
-    function sortActiveRows() {{
-      const rows = activeRows();
-      for (const row of rows) applyLevel(row);
-      const key = sortMode.value === 'avg' ? 'sortAvg' : 'sortMax';
-      rows.sort((a, b) => Number(b.dataset[key]) - Number(a.dataset[key]));
-      const tbody = document.querySelector(`#panel-${{state.activeTab}} tbody`);
-      for (const row of rows) tbody.appendChild(row);
-    }}
-
-    function applyFilter() {{
-      const needle = q.value.trim().toLowerCase();
-      sortActiveRows();
-      let visibleRank = 1;
-      for (const row of activeRows()) {{
-        const okText = !needle || row.dataset.search.includes(needle);
-        const okActivation = !activation.value || row.dataset.activation === activation.value;
-        const okAttr = !attr.value || row.dataset.attr === attr.value;
-        const okType = !type.value || row.dataset.type === type.value;
-        const okVu = showVu.checked || row.dataset.vuOnly !== 'true';
-        const okLevel = row.dataset.hasLevel === 'true';
-        const visible = okText && okActivation && okAttr && okType && okVu && okLevel;
-        row.style.display = visible ? '' : 'none';
-        if (visible) row.querySelector('.rank').textContent = visibleRank++;
-      }}
-    }}
-
-    function setActiveTab(tabId) {{
-      state.activeTab = tabId;
-      for (const button of tabButtons) button.classList.toggle('active', button.dataset.tab === tabId);
-      for (const panel of panels) panel.classList.toggle('active', panel.dataset.tabPanel === tabId);
-      applyFilter();
-    }}
-
-    for (const button of tabButtons) {{
-      button.addEventListener('click', () => setActiveTab(button.dataset.tab));
-    }}
-    for (const input of [q, levelMode, sortMode, activation, attr, type, showVu]) {{
-      input.addEventListener('input', applyFilter);
-    }}
-    setActiveTab(state.activeTab);
-  </script>
+  {interactive_script('self_atk')}
 </body>
 </html>
 """
