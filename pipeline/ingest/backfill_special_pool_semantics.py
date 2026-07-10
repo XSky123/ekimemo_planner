@@ -245,13 +245,42 @@ def components_for(row: dict[str, Any]) -> list[dict[str, Any]]:
             "iks:003": ("skill_effect_nullification", "アクセス時、相手を対象としたDEF変動スキル効果量を0にする", ["opponent_denko"], "active", "def_changing_effects"),
         }
         kind, condition, scope, direction, disabled_kind = specs[denko_id]
-        return [component(row, kind, kind, condition_value(condition), target_scope=scope, condition_raw=condition, target_filters={"disabled_skill_kind": disabled_kind, "probability_branch": "opponent_pool", "excluded_when_footbar": denko_id == "iks:001"}, trigger_conditions={"access_direction": direction, "event_hint": "access_or_accessed" if direction == "both" else "accessed" if direction == "passive" else "access"})]
+        shared_filters = {
+            "disabled_skill_kind": disabled_kind,
+            "excluded_when_footbar": denko_id == "iks:001",
+        }
+        trigger_conditions = {
+            "access_direction": direction,
+            "event_hint": "access_or_accessed" if direction == "both" else "accessed" if direction == "passive" else "access",
+        }
+        return [
+            component(
+                row,
+                f"{kind}_non_original_extra",
+                kind,
+                condition_value(condition, "(1)"),
+                target_scope=scope,
+                condition_raw=condition,
+                target_filters={**shared_filters, "opponent_pool_excludes": ["original", "extra"]},
+                trigger_conditions=trigger_conditions,
+            ),
+            component(
+                row,
+                f"{kind}_original_extra",
+                kind,
+                condition_value(condition, "(2)"),
+                target_scope=scope,
+                condition_raw=condition,
+                target_filters={**shared_filters, "opponent_pool_in": ["original", "extra"]},
+                trigger_conditions=trigger_conditions,
+            ),
+        ]
 
     if denko_id == "iks:004":
         def threshold(label: str) -> ValueBuilder:
             def build(fact: dict[str, Any]) -> dict[str, Any] | None:
                 value = number(rf"\({label}\)被ダメージ(\d+)以下無効化", str(fact.get("effect") or ""))
-                return value_row(fact, f"被ダメージ{display_number(value)}以下を無効化", "damage_threshold", value_numeric=value, label=f"({label})") if value is not None else None
+                return value_row(fact, f"被ダメージ{display_number(value)}以下を無効化", "flat_damage_threshold", value_numeric=value, label=f"({label})") if value is not None else None
             return build
         return [
             component(row, "def_buff_1", "def_buff", labeled_numeric(r"\(1\)DEF\s*([+-]\d+)%", "DEF", "percent", "(1)"), target_scope=["self"], condition_raw="自身のDEF増加", label="(1)", role="default_effect"),
@@ -316,7 +345,7 @@ def backfill_row(row: dict[str, Any]) -> None:
     }
 
 
-def main() -> None:
+def run_backfill() -> list[dict[str, Any]]:
     results = []
     for path in sorted(RECORD_DIR.glob("*_skill_facts.jsonl")):
         pool = path.name.split("_", 1)[0]
@@ -327,6 +356,11 @@ def main() -> None:
             backfill_row(row)
         write_jsonl(path, rows)
         results.append({"path": str(path.relative_to(ROOT)), "rows": len(rows)})
+    return results
+
+
+def main() -> None:
+    results = run_backfill()
     print(json.dumps({"backfill_version": BACKFILL_VERSION, "results": results}, ensure_ascii=False))
 
 

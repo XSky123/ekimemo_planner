@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Any
 
 import parse as base
+import backfill_special_pool_semantics as special_backfill
 
 
 OUT_DIR = base.ROOT / "data" / "step1_db"
@@ -282,6 +283,7 @@ def main() -> int:
     args = parser.parse_args()
     out_dir = args.out_dir
 
+    special_backfill_results = special_backfill.run_backfill()
     denko_batch_rows, denko_source = load_batch_rows("denko_facts")
     skill_batch_rows, skill_source = load_batch_rows("skill_facts")
     denko_rows, denko_dedupe = dedupe_rows(denko_batch_rows)
@@ -316,6 +318,13 @@ def main() -> int:
         "source_batches": {
             "denko": denko_source,
             "skill": skill_source,
+        },
+        "postprocess": {
+            "special_pool_semantics": {
+                "backfill_version": special_backfill.BACKFILL_VERSION,
+                "records": special_backfill_results,
+                "rebuild_protection": "reapplied_before_step1_db_merge",
+            }
         },
         "dedupe": {
             "denko": denko_dedupe,

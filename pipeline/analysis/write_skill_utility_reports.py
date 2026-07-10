@@ -337,7 +337,7 @@ def level_value_text(tab_id: str, component: dict[str, Any], level: str, value: 
             "スキル無効化",
             "ダメージ無効化",
         }
-        if kind == "damage_nullification" and value.get("unit") != "flat_damage_threshold":
+        if kind == "damage_nullification" and value.get("unit") not in {"flat_damage_threshold", "damage_threshold"}:
             raw = EFFECT_LABELS.get(kind, kind)
         if raw in technical_values or raw == "-" or re.fullmatch(r"[\d.]+%", raw):
             raw = EFFECT_LABELS.get(kind, kind)

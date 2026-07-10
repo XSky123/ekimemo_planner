@@ -600,31 +600,7 @@ def multiplier_value(raw: str, numeric: float | None) -> float | None:
 
 
 def probability_text(value: dict[str, Any]) -> str:
-    probability = value.get("probability")
-    if not probability:
-        return "-"
-    if isinstance(probability, dict):
-        labels = {
-            "activation_probability": "発動率",
-            "score_increase_probability": "スコア増加",
-            "score_decrease_probability": "スコア減少",
-        }
-        parts = []
-        keys = [
-            key for key in ("activation_probability", "score_increase_probability", "score_decrease_probability") if key in probability
-        ]
-        keys += [key for key in probability if key not in keys]
-        for key in keys:
-            item = probability[key]
-            if item in {None, "", "-"}:
-                continue
-            label = labels.get(str(key), str(key))
-            if label == "発動率":
-                parts.append(str(item))
-            else:
-                parts.append(f"{label} {item}")
-        return " / ".join(parts) if parts else "-"
-    return str(probability)
+    return base.probability_text(value)
 
 
 def value_range(component: dict[str, Any], value: dict[str, Any], metric: str) -> tuple[float | None, float | None]:

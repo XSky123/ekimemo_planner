@@ -194,7 +194,21 @@ def probability_text(value: dict[str, Any]) -> str:
             "activation_probability": "発動率",
             "score_increase_probability": "スコア増加",
             "score_decrease_probability": "スコア減少",
+            "opponent_non_original_extra": "对手非Original/Extra",
+            "opponent_original_extra": "对手为Original/Extra",
         }
+
+        def display_label(key: Any) -> str:
+            label = labels.get(str(key))
+            if label is not None:
+                return label
+            label = str(key).strip()
+            # Table labels such as 発動率(1) are structural, not user-facing meaning.
+            label = re.sub(r"^発動率\s*(?:※)?\s*\(\d+\)\s*[:：]?\s*", "", label)
+            label = re.sub(r"^\(\d+\)\s*の?発動率\s*[:：]?\s*", "", label)
+            label = re.sub(r"^発動率\s*[:：]\s*", "", label)
+            return label
+
         parts = []
         keys = [
             key for key in ("activation_probability", "score_increase_probability", "score_decrease_probability") if key in probability
@@ -204,9 +218,9 @@ def probability_text(value: dict[str, Any]) -> str:
             item = probability[key]
             if item in {None, "", "-"}:
                 continue
-            label = labels.get(str(key), str(key))
+            label = display_label(key)
             text = clean_probability_item(item)
-            parts.append(text if label == "発動率" else f"{label} {text}")
+            parts.append(text if not label or label == "発動率" else f"{label} {text}")
         return " / ".join(parts) if parts else "-"
     return clean_probability_item(probability)
 

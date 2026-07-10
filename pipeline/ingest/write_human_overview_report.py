@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import html
 import json
+import re
 from pathlib import Path
 from typing import Any
 
@@ -102,7 +103,20 @@ def probability_text(probability: Any) -> str:
     if not probability:
         return ""
     if isinstance(probability, dict):
-        parts = [f"{k} {v}" for k, v in probability.items() if v not in {None, "", "-"}]
+        labels = {
+            "activation_probability": "",
+            "opponent_non_original_extra": "对手非Original/Extra",
+            "opponent_original_extra": "对手为Original/Extra",
+        }
+        parts = []
+        for key, value in probability.items():
+            if value in {None, "", "-"}:
+                continue
+            label = labels.get(str(key), str(key).strip())
+            label = re.sub(r"^発動率\s*(?:※)?\s*\(\d+\)\s*[:：]?\s*", "", label)
+            label = re.sub(r"^\(\d+\)\s*の?発動率\s*[:：]?\s*", "", label)
+            label = re.sub(r"^発動率\s*[:：]\s*", "", label)
+            parts.append(str(value) if not label else f"{label} {value}")
         return " / ".join(parts)
     return str(probability)
 

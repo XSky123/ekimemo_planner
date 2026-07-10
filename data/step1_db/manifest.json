@@ -12,7 +12,7 @@
       "unique_count": 307
     }
   },
-  "generated_at": "2026-07-11T03:48:35.740867+09:00",
+  "generated_at": "2026-07-11T04:26:51.045061+09:00",
   "language_policy": {
     "display": "zh",
     "schema_keys": "en",
@@ -100,8 +100,8 @@
       "score_gain": 31,
       "score_random_modifier": 1,
       "skill_continue": 1,
-      "skill_disable": 14,
-      "skill_effect_nullification": 2,
+      "skill_disable": 15,
+      "skill_effect_nullification": 4,
       "skill_force_end": 6,
       "station_link_transfer": 1,
       "survive_hp1": 1,
@@ -117,6 +117,30 @@
     "validation": "data/step1_db/validation.json"
   },
   "parser_version": "detail_html_table_matrix.v9",
+  "postprocess": {
+    "special_pool_semantics": {
+      "backfill_version": "special_pool_semantics.v1",
+      "rebuild_protection": "reapplied_before_step1_db_merge",
+      "records": [
+        {
+          "path": "data\\records\\another_002_003_skill_facts.jsonl",
+          "rows": 2
+        },
+        {
+          "path": "data\\records\\awamemo_000_000_skill_facts.jsonl",
+          "rows": 1
+        },
+        {
+          "path": "data\\records\\ekico_001_004_skill_facts.jsonl",
+          "rows": 4
+        },
+        {
+          "path": "data\\records\\iks_000_006_skill_facts.jsonl",
+          "rows": 7
+        }
+      ]
+    }
+  },
   "review_status": {
     "checklist_issue_count": 0,
     "extra_audit": "data/reports/extra_full_audit_zh.html",

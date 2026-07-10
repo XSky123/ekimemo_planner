@@ -54,6 +54,7 @@ Default ingestion batches are 20-30 denko. Batch filenames in `data/records/` ar
 - Accepted manual corrections must keep source/reason metadata and a stable patch id.
 - Stable report corrections that change facts or semantics must be backfilled into batch records/Step1 DB.
 - DB backfill locks must survive parser reruns.
+- Confirmed mutually exclusive branches must be stored as separate components. `build_step1_db.py` reapplies the special-pool semantic backfill before merging records, so a re-fetch cannot restore an unsplit parse.
 - Closed review queues are historical evidence, not current unresolved work.
 
 ## Rebuild

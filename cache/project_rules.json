@@ -174,6 +174,11 @@
       "direction_key": "trigger_conditions.access_direction",
       "recipient_key": "target_scope",
       "requirement_rule": "Store requirements such as successful link, no reboot, station weather, or station temperature in target_filters/trigger_conditions instead of folding them into actor or recipient."
+    },
+    "branch_component_policy": {
+      "rule": "Split a skill into separate components when a condition changes the target pool, trigger direction, activation probability, effect value, or recipient. Do not keep mutually exclusive branches as multiple numbered values in one recommendation row.",
+      "display_rule": "Use target_filters and Chinese report labels to make each branch readable; numbered wiki labels are source evidence, not default display labels.",
+      "persistence_rule": "Confirmed semantic splits must carry db_backfill_lock/source_evidence and live in a deterministic backfill or manual patch. The Step1 DB build must reapply that backfill before merging records so a re-fetch cannot silently restore the unsplit parse."
     }
   },
   "gameplay_level_policy": {
