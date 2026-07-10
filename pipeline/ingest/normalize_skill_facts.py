@@ -1025,7 +1025,7 @@ def rebuild_outputs(pool: str, start: int, end: int, batch_size: int) -> dict[st
     stem = range_ingest.output_stem(start, end, pool)
     denko_rows = read_jsonl(base.RECORD_DIR / f"{stem}_denko_facts.jsonl")
     skill_rows = read_jsonl(base.RECORD_DIR / f"{stem}_skill_facts.jsonl")
-    reviews = read_jsonl(base.REVIEW_DIR / f"{stem}_review_queue.jsonl")
+    reviews = read_jsonl(base.review_queue_path(stem))
     report = range_ingest.write_html_report(start, end, denko_rows, skill_rows, reviews, batch_size, pool)
     state = controller.build_state(start, end, batch_size, run_result=None, pool=pool)
     state["paths"]["report"] = str(report.relative_to(base.ROOT))

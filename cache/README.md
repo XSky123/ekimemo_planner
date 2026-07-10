@@ -1,18 +1,13 @@
 # Cache Directory
 
-This directory currently contains two kinds of files:
+Tracked file:
 
-- Active handoff/config files:
-  - `project_rules.json`
-  - `cache_manifest.json`
-- Legacy/prototype cache from the previous agent phase:
-  - `01_reverse_index/`
-  - `02_denko_profile/`
-  - `03_skill_parsed/`
-  - `04_solver_results/`
-  - `manual_overrides/`
+- `project_rules.json`: compact project-wide language, authority, handoff, model-routing and report rules.
 
-For the new Step 1 pipeline, write generated records to `data/`, not to these old prototype cache folders.
+Ignored runtime caches may appear here:
 
-Old prototype cache can be used as reference only after checking source authority, confidence, and `needs_review`.
+- `prototype_pages/`
+- `prototype_reference_pages/`
+- `prototype_extract/`
 
+They are reproducible web caches, not facts or handoff artifacts. Current facts belong in `data/step1_db/`; raw Step1 page cache remains in ignored `data/raw_pages/` because active parsers read that path.

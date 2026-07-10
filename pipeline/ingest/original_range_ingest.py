@@ -448,8 +448,8 @@ def write_html_report(
             "</body></html>",
         ]
     )
-    base.REPORT_DIR.mkdir(parents=True, exist_ok=True)
-    path = base.REPORT_DIR / f"{output_stem(start, end, pool)}_batch_review_zh.html"
+    base.REVIEW_RUN_DIR.mkdir(parents=True, exist_ok=True)
+    path = base.REVIEW_RUN_DIR / f"{output_stem(start, end, pool)}_batch_review_zh.html"
     write_html_entity_report(path, lines)
     return path
 
@@ -466,8 +466,6 @@ def main() -> int:
     base.RECORD_DIR.mkdir(parents=True, exist_ok=True)
     base.INDEX_DIR.mkdir(parents=True, exist_ok=True)
     base.REVIEW_DIR.mkdir(parents=True, exist_ok=True)
-    base.REPORT_DIR.mkdir(parents=True, exist_ok=True)
-
     denko_rows, reviews = read_pool_records(args.pool, args.start, args.end)
     base.enrich_details(denko_rows, reviews)
     skill_rows = base.build_skill_fact_records(denko_rows)

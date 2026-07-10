@@ -254,6 +254,7 @@ def clean_display_text(text: Any) -> str:
     out = re.sub(r"(^|[\s　])[\(（]\d+[\)）]\s*", r"\1", out)
     out = re.sub(r"(^|[\s　/／、，。])[\(（]\d+[\)）]\s*", r"\1", out)
     out = out.replace("※", "")
+    out = out.replace("未記載", "未记载")
     return re.sub(r"\s+", " ", out).strip()
 
 
@@ -309,7 +310,11 @@ def formula_range_from_text(raw: str, condition: str, value: dict[str, Any]) -> 
     if over_100_match:
         rate = float(over_100_match.group(1))
         return 0.0, rate * (360 - 100)
-    n_match = re.search(r"\+n×(\d+(?:\.\d+)?)%", raw)
+    n_match = re.search(
+        r"\+(?:n×(\d+(?:\.\d+)?)|(\d+(?:\.\d+)?)×n)%",
+        raw,
+        flags=re.IGNORECASE,
+    )
     if n_match:
         context = " ".join(
             [
@@ -321,7 +326,9 @@ def formula_range_from_text(raw: str, condition: str, value: dict[str, Any]) -> 
         range_match = re.search(r"n\s*=\s*(\d+(?:\.\d+)?)\s*[～〜~-]\s*(\d+(?:\.\d+)?)", context)
         max_n = float(range_match.group(2)) if range_match else None
         if max_n is not None:
-            return 0.0, float(n_match.group(1)) * max_n
+            coefficient = float(n_match.group(1) or n_match.group(2))
+            min_n = float(range_match.group(1)) if range_match else 0.0
+            return coefficient * min_n, coefficient * max_n
     return None, None
 
 
@@ -410,6 +417,18 @@ def level_metrics(tab_id: str, row: dict[str, Any], component: dict[str, Any], l
     value = values.get(level)
     if not value:
         return None
+    if value.get("unit") == "unrecorded":
+        return {
+            "level": level,
+            "sort_max": None,
+            "sort_avg": None,
+            "value_text": level_value_text(level, value),
+            "max_text": "未记载",
+            "avg_text": "未记载",
+            "probability": probability_text(value),
+            "duration": value.get("duration") or "-",
+            "cooldown": value.get("cooldown") or "-",
+        }
     value_min, value_max = value_range(tab_id, component, value)
     if value_max is None:
         return None
@@ -953,10 +972,35 @@ def render_table(tab_id: str, candidates: list[dict[str, Any]]) -> str:
     """
 
 
+def audit_formula_metrics(candidates_by_tab: dict[str, list[dict[str, Any]]]) -> None:
+    expected_lv50 = {
+        ("team_atk", "original:051", "atk_buff_1"): (18.0, 9.0),
+        ("team_atk", "original:063", "atk_buff_1"): (24.0, 12.0),
+    }
+    issues = []
+    for (tab_id, denko_id, component_id), expected in expected_lv50.items():
+        item = next(
+            (
+                candidate
+                for candidate in candidates_by_tab[tab_id]
+                if candidate["denko_id"] == denko_id and candidate["component_id"] == component_id
+            ),
+            None,
+        )
+        levels = json.loads(item["level_data"]) if item else {}
+        lv50 = levels.get("50")
+        actual = (lv50.get("sort_max"), lv50.get("sort_avg")) if lv50 else None
+        if actual != expected:
+            issues.append(f"{denko_id}/{component_id}: Lv50 metric expected={expected} actual={actual}")
+    if issues:
+        raise ValueError("attack formula metric audit failed: " + "; ".join(issues))
+
+
 def main() -> None:
     rows = read_jsonl(SKILL_PATH)
     metadata = denko_metadata()
     candidates_by_tab = {tab_id: build_candidates(tab_id, rows, metadata) for tab_id in TABS}
+    audit_formula_metrics(candidates_by_tab)
     tab_buttons = "\n".join(
         f'<button class="tab-button" type="button" data-tab="{esc(tab_id)}">{esc(tab["title"])} {tab_count_html(candidates_by_tab[tab_id])}</button>'
         for tab_id, tab in TABS.items()

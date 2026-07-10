@@ -21,8 +21,8 @@ URLS = {
     "original": "https://newekimemo.wiki.fc2.com/wiki/%E5%88%9D%E5%BF%83%E8%80%85%E5%90%91%E3%81%91%E3%82%AA%E3%83%AA%E3%82%B8%E3%83%8A%E3%83%AB%E3%81%A7%E3%82%93%E3%81%93%E3%82%AA%E3%82%B9%E3%82%B9%E3%83%A1%E5%BA%A6",
     "extra": "https://newekimemo.wiki.fc2.com/wiki/%E5%88%9D%E5%BF%83%E8%80%85%E5%90%91%E3%81%91%E3%82%A8%E3%82%AF%E3%82%B9%E3%83%88%E3%83%A9%E3%81%A7%E3%82%93%E3%81%93%E3%82%AA%E3%82%B9%E3%82%B9%E3%83%A1%E5%BA%A6",
 }
-OUT_JSON = base.ROOT / "data" / "agent_runs" / "recommendation_prior_full_audit.json"
-OUT_HTML = base.ROOT / "data" / "reports" / "recommendation_prior_full_audit_zh.html"
+OUT_JSON = base.ROOT / "data" / "audits" / "recommendation_prior_audit.json"
+OUT_HTML = base.ROOT / "data" / "audits" / "recommendation_prior_audit_zh.html"
 ATTRIBUTES = ("heat", "cool", "eco", "flat")
 
 

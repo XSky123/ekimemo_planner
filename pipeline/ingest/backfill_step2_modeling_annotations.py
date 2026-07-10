@@ -207,6 +207,143 @@ def backfill_naru(row: dict[str, Any]) -> int:
     return changed
 
 
+def backfill_miyu_distance_exp(row: dict[str, Any]) -> int:
+    source = component_by_id(row, "exp_gain") or component_by_id(row, "exp_gain_1")
+    if not source:
+        return 0
+
+    range_values: dict[str, dict[str, Any]] = {}
+    team_values: dict[str, dict[str, Any]] = {}
+    for level, source_value in values(source).items():
+        raw_row = source_value.get("raw_row") or {}
+        effect = str(raw_row.get("効果") or "")
+        match = re.search(
+            r"経験値\s*(\d+(?:\.\d+)?)\s*[～〜~-]\s*(\d+(?:\.\d+)?)"
+            r".*?100km以上\s*[:：]\s*編成内経験値\s*(\d+(?:\.\d+)?)",
+            effect,
+        )
+        if not match:
+            continue
+        value_min, value_max, team_value = (float(item) for item in match.groups())
+        shared = {
+            key: copy.deepcopy(item)
+            for key, item in source_value.items()
+            if key not in {"unit", "value_numeric", "value_min", "value_max", "value_raw"}
+        }
+        range_values[str(level)] = {
+            **shared,
+            "unit": "flat_exp",
+            "value_numeric": value_min,
+            "value_min": value_min,
+            "value_max": value_max,
+            "value_raw": f"経験値付与 {value_min:g}～{value_max:g}",
+            "db_backfilled_from": "detail_effect_distance_exp_range",
+            "db_backfill_reason": REASON,
+            "db_backfill_version": BACKFILL_VERSION,
+        }
+        team_values[str(level)] = {
+            **shared,
+            "unit": "flat_exp",
+            "value_numeric": team_value,
+            "value_raw": f"経験値付与 {team_value:g}",
+            "db_backfilled_from": "detail_effect_100km_team_exp",
+            "db_backfill_reason": REASON,
+            "db_backfill_version": BACKFILL_VERSION,
+        }
+
+    if not range_values or set(range_values) != set(values(source)):
+        return 0
+
+    first = copy.deepcopy(source)
+    first.update(
+        {
+            "component_id": "exp_gain_1",
+            "condition_label": "(1)",
+            "condition_raw": "当日の移動距離に応じてアクセスしたでんこに経験値付与(上限100km)",
+            "effect_role": "default_effect",
+            "target_scope": ["accessing_denko"],
+            "target_filters": {"distance_basis": "today_travel_distance", "distance_cap_km": 100},
+            "scaling_conditions": {"basis": "today_travel_distance", "distance_cap_km": 100},
+            "trigger_conditions": {
+                "actor_scope": "any_team_member",
+                "access_direction": "active",
+                "event_hint": "access",
+            },
+            "values_by_denko_level": range_values,
+        }
+    )
+    second = copy.deepcopy(source)
+    second.update(
+        {
+            "component_id": "exp_gain_2",
+            "condition_label": "(2)",
+            "condition_raw": "当日の移動距離が100km以上の場合、編成内全員に追加で経験値付与",
+            "effect_role": "additional_effect",
+            "target_scope": ["team_all"],
+            "target_filters": {"distance_basis": "today_travel_distance", "distance_min_km": 100},
+            "scaling_conditions": {},
+            "trigger_conditions": {
+                "actor_scope": "any_team_member",
+                "access_direction": "active",
+                "event_hint": "access",
+            },
+            "values_by_denko_level": team_values,
+        }
+    )
+    mark_component(first, "step2_miyu_distance_exp_split")
+    mark_component(second, "step2_miyu_distance_exp_split")
+
+    components = row.get("skill_components") or []
+    replace_ids = {"exp_gain", "exp_gain_1", "exp_gain_2"}
+    insert_at = next(
+        (index for index, component in enumerate(components) if component.get("component_id") in replace_ids),
+        len(components),
+    )
+    updated = [component for component in components if component.get("component_id") not in replace_ids]
+    updated[insert_at:insert_at] = [first, second]
+    if components == updated:
+        return 0
+    row["skill_components"] = updated
+    return 1
+
+
+def backfill_unrecorded_vu_values(row: dict[str, Any]) -> int:
+    changed = 0
+    for component in row.get("skill_components") or []:
+        component_changed = 0
+        for level, value in values(component).items():
+            if str(level) not in {"92", "96"}:
+                continue
+            raw_row = json.dumps(value.get("raw_row") or {}, ensure_ascii=False)
+            value_raw = str(value.get("value_raw") or "")
+            direct_unknown = bool(re.search(r"(?:\bx\b|\?)", value_raw, flags=re.IGNORECASE))
+            collapsed_unknown = (
+                value.get("value_numeric") == 0
+                and value.get("value_max") is None
+                and bool(re.search(r"(?:\bx\b|\?)", raw_row, flags=re.IGNORECASE))
+            )
+            if not direct_unknown and not collapsed_unknown:
+                continue
+            expected = {
+                "unit": "unrecorded",
+                "value_numeric": None,
+                "value_min": None,
+                "value_max": None,
+                "value_raw": "未記載",
+                "db_backfilled_from": "detail_vu_unknown_placeholder",
+                "db_backfill_reason": REASON,
+                "db_backfill_version": BACKFILL_VERSION,
+            }
+            for key, item in expected.items():
+                if value.get(key) != item:
+                    value[key] = item
+                    component_changed += 1
+        if component_changed:
+            mark_component(component, "step2_vu_unknown_value_unrecorded")
+            changed += component_changed
+    return changed
+
+
 def backfill_temperature_bands(row: dict[str, Any]) -> int:
     specs = {
         "atk_buff_1": {"temperature_band": ">=30C", "temperature_min_c": 30, "inactive_temperature_bands": ["26-29C", "11-14C"]},
@@ -1120,6 +1257,9 @@ def backfill_row(row: dict[str, Any]) -> int:
         changed += backfill_momiji(row)
     if denko_id == "original:078":
         changed += backfill_naru(row)
+    if denko_id == "original:069":
+        changed += backfill_miyu_distance_exp(row)
+    changed += backfill_unrecorded_vu_values(row)
     if denko_id == "original:162":
         changed += backfill_temperature_bands(row)
     if denko_id in {"extra:002", "extra:003", "extra:004"}:

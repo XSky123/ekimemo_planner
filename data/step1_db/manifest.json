@@ -2,75 +2,17 @@
   "artifact": "step1_db",
   "dedupe": {
     "denko": {
-      "duplicate_denko_count": 3,
-      "duplicate_details": [
-        {
-          "candidate_count": 2,
-          "content_hashes": [
-            "b01ea39d281efeebf55dff7cc07ddbb339cabb2f5eefe1f7ca4a772f5dbc4299"
-          ],
-          "denko_id": "original:040",
-          "identity_count": 1,
-          "resolution": "last_batch_row_selected"
-        },
-        {
-          "candidate_count": 2,
-          "content_hashes": [
-            "b01ea39d281efeebf55dff7cc07ddbb339cabb2f5eefe1f7ca4a772f5dbc4299"
-          ],
-          "denko_id": "original:080",
-          "identity_count": 1,
-          "resolution": "last_batch_row_selected"
-        },
-        {
-          "candidate_count": 2,
-          "content_hashes": [
-            "5a4c0d3b1393037bfc42d73a51675def5f1ff49c25ec2a5e3845cbfb520639fc",
-            "ff2e5596e125c25ccc61d69fb69c22b23197aefa27700ab55b7af8c05ff2ce9a"
-          ],
-          "denko_id": "extra:127",
-          "identity_count": 2,
-          "resolution": "last_batch_row_selected"
-        }
-      ],
+      "duplicate_denko_count": 0,
+      "duplicate_details": [],
       "unique_count": 293
     },
     "skill": {
-      "duplicate_denko_count": 3,
-      "duplicate_details": [
-        {
-          "candidate_count": 2,
-          "content_hashes": [
-            "3e76d727a8e9a36d86ff3b73a020c3890d0342e337f22b25f1bc896e55c53530"
-          ],
-          "denko_id": "original:040",
-          "identity_count": 1,
-          "resolution": "last_batch_row_selected"
-        },
-        {
-          "candidate_count": 2,
-          "content_hashes": [
-            "ab36d3903b0b27f7f43374c7be23adf627e456b26b93e5b6bddb99c09dfbc55a"
-          ],
-          "denko_id": "original:080",
-          "identity_count": 1,
-          "resolution": "last_batch_row_selected"
-        },
-        {
-          "candidate_count": 2,
-          "content_hashes": [
-            "42de0c64870722f5b5a1c3af2f5a24d2741ca30357d48d0f123e3f1ac9f41e19",
-            "601f44e871753bf3ff5f27ceaf553ff1008ec1c28f74c5800f99d1e670c8bd26"
-          ],
-          "denko_id": "extra:127",
-          "identity_count": 2,
-          "resolution": "last_batch_row_selected"
-        }
-      ],
+      "duplicate_denko_count": 0,
+      "duplicate_details": [],
       "unique_count": 293
     }
   },
-  "generated_at": "2026-07-11T01:49:18.822186+09:00",
+  "generated_at": "2026-07-11T02:57:13.373382+09:00",
   "language_policy": {
     "display": "zh",
     "schema_keys": "en",
@@ -112,7 +54,7 @@
       "effect_multiplier": 13,
       "exp_distribution": 4,
       "exp_distribution_bonus": 1,
-      "exp_gain": 65,
+      "exp_gain": 66,
       "extra_access": 4,
       "film_effect_multiplier": 1,
       "film_series_effect_boost": 1,
@@ -174,33 +116,33 @@
   "source_batches": {
     "denko": {
       "source_files": [
-        "data\\records\\original_001_040_denko_facts.jsonl",
-        "data\\records\\original_040_080_denko_facts.jsonl",
+        "data\\records\\original_001_039_denko_facts.jsonl",
+        "data\\records\\original_040_079_denko_facts.jsonl",
         "data\\records\\original_080_119_denko_facts.jsonl",
         "data\\records\\original_120_163_denko_facts.jsonl",
         "data\\records\\original_164_165_denko_facts.jsonl",
         "data\\records\\extra_001_040_denko_facts.jsonl",
         "data\\records\\extra_041_080_denko_facts.jsonl",
         "data\\records\\extra_081_120_denko_facts.jsonl",
-        "data\\records\\extra_121_127_denko_facts.jsonl",
+        "data\\records\\extra_121_126_denko_facts.jsonl",
         "data\\records\\extra_127_128_denko_facts.jsonl"
       ],
-      "source_row_count": 296
+      "source_row_count": 293
     },
     "skill": {
       "source_files": [
-        "data\\records\\original_001_040_skill_facts.jsonl",
-        "data\\records\\original_040_080_skill_facts.jsonl",
+        "data\\records\\original_001_039_skill_facts.jsonl",
+        "data\\records\\original_040_079_skill_facts.jsonl",
         "data\\records\\original_080_119_skill_facts.jsonl",
         "data\\records\\original_120_163_skill_facts.jsonl",
         "data\\records\\original_164_165_skill_facts.jsonl",
         "data\\records\\extra_001_040_skill_facts.jsonl",
         "data\\records\\extra_041_080_skill_facts.jsonl",
         "data\\records\\extra_081_120_skill_facts.jsonl",
-        "data\\records\\extra_121_127_skill_facts.jsonl",
+        "data\\records\\extra_121_126_skill_facts.jsonl",
         "data\\records\\extra_127_128_skill_facts.jsonl"
       ],
-      "source_row_count": 296
+      "source_row_count": 293
     }
   }
 }

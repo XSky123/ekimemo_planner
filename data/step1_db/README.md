@@ -25,7 +25,9 @@ User-facing reports remain Chinese. Source facts are stored in Japanese. Schema 
 
 ## Notes
 
-- Batch files under `data/records/` are intermediate/provenance artifacts.
+- Batch files under `data/records/` are retained rebuild inputs and provenance. Their numbered names are tied to manual patch/replay tooling.
+- Accepted semantic corrections live under `data/manual_fills/` and in locked DB backfills.
+- Closed Step1 review queues and final historical audits live under `archive/step1_ingestion_2026-07-11/`.
 - `original:040` and `original:080` appeared in overlapping historical batches; final DB dedupes them with identical hashes.
 - Rebuild with:
 

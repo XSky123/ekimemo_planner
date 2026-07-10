@@ -13,7 +13,7 @@ import parse as base
 import original_range_ingest as range_ingest
 
 
-AGENT_RUN_DIR = base.ROOT / "data" / "agent_runs"
+AGENT_RUN_DIR = base.REVIEW_RUN_DIR
 
 BLOCKING_REASONS = {
     "component_values_not_parsed",
@@ -102,19 +102,9 @@ def blocking_items(skill_rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
     return items
 
 
-def relevant_observed_cases(stem: str) -> list[str]:
-    observed_dir = base.ROOT / "data" / "observed_cases"
-    if not observed_dir.exists():
-        return []
-    paths = list(observed_dir.glob("*parser_*.jsonl")) + list(observed_dir.glob("*review_rules*.jsonl"))
-    return [
-        str(path.relative_to(base.ROOT))
-        for path in sorted(set(paths))
-        if stem in path.name
-        or "original_080_119" in path.name
-        or "original_120_163" in path.name
-        or "review_rules" in path.name
-    ]
+def relevant_review_history() -> list[str]:
+    path = base.ROOT / "archive" / "step1_ingestion_2026-07-11" / "parser_review_cases.jsonl"
+    return [path.relative_to(base.ROOT).as_posix()] if path.exists() else []
 
 
 def write_batch_review_prompt(stem: str, state: dict[str, Any]) -> Path:
@@ -122,7 +112,7 @@ def write_batch_review_prompt(stem: str, state: dict[str, Any]) -> Path:
     lines = [
         "# Batch Review Agent Task",
         "",
-        "Use `.agents/batch_review_expert.md` as the role prompt.",
+        "Use `.agents/step1_review.md` as the role prompt.",
         "",
         "请复查本批 ingestion 结果，输出中文报告。重点看高风险项，不要读取全库或整页 wiki。",
         "",
@@ -133,10 +123,10 @@ def write_batch_review_prompt(stem: str, state: dict[str, Any]) -> Path:
         f"- denko_facts: `{state['paths']['denko_facts']}`",
         f"- review_queue: `{state['paths']['review_queue']}`",
         "",
-        "## Observed Cases",
+        "## Historical Parser Review Cases",
         "",
     ]
-    for path in state["paths"]["observed_cases"]:
+    for path in state["paths"]["review_history"]:
         lines.append(f"- `{path}`")
     lines.extend(
         [
@@ -166,11 +156,11 @@ def write_batch_review_prompt(stem: str, state: dict[str, Any]) -> Path:
 def build_state(start: int, end: int, batch_size: int, run_result: dict[str, Any] | None, pool: str = "original") -> dict[str, Any]:
     stem = range_ingest.output_stem(start, end, pool)
     paths = {
-        "report": f"data/reports/{stem}_batch_review_zh.html",
+        "report": (base.REVIEW_RUN_DIR / f"{stem}_batch_review_zh.html").relative_to(base.ROOT).as_posix(),
         "skill_facts": f"data/records/{stem}_skill_facts.jsonl",
         "denko_facts": f"data/records/{stem}_denko_facts.jsonl",
-        "review_queue": f"data/review_queue/{stem}_review_queue.jsonl",
-        "observed_cases": relevant_observed_cases(stem),
+        "review_queue": base.review_queue_path(stem).relative_to(base.ROOT).as_posix(),
+        "review_history": relevant_review_history(),
     }
     skill_rows = read_jsonl(base.ROOT / paths["skill_facts"])
     reason_counts = component_reason_counts(skill_rows)

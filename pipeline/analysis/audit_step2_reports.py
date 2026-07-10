@@ -16,8 +16,8 @@ REPORTS = {
     "defense": ROOT / "data" / "reports" / "step2_defense_support_rankings_zh.html",
     "mobility": ROOT / "data" / "reports" / "step2_mobility_visit_rankings_zh.html",
 }
-OUT_JSON = ROOT / "data" / "agent_runs" / "step2_full_semantic_audit_20260704.json"
-OUT_MD = ROOT / "data" / "agent_runs" / "step2_full_semantic_audit_20260704_zh.md"
+OUT_JSON = ROOT / "data" / "audits" / "step2_semantic_audit.json"
+OUT_MD = ROOT / "data" / "audits" / "step2_semantic_audit_zh.md"
 
 
 UNKNOWN_TARGET_TOKENS = {"对象未明", "対象未明"}

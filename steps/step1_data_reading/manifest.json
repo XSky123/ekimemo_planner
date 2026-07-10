@@ -8,14 +8,11 @@
     "complete": true
   },
   "rules": {
-    "controller_ingestion": "docs/controller_ingestion.md",
-    "execution_rules": "docs/data_reading_execution_rules.md",
-    "wiki_id_mapping": "docs/wiki_id_mapping.md",
-    "table_parsing": "docs/table_parsing.md",
-    "detail_page_parsing": "docs/detail_page_parsing.md",
-    "periodic_review": "steps/step1_data_reading/periodic_review.md"
+    "ingestion": "docs/step1_ingestion_rules.md",
+    "skill_components": "docs/skill_component_model.md",
+    "report_review": "docs/report_review_checklist.md"
   },
-  "manifest": "data/ingestion_manifest.json",
+  "project_rules": "cache/project_rules.json",
   "schemas": [
     "schemas/record_meta.schema.json",
     "schemas/denko_fact.schema.json",
@@ -32,6 +29,10 @@
     "skill_facts": "data/step1_db/skill_facts.jsonl",
     "denko_index": "data/step1_db/denko_index.json",
     "manifest": "data/step1_db/manifest.json",
-    "validation": "data/step1_db/validation.json"
+    "validation": "data/step1_db/validation.json",
+    "batch_records": "data/records",
+    "manual_fills": "data/manual_fills",
+    "active_review_queue": "data/review_queue",
+    "closed_review_archive": "archive/step1_ingestion_2026-07-11/review_queue"
   }
 }

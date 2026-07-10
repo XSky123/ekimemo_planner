@@ -6,18 +6,21 @@ Global read order:
 
 1. `cache/project_rules.json`
 2. `ROADMAP.md`
-3. `PROJECT_STRUCTURE.md`
-4. Current step README under `steps/`
-5. Current step manifest/rules only
-6. Relevant schema and targeted data rows
+3. Current step README/TODO under `steps/`
+4. Current step manifest/rules only
+5. Relevant schema and targeted data rows
+
+Read `PROJECT_STRUCTURE.md` only for repository cleanup, ownership questions or unclear paths.
 
 ## Current Status
 
-- Current step: `step2_indexes`
+- Current step: `step3_role_profiles`
 - Legacy agent: protected in `archive/legacy_agent_2026-06-06/`
 - Git repo: active on branch `main`; static reports are published from the minimal `pages` branch.
 - Step 1 state: complete and incrementally updated through `original` 001-165 and `extra` 001-128. Canonical DB lives under `data/step1_db/`.
-- Step 2 state: candidate discovery reports are available for attack, experience/PT, defense/support, mobility/visit count, and prototype lookup.
+- Step 2 state: candidate discovery is complete enough to feed role profiles. Reports remain maintainable views, not final team scores.
+- Working tree note: the latest metric/range/VU cleanup must be committed before starting a large Step3 implementation.
+- Active TODO: `steps/step3_role_profiles/TODO.md`; Step2 decisions are closed in `steps/step2_indexes/CLOSEOUT.md`.
 
 ## Steps
 
@@ -47,11 +50,9 @@ Key outputs:
 - `data/step1_db/denko_index.json`
 - `data/step1_db/manifest.json`
 - `data/step1_db/validation.json`
-- Batch/intermediate provenance remains under `data/records/`, `data/indexes/`, and `data/review_queue/`.
-
-Execution checklist:
-
-- `steps/step1_data_reading/checklist.md`
+- Rebuild inputs remain under `data/records/` and `data/manual_fills/`.
+- Closed review queues/audits are under `archive/step1_ingestion_2026-07-11/`; new unresolved queues use `data/review_queue/`.
+- Maintenance rules: `docs/step1_ingestion_rules.md`.
 
 ### Step 2: Indexes And Candidate Discovery
 
@@ -68,6 +69,8 @@ Goal:
   - `data/reports/step2_mobility_visit_rankings_zh.html`
   - `data/reports/step2_prototype_lookup_zh.html`
 
+Status: complete for candidate discovery; keep semantic audits green when Step1 changes.
+
 ### Step 3: Role Profiles
 
 Path: `steps/step3_role_profiles/`
@@ -76,6 +79,8 @@ Goal:
 
 - Convert facts into reusable role profiles.
 - Do not bind profiles to one fixed main denko.
+- Normalize uptime, expected effect, trigger actor/direction, recipient, hard constraints, opportunity cost, and scene tags.
+- First deliverable: schema + deterministic generator + compact JSONL, not a UI.
 
 ### Step 4: Solver
 

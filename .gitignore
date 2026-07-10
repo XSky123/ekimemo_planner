@@ -21,5 +21,3 @@ cache/prototype_reference_pages/
 # Keep data structure, but avoid committing bulky fetched pages by default
 data/raw_pages/*
 !data/raw_pages/.gitkeep
-data/review_evidence/screenshots/*
-!data/review_evidence/screenshots/.gitkeep

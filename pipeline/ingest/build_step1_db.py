@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 from collections import Counter, defaultdict
 from datetime import datetime
 from pathlib import Path
@@ -173,6 +174,8 @@ def validate(denko_rows: list[dict[str, Any]], skill_rows: list[dict[str, Any]])
                 }
             )
     review_blockers = []
+    formula_range_blockers = []
+    vu_unknown_zero_blockers = []
     for row in skill_rows:
         if not row.get("skill_components"):
             review_blockers.append(
@@ -206,8 +209,48 @@ def validate(denko_rows: list[dict[str, Any]], skill_rows: list[dict[str, Any]])
                         "review_reasons": blockers,
                     }
                 )
+            for level, value in (component.get("values_by_denko_level") or {}).items():
+                raw = str(value.get("value_raw") or "")
+                if (
+                    value.get("unit") in {"formula_percent", "formula_flat_damage"}
+                    and re.search(r"(?:\d+(?:\.\d+)?\s*[×xX]\s*n|n\s*[×xX]\s*\d+(?:\.\d+)?)", raw, re.IGNORECASE)
+                    and (value.get("value_min") is None or value.get("value_max") is None)
+                ):
+                    formula_range_blockers.append(
+                        {
+                            "denko_id": row.get("denko_id"),
+                            "component_id": component.get("component_id"),
+                            "level": level,
+                            "value_raw": raw,
+                        }
+                    )
+                raw_row = json.dumps(value.get("raw_row") or {}, ensure_ascii=False)
+                if (
+                    str(level) in {"92", "96"}
+                    and value.get("unit") != "unrecorded"
+                    and (
+                        re.search(r"(?:\bx\b|\?)", raw, re.IGNORECASE)
+                        or (
+                            value.get("value_numeric") == 0
+                            and value.get("value_max") is None
+                            and re.search(r"(?:\bx\b|\?)", raw_row, re.IGNORECASE)
+                        )
+                    )
+                ):
+                    vu_unknown_zero_blockers.append(
+                        {
+                            "denko_id": row.get("denko_id"),
+                            "component_id": component.get("component_id"),
+                            "level": level,
+                            "value_raw": raw,
+                        }
+                    )
     if review_blockers:
         issues.append({"issue": "blocking_review_reasons_present", "items": review_blockers})
+    if formula_range_blockers:
+        issues.append({"issue": "formula_range_missing", "items": formula_range_blockers})
+    if vu_unknown_zero_blockers:
+        issues.append({"issue": "vu_unknown_value_collapsed_to_zero", "items": vu_unknown_zero_blockers})
     return {
         "issue_count": len(issues),
         "issues": issues,

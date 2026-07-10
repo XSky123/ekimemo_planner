@@ -189,7 +189,7 @@ def apply_patches(batch: str) -> dict[str, Any]:
 
     skill_path = base.RECORD_DIR / f"{batch}_skill_facts.jsonl"
     denko_path = base.RECORD_DIR / f"{batch}_denko_facts.jsonl"
-    review_path = base.REVIEW_DIR / f"{batch}_review_queue.jsonl"
+    review_path = base.review_queue_path(batch)
     skill_rows = read_jsonl(skill_path)
     denko_rows = read_jsonl(denko_path)
     reviews = read_jsonl(review_path)

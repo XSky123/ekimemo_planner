@@ -21,7 +21,7 @@ OUT_HTML = ROOT / "data" / "reports" / "step2_mobility_visit_rankings_zh.html"
 TABS = {
     "extra_access": {
         "title": "追加访问/再次访问",
-        "description": "直接增加一次访问、失败后再访问、同一站追加访问。回数活动价值最高，但常受触发条件和概率限制。",
+        "description": "直接增加一次访问、失败后再访问、同一站追加访问。它们是行为效果，不把“再访问一次”伪装成可比较的理论收益。",
         "kinds": {"extra_access"},
     },
     "random_remote_access": {
@@ -67,6 +67,12 @@ KIND_USE_CASE = {
     "today_new_station_bonus": "开图收益放大",
 }
 
+NON_NUMERIC_ACCESS_KINDS = {
+    "extra_access",
+    "random_previous_station_access",
+    "remote_station_access",
+}
+
 
 def esc(value: Any) -> str:
     return html.escape("" if value is None else str(value), quote=True)
@@ -92,21 +98,37 @@ def numeric_from_text(text: str) -> float | None:
     return max(nums, key=abs) if nums else None
 
 
-def value_number(kind: str, value: dict[str, Any]) -> float | None:
+def duration_minutes(raw: str) -> float | None:
+    hour_match = re.search(r"([+-]?\d+(?:\.\d+)?)\s*時間", raw)
+    minute_match = re.search(r"([+-]?\d+(?:\.\d+)?)\s*分", raw)
+    if not hour_match and not minute_match:
+        return None
+    hours = float(hour_match.group(1)) if hour_match else 0.0
+    minutes = float(minute_match.group(1)) if minute_match else 0.0
+    return hours * 60 + minutes
+
+
+def value_range(kind: str, value: dict[str, Any]) -> tuple[float | None, float | None]:
+    if kind in NON_NUMERIC_ACCESS_KINDS:
+        return None, None
+    raw = str(value.get("value_raw") or "")
+    if kind == "memory_access_time":
+        minutes = duration_minutes(raw)
+        return (minutes, minutes) if minutes is not None else (None, None)
+    value_min = base.as_number(value.get("value_min"))
+    value_max = base.as_number(value.get("value_max"))
+    if value_min is not None and value_max is not None:
+        return min(abs(value_min), abs(value_max)), max(abs(value_min), abs(value_max))
     numeric = base.as_number(value.get("value_numeric"))
     if numeric is not None:
-        return abs(numeric)
-    raw = str(value.get("value_raw") or "")
-    if kind in {"extra_access", "random_previous_station_access", "remote_station_access"} and (
-        "アクセス" in raw or raw == "extra_access"
-    ):
-        return 1.0
-    return numeric_from_text(raw)
+        return abs(numeric), abs(numeric)
+    number = numeric_from_text(raw)
+    return (number, number) if number is not None else (None, None)
 
 
 def metric_text(kind: str, number: float | None, raw: str) -> str:
     if number is None:
-        return raw or "-"
+        return "-"
     if kind == "today_new_station_bonus":
         return f"+{number:g}%"
     if kind == "memory_access_time":
@@ -130,9 +152,10 @@ def level_metrics(component: dict[str, Any], level: str) -> dict[str, Any] | Non
         return None
     kind = str(component.get("effect_kind") or "")
     raw = str(value.get("value_raw") or "")
-    number = value_number(kind, value)
+    value_min, number = value_range(kind, value)
+    average = base.mean_value(value_min, number)
     probability = probability_max(value)
-    expected = number * probability / 100 if number is not None else None
+    expected = average * probability / 100 if average is not None else None
     return {
         "level": level,
         "sort_max": number,
@@ -253,8 +276,8 @@ def render_rows(tab_id: str, candidates: list[dict[str, Any]]) -> str:
                     f'<td>{esc(item["type_key"])}</td>',
                     f'<td>{esc(EFFECT_LABELS.get(item["kind"], item["kind"]))}{component_html}</td>',
                     f'<td>{esc(item["use_case"])}</td>',
-                    f'<td class="metric max-cell">{esc(item["max_text"])}</td>',
-                    f'<td class="metric avg-cell">{esc(item["avg_text"])}</td>',
+                    f'<td class="metric max-cell mobility-metric">{esc(item["max_text"])}</td>',
+                    f'<td class="metric avg-cell mobility-metric">{esc(item["avg_text"])}</td>',
                     f'<td class="level-cell">{esc(item["level_value"])}</td>',
                     f'<td class="probability-cell">{esc(item["probability"])}</td>',
                     f'<td class="duration-cell">{esc(item["duration"])}</td>',
@@ -271,8 +294,9 @@ def render_rows(tab_id: str, candidates: list[dict[str, Any]]) -> str:
 
 def render_table(tab_id: str, candidates: list[dict[str, Any]]) -> str:
     tab = TABS[tab_id]
+    panel_class = " tab-no-metrics" if tab_id == "extra_access" else ""
     return f"""
-    <section class="tab-panel" id="panel-{esc(tab_id)}" data-tab-panel="{esc(tab_id)}">
+    <section class="tab-panel{panel_class}" id="panel-{esc(tab_id)}" data-tab-panel="{esc(tab_id)}">
       <h2>{esc(tab["title"])} {base.section_count_html(candidates)}</h2>
       <p>{esc(tab["description"])}</p>
       <table>
@@ -284,8 +308,8 @@ def render_table(tab_id: str, candidates: list[dict[str, Any]]) -> str:
             <th>类型</th>
             <th>效果</th>
             <th>活动用途</th>
-            <th>理论值</th>
-            <th>粗略期望</th>
+            <th class="mobility-metric">理论最大</th>
+            <th class="mobility-metric">期望值</th>
             <th>等级值</th>
             <th>概率</th>
             <th>持续</th>
@@ -301,10 +325,44 @@ def render_table(tab_id: str, candidates: list[dict[str, Any]]) -> str:
     """
 
 
+def audit_candidates(candidates_by_tab: dict[str, list[dict[str, Any]]]) -> None:
+    issues = []
+    for tab_id, candidates in candidates_by_tab.items():
+        for item in candidates:
+            if item["kind"] not in NON_NUMERIC_ACCESS_KINDS:
+                continue
+            levels = json.loads(item["level_data"])
+            if any(value["sort_max"] is not None or value["sort_avg"] is not None for value in levels.values()):
+                issues.append(f"{tab_id}/{item['denko_id']}/{item['component_id']}: access behavior has numeric metric")
+
+    expected_lv50 = {
+        ("random_remote_access", "extra:001", "memory_access_station_count"): (5.0, 5.0),
+        ("range_transfer", "original:047", "radar_detection_range"): (2.0, 2.0),
+        ("new_station_bonus", "extra:104", "today_new_station_bonus"): (125.0, 125.0),
+    }
+    for (tab_id, denko_id, component_id), expected in expected_lv50.items():
+        item = next(
+            (
+                candidate
+                for candidate in candidates_by_tab[tab_id]
+                if candidate["denko_id"] == denko_id and candidate["component_id"] == component_id
+            ),
+            None,
+        )
+        levels = json.loads(item["level_data"]) if item else {}
+        lv50 = levels.get("50")
+        actual = (lv50.get("sort_max"), lv50.get("sort_avg")) if lv50 else None
+        if actual != expected:
+            issues.append(f"{denko_id}/{component_id}: Lv50 metric expected={expected} actual={actual}")
+    if issues:
+        raise ValueError("mobility metric audit failed: " + "; ".join(issues))
+
+
 def main() -> None:
     rows = base.read_jsonl(SKILL_PATH)
     metadata = base.denko_metadata()
     candidates_by_tab = {tab_id: build_candidates(tab_id, rows, metadata) for tab_id in TABS}
+    audit_candidates(candidates_by_tab)
     tab_buttons = "\n".join(
         f'<button class="tab-button" type="button" data-tab="{esc(tab_id)}">{esc(tab["title"])} {base.tab_count_html(candidates_by_tab[tab_id])}</button>'
         for tab_id, tab in TABS.items()
@@ -342,6 +400,7 @@ def main() -> None:
     td:nth-child(10), td:nth-child(11), td:nth-child(12), td:nth-child(13) {{ white-space: nowrap; }}
     td:nth-child(15) {{ min-width: 280px; }}
     .metric {{ min-width: 96px; }}
+    .tab-no-metrics .mobility-metric {{ display: none; }}
     .tab-panel {{ display: none; }}
     .tab-panel.active {{ display: block; }}
     a {{ color: #0969da; text-decoration: none; }}

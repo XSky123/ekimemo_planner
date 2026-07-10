@@ -166,6 +166,7 @@ def max_unit_count(component: dict[str, Any]) -> float:
             "max_linked_station_count",
             "max_units",
             "max_n",
+            "count_max",
         ):
             number = base.as_number(container.get(key))
             if number is not None:
@@ -190,14 +191,14 @@ def metric_range(tab_id: str, component: dict[str, Any], value: dict[str, Any]) 
     numeric = base.as_number(value.get("value_numeric"))
     value_min = base.as_number(value.get("value_min"))
     value_max = base.as_number(value.get("value_max"))
-    formula_match = re.search(r"\+?\s*(\d+(?:\.\d+)?)\s*[×xX]\s*n\s*駅?\s*%", raw, flags=re.IGNORECASE)
-    if formula_match:
-        return 0.0, float(formula_match.group(1)) * max_unit_count(component)
-    reverse_formula_match = re.search(r"\+?\s*n\s*駅?\s*[×xX]\s*(\d+(?:\.\d+)?)\s*%", raw, flags=re.IGNORECASE)
-    if reverse_formula_match:
-        return 0.0, float(reverse_formula_match.group(1)) * max_unit_count(component)
     if value_min is not None and value_max is not None:
         return min(abs(value_min), abs(value_max)), max(abs(value_min), abs(value_max))
+    formula_match = re.search(r"[+-]?\s*(\d+(?:\.\d+)?)\s*[×xX]\s*n\s*駅?\s*%?", raw, flags=re.IGNORECASE)
+    if formula_match:
+        return 0.0, float(formula_match.group(1)) * max_unit_count(component)
+    reverse_formula_match = re.search(r"[+-]?\s*n\s*駅?\s*[×xX]\s*(\d+(?:\.\d+)?)\s*%?", raw, flags=re.IGNORECASE)
+    if reverse_formula_match:
+        return 0.0, float(reverse_formula_match.group(1)) * max_unit_count(component)
     if tab_id == "defense_effect_boost" and "倍" in raw and numeric is not None:
         return abs(numeric), abs(numeric)
     if numeric is not None:
@@ -249,6 +250,18 @@ def level_metrics(tab_id: str, component: dict[str, Any], level: str) -> dict[st
         return None
     if value.get("unit") == "report_ignore":
         return None
+    if value.get("unit") == "unrecorded":
+        return {
+            "level": level,
+            "sort_max": None,
+            "sort_avg": None,
+            "value_text": level_value_text(level, value, str(component.get("effect_kind") or "")),
+            "max_text": "未记载",
+            "avg_text": "未记载",
+            "probability": base.probability_text(value),
+            "duration": value.get("duration") or "-",
+            "cooldown": value.get("cooldown") or "-",
+        }
 
     kind = str(component.get("effect_kind") or "")
     value_min, value_max = metric_range(tab_id, component, value)
@@ -444,10 +457,37 @@ def render_table(tab_id: str, candidates: list[dict[str, Any]]) -> str:
     """
 
 
+def audit_formula_metrics(candidates_by_tab: dict[str, list[dict[str, Any]]]) -> None:
+    expected_lv50 = {
+        ("self_def", "original:013", "def_buff_1"): (28.0, 16.0),
+        ("team_def", "original:051", "def_buff_1"): (18.0, 9.0),
+        ("team_def", "original:063", "def_buff_1"): (24.0, 12.0),
+        ("damage_reduction", "original:067", "damage_reduction_1"): (98.0, 49.0),
+    }
+    issues = []
+    for (tab_id, denko_id, component_id), expected in expected_lv50.items():
+        item = next(
+            (
+                candidate
+                for candidate in candidates_by_tab[tab_id]
+                if candidate["denko_id"] == denko_id and candidate["component_id"] == component_id
+            ),
+            None,
+        )
+        levels = json.loads(item["level_data"]) if item else {}
+        lv50 = levels.get("50")
+        actual = (lv50.get("sort_max"), lv50.get("sort_avg")) if lv50 else None
+        if actual != expected:
+            issues.append(f"{denko_id}/{component_id}: Lv50 metric expected={expected} actual={actual}")
+    if issues:
+        raise ValueError("defense formula metric audit failed: " + "; ".join(issues))
+
+
 def main() -> None:
     rows = base.read_jsonl(SKILL_PATH)
     metadata = base.denko_metadata()
     candidates_by_tab = {tab_id: build_candidates(tab_id, rows, metadata) for tab_id in TABS}
+    audit_formula_metrics(candidates_by_tab)
     tab_buttons = "\n".join(
         f'<button class="tab-button" type="button" data-tab="{esc(tab_id)}">{esc(tab["title"])} {base.tab_count_html(candidates_by_tab[tab_id])}</button>'
         for tab_id, tab in TABS.items()

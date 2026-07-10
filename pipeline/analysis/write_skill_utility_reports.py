@@ -59,15 +59,15 @@ TABS = {
     },
     "condition_station_count": {
         "title": "远征：访问站数",
-        "description": "当天、前一天或当月访问站数会改变效果量、发动率或追加效果的技能。单纯 link 数和 link 时间不列入。",
+        "description": "当天、前一天或当月访问站数会改变效果量、发动率或追加效果的技能。数值型效果按区间上限与区间均值计算；单纯 link 数和 link 时间不列入。",
     },
     "condition_distance": {
         "title": "远征：移动距离",
-        "description": "按当天移动距离成长，或达到指定 km 后发动追加效果的技能。",
+        "description": "按当天移动距离成长，或达到指定 km 后发动追加效果的技能。理论最大取距离区间上限，期望值取区间均值再乘发动率。",
     },
     "event_access": {
         "title": "活动/访问次数",
-        "description": "只收会实际产生额外访问、随机/远程访问，或增加思い出し访问次数的技能，方便访问回数活动选人。",
+        "description": "只收会实际产生额外访问、随机/远程访问，或增加思い出し访问次数的技能。追加、随机和远程访问属于行为效果，不显示理论最大或期望值。",
     },
 }
 
@@ -129,6 +129,11 @@ COOLDOWN_PROBABILITY_KINDS = {
 EVENT_ACCESS_KINDS = {
     "extra_access",
     "memory_access_station_count",
+    "random_previous_station_access",
+    "remote_station_access",
+}
+NON_NUMERIC_ACCESS_KINDS = {
+    "extra_access",
     "random_previous_station_access",
     "remote_station_access",
 }
@@ -271,27 +276,43 @@ def signed_numbers(text: str) -> list[float]:
     return out
 
 
-def metric_value(tab_id: str, value: dict[str, Any]) -> float | None:
+def metric_range(
+    tab_id: str,
+    component: dict[str, Any],
+    value: dict[str, Any],
+) -> tuple[float | None, float | None]:
     if tab_id in NULLIFICATION_TABS:
-        return None
+        return None, None
+    kind = str(component.get("effect_kind") or "")
+    if kind in NON_NUMERIC_ACCESS_KINDS:
+        return None, None
     raw = str(value.get("value_raw") or "")
     numeric_text = raw.split("※", 1)[0]
-    numeric = base.as_number(value.get("value_numeric"))
-    if numeric is not None:
-        return numeric
     if "クールタイム解除" in raw or "CD解除" in raw:
-        return 999.0
+        return 999.0, 999.0
     if tab_id == "cooldown_probability" and re.search(r"クールタイム|CD", raw):
         nums = signed_numbers(numeric_text)
-        return max((abs(num) for num in nums), default=None)
+        metric = max((abs(num) for num in nums), default=None)
+        return metric, metric
     if "倍" in numeric_text:
         nums = signed_numbers(numeric_text)
-        return max(nums) if nums else None
-    if "%" in numeric_text or "％" in numeric_text:
-        nums = signed_numbers(numeric_text)
-        return max(nums) if nums else None
-    nums = signed_numbers(numeric_text)
-    return max(nums) if nums else None
+        metric = max(nums) if nums else None
+        return metric, metric
+
+    # Step1 already stores most scalar ranges as value_min/value_max. Reuse the
+    # attack report's range semantics so 0-55% is not collapsed to value_numeric=0.
+    value_min, value_max = base.value_range(tab_id, component, value)
+
+    # A few station-count rows retain the source formula instead of materialized
+    # bounds (for example, -1.4 x n with an upper limit of 70 stations).
+    formula_match = re.search(r"([+-]?\d+(?:\.\d+)?)\s*[×x]\s*n", numeric_text, re.IGNORECASE)
+    if formula_match and (value.get("value_min") is None or value.get("value_max") is None):
+        condition = str(component.get("condition_raw") or "")
+        upper_match = re.search(r"上限\s*(\d+(?:\.\d+)?)\s*駅", condition)
+        if upper_match:
+            maximum = abs(float(formula_match.group(1))) * float(upper_match.group(1))
+            return 0.0, maximum
+    return value_min, value_max
 
 
 def level_value_text(tab_id: str, component: dict[str, Any], level: str, value: dict[str, Any]) -> str:
@@ -318,8 +339,21 @@ def level_metrics(tab_id: str, component: dict[str, Any], level: str) -> dict[st
     value = values.get(level)
     if not value:
         return None
-    metric = metric_value(tab_id, value)
-    expected = metric * base.probability_factor(value) / 100 if metric is not None else None
+    if value.get("unit") == "unrecorded":
+        return {
+            "level": level,
+            "sort_max": None,
+            "sort_avg": None,
+            "value_text": level_value_text(tab_id, component, level, value),
+            "max_text": "未记载",
+            "avg_text": "未记载",
+            "probability": utility_probability_text(value),
+            "duration": value.get("duration") or "-",
+            "cooldown": value.get("cooldown") or "-",
+        }
+    value_min, metric = metric_range(tab_id, component, value)
+    average = base.mean_value(value_min, metric)
+    expected = average * base.probability_factor(value) / 100 if average is not None else None
     metric_text = "-" if metric is None else f"{metric:g}"
     expected_text = "-" if expected is None else f"{expected:g}"
     return {
@@ -835,6 +869,10 @@ def audit_expedition_and_access_candidates(candidates_by_tab: dict[str, list[dic
     for item in candidates_by_tab["event_access"]:
         if item["kind"] not in EVENT_ACCESS_KINDS:
             issues.append(f"{item['denko_id']}/{item['component_id']}: non-access effect leaked")
+        if item["kind"] in NON_NUMERIC_ACCESS_KINDS:
+            levels = json.loads(item["level_data"])
+            if any(value["sort_max"] is not None or value["sort_avg"] is not None for value in levels.values()):
+                issues.append(f"{item['denko_id']}/{item['component_id']}: access behavior has numeric metric")
     leaked_kinds = {
         item["kind"]
         for item in candidates_by_tab["event_access"]
@@ -842,6 +880,31 @@ def audit_expedition_and_access_candidates(candidates_by_tab: dict[str, list[dic
     }
     if leaked_kinds:
         issues.append("non-access utility kinds leaked: " + ",".join(sorted(leaked_kinds)))
+
+    expected_lv50 = {
+        ("condition_station_count", "original:028", "atk_buff_1"): (55.0, 27.5),
+        ("condition_station_count", "original:067", "damage_reduction_1"): (98.0, 49.0),
+        ("condition_station_count", "original:099", "exp_gain_1"): (1450.0, 725.5),
+        ("condition_distance", "original:044", "atk_buff_1"): (28.0, 14.0),
+        ("condition_distance", "original:044", "atk_buff_2"): (26.0, 13.0),
+        ("condition_distance", "original:069", "exp_gain_1"): (150.0, 75.0),
+        ("condition_distance", "original:069", "exp_gain_2"): (140.0, 140.0),
+        ("event_access", "extra:001", "memory_access_station_count"): (5.0, 5.0),
+    }
+    for (tab_id, denko_id, component_id), expected in expected_lv50.items():
+        item = next(
+            (
+                candidate
+                for candidate in candidates_by_tab[tab_id]
+                if candidate["denko_id"] == denko_id and candidate["component_id"] == component_id
+            ),
+            None,
+        )
+        levels = json.loads(item["level_data"]) if item else {}
+        lv50 = levels.get("50")
+        actual = (lv50.get("sort_max"), lv50.get("sort_avg")) if lv50 else None
+        if actual != expected:
+            issues.append(f"{denko_id}/{component_id}: Lv50 metric expected={expected} actual={actual}")
     if issues:
         raise ValueError("expedition/access audit failed: " + "; ".join(issues))
 

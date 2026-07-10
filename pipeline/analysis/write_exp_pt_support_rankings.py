@@ -293,6 +293,8 @@ def supplemental_value_from_raw_page(
     kind = str(component.get("effect_kind") or "")
     if kind not in {"exp_gain", "score_gain", "additional_score_gain"}:
         return None
+    if value.get("unit") == "unrecorded":
+        return None
 
     corrected = corrected_value_from_raw_row_effect(component, value)
     if corrected:
@@ -699,6 +701,20 @@ def level_metrics(denko_id: str, component: dict[str, Any], level: str, componen
     if not source_value:
         return None
     value = effective_value(denko_id, component, source_value, level)
+    if value.get("unit") == "unrecorded":
+        return {
+            "level": level,
+            "metric_type": component_metric,
+            "sort_max": None,
+            "sort_avg": None,
+            "value_text": f"Lv{level}: 未记载" if level != DEFAULT_LEVEL else "未记载",
+            "max_text": "未记载",
+            "avg_text": "未记载",
+            "probability": probability_text(value),
+            "duration": value.get("duration") or "-",
+            "cooldown": value.get("cooldown") or "-",
+            "supplemented": bool(value.get("report_supplemented_from")),
+        }
     metric = component_metric if component_metric != "ignore" else metric_type(component, value)
     value_min, value_max = value_range(component, value, metric)
     avg_value = mean_value(value_min, value_max)
@@ -902,10 +918,36 @@ def render_table(tab_id: str, candidates: list[dict[str, Any]]) -> str:
     """
 
 
+def audit_distance_exp_split(candidates_by_tab: dict[str, list[dict[str, Any]]]) -> None:
+    expected_lv50 = {
+        ("original:069", "exp_gain_1"): (150.0, 75.0, "访问中的でんこ"),
+        ("original:069", "exp_gain_2"): (140.0, 140.0, "编成内全员"),
+    }
+    issues = []
+    candidates = candidates_by_tab["fixed_exp"]
+    for (denko_id, component_id), expected in expected_lv50.items():
+        item = next(
+            (
+                candidate
+                for candidate in candidates
+                if candidate["denko_id"] == denko_id and candidate["component_id"] == component_id
+            ),
+            None,
+        )
+        levels = json.loads(item["level_data"]) if item else {}
+        lv50 = levels.get("50")
+        actual = (lv50.get("sort_max"), lv50.get("sort_avg"), item.get("target")) if lv50 and item else None
+        if actual != expected:
+            issues.append(f"{denko_id}/{component_id}: Lv50 metric/target expected={expected} actual={actual}")
+    if issues:
+        raise ValueError("EXP distance split audit failed: " + "; ".join(issues))
+
+
 def main() -> None:
     rows = base.read_jsonl(SKILL_PATH)
     metadata = base.denko_metadata()
     candidates_by_tab_all = {tab_id: build_candidates(tab_id, rows, metadata) for tab_id in TABS}
+    audit_distance_exp_split(candidates_by_tab_all)
     visible_tabs = [tab_id for tab_id in TABS if candidates_by_tab_all[tab_id]]
     candidates_by_tab = {tab_id: candidates_by_tab_all[tab_id] for tab_id in visible_tabs}
     tab_buttons = "\n".join(

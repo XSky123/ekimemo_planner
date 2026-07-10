@@ -16,8 +16,8 @@ from bs4.element import NavigableString, Tag
 
 ROOT = Path(__file__).resolve().parents[2]
 RAW_PATH = ROOT / "data" / "raw_pages" / "skill_reverse_lookup.html"
-RECORD_DIR = ROOT / "data" / "records"
-REPORT_DIR = ROOT / "data" / "reports"
+OUTPUT_DIR = ROOT / "tmp" / "review_runs"
+REPORT_DIR = OUTPUT_DIR
 BASE_URL = "https://newekimemo.wiki.fc2.com"
 SOURCE_URL = "https://newekimemo.wiki.fc2.com/wiki/%E3%81%A7%E3%82%93%E3%81%93%E3%82%B9%E3%82%AD%E3%83%AB%E9%80%86%E5%BC%95%E3%81%8D%E8%A1%A8"
 JST = timezone(timedelta(hours=9))
@@ -265,8 +265,8 @@ def write_report(records: list[dict[str, Any]]) -> None:
 def main() -> int:
     html_text = RAW_PATH.read_text(encoding="utf-8", errors="replace")
     records = parse_reverse_lookup(html_text)
-    RECORD_DIR.mkdir(parents=True, exist_ok=True)
-    out_path = RECORD_DIR / "reverse_skill_lookup_candidates.jsonl"
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    out_path = OUTPUT_DIR / "reverse_skill_lookup_candidates.jsonl"
     out_path.write_text(
         "".join(json.dumps(row, ensure_ascii=False, sort_keys=True) + "\n" for row in records),
         encoding="utf-8",

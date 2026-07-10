@@ -231,7 +231,7 @@ def audit_skill_row(batch: str, row: dict[str, Any], issues: list[dict[str, Any]
 def audit_pool(pool: str) -> dict[str, Any]:
     issues: list[dict[str, Any]] = []
     report_checks: dict[str, Any] = {}
-    for report_path in sorted(base.REPORT_DIR.glob(f"{pool}_*_batch_review_zh.html")):
+    for report_path in sorted(base.REVIEW_RUN_DIR.glob(f"{pool}_*_batch_review_zh.html")):
         key = report_key(report_path)
         if key:
             report_checks[key] = audit_report(key, report_path, issues)
@@ -291,12 +291,12 @@ def write_markdown(path: Path, audit: dict[str, Any]) -> None:
 
 def default_json_out(pool: str) -> Path:
     suffix = "001_165" if pool == "original" else "full"
-    return base.ROOT / "data" / "agent_runs" / f"{pool}_{suffix}_report_checklist_audit.json"
+    return base.ROOT / "data" / "audits" / f"{pool}_report_checklist_audit.json"
 
 
 def default_md_out(pool: str) -> Path:
     suffix = "001_165" if pool == "original" else "full"
-    return base.ROOT / "data" / "agent_runs" / f"{pool}_{suffix}_report_checklist_audit_zh.md"
+    return base.ROOT / "data" / "audits" / f"{pool}_report_checklist_audit_zh.md"
 
 
 def main() -> int:

@@ -17,9 +17,10 @@ from urllib.parse import urljoin
 ROOT = Path(__file__).resolve().parents[2]
 RAW_DIR = ROOT / "data" / "raw_pages"
 RECORD_DIR = ROOT / "data" / "records"
-INDEX_DIR = ROOT / "data" / "indexes"
+INDEX_DIR = ROOT / "tmp" / "review_runs" / "indexes"
 REVIEW_DIR = ROOT / "data" / "review_queue"
-REPORT_DIR = ROOT / "data" / "reports"
+ARCHIVED_REVIEW_DIR = ROOT / "archive" / "step1_ingestion_2026-07-11" / "review_queue"
+REVIEW_RUN_DIR = ROOT / "tmp" / "review_runs"
 BASE_URL = "https://newekimemo.wiki.fc2.com"
 JST = timezone(timedelta(hours=9))
 PARSER_VERSION = "detail_html_table_matrix.v8"
@@ -31,6 +32,12 @@ LIST_PAGES = {
     "original": "https://newekimemo.wiki.fc2.com/wiki/%E9%A1%94%E7%94%BB%E5%83%8F%E3%83%BB%E3%82%BF%E3%82%A4%E3%83%97%E3%83%BB%E5%B1%9E%E6%80%A7%E3%83%BB%E8%89%B2%E3%83%BB%E3%82%B9%E3%82%AD%E3%83%AB%E5%90%8D%2F%E3%82%AA%E3%83%AA%E3%82%B8%E3%83%8A%E3%83%AB%E3%81%A7%E3%82%93%E3%81%93",
     "extra": "https://newekimemo.wiki.fc2.com/wiki/%E9%A1%94%E7%94%BB%E5%83%8F%E3%83%BB%E3%82%BF%E3%82%A4%E3%83%97%E3%83%BB%E5%B1%9E%E6%80%A7%E3%83%BB%E8%89%B2%E3%83%BB%E3%82%B9%E3%82%AD%E3%83%AB%E5%90%8D%2F%E3%82%A8%E3%82%AF%E3%82%B9%E3%83%88%E3%83%A9%E3%81%A7%E3%82%93%E3%81%93",
 }
+
+
+def review_queue_path(stem: str) -> Path:
+    active = REVIEW_DIR / f"{stem}_review_queue.jsonl"
+    archived = ARCHIVED_REVIEW_DIR / active.name
+    return active if active.exists() or not archived.exists() else archived
 
 
 @dataclass
@@ -1711,7 +1718,10 @@ def component_value(
         "source_text": row_fact.get("special_explanation"),
         "raw_row": row_fact.get("raw_row"),
     }
+    if re.search(r"(?:\bx\b|\?)", value_raw, flags=re.IGNORECASE):
+        value.update({"value_raw": "未記載", "value_numeric": None, "unit": "unrecorded"})
     value.update(range_value_fields(value_raw))
+    value.update(formula_range_fields(value_raw, row_fact.get("raw_row") or {}))
     return {
         "component_id": component_id,
         "effect_kind": effect_kind,
@@ -1747,6 +1757,32 @@ def range_value_fields(value: str) -> dict[str, Any]:
     def clean(number: float) -> int | float:
         return int(number) if number.is_integer() else number
     return {"value_min": clean(numbers[0]), "value_max": clean(numbers[1])}
+
+
+def formula_range_fields(value: str, raw_row: dict[str, Any]) -> dict[str, Any]:
+    coefficient_match = re.search(
+        r"(?:([+-]?\d+(?:\.\d+)?)\s*[×xX]\s*n|n\s*[×xX]\s*([+-]?\d+(?:\.\d+)?))",
+        value,
+        flags=re.IGNORECASE,
+    )
+    if not coefficient_match:
+        return {}
+    context = " ".join([*(str(key) for key in raw_row), *(str(item) for item in raw_row.values())])
+    count_match = re.search(r"n\s*=\s*(\d+(?:\.\d+)?)\s*[～〜~-]\s*(\d+(?:\.\d+)?)", context, flags=re.IGNORECASE)
+    if not count_match:
+        return {}
+    coefficient = abs(float(coefficient_match.group(1) or coefficient_match.group(2)))
+    count_min, count_max = (float(item) for item in count_match.groups())
+
+    def clean(number: float) -> int | float:
+        return int(number) if number.is_integer() else number
+
+    return {
+        "value_min": clean(coefficient * min(count_min, count_max)),
+        "value_max": clean(coefficient * max(count_min, count_max)),
+        "formula_count_min": clean(min(count_min, count_max)),
+        "formula_count_max": clean(max(count_min, count_max)),
+    }
 
 
 def probability_for_label(probability: dict[str, str], label: str | None) -> dict[str, str]:
@@ -2900,26 +2936,24 @@ def write_report(records: list[dict[str, Any]], skill_rows: list[dict[str, Any]]
             "  </ul>",
             "  <h2>输出文件</h2>",
             "  <ul>",
-            "    <li><code>data/records/probe_first5_denko_facts.jsonl</code></li>",
-            "    <li><code>data/records/probe_first5_skill_facts.jsonl</code></li>",
-            "    <li><code>data/indexes/probe_first5_denko_index.json</code></li>",
-            "    <li><code>data/review_queue/probe_first5_review_queue.jsonl</code></li>",
-            "    <li><code>data/reports/probe_first5_report_zh.html</code></li>",
+            "    <li><code>tmp/review_runs/probe_first5_denko_facts.jsonl</code></li>",
+            "    <li><code>tmp/review_runs/probe_first5_skill_facts.jsonl</code></li>",
+            "    <li><code>tmp/review_runs/indexes/probe_first5_denko_index.json</code></li>",
+            "    <li><code>tmp/review_runs/probe_first5_review_queue.jsonl</code></li>",
+            "    <li><code>tmp/review_runs/probe_first5_report_zh.html</code></li>",
             "  </ul>",
             "</body>",
             "</html>",
         ]
     )
-    REPORT_DIR.mkdir(parents=True, exist_ok=True)
-    write_html_entity_report(REPORT_DIR / "probe_first5_report_zh.html", lines)
+    REVIEW_RUN_DIR.mkdir(parents=True, exist_ok=True)
+    write_html_entity_report(REVIEW_RUN_DIR / "probe_first5_report_zh.html", lines)
 
 
 def main() -> int:
     RAW_DIR.mkdir(parents=True, exist_ok=True)
-    RECORD_DIR.mkdir(parents=True, exist_ok=True)
+    REVIEW_RUN_DIR.mkdir(parents=True, exist_ok=True)
     INDEX_DIR.mkdir(parents=True, exist_ok=True)
-    REVIEW_DIR.mkdir(parents=True, exist_ok=True)
-    REPORT_DIR.mkdir(parents=True, exist_ok=True)
 
     all_records: list[dict[str, Any]] = []
     all_reviews: list[dict[str, Any]] = []
@@ -2950,9 +2984,9 @@ def main() -> int:
             for r in all_records
         ],
     }
-    write_jsonl(RECORD_DIR / "probe_first5_denko_facts.jsonl", all_records)
-    write_jsonl(RECORD_DIR / "probe_first5_skill_facts.jsonl", skill_rows)
-    write_jsonl(REVIEW_DIR / "probe_first5_review_queue.jsonl", all_reviews)
+    write_jsonl(REVIEW_RUN_DIR / "probe_first5_denko_facts.jsonl", all_records)
+    write_jsonl(REVIEW_RUN_DIR / "probe_first5_skill_facts.jsonl", skill_rows)
+    write_jsonl(REVIEW_RUN_DIR / "probe_first5_review_queue.jsonl", all_reviews)
     (INDEX_DIR / "probe_first5_denko_index.json").write_text(
         json.dumps(index, ensure_ascii=False, indent=2, sort_keys=True),
         encoding="utf-8",
