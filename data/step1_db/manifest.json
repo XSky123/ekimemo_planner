@@ -70,7 +70,7 @@
       "unique_count": 293
     }
   },
-  "generated_at": "2026-07-07T23:09:48.300666+09:00",
+  "generated_at": "2026-07-11T01:49:18.822186+09:00",
   "language_policy": {
     "display": "zh",
     "schema_keys": "en",
@@ -102,7 +102,7 @@
       "counter": 3,
       "counter_damage": 1,
       "damage_cap": 1,
-      "damage_nullification": 3,
+      "damage_nullification": 4,
       "damage_reduction": 32,
       "damage_substitution": 1,
       "def_buff": 148,

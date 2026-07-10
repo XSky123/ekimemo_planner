@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-07-06T00:00:00+09:00",
-  "parser_version": "project_rules.v2",
+  "updated_at": "2026-07-11T00:00:00+09:00",
+  "parser_version": "project_rules.v4",
   "handoff_contract": {
     "design_goal": "Make every stage resumable by another AI/agent without relying on conversation history.",
     "must_record": [
@@ -151,7 +151,22 @@
       "Attach source_url, source section, and evidence snippet or screenshot path.",
       "If the change affects required fields or solver semantics, add a review_queue item.",
       "Do not silently overwrite Japanese source facts."
-    ]
+    ],
+    "trigger_semantics_policy": {
+      "rule": "Model the actor that triggers a skill separately from access direction and effect recipient.",
+      "trigger_actor_key": "trigger_conditions.actor_scope",
+      "actor_values": [
+        "skill_holder",
+        "any_team_member",
+        "front_car",
+        "accessing_team_member",
+        "accessed_team_member",
+        "opponent"
+      ],
+      "direction_key": "trigger_conditions.access_direction",
+      "recipient_key": "target_scope",
+      "requirement_rule": "Store requirements such as successful link, no reboot, station weather, or station temperature in target_filters/trigger_conditions instead of folding them into actor or recipient."
+    }
   },
   "gameplay_level_policy": {
     "key_denko_levels": [
@@ -183,6 +198,12 @@
     "rule": "Human-readable run reports should be exported as HTML by default. Markdown summaries may exist only as lightweight intermediate notes.",
     "review_display_rule": "Reports are for the user. Suspicious item explanations and review reasons must be shown in Chinese, preserving necessary Japanese source terms only where useful.",
     "matrix_rule": "Do not include low-signal columns such as a constant class=needs_manual_review in the human skill matrix.",
+    "self_debuff_display_policy": {
+      "default": "hide_standalone_self_debuff",
+      "rule": "Unless the user explicitly requests negative-effect analysis, do not emit a self or own-team debuff as an independent recommendation/report candidate.",
+      "paired_effect_rule": "When a self or own-team debuff is part of the same skill as a positive effect, attach it to the positive effect's remarks or restrictions with its value and condition.",
+      "data_rule": "Keep the debuff as a structured DB component for solver semantics; only suppress its standalone presentation."
+    },
     "directory_kana_audit_rule": {
       "rule": "After regenerating directory-style HTML reports/indexes, audit kana section assignment for by_operator, by_line, by_station, and by_vehicle.",
       "acceptance": "Do not leave entries under # or 漢 unless they are genuinely special/unreadable and intentionally documented.",

@@ -454,7 +454,10 @@ def build_skill_fact_records(records: list[dict[str, Any]]) -> list[dict[str, An
 def table_dicts(matrix: list[list[dict[str, Any]]]) -> tuple[list[str], list[dict[str, str]]]:
     if not matrix:
         return [], []
-    headers = [cell["text"] for cell in matrix[0]]
+    # A few wiki tables contain accidental trailing punctuation in headers
+    # (for example ``スキルLv,``). Treat it as presentation noise so the
+    # correct merged-cell table is selected instead of a later fallback.
+    headers = [re.sub(r"[\s,，、:：]+$", "", cell["text"]) for cell in matrix[0]]
     rows: list[dict[str, str]] = []
     for row in matrix[1:]:
         item: dict[str, str] = {}
@@ -529,6 +532,7 @@ def extract_skill_detail(record: dict[str, Any]) -> dict[str, Any]:
         if flat_values:
             values_by_denko_level.update(flat_values)
     merge_seasonal_skill_values(values_by_denko_level, tables)
+    merge_weekday_skill_values(values_by_denko_level, record)
 
     skill_components = build_skill_components(
         trigger_condition,
@@ -652,6 +656,67 @@ def extract_seasonal_skill_values(
                 "score_gain": first_matching_value(row, ["スコア獲得"]) or "",
                 "damage_reduction": first_matching_value(row, ["ダメージ軽減"]) or "",
             }
+    return out
+
+
+def merge_weekday_skill_values(
+    values_by_denko_level: dict[str, dict[str, Any]],
+    record: dict[str, Any],
+) -> None:
+    weekday = extract_weekday_skill_values(record)
+    if not weekday:
+        return
+    for level, weekday_values in weekday.items():
+        if level in values_by_denko_level:
+            values_by_denko_level[level]["weekday_values"] = weekday_values
+    if "80" in weekday:
+        for level, row_fact in values_by_denko_level.items():
+            if level in VU_LEVELS and "weekday_values" not in row_fact:
+                row_fact["weekday_values"] = weekday["80"]
+
+
+def extract_weekday_skill_values(record: dict[str, Any]) -> dict[str, dict[str, dict[str, str]]]:
+    ident = record.get("identity") or {}
+    denko_id = str(ident.get("denko_id") or "")
+    if not denko_id:
+        return {}
+    raw_path = RAW_DIR / f"sample_detail_{denko_id.replace(':', '_')}.html"
+    if not raw_path.exists():
+        return {}
+    root = parse_dom(raw_path.read_text(encoding="utf-8", errors="replace"))
+    out: dict[str, dict[str, dict[str, str]]] = {}
+    for table in root.find_all("table"):
+        matrix = expand_table(table)
+        if len(matrix) < 3:
+            continue
+        days = [cell["text"] for cell in matrix[0]]
+        effects = [cell["text"] for cell in matrix[1]]
+        if not {"日曜日", "土曜日"}.intersection(days):
+            continue
+        if not {"ATK増加", "経験値獲得"}.intersection(effects):
+            continue
+        headers = [
+            {
+                "day": day,
+                "effect": effects[index] if index < len(effects) else "",
+            }
+            for index, day in enumerate(days)
+        ]
+        for matrix_row in matrix[2:]:
+            cells = [cell["text"] for cell in matrix_row]
+            level = parse_denko_level(cells[0] if cells else "")
+            if not level:
+                continue
+            level_values: dict[str, dict[str, str]] = {}
+            for index, cell in enumerate(cells):
+                if index >= len(headers):
+                    continue
+                day = headers[index]["day"]
+                effect = headers[index]["effect"]
+                if day and effect and cell:
+                    level_values.setdefault(day, {})[effect] = cell
+            if level_values:
+                out[level] = level_values
     return out
 
 
@@ -1167,42 +1232,170 @@ def parse_level_components(common_text: str, row_fact: dict[str, Any]) -> list[d
     return components
 
 
+SEASONAL_COMPONENT_SPECS = [
+    ("seasonal_exp_gain_spring", "exp_gain", "春", "経験値付与", "flat_exp", "3～5月", [3, 4, 5], 4, ["accessing_denko"], "active"),
+    ("seasonal_fixed_damage_summer", "fixed_damage", "夏", "固定ダメージ", "flat_damage", "6～8月", [6, 7, 8], 7, ["opponent_denko"], "active"),
+    ("seasonal_score_gain_autumn", "score_gain", "秋", "スコア獲得", "score", "9～11月", [9, 10, 11], 10, ["accessing_denko"], "active"),
+    ("seasonal_damage_reduction_winter", "damage_reduction", "冬", "ダメージ軽減", "flat_damage", "12～2月", [12, 1, 2], 1, ["team_all"], "passive"),
+]
+
+WEEKDAY_COMPONENT_SPECS = [
+    ("weekday_atk_sunday", "atk_buff", "日曜日", "ATK増加", "ATK", "percent", "sunday", ["team_all"], None),
+    ("weekday_def_monday", "def_buff", "月曜日", "DEF増加", "DEF", "percent", "monday", ["team_all"], None),
+    ("weekday_atk_tuesday", "atk_buff", "火曜日", "ATK増加 DEF増加", "ATK", "percent", "tuesday", ["team_all"], None),
+    ("weekday_def_tuesday", "def_buff", "火曜日", "ATK増加 DEF増加", "DEF", "percent", "tuesday", ["team_all"], None),
+    ("weekday_fixed_damage_wednesday", "fixed_damage", "水曜日", "固定ダメージ", "固定ダメージ", "flat_damage", "wednesday", ["opponent_denko"], "active"),
+    ("weekday_damage_reduction_thursday", "damage_reduction", "木曜日", "ダメージ軽減", "ダメージ軽減", "flat_damage", "thursday", ["team_all"], "passive"),
+    ("weekday_score_gain_friday", "score_gain", "金曜日", "スコア獲得", "スコア獲得", "score", "friday", ["accessing_denko"], "active"),
+    ("weekday_exp_gain_saturday", "exp_gain", "土曜日", "経験値獲得", "経験値獲得", "flat_exp", "saturday", ["accessing_denko"], "active"),
+]
+
+
+def format_effect_number(number: float, unit: str) -> str:
+    value = f"{number:g}"
+    if unit == "percent":
+        return f"{'+' if number >= 0 else ''}{value}%"
+    return value
+
+
+def weekday_night_multiplier(row_fact: dict[str, Any]) -> float | None:
+    raw_row = row_fact.get("raw_row") or {}
+    text = " ".join(
+        str(item or "")
+        for item in (
+            row_fact.get("effect"),
+            row_fact.get("value_raw"),
+            raw_row.get("効果"),
+        )
+    )
+    match = re.search(r"夜[：:]\s*効果量\s*(\d+(?:\.\d+)?)\s*倍", text)
+    return float(match.group(1)) if match else None
+
+
+def weekday_component_value_fields(
+    component_id: str,
+    cell: str,
+    row_fact: dict[str, Any],
+    *,
+    table_level: str | None = None,
+) -> dict[str, Any] | None:
+    spec = next((item for item in WEEKDAY_COMPONENT_SPECS if item[0] == component_id), None)
+    if not spec:
+        return None
+    _component_id, _kind, day_raw, _effect_header, effect_label, unit, weekday, _scope, _direction = spec
+    numbers = [float(raw) for raw in re.findall(r"[+-]?\d+(?:\.\d+)?", cell.replace("（", "").replace("）", ""))]
+    if not numbers:
+        return None
+    if component_id.endswith("_tuesday") and len(numbers) >= 2:
+        number = numbers[0] if "atk" in component_id else numbers[1]
+    else:
+        number = numbers[0]
+    base_text = f"{day_raw}：{effect_label} {format_effect_number(number, unit)}"
+    fields: dict[str, Any] = {
+        "unit": unit,
+        "value_numeric": number,
+        "value_min": number,
+        "value_max": number,
+        "value_raw": base_text,
+        "weekday_raw": day_raw,
+        "weekday": weekday,
+        "base_effect_value_numeric": number,
+    }
+    multiplier = weekday_night_multiplier(row_fact)
+    if multiplier is not None:
+        night_value = number * multiplier
+        fields.update(
+            {
+                "value_raw": f"{base_text}（夜：{effect_label} {format_effect_number(night_value, unit)}）",
+                "night_multiplier": multiplier,
+                "night_value_numeric": night_value,
+            }
+        )
+    if table_level:
+        fields["report_weekday_table_level"] = table_level
+    return fields
+
+
+def seasonal_component_value_fields(
+    component_id: str,
+    value_number: str,
+    multiplier_raw: str | None,
+) -> dict[str, Any] | None:
+    spec = next((item for item in SEASONAL_COMPONENT_SPECS if item[0] == component_id), None)
+    if not spec:
+        return None
+    _component_id, _kind, season_raw, raw_name, unit, months_raw, months, special_month, _scope, _direction = spec
+    numeric = parse_signed_number(value_number)
+    if numeric is None:
+        return None
+    base_text = f"{season_raw}（{months_raw}）：{raw_name} {format_effect_number(float(numeric), unit)}"
+    fields: dict[str, Any] = {
+        "unit": unit,
+        "value_numeric": numeric,
+        "value_min": numeric,
+        "value_max": numeric,
+        "value_raw": base_text,
+        "season_raw": season_raw,
+        "season_months_raw": months_raw,
+        "season_months": months,
+        "special_multiplier_month": special_month,
+    }
+    if multiplier_raw:
+        match = re.fullmatch(r"(\d+(?:\.\d+)?)倍", multiplier_raw)
+        if match:
+            multiplier = float(match.group(1))
+            special_value = float(numeric) * multiplier
+            fields.update(
+                {
+                    "value_raw": f"{base_text}（{special_month}月：{raw_name} {format_effect_number(special_value, unit)}）",
+                    "seasonal_multiplier_raw": multiplier_raw,
+                    "special_month_multiplier": multiplier,
+                    "special_month_value_numeric": special_value,
+                    "special_month_multiplier_recorded": True,
+                }
+            )
+        else:
+            fields.update(
+                {
+                    "value_raw": f"{base_text}（{special_month}月：倍率未記載）",
+                    "seasonal_multiplier_raw": multiplier_raw,
+                    "special_month_multiplier": None,
+                    "special_month_value_numeric": None,
+                    "special_month_multiplier_recorded": False,
+                }
+            )
+    return fields
+
+
 def parse_seasonal_components(row_fact: dict[str, Any]) -> list[dict[str, Any]]:
     seasonal_values = row_fact.get("seasonal_values") or {}
     if not seasonal_values:
         return []
-    specs = [
-        ("seasonal_exp_gain_spring", "exp_gain", "経験値付与", "flat_exp", "3～5月", [3, 4, 5], ["accessing_denko"]),
-        ("seasonal_fixed_damage_summer", "fixed_damage", "固定ダメージ", "flat_damage", "6～8月", [6, 7, 8], ["team_all"]),
-        ("seasonal_score_gain_autumn", "score_gain", "スコア獲得", "score", "9～11月", [9, 10, 11], ["team_all"]),
-        ("seasonal_damage_reduction_winter", "damage_reduction", "ダメージ軽減", "flat_damage", "12～2月", [12, 1, 2], ["team_all"]),
-    ]
     out = []
     multiplier = seasonal_multiplier_raw(row_fact.get("effect") or "")
-    for component_id, effect_kind, raw_name, unit, months_raw, months, target_scope in specs:
+    for component_id, effect_kind, _season_raw, _raw_name, _unit, months_raw, months, _special_month, target_scope, direction in SEASONAL_COMPONENT_SPECS:
         value_number = seasonal_values.get(effect_kind)
         if not value_number:
             continue
-        value_raw = f"{raw_name} {value_number}"
-        if multiplier:
-            value_raw = f"{value_raw} ※効果量 {multiplier}"
+        value_fields = seasonal_component_value_fields(component_id, value_number, multiplier)
+        if not value_fields:
+            continue
         parsed = component_value(
             effect_kind,
             row_fact,
-            value_raw,
-            parse_signed_number(value_number),
-            unit,
+            str(value_fields["value_raw"]),
+            value_fields["value_numeric"],
+            str(value_fields["unit"]),
         )
         parsed["component_id"] = component_id
-        parsed["value"]["season_months_raw"] = months_raw
-        parsed["value"]["season_months"] = months
-        if multiplier:
-            parsed["value"]["seasonal_multiplier_raw"] = multiplier
+        parsed["value"].update(value_fields)
         parsed["target_scope"] = target_scope
         parsed["target_filters"] = {"season_months": months, "season_months_raw": months_raw}
-        return_value_text = row_fact.get("special_explanation") or ""
-        if effect_kind == "damage_reduction" and "アクセスされた" in return_value_text:
-            parsed["trigger_conditions"] = {"event_hint": "accessed", "access_direction": "received"}
+        if direction:
+            parsed["trigger_conditions"] = {
+                "event_hint": "accessed" if direction == "passive" else "access",
+                "access_direction": direction,
+            }
         out.append(parsed)
     return out
 
@@ -1217,32 +1410,36 @@ def parse_weekday_components(row_fact: dict[str, Any]) -> list[dict[str, Any]]:
     source_text = row_fact.get("special_explanation") or ""
     if "曜日に応じた" not in effect_text and "曜日に応じて" not in source_text:
         return []
-    specs = [
-        ("weekday_atk_sunday", "atk_buff", "日曜日", "ATK増加", "sunday"),
-        ("weekday_def_monday", "def_buff", "月曜日", "DEF増加", "monday"),
-        ("weekday_atk_tuesday", "atk_buff", "火曜日", "ATK増加", "tuesday"),
-        ("weekday_def_tuesday", "def_buff", "火曜日", "DEF増加", "tuesday"),
-        ("weekday_fixed_damage_wednesday", "fixed_damage", "水曜日", "追加固定ダメージ", "wednesday"),
-        ("weekday_damage_reduction_thursday", "damage_reduction", "木曜日", "固定ダメージ軽減", "thursday"),
-        ("weekday_score_gain_friday", "score_gain", "金曜日", "スコア獲得", "friday"),
-        ("weekday_exp_gain_saturday", "exp_gain", "土曜日", "経験値獲得", "saturday"),
-    ]
+    weekday_values = row_fact.get("weekday_values") or {}
     out = []
-    for component_id, effect_kind, day_raw, raw_name, weekday in specs:
+    for component_id, effect_kind, day_raw, effect_header, effect_label, unit, weekday, target_scope, direction in WEEKDAY_COMPONENT_SPECS:
+        cell = (weekday_values.get(day_raw) or {}).get(effect_header)
+        value_fields = weekday_component_value_fields(component_id, cell, row_fact) if cell else None
+        value_raw = str(value_fields["value_raw"]) if value_fields else f"{day_raw}：{effect_label} 未記載"
         parsed = component_value(
             effect_kind,
             row_fact,
-            f"曜日変化: {day_raw} {raw_name}",
-            None,
-            "weekday_variable",
+            value_raw,
+            value_fields["value_numeric"] if value_fields else None,
+            str(value_fields["unit"]) if value_fields else "weekday_variable",
         )
         parsed["component_id"] = component_id
-        parsed["target_scope"] = ["team_all"]
+        parsed["target_scope"] = target_scope
         parsed["target_filters"] = {"weekday": weekday, "weekday_raw": day_raw}
         parsed["trigger_conditions"] = {"basis": "activation_weekday", "weekday_dependent": True}
-        parsed["value"]["weekday_raw"] = day_raw
-        parsed["value"]["weekday"] = weekday
-        parsed["value"]["needs_value_table_review"] = True
+        if direction:
+            parsed["trigger_conditions"].update(
+                {
+                    "access_direction": direction,
+                    "event_hint": "accessed" if direction == "passive" else "access",
+                }
+            )
+        if value_fields:
+            parsed["value"].update(value_fields)
+        else:
+            parsed["value"]["weekday_raw"] = day_raw
+            parsed["value"]["weekday"] = weekday
+            parsed["value"]["needs_value_table_review"] = True
         out.append(parsed)
 
     daytime = weekday_vu_addition(row_fact.get("duration") or "", r"昼：\s*([^ ]+)")
@@ -1386,7 +1583,11 @@ def enrich_component_from_value_text(component: dict[str, Any], source_text: str
         return
     source_segment = relevant_source_segment(source_text, component.get("condition_raw") or "")
     source_target = infer_target_scope_from_source_text(source_segment, component.get("effect_kind") or "")
-    if source_target and not component.get("target_scope"):
+    source_actor = infer_trigger_actor_scope(source_segment)
+    if source_target and (
+        not component.get("target_scope")
+        or (component.get("target_scope") == ["self"] and source_actor == "any_team_member")
+    ):
         component["target_scope"] = source_target
     target_scope = component.setdefault("target_scope", [])
     if "編成内" in source_segment and not target_scope:
@@ -1396,6 +1597,10 @@ def enrich_component_from_value_text(component: dict[str, Any], source_text: str
         filters["position_exception_raw"] = "自身が先頭の場合は2両目"
     if "自身には効果がありません" in source_text or "自身には効果がない" in source_text:
         filters["exclude_self"] = True
+    if "リンクした駅" in source_segment:
+        filters["requires_link_success"] = True
+    if source_actor:
+        component.setdefault("trigger_conditions", {}).setdefault("actor_scope", source_actor)
 
 
 def relevant_source_segment(source_text: str, condition_raw: str) -> str:
@@ -1444,6 +1649,8 @@ def component_label_text(condition_raw: str) -> str:
 
 def infer_target_scope_from_source_text(text: str, effect_kind: str) -> list[str]:
     if "アクセスしたでんこに" in text:
+        return ["accessing_denko"]
+    if re.search(r"編成内(?:の)?でんこがリンクした", text) and effect_kind in {"exp_gain", "score_gain"}:
         return ["accessing_denko"]
     if "アクセスしたでんこ" in text and effect_kind in {"exp_gain", "score_gain"}:
         return ["accessing_denko"]
@@ -2212,15 +2419,20 @@ def infer_trigger_conditions(text: str, effect_kind: str | None = None) -> dict[
     if hp_threshold:
         trigger["hp_threshold_percent"] = int(hp_threshold.group(1))
         trigger["operator"] = "lte"
-    if "被アクセス" in text or "アクセスされた" in text or "アクセスされて" in text:
+    has_active_access = bool(re.search(r"アクセスした|アクセスする|アクセス時", text))
+    has_passive_access = bool(re.search(r"被アクセス|アクセスされた|アクセスされて|アクセスされる", text))
+    if has_active_access and has_passive_access:
+        trigger["event_hint"] = "access_or_accessed"
+        trigger["access_direction"] = "both"
+    elif has_passive_access:
         trigger["event_hint"] = "accessed"
-        trigger["access_direction"] = "received"
+        trigger["access_direction"] = "passive"
     elif "アクセス" in text:
         trigger["event_hint"] = "access"
         trigger["access_direction"] = "active"
     if "リンクした" in text:
         trigger["event_hint"] = "link"
-        trigger["access_direction"] = "own_team_link"
+        trigger["access_direction"] = "active"
     if "自身がリンクしている" in text:
         trigger["station_ownership"] = "self_linking"
     if "バッテリー使用" in text or "バッテリー1個につき" in text:
@@ -2228,10 +2440,23 @@ def infer_trigger_conditions(text: str, effect_kind: str | None = None) -> dict[
         trigger["per_battery_use"] = True
     if effect_kind == "activation_probability_boost" and "いつでもアクティブ" in text and "でんこ数" in text:
         trigger["active_skill_holder_count_based"] = True
+    actor_scope = infer_trigger_actor_scope(text)
+    if actor_scope:
+        trigger["actor_scope"] = actor_scope
     time_match = re.search(r"(\d{1,2}:\d{2}[～\-]\d{1,2}:\d{2})", text)
     if time_match:
         trigger["time_window_raw"] = time_match.group(1)
     return trigger
+
+
+def infer_trigger_actor_scope(text: str) -> str | None:
+    if re.search(r"編成内(?:の)?でんこが.{0,30}(?:アクセス|リンク)", text):
+        return "any_team_member"
+    if re.search(r"先頭(?:車両)?のでんこが.{0,20}(?:アクセス|リンク)", text):
+        return "front_car"
+    if re.search(r"自身(?:が|の).{0,20}(?:アクセス|リンク)", text):
+        return "skill_holder"
+    return None
 
 
 def normalize_skill_semantics(

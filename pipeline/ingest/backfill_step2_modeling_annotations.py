@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import copy
 import json
 import re
 from collections import Counter
@@ -245,9 +246,591 @@ def backfill_attribute_skill_disable(row: dict[str, Any]) -> int:
             "own_skill_conflict": f"disables_own_{attribute}_skills",
         },
     )
+    if component.get("target_scope") != ["opponent_team", "own_team"]:
+        component["target_scope"] = ["opponent_team", "own_team"]
+        changed += 1
     changed += set_tag(component, "attribute_skill_nullification", "offensive_skill_interference")
     if changed:
         mark_component(component, "step2_attribute_skill_nullification")
+    return changed
+
+
+def backfill_nullification_semantics(row: dict[str, Any]) -> int:
+    denko_id = str(row.get("denko_id") or "")
+    changed = 0
+
+    def assign(component: dict[str, Any], key: str, value: Any) -> None:
+        nonlocal changed
+        if component.get(key) != value:
+            component[key] = value
+            changed += 1
+
+    def mark_self_penalty(component_id: str, scope: list[str], patch_id: str) -> None:
+        nonlocal changed
+        component = component_by_id(row, component_id)
+        if not component:
+            return
+        assign(component, "target_scope", scope)
+        changed += set_tag(component, "self_penalty", "not_nullification_tool")
+        mark_component(component, patch_id)
+
+    self_penalties = {
+        "original:065": ("skill_disable", ["own_team"], "step2_hibiki_own_supporter_disable_penalty"),
+        "original:139": ("battery_disable_3", ["self"], "step2_mayaka_self_battery_disable_penalty"),
+        "original:149": ("skill_force_end_2", ["self"], "step2_harukaze_self_skill_end_penalty"),
+        "extra:022": ("skill_force_end_1", ["own_team"], "step2_leila_own_team_skill_end"),
+        "extra:074": ("skill_force_end_3", ["own_team"], "step2_suwai_own_team_skill_end"),
+        "extra:103": ("skill_force_end_2", ["own_team"], "step2_aila_own_team_skill_end"),
+        "extra:113": ("skill_force_end_2", ["self"], "step2_sasara_own_skill_lifecycle_end"),
+    }
+    penalty_spec = self_penalties.get(denko_id)
+    if penalty_spec:
+        mark_self_penalty(*penalty_spec)
+
+    if denko_id == "original:050":
+        penalty = component_by_id(row, "battery_disable_2")
+        if penalty:
+            vu_values = {
+                level: copy.deepcopy(value)
+                for level, value in (penalty.get("values_by_denko_level") or {}).items()
+                if level in {"92", "96", "100"}
+            }
+            assign(penalty, "condition_raw", "スキル発動中、自身にバッテリー使用不可")
+            assign(penalty, "target_scope", ["self"])
+            for value in (penalty.get("values_by_denko_level") or {}).values():
+                for key, item in {
+                    "unit": "condition_only",
+                    "value_numeric": None,
+                    "value_raw": "自身にバッテリー使用不可",
+                }.items():
+                    if value.get(key) != item:
+                        value[key] = item
+                        changed += 1
+            changed += set_tag(penalty, "self_penalty", "not_nullification_tool")
+            mark_component(penalty, "step2_naho_self_battery_disable_penalty")
+
+            nullification = component_by_id(row, "damage_nullification_2")
+            if not nullification:
+                nullification = {
+                    "activation_type": penalty.get("activation_type"),
+                    "availability": {"levels": ["92", "96", "100"], "vu_only": True},
+                    "component_id": "damage_nullification_2",
+                    "condition_label": "(2)",
+                    "condition_raw": "被ダメージが一定値以下のとき、自身が受けるダメージを無効化",
+                    "confidence": "high",
+                    "effect_kind": "damage_nullification",
+                    "effect_role": "supplemental_effect",
+                    "needs_review": False,
+                    "remarks_raw": "Lv.92以上で発動",
+                    "review_reasons": [],
+                    "scaling_conditions": {},
+                    "target_filters": {"damage_threshold_by_level": True},
+                    "target_scope": ["self"],
+                    "trigger_conditions": {"access_direction": "passive", "event_hint": "accessed"},
+                    "values_by_denko_level": {},
+                }
+                row.setdefault("skill_components", []).append(nullification)
+                changed += 1
+            for level, source_value in vu_values.items():
+                raw = str(source_value.get("value_raw") or "")
+                match = re.search(r"被ダメージ\s*(\d+)\s*以下", raw)
+                if not match:
+                    continue
+                threshold = int(match.group(1))
+                source_value["unit"] = "flat_damage_threshold"
+                source_value["value_numeric"] = threshold
+                source_value["value_raw"] = f"被ダメージ{threshold}以下を無効化"
+                if (nullification.get("values_by_denko_level") or {}).get(level) != source_value:
+                    nullification.setdefault("values_by_denko_level", {})[level] = source_value
+                    changed += 1
+            mark_component(nullification, "step2_naho_vu_damage_nullification_split")
+
+    if denko_id == "original:040":
+        component = component_by_id(row, "skill_disable_1")
+        if component:
+            assign(component, "target_scope", ["opponent_team", "own_team"])
+            filters = component.setdefault("target_filters", {})
+            if filters.pop("opponent_type", None) is not None:
+                changed += 1
+            changed += update_dict(
+                component,
+                "target_filters",
+                {
+                    "type": "supporter",
+                    "own_skill_conflict": "disables_own_supporter_skills",
+                    "requires_occupied_station": True,
+                    "excluded_when_footbar": True,
+                },
+            )
+            changed += set_tag(component, "mixed_opponent_and_own_skill_disable", "offensive_skill_interference")
+            mark_component(component, "step2_haru_mixed_skill_disable_targets")
+
+    if denko_id == "original:022":
+        component = component_by_id(row, "skill_disable_1")
+        if component:
+            assign(component, "condition_raw", "アクセスを受けた相手でんこ自身のスキルを一部無効化")
+            changed += update_dict(component, "trigger_conditions", {"access_direction": "active", "event_hint": "access"})
+            mark_component(component, "step2_ren_opponent_skill_disable_condition")
+
+    if denko_id == "original:033":
+        component = component_by_id(row, "skill_disable_1")
+        if component:
+            assign(component, "condition_raw", "アクセスした相手でんこ自身のダメージ増加スキルを一部無効化")
+            changed += update_dict(component, "trigger_conditions", {"access_direction": "passive", "event_hint": "accessed"})
+            mark_component(component, "step2_area_partial_skill_disable_condition")
+
+    if denko_id == "original:039":
+        component = component_by_id(row, "damage_nullification")
+        if component:
+            changed += update_dict(component, "trigger_conditions", {"access_direction": "passive", "event_hint": "accessed"})
+            mark_component(component, "step2_ruru_passive_access_direction")
+
+    if denko_id == "original:061":
+        component = component_by_id(row, "skill_disable_1")
+        if component:
+            assign(component, "target_scope", ["opponent_team", "own_team"])
+            assign(component, "condition_raw", "一定時間、双方の編成内にいるサポーターのスキルを無効化")
+            changed += update_dict(component, "trigger_conditions", {"access_direction": "both", "event_hint": "access_or_accessed"})
+            filters = component.setdefault("target_filters", {})
+            if filters.pop("opponent_type", None) is not None:
+                changed += 1
+            changed += update_dict(
+                component,
+                "target_filters",
+                {
+                    "type": "supporter",
+                    "own_skill_conflict": "disables_own_supporter_skills",
+                    "requires_occupied_station": True,
+                    "excluded_when_footbar": True,
+                },
+            )
+            probabilities = {"5": 30, "15": 35, "30": 40, "50": 55, "60": 70, "70": 85, "80": 100, "92": 100, "96": 100, "100": 100}
+            for level, probability in probabilities.items():
+                value = (component.get("values_by_denko_level") or {}).get(level)
+                if not value:
+                    continue
+                expected_probability = {"activation_probability": f"{probability}%"}
+                if value.get("probability") != expected_probability:
+                    value["probability"] = expected_probability
+                    changed += 1
+                expected_duration = "15分" if level in {"5", "15", "30", "50"} else "30分"
+                if value.get("duration") != expected_duration:
+                    value["duration"] = expected_duration
+                    changed += 1
+                if value.get("cooldown") != "4時間":
+                    value["cooldown"] = "4時間"
+                    changed += 1
+            changed += set_tag(component, "mixed_opponent_and_own_skill_disable", "offensive_skill_interference")
+            mark_component(component, "step2_chitose_skill_disable_table_recovery")
+
+    if denko_id == "extra:029":
+        component = component_by_id(row, "skill_disable")
+        if component:
+            assign(component, "condition_raw", "フットバースでアクセスされた時にカウンターし、相手をリブートさせた場合は相手のフットバースを無効化")
+            changed += update_dict(component, "trigger_conditions", {"access_direction": "passive", "event_hint": "accessed"})
+            for value in (component.get("values_by_denko_level") or {}).values():
+                raw_probability = str((value.get("raw_row") or {}).get("発動率") or "")
+                match = re.search(r"([\d.]+)%\s*[～〜~]\s*([\d.]+)%", raw_probability)
+                if not match:
+                    continue
+                probability = f"{match.group(1)}%-{match.group(2)}%（按对手等级）"
+                if value.get("probability") != probability:
+                    value["probability"] = probability
+                    changed += 1
+            changed += update_dict(component, "target_filters", {"probability_basis": "opponent_rank", "opponent_rank_cap": 100})
+            mark_component(component, "step2_aruha_probability_range")
+
+    if denko_id in {"extra:107", "extra:108", "extra:109"}:
+        component = component_by_id(row, "skill_disable_2")
+        attribute = {"extra:107": "eco", "extra:108": "heat", "extra:109": "cool"}[denko_id]
+        if component:
+            assign(
+                component,
+                "condition_raw",
+                f"編成内でんこが{attribute}属性の駅でトリックスターにアクセスされた時、相手が{attribute}属性以外なら相手でんこのスキルを無効化",
+            )
+            filters = component.setdefault("target_filters", {})
+            if filters.pop("attribute", None) is not None:
+                changed += 1
+            changed += update_dict(
+                component,
+                "target_filters",
+                {
+                    "station_attribute": attribute,
+                    "opponent_attribute_excluded": attribute,
+                    "opponent_type": "trickster",
+                },
+            )
+            if denko_id == "extra:108":
+                changed += update_dict(component, "target_filters", {"excluded_when_footbar": True})
+            for value in (component.get("values_by_denko_level") or {}).values():
+                probability = value.get("probability")
+                if not isinstance(probability, dict) or not probability:
+                    continue
+                probability_value = next(iter(probability.values()))
+                expected_probability = {"activation_probability": probability_value}
+                if probability != expected_probability:
+                    value["probability"] = expected_probability
+                    changed += 1
+            mark_component(component, "step2_attribute_station_opponent_skill_disable")
+
+    if denko_id in {"extra:002", "extra:003", "extra:004"}:
+        component = component_by_id(row, "skill_disable")
+        attribute = {"extra:002": "eco", "extra:003": "heat", "extra:004": "cool"}[denko_id]
+        if component:
+            assign(component, "condition_raw", f"一定時間、双方の編成内にいる{attribute}属性でんこのスキルを無効化")
+            changed += update_dict(
+                component,
+                "target_filters",
+                {"requires_occupied_station": True, "excluded_when_footbar": True},
+            )
+            mark_component(component, "step2_attribute_skill_disable_condition")
+
+    return changed
+
+
+def backfill_effect_boost_semantics(row: dict[str, Any]) -> int:
+    denko_id = str(row.get("denko_id") or "")
+    changed = 0
+
+    def patch_component(
+        component_id: str,
+        *,
+        category: str | None = None,
+        target_scope: list[str] | None = None,
+        tags: tuple[str, ...] = (),
+        filters: dict[str, Any] | None = None,
+        condition_raw: str | None = None,
+        remarks_raw: str | None = None,
+        patch_id: str,
+    ) -> None:
+        nonlocal changed
+        component = component_by_id(row, component_id)
+        if not component:
+            return
+        component_changed = 0
+        if target_scope is not None and component.get("target_scope") != target_scope:
+            component["target_scope"] = target_scope
+            component_changed += 1
+        if condition_raw is not None and component.get("condition_raw") != condition_raw:
+            component["condition_raw"] = condition_raw
+            component_changed += 1
+        if remarks_raw is not None and component.get("remarks_raw") != remarks_raw:
+            component["remarks_raw"] = remarks_raw
+            component_changed += 1
+        filter_updates = dict(filters or {})
+        if category:
+            filter_updates["effect_boost_category"] = category
+        component_changed += update_dict(component, "target_filters", filter_updates)
+        component_changed += set_tag(component, *tags)
+        if component_changed:
+            mark_component(component, patch_id)
+            changed += component_changed
+
+    internal_effect_boosts = {
+        "extra:017": ("effect_multiplier", ["own_skill_effects"]),
+        "extra:048": ("effect_multiplier", ["self"]),
+        "original:102": ("effect_multiplier", ["own_skill_effects"]),
+        "original:111": ("effect_multiplier", ["own_skill_effects"]),
+    }
+    internal_spec = internal_effect_boosts.get(denko_id)
+    if internal_spec:
+        component_id, scope = internal_spec
+        patch_component(
+            component_id,
+            target_scope=scope,
+            tags=("self_skill_internal_multiplier", "not_effect_boost_tool"),
+            patch_id="step2_internal_effect_multiplier_exclusion",
+        )
+        if denko_id == "original:102":
+            patch_component(
+                "vu_night_effect_multiplier",
+                target_scope=["own_skill_effects"],
+                tags=("self_skill_internal_multiplier", "not_effect_boost_tool"),
+                patch_id="step2_internal_effect_multiplier_exclusion",
+            )
+
+    simple_specs = {
+        "extra:046": ("effect_multiplier", "skill", ["team_all"]),
+        "extra:047": ("film_effect_multiplier", "film", ["own_front_car"]),
+        "extra:079": ("effect_multiplier", "accessory", ["self"]),
+        "extra:080": ("effect_multiplier", "accessory", ["self"]),
+        "extra:127": ("effect_multiplier", "skill", ["team_all"]),
+        "extra:128": ("effect_multiplier", "skill", ["team_all"]),
+        "original:159": ("film_series_effect_boost", "film", ["team_all"]),
+    }
+    simple_spec = simple_specs.get(denko_id)
+    if simple_spec:
+        component_id, category, scope = simple_spec
+        filters = {"film_skill_effects_excluded": True} if denko_id == "extra:047" else None
+        patch_component(
+            component_id,
+            category=category,
+            target_scope=scope,
+            tags=(f"{category}_effect_boost_tool",),
+            filters=filters,
+            patch_id=f"step2_{category}_effect_boost_classification",
+        )
+
+    accessory_specs = {
+        "extra:118": "編成内のリンク保持を強化する",
+        "extra:119": "編成内のリンク獲得を強化する",
+        "extra:120": "編成内の経験値の獲得を補助する",
+    }
+    accessory_tag = accessory_specs.get(denko_id)
+    if accessory_tag:
+        patch_component(
+            "effect_multiplier_2",
+            category="accessory",
+            target_scope=["team_all"],
+            tags=("accessory_effect_boost_tool", "exclusive_accessory_effect_boost"),
+            filters={
+                "accessory_skill_tag": accessory_tag,
+                "disabled_if_other_accessory_booster_in_team": True,
+                "excluded_equipped_by_denko_names": ["あんず", "らいむ"],
+            },
+            condition_raw=f"(2)スキルタグが「{accessory_tag}」のアクセサリーの効果量を増加",
+            remarks_raw=(
+                "編成内に他のアクセサリー効果量増加スキルを持つでんこがいる場合、効果(2)は発動しない。"
+                "あんずとらいむが装備しているアクセサリーは対象外。"
+            ),
+            patch_id="step2_accessory_effect_boost_condition_recovery",
+        )
+
+    return changed
+
+
+def backfill_cooldown_probability_semantics(row: dict[str, Any]) -> int:
+    denko_id = str(row.get("denko_id") or "")
+    changed = 0
+
+    vu_self_probability_ids = {
+        "original:001",
+        "original:029",
+        "original:038",
+        "original:040",
+        "original:042",
+        "original:048",
+        "original:053",
+        "original:060",
+        "extra:014",
+    }
+    if denko_id in vu_self_probability_ids:
+        for component in row.get("skill_components") or []:
+            if component.get("effect_kind") != "activation_probability_boost":
+                continue
+            component_changed = 0
+            if component.get("target_scope") != ["own_skill_effects"]:
+                component["target_scope"] = ["own_skill_effects"]
+                component_changed += 1
+            component_changed += set_tag(
+                component,
+                "self_skill_internal_probability_boost",
+                "not_cooldown_probability_tool",
+            )
+            if component_changed:
+                mark_component(component, "step2_vu_self_probability_boost_exclusion")
+                changed += component_changed
+
+    if denko_id == "original:025":
+        component = component_by_id(row, "cooldown_reset")
+        if component:
+            component_changed = 0
+            if component.get("target_scope") != ["team_all"]:
+                component["target_scope"] = ["team_all"]
+                component_changed += 1
+            condition = "編成内でクールダウン状態のでんこのクールタイムを0にする"
+            if component.get("condition_raw") != condition:
+                component["condition_raw"] = condition
+                component_changed += 1
+            component_changed += update_dict(component, "target_filters", {"state": "cooldown"})
+            component_changed += set_tag(component, "team_cooldown_reset_tool")
+            if component_changed:
+                mark_component(component, "step2_urara_team_cooldown_reset_target")
+                changed += component_changed
+
+    return changed
+
+
+def backfill_self_debuff_display_semantics(row: dict[str, Any]) -> int:
+    if row.get("denko_id") != "original:162":
+        return 0
+    changed = 0
+    positive_pairs = {
+        "atk_buff_1": "DEF -20%",
+        "def_buff_3": "ATK -20%",
+    }
+    for component_id, paired_debuff in positive_pairs.items():
+        component = component_by_id(row, component_id)
+        if not component:
+            continue
+        component_changed = update_dict(
+            component,
+            "target_filters",
+            {
+                "paired_self_debuff_raw": paired_debuff,
+                "paired_self_debuff_display": "remark_only",
+            },
+        )
+        if component_changed:
+            mark_component(component, "step2_temperature_self_debuff_as_remark")
+            changed += component_changed
+    for component_id in ("def_debuff_1", "atk_debuff_3"):
+        component = component_by_id(row, component_id)
+        if not component:
+            continue
+        component_changed = set_tag(
+            component,
+            "self_debuff",
+            "not_standalone_report_candidate",
+        )
+        if component_changed:
+            mark_component(component, "step2_temperature_self_debuff_hidden")
+            changed += component_changed
+    return changed
+
+
+def backfill_trigger_actor_semantics(row: dict[str, Any]) -> int:
+    denko_id = str(row.get("denko_id") or "")
+    changed = 0
+
+    def patch(
+        component_id: str,
+        *,
+        actor_scope: str,
+        access_direction: str | None = None,
+        event_hint: str | None = None,
+        target_scope: list[str] | None = None,
+        filters: dict[str, Any] | None = None,
+        condition_raw: str | None = None,
+        patch_id: str,
+    ) -> None:
+        nonlocal changed
+        component = component_by_id(row, component_id)
+        if not component:
+            return
+        component_changed = 0
+        trigger_updates: dict[str, Any] = {"actor_scope": actor_scope}
+        if access_direction:
+            trigger_updates["access_direction"] = access_direction
+        if event_hint:
+            trigger_updates["event_hint"] = event_hint
+        component_changed += update_dict(component, "trigger_conditions", trigger_updates)
+        if target_scope is not None and component.get("target_scope") != target_scope:
+            component["target_scope"] = target_scope
+            component_changed += 1
+        if filters:
+            component_changed += update_dict(component, "target_filters", filters)
+        if condition_raw is not None and component.get("condition_raw") != condition_raw:
+            component["condition_raw"] = condition_raw
+            component_changed += 1
+        if component_changed:
+            mark_component(component, patch_id)
+            changed += component_changed
+
+    if denko_id == "extra:116":
+        patch(
+            "score_gain",
+            actor_scope="any_team_member",
+            access_direction="active",
+            event_hint="link",
+            target_scope=["accessing_denko"],
+            filters={"weather": "sunny", "requires_link_success": True},
+            condition_raw="編成内のでんこが晴れの駅にリンクした時、スコア獲得",
+            patch_id="step2_ginaa_any_team_member_link_trigger",
+        )
+    elif denko_id == "extra:115":
+        patch(
+            "score_gain_1",
+            actor_scope="skill_holder",
+            access_direction="active",
+            event_hint="access",
+            patch_id="step2_aida_skill_holder_active_trigger",
+        )
+        patch(
+            "additional_score_gain_2",
+            actor_scope="skill_holder",
+            access_direction="passive",
+            event_hint="accessed",
+            patch_id="step2_aida_skill_holder_passive_trigger",
+        )
+    elif denko_id == "extra:117":
+        patch(
+            "score_gain",
+            actor_scope="any_team_member",
+            access_direction="passive",
+            event_hint="accessed",
+            target_scope=["accessed_denko"],
+            patch_id="step2_jumana_any_team_member_passive_trigger",
+        )
+    elif denko_id == "original:148":
+        patch(
+            "atk_buff",
+            actor_scope="skill_holder",
+            access_direction="active",
+            event_hint="access",
+            patch_id="step2_reo_skill_holder_weather_trigger",
+        )
+    elif denko_id == "original:153":
+        patch(
+            "exp_gain_1",
+            actor_scope="any_team_member",
+            access_direction="active",
+            event_hint="access",
+            target_scope=["accessing_denko"],
+            patch_id="step2_mokuri_accessing_denko_exp_target",
+        )
+        patch(
+            "exp_gain_2",
+            actor_scope="any_team_member",
+            access_direction="active",
+            event_hint="access",
+            target_scope=["team_all"],
+            patch_id="step2_mokuri_team_weather_exp_target",
+        )
+    elif denko_id == "original:162":
+        for component_id in (
+            "atk_buff_1",
+            "def_debuff_1",
+            "atk_buff_2",
+            "def_buff_2",
+            "atk_debuff_3",
+            "def_buff_3",
+        ):
+            patch(
+                component_id,
+                actor_scope="any_team_member",
+                access_direction="both",
+                event_hint="access_or_accessed",
+                patch_id="step2_mizore_any_team_member_both_trigger",
+            )
+
+    accessing_exp_specs = {
+        "original:094": ("exp_gain_1", "exp_gain_2", "exp_gain_3"),
+        "original:099": ("exp_gain_1", "exp_gain_2"),
+        "original:116": ("exp_gain_1", "exp_gain_2"),
+        "extra:033": ("exp_gain_1", "exp_gain_2"),
+    }
+    for component_id in accessing_exp_specs.get(denko_id, ()):
+        patch(
+            component_id,
+            actor_scope="any_team_member",
+            access_direction="active",
+            event_hint="access",
+            target_scope=["accessing_denko"],
+            patch_id="step2_any_team_member_accessing_denko_exp_target",
+        )
+
+    if denko_id == "extra:028":
+        patch(
+            "def_buff",
+            actor_scope="skill_holder",
+            target_scope=["self"],
+            condition_raw="(1)その日の移動距離に応じてATKとDEFが増加[自身]",
+            filters={"distance_basis": "today_travel_distance", "distance_cap_km": 30},
+            patch_id="step2_lingfa_distance_def_condition",
+        )
+
     return changed
 
 
@@ -541,6 +1124,11 @@ def backfill_row(row: dict[str, Any]) -> int:
         changed += backfill_temperature_bands(row)
     if denko_id in {"extra:002", "extra:003", "extra:004"}:
         changed += backfill_attribute_skill_disable(row)
+    changed += backfill_nullification_semantics(row)
+    changed += backfill_effect_boost_semantics(row)
+    changed += backfill_cooldown_probability_semantics(row)
+    changed += backfill_self_debuff_display_semantics(row)
+    changed += backfill_trigger_actor_semantics(row)
     changed += backfill_misc_tags(row)
     if changed:
         postprocess = row.setdefault("record_meta", {}).setdefault("postprocess", {})

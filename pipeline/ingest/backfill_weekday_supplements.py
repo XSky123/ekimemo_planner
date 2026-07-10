@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import argparse
 import json
-import re
 import sys
 from collections import Counter
 from pathlib import Path
@@ -16,8 +15,8 @@ from pipeline.analysis import write_exp_pt_support_rankings as exp_report
 from pipeline.ingest.backfill_exp_pt_supplements import is_auto_backfill_locked
 
 
-BACKFILL_VERSION = "weekday_skill_table_supplements.v1"
-REASON = "stable_weekday_table_supplement"
+BACKFILL_VERSION = "calendar_skill_table_supplements.v2"
+REASON = "stable_calendar_table_supplement"
 SOURCE_GLOB = "*_skill_facts.jsonl"
 
 WEEKDAY_EFFECTS = {
@@ -44,62 +43,70 @@ def write_jsonl(path: Path, rows: list[dict[str, Any]]) -> None:
     )
 
 
-def numbers(text: str) -> list[float]:
-    out: list[float] = []
-    cleaned = text.replace("％", "%").replace("（", "").replace("）", "")
-    for raw in re.findall(r"[+-]?\d+(?:\.\d+)?", cleaned):
-        out.append(float(raw))
-    return out
-
-
-def value_for_component(component_id: str, cell: str, unit: str) -> tuple[float | None, float | None, float | None, str]:
-    vals = numbers(cell)
-    if not vals:
-        return None, None, None, cell
-    if component_id.endswith("_tuesday") and len(vals) >= 2:
-        value = vals[0] if "atk" in component_id else vals[1]
-    else:
-        value = vals[0]
-    if unit == "percent":
-        normalized = f"+{value:g}%"
-    else:
-        normalized = f"{value:g}"
-    return value, value, value, normalized
-
-
-def supplement_value(denko_id: str, component: dict[str, Any], value: dict[str, Any], level: str) -> dict[str, Any] | None:
+def supplement_weekday_value(denko_id: str, component: dict[str, Any], value: dict[str, Any], level: str) -> dict[str, Any] | None:
     component_id = str(component.get("component_id") or "")
     spec = WEEKDAY_EFFECTS.get(component_id)
     if not spec:
         return None
     if is_auto_backfill_locked(component, value):
         return None
-    day_raw, effect_raw, expected_kind, unit, prefix = spec
+    day_raw, effect_raw, expected_kind, _unit, _prefix = spec
     if component.get("effect_kind") != expected_kind:
         return None
     table_level = level if level in exp_report.raw_detail_weekday_values(denko_id) else "80"
     cell = exp_report.raw_detail_weekday_values(denko_id).get(table_level, {}).get(day_raw, {}).get(effect_raw)
     if not cell:
         return None
-    value_numeric, value_min, value_max, normalized_cell = value_for_component(component_id, cell, unit)
-    suffix = f" ※曜日表Lv{table_level}基準" if table_level != level else ""
+    value_fields = base.weekday_component_value_fields(component_id, cell, value, table_level=table_level)
+    if not value_fields:
+        return None
     return {
         **value,
-        "unit": unit,
-        "value_numeric": value_numeric,
-        "value_min": value_min,
-        "value_max": value_max,
-        "value_raw": prefix + normalized_cell + suffix,
+        **value_fields,
         "db_backfilled_from": "detail_raw_weekday_table",
         "db_backfill_reason": REASON,
         "db_backfill_version": BACKFILL_VERSION,
         "report_supplemented_from": "detail_raw_weekday_table",
-        "report_weekday_table_level": table_level,
+    }
+
+
+def supplement_seasonal_value(component: dict[str, Any], value: dict[str, Any]) -> dict[str, Any] | None:
+    component_id = str(component.get("component_id") or "")
+    if not component_id.startswith("seasonal_"):
+        return None
+    numeric = value.get("value_numeric")
+    if numeric is None:
+        return None
+    multiplier_raw = value.get("seasonal_multiplier_raw")
+    value_fields = base.seasonal_component_value_fields(component_id, f"{float(numeric):g}", str(multiplier_raw) if multiplier_raw else None)
+    if not value_fields:
+        return None
+    return {
+        **value,
+        **value_fields,
+        "db_backfilled_from": "detail_raw_seasonal_table",
+        "db_backfill_reason": REASON,
+        "db_backfill_version": BACKFILL_VERSION,
+        "report_supplemented_from": "detail_raw_seasonal_table",
     }
 
 
 def value_signature(value: dict[str, Any]) -> dict[str, Any]:
-    keys = {"unit", "value_numeric", "value_min", "value_max", "value_raw", "report_weekday_table_level"}
+    keys = {
+        "unit",
+        "value_numeric",
+        "value_min",
+        "value_max",
+        "value_raw",
+        "report_weekday_table_level",
+        "night_multiplier",
+        "night_value_numeric",
+        "season_raw",
+        "special_multiplier_month",
+        "special_month_multiplier",
+        "special_month_value_numeric",
+        "special_month_multiplier_recorded",
+    }
     return {key: value.get(key) for key in sorted(keys) if key in value}
 
 
@@ -114,14 +121,18 @@ def backfill_row(row: dict[str, Any]) -> dict[str, Any]:
         for level, value in list(values.items()):
             if not isinstance(value, dict):
                 continue
-            supplement = supplement_value(str(denko_id), component, value, str(level))
+            supplement = supplement_weekday_value(str(denko_id), component, value, str(level))
+            source = "detail_raw_weekday_table"
+            if not supplement:
+                supplement = supplement_seasonal_value(component, value)
+                source = "detail_raw_seasonal_table"
             if not supplement:
                 continue
             if value_signature(supplement) == value_signature(value):
                 continue
             values[str(level)] = supplement
             changed += 1
-            sources["detail_raw_weekday_table"] += 1
+            sources[source] += 1
     if changed:
         row["summary_zh"] = base.build_summary_zh(
             row.get("skill_components") or [],
@@ -131,7 +142,7 @@ def backfill_row(row: dict[str, Any]) -> dict[str, Any]:
         )
         meta = row.setdefault("record_meta", {})
         postprocess = meta.setdefault("postprocess", {})
-        postprocess["weekday_db_backfill"] = {
+        postprocess["calendar_db_backfill"] = {
             "version": BACKFILL_VERSION,
             "reason": REASON,
             "changed_values": changed,

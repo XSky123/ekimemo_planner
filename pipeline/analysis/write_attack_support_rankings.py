@@ -52,6 +52,8 @@ EFFECT_LABELS = {
 SCOPE_LABELS = {
     "self": "自己",
     "team_all": "编成内全员",
+    "own_team": "我方编成",
+    "opponent_team": "对手编成",
     "opponent_denko": "对手でんこ",
     "own_front_car": "自己队伍先头",
     "opponent_front_car": "对手队伍先头",
@@ -466,10 +468,12 @@ def compact_filter_text(component: dict[str, Any]) -> str:
         notes.append("26-29°C/11-14°C无效果")
     if filters.get("own_access_attribute"):
         notes.append(f"己方{filters['own_access_attribute']}访问")
+    if filters.get("station_attribute"):
+        notes.append(f"{filters['station_attribute']}属性车站")
     if filters.get("target_denko_name"):
         notes.append(f"指定{filters['target_denko_name']}")
     if filters.get("attribute"):
-        notes.append(f"{filters['attribute']}对象")
+        notes.append(f"对象{filters['attribute']}属性")
     if filters.get("opponent_attribute_excluded"):
         notes.append(f"对手非{filters['opponent_attribute_excluded']}")
     if filters.get("opponent_team_attribute_diversity") == "multiple_attributes":
@@ -496,7 +500,21 @@ def compact_filter_text(component: dict[str, Any]) -> str:
     if filters.get("disabled_skill_kind") == "partial_damage_increase_skill_nullification":
         notes.append("部分伤害增加技能无效化")
     if filters.get("own_skill_conflict"):
-        notes.append(f"自身冲突:{filters['own_skill_conflict']}")
+        conflict = str(filters["own_skill_conflict"])
+        conflict_label = {
+            "disables_own_eco_skills": "同时无效化我方eco技能",
+            "disables_own_heat_skills": "同时无效化我方heat技能",
+            "disables_own_cool_skills": "同时无效化我方cool技能",
+            "disables_own_supporter_skills": "同时无效化我方supporter技能",
+        }.get(conflict, conflict)
+        notes.append(conflict_label)
+    if filters.get("requires_occupied_station"):
+        notes.append("空站不发动")
+    if filters.get("excluded_when_footbar"):
+        notes.append("使用フットバース时不发动")
+    if filters.get("probability_basis") == "opponent_rank":
+        cap = filters.get("opponent_rank_cap")
+        notes.append(f"概率按对手等级变化{f'（上限{cap}）' if cap else ''}")
     if filters.get("exp_source") == "cat_punch":
         notes.append("ねこぱんち経験値")
     if scaling.get("basis"):

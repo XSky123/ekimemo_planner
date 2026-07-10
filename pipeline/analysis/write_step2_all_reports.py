@@ -204,7 +204,12 @@ def main() -> None:
       const tabButtons = [...root.querySelectorAll('.tab-button')];
       const panels = [...root.querySelectorAll('[data-tab-panel]')];
       const rowCache = new Map();
-      const sortKeysByColumn = ['rank', 'name', 'attr', 'type', 'effect', 'max', 'avg', 'level', 'probability', 'duration', 'cooldown', 'activation', 'target', 'condition'];
+      const sortKeyByHeader = {{
+        '排行': 'rank', '排名': 'rank', 'でんこ': 'name', '属性': 'attr', '类型': 'type', '效果': 'effect',
+        '理论最大': 'max', '平均值': 'avg', '期望值': 'avg', '等级值': 'level', '概率': 'probability',
+        '持续': 'duration', 'CD': 'cooldown', '发动': 'activation', '访问方向': 'direction',
+        '对象/限制': 'target', '触发与条件': 'condition'
+      }};
       const missingText = '未记载';
 
       for (const panel of panels) {{
@@ -241,15 +246,17 @@ def main() -> None:
         const match = String(text || '').replace(/,/g, '').match(/-?\\d+(?:\\.\\d+)?/);
         return match ? Number(match[0]) : Number.NEGATIVE_INFINITY;
       }}
+      function columnIndex(row, key) {{
+        const headers = [...row.closest('table').querySelectorAll('thead th')];
+        return headers.findIndex(th => th.dataset.sortKey === key);
+      }}
       function sortValue(row, key) {{
         if (key === 'rank') return Number(row.dataset.originalIndex);
         if (key === 'max') return Number(row.dataset.sortMax);
         if (key === 'avg') return Number(row.dataset.sortAvg);
-        if (key === 'probability') return numberFromText(textAt(row, 8));
-        if (key === 'duration') return textAt(row, 9);
-        if (key === 'cooldown') return textAt(row, 10);
-        const indexMap = {{ name: 1, attr: 2, type: 3, effect: 4, level: 7, activation: 11, target: 12, condition: 13 }};
-        return textAt(row, indexMap[key] ?? 0);
+        const index = columnIndex(row, key);
+        if (key === 'probability') return numberFromText(textAt(row, index));
+        return textAt(row, index);
       }}
       function sortActiveRows() {{
         const rows = activeRows();
@@ -303,8 +310,8 @@ def main() -> None:
       function initSortableHeaders() {{
         for (const panel of panels) {{
           const headers = [...panel.querySelectorAll('th')];
-          headers.forEach((th, index) => {{
-            const key = sortKeysByColumn[index];
+          headers.forEach(th => {{
+            const key = sortKeyByHeader[th.textContent.trim()];
             if (!key) return;
             th.classList.add('sortable');
             th.dataset.sortKey = key;
