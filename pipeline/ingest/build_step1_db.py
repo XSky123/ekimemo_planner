@@ -12,7 +12,15 @@ import parse as base
 
 
 OUT_DIR = base.ROOT / "data" / "step1_db"
-POOLS = ("original", "extra")
+POOLS = ("original", "extra", "another", "iks", "ekico", "awamemo")
+EXPECTED_POOL_COUNTS = {
+    "original": 165,
+    "extra": 128,
+    "another": 2,
+    "iks": 7,
+    "ekico": 4,
+    "awamemo": 1,
+}
 
 
 def read_jsonl(path: Path) -> list[dict[str, Any]]:
@@ -160,7 +168,7 @@ def validate(denko_rows: list[dict[str, Any]], skill_rows: list[dict[str, Any]])
                 "missing_denko_ids": sorted(skill_set - denko_set),
             }
         )
-    for pool, expected in {"original": 165, "extra": 128}.items():
+    for pool, expected in EXPECTED_POOL_COUNTS.items():
         denko_count = sum(1 for denko_id in denko_ids if denko_id and pool_from_denko_id(denko_id) == pool)
         skill_count = sum(1 for denko_id in skill_ids if denko_id and pool_from_denko_id(denko_id) == pool)
         if denko_count != expected or skill_count != expected:
@@ -296,7 +304,7 @@ def main() -> int:
         },
         "scope": {
             "included_pools": list(POOLS),
-            "excluded_pools": ["special", "collaboration"],
+            "excluded_pools": ["event", "collaboration", "other_special"],
         },
         "outputs": {
             "denko_facts": "data/step1_db/denko_facts.jsonl",

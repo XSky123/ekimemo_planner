@@ -56,7 +56,7 @@ TABS = {
     "opponent_suppression": {
         "title": "降低对手输出",
         "description": "降低对手 ATK、技能无效化、电池无效化等。这里只列防御向干扰，不列降低对手 DEF。",
-        "kinds": {"atk_debuff", "skill_disable", "battery_disable"},
+        "kinds": {"atk_debuff", "ap_debuff", "skill_disable", "skill_effect_nullification", "battery_disable"},
         "default_score": 100.0,
     },
     "link_retention": {
@@ -76,6 +76,7 @@ RELIABILITY_TABS = {"nullify_survival", "link_retention", "counter_disruption"}
 
 EFFECT_LABELS = {
     "atk_debuff": "对手ATK降低",
+    "ap_debuff": "对手AP降低",
     "battery_disable": "电池无效化",
     "counter": "カウンター",
     "counter_damage": "反击伤害",
@@ -92,6 +93,7 @@ EFFECT_LABELS = {
     "link_retention": "link保持",
     "reboot": "リブート",
     "skill_disable": "技能无效化",
+    "skill_effect_nullification": "技能效果量无效化",
     "survive_hp1": "HP1保命",
 }
 
@@ -117,13 +119,13 @@ def is_self_only_def(component: dict[str, Any]) -> bool:
 
 def is_opponent_output_suppression(component: dict[str, Any]) -> bool:
     kind = component.get("effect_kind")
-    if kind in {"skill_disable", "battery_disable"}:
+    if kind in {"skill_disable", "skill_effect_nullification", "battery_disable"}:
         return True
-    if kind != "atk_debuff":
+    if kind not in {"atk_debuff", "ap_debuff"}:
         return False
     scope = set(component.get("target_scope") or [])
     condition = str(component.get("condition_raw") or "")
-    return "opponent_denko" in scope or bool(re.search(r"相手(?:のでんこ|でんこ)?のATK|相手でんこのATK", condition))
+    return "opponent_denko" in scope or bool(re.search(r"相手(?:のでんこ|でんこ)?の(?:ATK|AP)|相手でんこの(?:ATK|AP)", condition))
 
 
 def is_defense_effect_multiplier(component: dict[str, Any]) -> bool:
@@ -143,6 +145,8 @@ def is_defense_effect_multiplier(component: dict[str, Any]) -> bool:
 
 
 def belongs_to_tab(tab_id: str, component: dict[str, Any]) -> bool:
+    if "not_standalone_report_candidate" in set(component.get("modeling_tags") or []):
+        return False
     kind = component.get("effect_kind")
     if kind not in TABS[tab_id]["kinds"]:
         return False
@@ -267,7 +271,8 @@ def level_metrics(tab_id: str, component: dict[str, Any], level: str) -> dict[st
     value_min, value_max = metric_range(tab_id, component, value)
     default_score = TABS[tab_id]["default_score"]
     uses_reliability_score = False
-    if (tab_id in RELIABILITY_TABS and kind != "counter_damage") or (value_max is None and default_score is not None):
+    behavior_reliability = kind in {"skill_disable", "skill_effect_nullification", "battery_disable"}
+    if behavior_reliability or (tab_id in RELIABILITY_TABS and kind != "counter_damage") or (value_max is None and default_score is not None):
         reliability = probability_factor(value)
         value_min = reliability
         value_max = reliability
@@ -301,7 +306,7 @@ def target_text(component: dict[str, Any]) -> str:
 def defense_target_text(tab_id: str, component: dict[str, Any]) -> str:
     kind = component.get("effect_kind")
     if tab_id == "opponent_suppression":
-        if kind == "atk_debuff":
+        if kind in {"atk_debuff", "ap_debuff"}:
             return "对手でんこ"
         if kind == "skill_disable":
             filters = component.get("target_filters") or {}
@@ -532,6 +537,7 @@ def main() -> None:
   </style>
 </head>
 <body>
+  <nav aria-label="报表导航" style="margin-bottom:12px"><a href="../../docs/reports/index.html" style="color:#57606a;font-size:13px;font-weight:600">← 返回报表目录</a></nav>
   <h1>Ekimemo Step2 防御/守站辅助排行</h1>
   <p>从 Step1 DB 自动整理。防御候选按 DEF、减伤、回复、无效化/保命、降低对手输出、link保持、反击惩罚拆分；默认 Lv50，可切换 Lv30/Lv80/Lv92/Lv100。理论最大是该维度的原始量级，期望值会粗略乘以发动概率。</p>
   <div class="tabs">{tab_buttons}</div>

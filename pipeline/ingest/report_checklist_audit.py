@@ -13,8 +13,9 @@ import parse as base
 import review_cycle_controller as controller
 
 
-BATCH_RE = re.compile(r"(?P<pool>original|extra)_(?P<start>\d{3})_(?P<end>\d{3})_skill_facts\.jsonl$")
-REPORT_RE = re.compile(r"(?P<pool>original|extra)_(?P<start>\d{3})_(?P<end>\d{3})_batch_review_zh\.html$")
+POOL_PATTERN = "|".join(re.escape(pool) for pool in base.LIST_PAGES)
+BATCH_RE = re.compile(rf"(?P<pool>{POOL_PATTERN})_(?P<start>\d{{3}})_(?P<end>\d{{3}})_skill_facts\.jsonl$")
+REPORT_RE = re.compile(rf"(?P<pool>{POOL_PATTERN})_(?P<start>\d{{3}})_(?P<end>\d{{3}})_batch_review_zh\.html$")
 VU_LEVELS = {"92", "96", "100"}
 BLOCKING_REASONS = controller.BLOCKING_REASONS
 MOJIBAKE_PATTERNS = ("????", "HP?30%", "锛", "閵", "閻", "繝", "縺", "蜀咏悄")

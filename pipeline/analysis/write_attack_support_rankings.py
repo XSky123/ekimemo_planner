@@ -17,7 +17,7 @@ TABS = {
     "self_atk": {
         "title": "攻击手：自己加ATK",
         "description": "只看对自己生效的 ATK 增加。理论最大/平均值用所选等级 AP 乘以 ATK 增幅估算。",
-        "kinds": {"atk_buff"},
+        "kinds": {"atk_buff", "ap_buff"},
     },
     "team_atk": {
         "title": "ATK辅助：给队友/队伍",
@@ -44,6 +44,7 @@ ACTIVATION_GROUPS = {
 
 EFFECT_LABELS = {
     "atk_buff": "ATK增加",
+    "ap_buff": "AP固定增加",
     "fixed_damage": "固定伤害",
     "additional_fixed_damage": "追加固定伤害",
     "def_debuff": "DEF下降",
@@ -61,6 +62,9 @@ SCOPE_LABELS = {
     "accessed_denko": "被访问的でんこ",
     "relative_car": "相对车位",
     "specific_denko": "指定でんこ",
+    "front_car": "先头车",
+    "master": "Master",
+    "own_skill_effects": "自身技能",
 }
 
 BASIS_LABELS = {
@@ -77,7 +81,9 @@ BASIS_LABELS = {
     "max_damage_dealt_during_skill": "技能发动中最大与伤害",
     "opponent_team_distinct_attribute_count": "对手编成属性种类数",
     "opponent_team_type_count": "对手编成类型数",
+    "opponent_pool_effect_multiplier": "对手系列分支倍率",
     "own_team_attribute_count": "编成内属性数量",
+    "qualifying_linked_station_count": "满足条件的link站数",
     "random_bonus_when_atk_buff_1_gte_50_percent": "(1)达到ATK+50%以上时随机追加",
     "received_damage_count": "被攻击次数",
     "referenced_cars_film_damage_effect": "参照车厢film与伤害效果",
@@ -161,7 +167,8 @@ def denko_metadata() -> dict[str, dict[str, str]]:
 
 def denko_sort_key(denko_id: str) -> tuple[int, int]:
     pool, _, number = denko_id.partition(":")
-    return (0 if pool == "original" else 1, int(number or 0))
+    pool_order = {"original": 0, "extra": 1, "another": 2, "iks": 3, "ekico": 4, "awamemo": 5}
+    return (pool_order.get(pool, 99), int(number or 0))
 
 
 def is_vu_only(component: dict[str, Any], basis_level: str) -> bool:
@@ -386,12 +393,18 @@ def ap_at_level(row: dict[str, Any], level: str) -> float | None:
     return None
 
 
-def metric_display(tab_id: str, row: dict[str, Any], level: str, max_value: float | None, avg_value: float | None) -> tuple[str, str, float | None, float | None]:
+def metric_display(tab_id: str, row: dict[str, Any], component: dict[str, Any], level: str, max_value: float | None, avg_value: float | None) -> tuple[str, str, float | None, float | None]:
     if tab_id != "self_atk":
         return format_metric(max_value), format_metric(avg_value), max_value, avg_value
     ap = ap_at_level(row, level)
     if ap is None:
         return "-", "-", None, None
+    if component.get("effect_kind") == "ap_buff":
+        max_result = ap + max_value if max_value is not None else None
+        avg_result = ap + avg_value if avg_value is not None else None
+        max_text = f"AP {max_result:g} / AP +{max_value:g}" if max_result is not None and max_value is not None else "-"
+        avg_text = f"AP {avg_result:g} / AP +{avg_value:g}" if avg_result is not None and avg_value is not None else "-"
+        return max_text, avg_text, max_result, avg_result
     max_result = ap * (1 + max_value / 100) if max_value is not None else None
     avg_result = ap * (1 + avg_value / 100) if avg_value is not None else None
     max_text = f"AP {max_result:g} / ATK +{max_value:g}%" if max_result is not None and max_value is not None else "-"
@@ -434,7 +447,7 @@ def level_metrics(tab_id: str, row: dict[str, Any], component: dict[str, Any], l
         return None
     avg_value = mean_value(value_min, value_max)
     expected_value = avg_value * probability_factor(value) / 100 if avg_value is not None else None
-    max_text, avg_text, sort_max, sort_avg = metric_display(tab_id, row, level, value_max, expected_value)
+    max_text, avg_text, sort_max, sort_avg = metric_display(tab_id, row, component, level, value_max, expected_value)
     return {
         "level": level,
         "sort_max": sort_max,
@@ -518,6 +531,12 @@ def compact_filter_text(component: dict[str, Any]) -> str:
         notes.append("属性技能无效化")
     if filters.get("disabled_skill_kind") == "partial_damage_increase_skill_nullification":
         notes.append("部分伤害增加技能无效化")
+    if filters.get("disabled_skill_kind") == "atk_changing_effects":
+        notes.append("仅ATK变动技能效果")
+    if filters.get("disabled_skill_kind") == "def_changing_effects":
+        notes.append("仅DEF变动技能效果")
+    if filters.get("disabled_skill_kind") == "all_skill_effects":
+        notes.append("对手编成内各技能")
     if filters.get("own_skill_conflict"):
         conflict = str(filters["own_skill_conflict"])
         conflict_label = {
@@ -531,6 +550,24 @@ def compact_filter_text(component: dict[str, Any]) -> str:
         notes.append("空站不发动")
     if filters.get("excluded_when_footbar"):
         notes.append("使用フットバース时不发动")
+    if filters.get("requires_fair_master"):
+        notes.append("仅自身为フェアマスター")
+    if filters.get("branch_by_opponent_pool"):
+        notes.append("对手为Original/Extra时强化")
+    if filters.get("opponent_pool_in"):
+        notes.append("对手系列 " + "/".join(map(str, filters["opponent_pool_in"])))
+    if filters.get("opponent_pool_excludes"):
+        notes.append("对手非 " + "/".join(map(str, filters["opponent_pool_excludes"])))
+    if filters.get("minimum_same_attribute_links"):
+        notes.append(f"同属性link≥{filters['minimum_same_attribute_links']}站")
+    if filters.get("minimum_link_minutes"):
+        notes.append(f"link≥{filters['minimum_link_minutes']}分钟")
+    if filters.get("same_attribute_links"):
+        notes.append("同属性link")
+    if filters.get("opponent_attribute_differs_from_station"):
+        notes.append("对手属性≠车站属性")
+    if filters.get("excluded_station_state"):
+        notes.append(f"{filters['excluded_station_state']}不发动")
     if filters.get("probability_basis") == "opponent_rank":
         cap = filters.get("opponent_rank_cap")
         notes.append(f"概率按对手等级变化{f'（上限{cap}）' if cap else ''}")
@@ -617,7 +654,7 @@ def display_condition_text(component: dict[str, Any]) -> str:
 
 
 def is_self_only_atk(component: dict[str, Any]) -> bool:
-    if component.get("effect_kind") != "atk_buff":
+    if component.get("effect_kind") not in {"atk_buff", "ap_buff"}:
         return False
     scope = set(component.get("target_scope") or [])
     condition = str(component.get("condition_raw") or "")
@@ -1045,6 +1082,7 @@ def main() -> None:
   </style>
 </head>
 <body>
+  <nav aria-label="报表导航" style="margin-bottom:12px"><a href="../../docs/reports/index.html" style="color:#57606a;font-size:13px;font-weight:600">← 返回报表目录</a></nav>
   <h1>Ekimemo Step2 攻击辅助排行</h1>
   <p>从 Step1 DB 自动整理。默认按 Lv50 查看，也可切换 Lv30/Lv80；打开 VU 项后可用 Lv92/Lv100 查看 VU 后效果。范围型效果同时给出理论最大和平均值，并可切换排序。</p>
   <div class="tabs">{tab_buttons}</div>

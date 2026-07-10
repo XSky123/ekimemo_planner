@@ -14,21 +14,22 @@ User-facing reports remain Chinese. Source facts are stored in Japanese. Schema 
 
 ## Scope
 
-- Included: `original` 001-165 and `extra` 001-128.
-- Excluded from Step1: special/collaboration denko, solver logic, recommendation priors, and observed team cases.
+- Included: `original` 001-165, `extra` 001-128, `another` AD02-AD03, `iks` IKS0-IKS6, `ekico` EC1-EC4, and `awamemo` OR0.
+- Excluded from Step1: event/collaboration/other special denko, solver logic, recommendation priors, and observed team cases.
 
 ## Current Counts
 
 - `original`: 165 denko rows and 165 skill rows.
 - `extra`: 128 denko rows and 128 skill rows.
-- Total: 293 denko rows and 293 skill rows.
+- `another`: 2; `iks`: 7; `ekico`: 4; `awamemo`: 1.
+- Total: 307 denko rows and 307 skill rows.
 
 ## Notes
 
 - Batch files under `data/records/` are retained rebuild inputs and provenance. Their numbered names are tied to manual patch/replay tooling.
 - Accepted semantic corrections live under `data/manual_fills/` and in locked DB backfills.
 - Closed Step1 review queues and final historical audits live under `archive/step1_ingestion_2026-07-11/`.
-- `original:040` and `original:080` appeared in overlapping historical batches; final DB dedupes them with identical hashes.
+- Active rebuild batches are non-overlapping; historical review queues remain archived.
 - Rebuild with:
 
 ```powershell

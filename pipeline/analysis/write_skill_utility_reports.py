@@ -69,6 +69,10 @@ TABS = {
         "title": "活动/访问次数",
         "description": "只收会实际产生额外访问、随机/远程访问，或增加思い出し访问次数的技能。追加、随机和远程访问属于行为效果，不显示理论最大或期望值。",
     },
+    "access_range": {
+        "title": "访问范围/雷达",
+        "description": "扩大レーダー检知数或最大检知数等访问范围工具。与直接产生追加访问的技能分开。",
+    },
 }
 
 EFFECT_LABELS = {
@@ -97,9 +101,11 @@ EFFECT_LABELS = {
     "mile_gain": "mile付与",
     "random_previous_station_access": "随机访问已访问站",
     "radar_detection_range": "雷达探测范围",
+    "radar_max_detection_range": "雷达最大探测范围",
     "reboot": "重启",
     "remote_station_access": "远程访问",
     "skill_disable": "技能无效化",
+    "skill_effect_nullification": "技能效果量无效化",
     "skill_force_end": "技能强制结束",
     "score_gain": "积分获得",
     "station_link_transfer": "link转让",
@@ -110,6 +116,7 @@ NULLIFICATION_KINDS = {
     "battery_disable",
     "damage_nullification",
     "skill_disable",
+    "skill_effect_nullification",
     "skill_force_end",
 }
 NULLIFICATION_TABS = {
@@ -132,6 +139,7 @@ EVENT_ACCESS_KINDS = {
     "random_previous_station_access",
     "remote_station_access",
 }
+ACCESS_RANGE_KINDS = {"radar_detection_range", "radar_max_detection_range"}
 NON_NUMERIC_ACCESS_KINDS = {
     "extra_access",
     "random_previous_station_access",
@@ -263,6 +271,8 @@ def belongs_to_tab(tab_id: str, row: dict[str, Any], component: dict[str, Any]) 
         return condition_hit(tab_id, row, component)
     if tab_id == "event_access":
         return kind in EVENT_ACCESS_KINDS
+    if tab_id == "access_range":
+        return kind in ACCESS_RANGE_KINDS
     return False
 
 
@@ -982,6 +992,7 @@ def main() -> None:
   </style>
 </head>
 <body>
+  <nav aria-label="报表导航" style="margin-bottom:12px"><a href="../../docs/reports/index.html" style="color:#57606a;font-size:13px;font-weight:600">← 返回报表目录</a></nav>
   <h1>Ekimemo Step2 技能工具索引</h1>
   <p>严格按机制整理：无效化/强制结束、技能/饰品/フィルム效果量强化、CD/概率操作、明确条件索引、活动/访问次数。普通 ATK/DEF/経験値/スコア 增减不会进入工具 tab。</p>
   <div class="tabs">{tab_buttons}</div>

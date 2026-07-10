@@ -9,7 +9,7 @@
     "record_meta": { "$ref": "record_meta.schema.json" },
     "denko_id": { "type": "string" },
     "name": { "type": "string" },
-    "pool": { "type": "string", "enum": ["original", "extra", "special", "collab"] },
+    "pool": { "type": "string", "enum": ["original", "extra", "another", "iks", "ekico", "awamemo", "special", "collab"] },
     "skill_name": { "type": ["string", "null"] },
     "detail_url": { "type": ["string", "null"] },
     "trigger_condition": {

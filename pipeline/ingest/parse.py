@@ -19,11 +19,10 @@ RAW_DIR = ROOT / "data" / "raw_pages"
 RECORD_DIR = ROOT / "data" / "records"
 INDEX_DIR = ROOT / "tmp" / "review_runs" / "indexes"
 REVIEW_DIR = ROOT / "data" / "review_queue"
-ARCHIVED_REVIEW_DIR = ROOT / "archive" / "step1_ingestion_2026-07-11" / "review_queue"
 REVIEW_RUN_DIR = ROOT / "tmp" / "review_runs"
 BASE_URL = "https://newekimemo.wiki.fc2.com"
 JST = timezone(timedelta(hours=9))
-PARSER_VERSION = "detail_html_table_matrix.v8"
+PARSER_VERSION = "detail_html_table_matrix.v9"
 KEY_DENKO_LEVELS = ("1", "15", "30", "50", "60", "70", "80", "92", "96", "100")
 DEFAULT_FOCUS_LEVELS = ("30", "50")
 VU_LEVELS = ("92", "96", "100")
@@ -31,13 +30,31 @@ VU_LEVELS = ("92", "96", "100")
 LIST_PAGES = {
     "original": "https://newekimemo.wiki.fc2.com/wiki/%E9%A1%94%E7%94%BB%E5%83%8F%E3%83%BB%E3%82%BF%E3%82%A4%E3%83%97%E3%83%BB%E5%B1%9E%E6%80%A7%E3%83%BB%E8%89%B2%E3%83%BB%E3%82%B9%E3%82%AD%E3%83%AB%E5%90%8D%2F%E3%82%AA%E3%83%AA%E3%82%B8%E3%83%8A%E3%83%AB%E3%81%A7%E3%82%93%E3%81%93",
     "extra": "https://newekimemo.wiki.fc2.com/wiki/%E9%A1%94%E7%94%BB%E5%83%8F%E3%83%BB%E3%82%BF%E3%82%A4%E3%83%97%E3%83%BB%E5%B1%9E%E6%80%A7%E3%83%BB%E8%89%B2%E3%83%BB%E3%82%B9%E3%82%AD%E3%83%AB%E5%90%8D%2F%E3%82%A8%E3%82%AF%E3%82%B9%E3%83%88%E3%83%A9%E3%81%A7%E3%82%93%E3%81%93",
+    "another": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%A2%E3%83%8A%E3%82%B6%E3%83%BC%E3%81%A7%E3%82%93%E3%81%93%3E%E9%A1%94%E7%94%BB%E5%83%8F%E3%83%BB%E3%82%BF%E3%82%A4%E3%83%97%E3%83%BB%E5%B1%9E%E6%80%A7%E3%83%BB%E8%89%B2%E3%83%BB%E3%82%B9%E3%82%AD%E3%83%AB%E5%90%8D%2F%E3%82%A2%E3%83%8A%E3%82%B6%E3%83%BC%E3%81%A7%E3%82%93%E3%81%93",
+    "iks": "https://newekimemo.wiki.fc2.com/wiki/%E9%A1%94%E7%94%BB%E5%83%8F%E3%83%BB%E3%82%BF%E3%82%A4%E3%83%97%E3%83%BB%E5%B1%9E%E6%80%A7%E3%83%BB%E8%89%B2%E3%83%BB%E3%82%B9%E3%82%AD%E3%83%AB%E5%90%8D%2FIKS.gear",
+    "ekico": "https://newekimemo.wiki.fc2.com/wiki/%E9%A1%94%E7%94%BB%E5%83%8F%E3%83%BB%E3%82%BF%E3%82%A4%E3%83%97%E3%83%BB%E5%B1%9E%E6%80%A7%E3%83%BB%E8%89%B2%E3%83%BB%E3%82%B9%E3%82%AD%E3%83%AB%E5%90%8D%2FEKICO",
+    "awamemo": "https://newekimemo.wiki.fc2.com/wiki/%E9%A1%94%E7%94%BB%E5%83%8F%E3%83%BB%E3%82%BF%E3%82%A4%E3%83%97%E3%83%BB%E5%B1%9E%E6%80%A7%E3%83%BB%E8%89%B2%E3%83%BB%E3%82%B9%E3%82%AD%E3%83%AB%E5%90%8D%2F%E3%82%A2%E3%83%AF%E3%83%A1%E3%83%A2%E9%99%90%E5%AE%9A%E3%81%A7%E3%82%93%E3%81%93",
+}
+
+POOL_ID_SPECS = {
+    "original": (r"\d+", "", "original"),
+    "extra": (r"EX\d+", "EX", "extra"),
+    "another": (r"AD\d+", "AD", "another"),
+    "iks": (r"IKS\d+", "IKS", "iks"),
+    "ekico": (r"EC\d+", "EC", "ekico"),
+    "awamemo": (r"OR\d+", "OR", "awamemo"),
 }
 
 
 def review_queue_path(stem: str) -> Path:
     active = REVIEW_DIR / f"{stem}_review_queue.jsonl"
-    archived = ARCHIVED_REVIEW_DIR / active.name
-    return active if active.exists() or not archived.exists() else archived
+    if active.exists():
+        return active
+    for review_dir in sorted((ROOT / "archive").glob("*/review_queue"), reverse=True):
+        archived = review_dir / active.name
+        if archived.exists():
+            return archived
+    return active
 
 
 @dataclass
@@ -200,17 +217,23 @@ def normalize_headers(row: list[dict[str, Any]]) -> list[str]:
 
 
 def is_denko_id(value: str, pool: str) -> bool:
-    if pool == "original":
-        return bool(re.fullmatch(r"\d+", value))
-    return bool(re.fullmatch(r"EX\d+", value))
+    pattern, _wiki_prefix, _id_prefix = POOL_ID_SPECS[pool]
+    return bool(re.fullmatch(pattern, value))
 
 
 def normalize_denko_id(wiki_no: str, pool: str) -> tuple[str, int | None]:
+    _pattern, wiki_prefix, id_prefix = POOL_ID_SPECS[pool]
+    numeric = wiki_no[len(wiki_prefix) :] if wiki_prefix else wiki_no
+    n = int(numeric)
+    return f"{id_prefix}:{n:03d}", n
+
+
+def display_denko_number(wiki_no: str, pool: str, id_number: int) -> str:
     if pool == "original":
-        n = int(wiki_no)
-        return f"original:{n:03d}", n
-    n = int(wiki_no.replace("EX", ""))
-    return f"extra:{n:03d}", n
+        return f"No.{id_number}"
+    if pool == "extra":
+        return f"EX No.{id_number}"
+    return wiki_no
 
 
 def extract_attribute(cell_text: str) -> str | None:
@@ -284,7 +307,7 @@ def parse_list_page(
                     "name": name,
                     "full_name": name,
                     "aliases": [],
-                    "number": f"No.{id_number}" if pool == "original" else f"EX No.{id_number}",
+                    "number": display_denko_number(wiki_no, pool, id_number),
                     "wiki_page_title": link.get("title"),
                     "pool": pool,
                     "detail_url": detail_url,

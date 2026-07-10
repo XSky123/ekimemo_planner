@@ -16,7 +16,6 @@ RANKING_GENERATORS = [
     ("attack", ["pipeline/analysis/write_attack_support_rankings.py"]),
     ("defense", ["pipeline/analysis/write_defense_support_rankings.py"]),
     ("exp_pt", ["pipeline/analysis/write_exp_pt_support_rankings.py"]),
-    ("mobility", ["pipeline/analysis/write_mobility_visit_rankings.py"]),
     ("utility", ["pipeline/analysis/write_skill_utility_reports.py"]),
 ]
 
@@ -26,10 +25,6 @@ PROTOTYPE_GENERATOR = (
 )
 
 FINAL_GENERATORS = [
-    (
-        "all_reports",
-        ["pipeline/analysis/write_step2_all_reports.py"],
-    ),
     ("semantic_audit", ["pipeline/analysis/audit_step2_reports.py"]),
 ]
 
@@ -37,10 +32,8 @@ STEP2_REPORTS = [
     "step2_attack_support_rankings_zh.html",
     "step2_defense_support_rankings_zh.html",
     "step2_exp_pt_support_rankings_zh.html",
-    "step2_mobility_visit_rankings_zh.html",
     "step2_skill_utility_reports_zh.html",
     "step2_prototype_lookup_zh.html",
-    "step2_all_reports_zh.html",
 ]
 
 UTILITY_WARNING = (
@@ -101,20 +94,8 @@ def smoke_check_reports() -> dict[str, Any]:
             issues.append({"file": filename, "issue": "crlf"})
         if "\ufffd" in text or "????" in text:
             issues.append({"file": filename, "issue": "mojibake_marker"})
-    all_report = (REPORT_DIR / "step2_all_reports_zh.html").read_text(encoding="utf-8")
-    template_count = all_report.count('type="text/plain" id="report-template-')
-    if "<iframe" in all_report.lower():
-        issues.append({"file": "step2_all_reports_zh.html", "issue": "iframe_present"})
-    if template_count != 6:
-        issues.append(
-            {
-                "file": "step2_all_reports_zh.html",
-                "issue": f"unexpected_template_count:{template_count}",
-            }
-        )
     return {
         "files": len(STEP2_REPORTS),
-        "all_report_templates": template_count,
         "issues": issues,
     }
 

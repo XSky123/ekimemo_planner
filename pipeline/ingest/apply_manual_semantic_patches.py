@@ -175,7 +175,8 @@ def accept_patches(patches: list[dict[str, Any]]) -> list[dict[str, Any]]:
 
 
 def batch_pool(batch: str) -> str:
-    match = re.fullmatch(r"(original|extra)_\d{3}_\d{3}", batch)
+    pool_pattern = "|".join(re.escape(pool) for pool in base.LIST_PAGES)
+    match = re.fullmatch(rf"({pool_pattern})_\d{{3}}_\d{{3}}", batch)
     if not match:
         raise ValueError(f"unsupported batch name: {batch}")
     return match.group(1)
@@ -232,7 +233,8 @@ def apply_patches(batch: str) -> dict[str, Any]:
 
 
 def batch_range(batch: str) -> tuple[int, int]:
-    match = re.fullmatch(r"(?:original|extra)_(\d{3})_(\d{3})", batch)
+    pool_pattern = "|".join(re.escape(pool) for pool in base.LIST_PAGES)
+    match = re.fullmatch(rf"(?:{pool_pattern})_(\d{{3}})_(\d{{3}})", batch)
     if not match:
         raise ValueError(f"unsupported batch name: {batch}")
     return int(match.group(1)), int(match.group(2))

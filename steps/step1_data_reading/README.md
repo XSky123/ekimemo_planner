@@ -12,7 +12,7 @@ Read order for maintenance:
 
 Goal:
 
-- Read and cache Original + Extra wiki data.
+- Read and cache Original, Extra, Another, IKS.gear, EKICO and アワメモ限定 wiki data.
 - Parse list pages, detail pages, and recommendation priors.
 - Generate cleaned JSON/JSONL records and review queue.
 - Do not run solver.

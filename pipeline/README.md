@@ -1,7 +1,7 @@
 # Pipeline
 
 - `ingest/`: fetch, parse, normalize, backfill, validate and Step1 audit code.
-- `analysis/`: Step2 candidate reports, combined report and semantic audit.
+- `analysis/`: Step2 candidate reports and semantic audit. The combined-report writer is retained only as an optional packaging tool and is not part of the default build.
 - `prototype/`: route/vehicle/station prototype lookup extraction and rendering.
 
 Generated formal artifacts belong under `data/step1_db`, `data/reports`, `data/audits`, or `data/prototype_db`. Transient batch reports and controller state belong under ignored `tmp/review_runs`.

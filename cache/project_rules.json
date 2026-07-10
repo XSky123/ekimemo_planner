@@ -144,6 +144,12 @@
     ],
     "review_rule": "After each 20-30 denko batch, generate an HTML review report, summarize parser failures and schema drift, auto-fix deterministic parser rules when safe, and only then continue."
   },
+  "supported_pool_policy": {
+    "included": ["original", "extra", "another", "iks", "ekico", "awamemo"],
+    "excluded_by_default": ["event", "collaboration", "other_special"],
+    "id_rule": "Preserve wiki_no and use stable English denko_id prefixes. Do not collapse distinct supported series into a generic special pool.",
+    "special_template_rule": "Series-specific detail templates may use deterministic locked backfills, but must retain detail-page source evidence and pass Step1/Step2 validation."
+  },
   "dimension_policy": {
     "agent_may_refine_keys": true,
     "rule": "During data reading, the agent/parser may judge whether captured keys are sufficient and add or refine optional fields when the source page proves the current schema is incomplete.",
@@ -200,6 +206,9 @@
     "rule": "Human-readable run reports should be exported as HTML by default. Markdown summaries may exist only as lightweight intermediate notes.",
     "review_display_rule": "Reports are for the user. Suspicious item explanations and review reasons must be shown in Chinese, preserving necessary Japanese source terms only where useful.",
     "matrix_rule": "Do not include low-signal columns such as a constant class=needs_manual_review in the human skill matrix.",
+    "mobility_report_rule": "Do not generate a standalone mobility/visit report. Extra/random/remote access and radar range tools belong in the Step2 skill utility index.",
+    "report_navigation_rule": "Canonical browsing uses docs/reports/index.html plus standalone reports. Every generated standalone report must show a top link to ../../docs/reports/index.html; this relative path works unchanged in both the main worktree and the mirrored pages branch layout.",
+    "combined_report_rule": "Do not generate or retain data/reports/step2_all_reports_zh.html in the default build. Keep pipeline/analysis/write_step2_all_reports.py only as an optional on-demand packaging method.",
     "self_debuff_display_policy": {
       "default": "hide_standalone_self_debuff",
       "rule": "Unless the user explicitly requests negative-effect analysis, do not emit a self or own-team debuff as an independent recommendation/report candidate.",

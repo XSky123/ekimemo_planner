@@ -26,11 +26,3 @@
 - category_counts: `{}`
 
 无问题。
-
-## mobility
-
-- path: `data\reports\step2_mobility_visit_rankings_zh.html`
-- issue_rows: `0`
-- category_counts: `{}`
-
-无问题。

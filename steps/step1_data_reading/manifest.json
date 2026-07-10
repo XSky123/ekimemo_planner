@@ -20,8 +20,8 @@
     "schemas/review_queue_item.schema.json"
   ],
   "scope": {
-    "pools": ["original", "extra"],
-    "excluded": ["special", "collaboration", "excel_import", "solver"]
+    "pools": ["original", "extra", "another", "iks", "ekico", "awamemo"],
+    "excluded": ["event", "collaboration", "other_special", "excel_import", "solver"]
   },
   "outputs": {
     "canonical_step1_dir": "data/step1_db",

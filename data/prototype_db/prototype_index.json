@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-07-06T03:42:41.360178+09:00",
+  "generated_at": "2026-07-11T04:00:34.782979+09:00",
   "source_records": "data\\prototype_db\\prototype_records.jsonl",
   "groups": {
     "by_prefecture": {
@@ -2836,6 +2836,20 @@
           "name": "赤壕まひる",
           "href": "#extra-002",
           "countries": []
+        },
+        {
+          "denko_id": "another:002",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%A2%E3%83%8A%E3%82%B6%E3%83%BC%E3%83%A1%E3%83%AD",
+          "name": "アナザーメロ",
+          "href": "#another-002",
+          "countries": []
+        },
+        {
+          "denko_id": "another:003",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%A2%E3%83%8A%E3%82%B6%E3%83%BC%E3%83%AB%E3%83%8A",
+          "name": "アナザールナ",
+          "href": "#another-003",
+          "countries": []
         }
       ],
       "国土交通省立山砂防工事専用軌道": [
@@ -3038,6 +3052,13 @@
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E5%9C%9F%E4%BD%90%E4%B9%85%E7%A4%BC%E3%82%8A%E3%82%87%E3%81%86",
           "name": "土佐久礼りょう",
           "href": "#original-145",
+          "countries": []
+        },
+        {
+          "denko_id": "ekico:002",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%81%84%E3%81%95%E3%81%AA",
+          "name": "いさな",
+          "href": "#ekico-002",
           "countries": []
         }
       ],
@@ -6493,6 +6514,15 @@
           "countries": []
         }
       ],
+      "東海道・山陽新幹線": [
+        {
+          "denko_id": "awamemo:000",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%81%B2%E3%81%8B%E3%82%8A",
+          "name": "ひかり",
+          "href": "#awamemo-000",
+          "countries": []
+        }
+      ],
       "金沢シーサイドライン": [
         {
           "denko_id": "original:164",
@@ -6985,6 +7015,15 @@
           "countries": []
         }
       ],
+      "JR高崎線": [
+        {
+          "denko_id": "ekico:001",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%8C%E3%82%93%E3%81%8B",
+          "name": "れんか",
+          "href": "#ekico-001",
+          "countries": []
+        }
+      ],
       "JR関西本線": [
         {
           "denko_id": "original:147",
@@ -7314,6 +7353,13 @@
           "name": "朝倉あさみ",
           "href": "#original-160",
           "countries": []
+        },
+        {
+          "denko_id": "ekico:002",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%81%84%E3%81%95%E3%81%AA",
+          "name": "いさな",
+          "href": "#ekico-002",
+          "countries": []
         }
       ],
       "JR五能線": [
@@ -7322,6 +7368,13 @@
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E4%BA%94%E6%89%80%E5%B7%9D%E5%8E%9F%E3%81%B9%E3%81%AB%E3%81%8B",
           "name": "五所川原べにか",
           "href": "#original-129",
+          "countries": []
+        },
+        {
+          "denko_id": "ekico:004",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%81%E3%82%81",
+          "name": "めめ",
+          "href": "#ekico-004",
           "countries": []
         }
       ],
@@ -8164,6 +8217,13 @@
           "name": "蓮台寺ミナト",
           "href": "#original-086",
           "countries": []
+        },
+        {
+          "denko_id": "iks:002",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%B3%E3%83%9F%E3%83%A5",
+          "name": "コミュ",
+          "href": "#iks-002",
+          "countries": []
         }
       ],
       "伊藤ゆいな": [
@@ -8236,6 +8296,13 @@
           "name": "蓮台寺ミオ",
           "href": "#original-036",
           "countries": []
+        },
+        {
+          "denko_id": "iks:003",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%83%AA%E3%82%B3",
+          "name": "リコ",
+          "href": "#iks-003",
+          "countries": []
         }
       ],
       "小岩井ことり": [
@@ -8280,6 +8347,13 @@
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E4%BD%9C%E8%8D%89%E9%83%A8%E3%83%9E%E3%82%B3",
           "name": "作草部マコ",
           "href": "#original-062",
+          "countries": []
+        },
+        {
+          "denko_id": "iks:001",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%83%81%E3%82%A4",
+          "name": "チイ",
+          "href": "#iks-001",
           "countries": []
         }
       ],
@@ -8489,6 +8563,13 @@
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E9%BB%84%E9%99%BD%E3%82%BB%E3%83%AA%E3%82%A2",
           "name": "黄陽セリア",
           "href": "#original-001",
+          "countries": []
+        },
+        {
+          "denko_id": "iks:000",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%B0%E3%83%A9%E3%83%95%E3%82%A3%E3%83%AA%E3%82%A2",
+          "name": "グラフィリア",
+          "href": "#iks-000",
           "countries": []
         }
       ],
@@ -10234,6 +10315,15 @@
           ]
         }
       ],
+      "8月3日": [
+        {
+          "denko_id": "awamemo:000",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%81%B2%E3%81%8B%E3%82%8A",
+          "name": "ひかり",
+          "href": "#awamemo-000",
+          "countries": []
+        }
+      ],
       "8月6日": [
         {
           "denko_id": "original:006",
@@ -10711,6 +10801,15 @@
           "countries": []
         }
       ],
+      "10月21日": [
+        {
+          "denko_id": "ekico:004",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%81%E3%82%81",
+          "name": "めめ",
+          "href": "#ekico-004",
+          "countries": []
+        }
+      ],
       "10月26日": [
         {
           "denko_id": "original:011",
@@ -10840,6 +10939,13 @@
           "name": "新藤原ぼたん",
           "href": "#original-120",
           "countries": []
+        },
+        {
+          "denko_id": "ekico:002",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%81%84%E3%81%95%E3%81%AA",
+          "name": "いさな",
+          "href": "#ekico-002",
+          "countries": []
         }
       ],
       "11月16日": [
@@ -10919,6 +11025,15 @@
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E5%B1%B1%E5%8F%A3%E3%82%86%E3%81%A5%E3%82%8B",
           "name": "山口ゆづる",
           "href": "#original-140",
+          "countries": []
+        }
+      ],
+      "11月28日": [
+        {
+          "denko_id": "ekico:003",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%81%9B%E3%81%84%E3%82%80",
+          "name": "せいむ",
+          "href": "#ekico-003",
           "countries": []
         }
       ],
@@ -11115,6 +11230,15 @@
           ]
         }
       ],
+      "12月20日": [
+        {
+          "denko_id": "ekico:001",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%8C%E3%82%93%E3%81%8B",
+          "name": "れんか",
+          "href": "#ekico-001",
+          "countries": []
+        }
+      ],
       "12月21日": [
         {
           "denko_id": "original:141",
@@ -11178,6 +11302,71 @@
           "countries": [
             "中国"
           ]
+        }
+      ],
+      "設定なし": [
+        {
+          "denko_id": "another:002",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%A2%E3%83%8A%E3%82%B6%E3%83%BC%E3%83%A1%E3%83%AD",
+          "name": "アナザーメロ",
+          "href": "#another-002",
+          "countries": []
+        },
+        {
+          "denko_id": "another:003",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%A2%E3%83%8A%E3%82%B6%E3%83%BC%E3%83%AB%E3%83%8A",
+          "name": "アナザールナ",
+          "href": "#another-003",
+          "countries": []
+        },
+        {
+          "denko_id": "iks:000",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%B0%E3%83%A9%E3%83%95%E3%82%A3%E3%83%AA%E3%82%A2",
+          "name": "グラフィリア",
+          "href": "#iks-000",
+          "countries": []
+        },
+        {
+          "denko_id": "iks:001",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%83%81%E3%82%A4",
+          "name": "チイ",
+          "href": "#iks-001",
+          "countries": []
+        },
+        {
+          "denko_id": "iks:002",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%B3%E3%83%9F%E3%83%A5",
+          "name": "コミュ",
+          "href": "#iks-002",
+          "countries": []
+        },
+        {
+          "denko_id": "iks:003",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%83%AA%E3%82%B3",
+          "name": "リコ",
+          "href": "#iks-003",
+          "countries": []
+        },
+        {
+          "denko_id": "iks:004",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%BD%E3%83%A9%E3%83%A0",
+          "name": "ソラム",
+          "href": "#iks-004",
+          "countries": []
+        },
+        {
+          "denko_id": "iks:005",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%BB%E3%83%AC%E3%82%B7%E3%82%B9",
+          "name": "セレシス",
+          "href": "#iks-005",
+          "countries": []
+        },
+        {
+          "denko_id": "iks:006",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%83%AA%E3%82%BA",
+          "name": "リズ",
+          "href": "#iks-006",
+          "countries": []
         }
       ]
     }
@@ -12310,6 +12499,13 @@
           "name": "東海なな",
           "href": "#original-132",
           "countries": []
+        },
+        {
+          "denko_id": "ekico:001",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%8C%E3%82%93%E3%81%8B",
+          "name": "れんか",
+          "href": "#ekico-001",
+          "countries": []
         }
       ],
       "東京貨物ターミナル (スポット)": [
@@ -12840,6 +13036,42 @@
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%96%B0%E6%B4%A5%E3%81%88%E3%81%A4%E3%81%93",
           "name": "新津えつこ",
           "href": "#original-165",
+          "countries": []
+        }
+      ],
+      "木造駅": [
+        {
+          "denko_id": "ekico:004",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%81%E3%82%81",
+          "name": "めめ",
+          "href": "#ekico-004",
+          "countries": []
+        }
+      ],
+      "札幌駅": [
+        {
+          "denko_id": "ekico:003",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%81%9B%E3%81%84%E3%82%80",
+          "name": "せいむ",
+          "href": "#ekico-003",
+          "countries": []
+        }
+      ],
+      "深谷駅": [
+        {
+          "denko_id": "ekico:001",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%8C%E3%82%93%E3%81%8B",
+          "name": "れんか",
+          "href": "#ekico-001",
+          "countries": []
+        }
+      ],
+      "高知駅": [
+        {
+          "denko_id": "ekico:002",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%81%84%E3%81%95%E3%81%AA",
+          "name": "いさな",
+          "href": "#ekico-002",
           "countries": []
         }
       ],
@@ -14244,6 +14476,13 @@
           "name": "為栗メロ",
           "href": "#original-002",
           "countries": []
+        },
+        {
+          "denko_id": "another:002",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%A2%E3%83%8A%E3%82%B6%E3%83%BC%E3%83%A1%E3%83%AD",
+          "name": "アナザーメロ",
+          "href": "#another-002",
+          "countries": []
         }
       ],
       "国鉄 Z20900形": [
@@ -14326,6 +14565,15 @@
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E4%BA%94%E6%89%80%E5%B7%9D%E5%8E%9F%E3%81%B9%E3%81%AB%E3%81%8B",
           "name": "五所川原べにか",
           "href": "#original-129",
+          "countries": []
+        }
+      ],
+      "国鉄サシ581-20・サロ581-21「インポートエキスプレスOSAKA」（TGV塗装）": [
+        {
+          "denko_id": "another:003",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%A2%E3%83%8A%E3%82%B6%E3%83%BC%E3%83%AB%E3%83%8A",
+          "name": "アナザールナ",
+          "href": "#another-003",
           "countries": []
         }
       ],
@@ -15252,6 +15500,24 @@
           "countries": []
         }
       ],
+      "ダイハツ ミゼットDK/DS型": [
+        {
+          "denko_id": "iks:001",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%83%81%E3%82%A4",
+          "name": "チイ",
+          "href": "#iks-001",
+          "countries": []
+        }
+      ],
+      "トヨタ車体 コムス": [
+        {
+          "denko_id": "iks:002",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%B3%E3%83%9F%E3%83%A5",
+          "name": "コミュ",
+          "href": "#iks-002",
+          "countries": []
+        }
+      ],
       "長崎電気軌道 370形": [
         {
           "denko_id": "original:066",
@@ -15456,6 +15722,15 @@
           "countries": []
         }
       ],
+      "フェラーリ モンツァSP1": [
+        {
+          "denko_id": "iks:000",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%B0%E3%83%A9%E3%83%95%E3%82%A3%E3%83%AA%E3%82%A2",
+          "name": "グラフィリア",
+          "href": "#iks-000",
+          "countries": []
+        }
+      ],
       "松浦鉄道 500形": [
         {
           "denko_id": "original:150",
@@ -15489,6 +15764,15 @@
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E7%99%BD%E5%B7%9D%E3%81%82%E3%81%9D",
           "name": "白川あそ",
           "href": "#original-117",
+          "countries": []
+        }
+      ],
+      "マクラーレン ソーラスGT": [
+        {
+          "denko_id": "iks:004",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%BD%E3%83%A9%E3%83%A0",
+          "name": "ソラム",
+          "href": "#iks-004",
           "countries": []
         }
       ],
@@ -15552,6 +15836,24 @@
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E6%A8%AA%E6%B5%9C%E3%81%BF%E3%81%A1%E3%82%8B",
           "name": "横浜みちる",
           "href": "#original-124",
+          "countries": []
+        }
+      ],
+      "ヤマハ YFM": [
+        {
+          "denko_id": "iks:006",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%83%AA%E3%82%BA",
+          "name": "リズ",
+          "href": "#iks-006",
+          "countries": []
+        }
+      ],
+      "ランボルギーニ エゴイスタ": [
+        {
+          "denko_id": "iks:003",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%83%AA%E3%82%B3",
+          "name": "リコ",
+          "href": "#iks-003",
           "countries": []
         }
       ],
@@ -16202,6 +16504,15 @@
           ]
         }
       ],
+      "RAESR タキオン・スピード": [
+        {
+          "denko_id": "iks:005",
+          "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%BB%E3%83%AC%E3%82%B7%E3%82%B9",
+          "name": "セレシス",
+          "href": "#iks-005",
+          "countries": []
+        }
+      ],
       "スイスMOB鉄道 「ゴールデンパス・パノラミック」号": [
         {
           "denko_id": "extra:104",
@@ -16246,7 +16557,7 @@
           ]
         }
       ],
-      "ソウル交通公社 2000系": [
+      "ソウル交通公社2号線 新 2000系": [
         {
           "denko_id": "extra:057",
           "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%83%8A%E3%83%A0%E3%83%BB%E3%82%BD%E3%83%A6%E3%83%B3",
@@ -16741,6 +17052,118 @@
         "denko_id": "extra:007",
         "name": "仰図まや",
         "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E4%BB%B0%E5%9B%B3%E3%81%BE%E3%82%84",
+        "regions": [],
+        "countries": [],
+        "reason": "参考页未命中；详情页没有可确认的都道府県/国家字段"
+      },
+      {
+        "denko_id": "another:002",
+        "name": "アナザーメロ",
+        "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%A2%E3%83%8A%E3%82%B6%E3%83%BC%E3%83%A1%E3%83%AD",
+        "regions": [],
+        "countries": [],
+        "reason": "参考页未命中；详情页没有可确认的都道府県/国家字段"
+      },
+      {
+        "denko_id": "another:003",
+        "name": "アナザールナ",
+        "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%A2%E3%83%8A%E3%82%B6%E3%83%BC%E3%83%AB%E3%83%8A",
+        "regions": [],
+        "countries": [],
+        "reason": "参考页未命中；详情页没有可确认的都道府県/国家字段"
+      },
+      {
+        "denko_id": "iks:000",
+        "name": "グラフィリア",
+        "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%B0%E3%83%A9%E3%83%95%E3%82%A3%E3%83%AA%E3%82%A2",
+        "regions": [],
+        "countries": [],
+        "reason": "参考页未命中；详情页没有可确认的都道府県/国家字段"
+      },
+      {
+        "denko_id": "iks:001",
+        "name": "チイ",
+        "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%83%81%E3%82%A4",
+        "regions": [],
+        "countries": [],
+        "reason": "参考页未命中；详情页没有可确认的都道府県/国家字段"
+      },
+      {
+        "denko_id": "iks:002",
+        "name": "コミュ",
+        "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%B3%E3%83%9F%E3%83%A5",
+        "regions": [],
+        "countries": [],
+        "reason": "参考页未命中；详情页没有可确认的都道府県/国家字段"
+      },
+      {
+        "denko_id": "iks:003",
+        "name": "リコ",
+        "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%83%AA%E3%82%B3",
+        "regions": [],
+        "countries": [],
+        "reason": "参考页未命中；详情页没有可确认的都道府県/国家字段"
+      },
+      {
+        "denko_id": "iks:004",
+        "name": "ソラム",
+        "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%BD%E3%83%A9%E3%83%A0",
+        "regions": [],
+        "countries": [],
+        "reason": "参考页未命中；详情页没有可确认的都道府県/国家字段"
+      },
+      {
+        "denko_id": "iks:005",
+        "name": "セレシス",
+        "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%BB%E3%83%AC%E3%82%B7%E3%82%B9",
+        "regions": [],
+        "countries": [],
+        "reason": "参考页未命中；详情页没有可确认的都道府県/国家字段"
+      },
+      {
+        "denko_id": "iks:006",
+        "name": "リズ",
+        "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%83%AA%E3%82%BA",
+        "regions": [],
+        "countries": [],
+        "reason": "参考页未命中；详情页没有可确认的都道府県/国家字段"
+      },
+      {
+        "denko_id": "ekico:001",
+        "name": "れんか",
+        "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%8C%E3%82%93%E3%81%8B",
+        "regions": [],
+        "countries": [],
+        "reason": "参考页未命中；详情页没有可确认的都道府県/国家字段"
+      },
+      {
+        "denko_id": "ekico:002",
+        "name": "いさな",
+        "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%81%84%E3%81%95%E3%81%AA",
+        "regions": [],
+        "countries": [],
+        "reason": "参考页未命中；详情页没有可确认的都道府県/国家字段"
+      },
+      {
+        "denko_id": "ekico:003",
+        "name": "せいむ",
+        "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%81%9B%E3%81%84%E3%82%80",
+        "regions": [],
+        "countries": [],
+        "reason": "参考页未命中；详情页没有可确认的都道府県/国家字段"
+      },
+      {
+        "denko_id": "ekico:004",
+        "name": "めめ",
+        "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%81%E3%82%81",
+        "regions": [],
+        "countries": [],
+        "reason": "参考页未命中；详情页没有可确认的都道府県/国家字段"
+      },
+      {
+        "denko_id": "awamemo:000",
+        "name": "ひかり",
+        "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%81%B2%E3%81%8B%E3%82%8A",
         "regions": [],
         "countries": [],
         "reason": "参考页未命中；详情页没有可确认的都道府県/国家字段"
@@ -18033,12 +18456,110 @@
         "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E4%BB%B0%E5%9B%B3%E3%81%BE%E3%82%84",
         "regions": [],
         "countries": []
+      },
+      {
+        "denko_id": "another:002",
+        "name": "アナザーメロ",
+        "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%A2%E3%83%8A%E3%82%B6%E3%83%BC%E3%83%A1%E3%83%AD",
+        "regions": [],
+        "countries": []
+      },
+      {
+        "denko_id": "another:003",
+        "name": "アナザールナ",
+        "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%A2%E3%83%8A%E3%82%B6%E3%83%BC%E3%83%AB%E3%83%8A",
+        "regions": [],
+        "countries": []
+      },
+      {
+        "denko_id": "iks:000",
+        "name": "グラフィリア",
+        "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%B0%E3%83%A9%E3%83%95%E3%82%A3%E3%83%AA%E3%82%A2",
+        "regions": [],
+        "countries": []
+      },
+      {
+        "denko_id": "iks:001",
+        "name": "チイ",
+        "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%83%81%E3%82%A4",
+        "regions": [],
+        "countries": []
+      },
+      {
+        "denko_id": "iks:002",
+        "name": "コミュ",
+        "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%B3%E3%83%9F%E3%83%A5",
+        "regions": [],
+        "countries": []
+      },
+      {
+        "denko_id": "iks:003",
+        "name": "リコ",
+        "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%83%AA%E3%82%B3",
+        "regions": [],
+        "countries": []
+      },
+      {
+        "denko_id": "iks:004",
+        "name": "ソラム",
+        "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%BD%E3%83%A9%E3%83%A0",
+        "regions": [],
+        "countries": []
+      },
+      {
+        "denko_id": "iks:005",
+        "name": "セレシス",
+        "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%BB%E3%83%AC%E3%82%B7%E3%82%B9",
+        "regions": [],
+        "countries": []
+      },
+      {
+        "denko_id": "iks:006",
+        "name": "リズ",
+        "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%83%AA%E3%82%BA",
+        "regions": [],
+        "countries": []
+      },
+      {
+        "denko_id": "ekico:001",
+        "name": "れんか",
+        "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%8C%E3%82%93%E3%81%8B",
+        "regions": [],
+        "countries": []
+      },
+      {
+        "denko_id": "ekico:002",
+        "name": "いさな",
+        "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%81%84%E3%81%95%E3%81%AA",
+        "regions": [],
+        "countries": []
+      },
+      {
+        "denko_id": "ekico:003",
+        "name": "せいむ",
+        "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%81%9B%E3%81%84%E3%82%80",
+        "regions": [],
+        "countries": []
+      },
+      {
+        "denko_id": "ekico:004",
+        "name": "めめ",
+        "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%82%81%E3%82%81",
+        "regions": [],
+        "countries": []
+      },
+      {
+        "denko_id": "awamemo:000",
+        "name": "ひかり",
+        "detail_url": "https://newekimemo.wiki.fc2.com/wiki/%E3%81%B2%E3%81%8B%E3%82%8A",
+        "regions": [],
+        "countries": []
       }
     ],
     "counts": {
-      "records": 293,
+      "records": 307,
       "missing_birthday": 0,
-      "missing_prefecture_unknown": 3,
+      "missing_prefecture_unknown": 17,
       "foreign_denko": 100,
       "no_place_denko": 18,
       "domestic_denko": 175

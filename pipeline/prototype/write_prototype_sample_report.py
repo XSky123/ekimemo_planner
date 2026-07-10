@@ -65,7 +65,7 @@ BIRTHDAY_PROFILE_PAGE = {
     "priority": 110,
     "url": "https://newekimemo.wiki.fc2.com/wiki/%E3%81%A7%E3%82%93%E3%81%93%E4%B8%80%E8%A6%A7%2F%E8%AA%95%E7%94%9F%E6%97%A5%E3%83%BB%E3%83%97%E3%83%AD%E3%83%95%E3%82%A3%E3%83%BC%E3%83%AB",
 }
-PROFILE_LABELS = ["タイプ", "属性", "でんこカラー", "誕生日", "声の担当", "キャラクターデザイン", "モデル車両・列車", "モデル車両"]
+PROFILE_LABELS = ["タイプ", "属性", "でんこカラー", "誕生日", "声の担当", "キャラクターデザイン", "モデル駅", "モデル車両・列車", "モデル車両"]
 SECTION_STOP_WORDS = ["セリフ", "スキル", "ステータス詳細", "ラッピング", "名前について", "その他"]
 
 PREFECTURE_READINGS = {
@@ -1905,7 +1905,7 @@ def normalize_lines_with_context(lines: list[str], model_vehicle_raw: str | None
 def extract_stations(text: str) -> list[str]:
     if not text:
         return []
-    pattern = re.compile(r"([一-龥ぁ-んァ-ヶA-Za-z0-9・ー]+駅)")
+    pattern = re.compile(r"([一-龥ぁ-んァ-ヶA-Za-z0-9・ー]+駅)(?!舎)")
     candidates = []
     for item in pattern.findall(text):
         cleaned = cleanup_station_candidate(item)
@@ -1941,17 +1941,21 @@ def build_record(
     profile_raw = extract_section_text(soup, "プロフィール", max_chars=2500)
     name_origin_raw = extract_section_text(soup, "名前について", max_chars=1600)
     model_vehicle_raw = profile_field(profile_raw, "モデル車両・列車") or profile_field(profile_raw, "モデル車両")
+    model_station_raw = profile_field(profile_raw, "モデル駅")
     birthday_profile = birthday_profile_lookup.get(identity["denko_id"], {})
     detail_birthday = profile_field(profile_raw, "誕生日")
     birthday = birthday_profile.get("birthday") or detail_birthday
     voice_actor = profile_field(profile_raw, "声の担当") or profile_field(profile_raw, "担当声優")
     designer = profile_field(profile_raw, "キャラクターデザイン")
-    combined = " ".join(item for item in [model_vehicle_raw, name_origin_raw] if item)
+    combined = " ".join(item for item in [model_vehicle_raw, model_station_raw, name_origin_raw] if item)
     model_vehicle_operators = extract_model_vehicle_operators(model_vehicle_raw)
     fallback_operators = extract_operators(combined)
     lines = normalize_lines_with_context(extract_lines(combined), model_vehicle_raw)
     vehicles = qualify_vehicles(extract_vehicles(model_vehicle_raw or combined), model_vehicle_raw, model_vehicle_operators)
-    stations = extract_stations(name_origin_raw or "")
+    if identity.get("pool") == "iks" and model_vehicle_raw:
+        vehicles = [model_vehicle_raw]
+    stations = unique_keep_order(extract_stations(model_station_raw or "") + extract_stations(name_origin_raw or ""))
+    stations = [item for item in stations if not any(item != other and item.endswith(other) for other in stations)]
     absent_station_names = extract_absent_station_names(name_origin_raw or "")
     if model_vehicle_raw and not vehicles:
         vehicles = qualify_vehicles([model_vehicle_raw], model_vehicle_raw, model_vehicle_operators)
@@ -2003,6 +2007,7 @@ def build_record(
     evidence: list[dict[str, Any]] = []
     for field, source, text in [
         ("model_vehicle_raw", "プロフィール/モデル車両", model_vehicle_raw),
+        ("model_station_raw", "プロフィール/モデル駅", model_station_raw),
         ("name_origin_raw", "名前について", name_origin_raw),
         ("birthday", "生日・プロフィール一览/誕生日" if birthday_profile.get("birthday") else "プロフィール/誕生日", birthday),
         ("voice_actor", "プロフィール/声の担当", voice_actor),
@@ -2041,7 +2046,7 @@ def build_record(
         )
 
     prompt_errors: list[str] = []
-    if not name_origin_raw:
+    if not name_origin_raw and not (model_vehicle_raw or model_station_raw):
         prompt_errors.append("名前について欄を抽出できない")
     if model_vehicle_raw and not (vehicles or lines or operators):
         prompt_errors.append("モデル車両欄から会社/車両/路線候補を抽出できない")
@@ -2063,6 +2068,7 @@ def build_record(
         "profile_summary_raw": birthday_profile.get("profile_summary_raw"),
         "profile_section_raw": profile_raw,
         "model_vehicle_raw": model_vehicle_raw,
+        "model_station_raw": model_station_raw,
         "name_origin_raw": name_origin_raw,
         "reference_matches": reference_matches,
         "reference_sources": reference_sources,
@@ -2872,6 +2878,7 @@ def render_html(records: list[dict[str, Any]], dataset_label: str, source_record
   </style>
 </head>
 <body id="top">
+  <nav aria-label="报表导航" style="margin-bottom:12px"><a href="../../docs/reports/index.html" style="color:#57606a;font-size:13px;font-weight:600">← 返回报表目录</a></nav>
   <header>
     <h1>Ekimemo 原型反查表</h1>
     <div class="meta">generated_at: {esc(generated_at)} / {esc(dataset_label)}</div>

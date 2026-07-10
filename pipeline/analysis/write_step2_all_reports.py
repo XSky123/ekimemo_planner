@@ -35,18 +35,11 @@ REPORTS = [
         "description": "固定经验/score、倍率、ねこぱんち经验、收益技能效果量强化。",
     },
     {
-        "id": "mobility",
-        "kind": "ranking",
-        "title": "位移/访问次数辅助",
-        "file": "step2_mobility_visit_rankings_zh.html",
-        "description": "额外访问、随机踩站、传送/范围访问、新站奖励。",
-    },
-    {
         "id": "utility",
         "kind": "ranking",
         "title": "技能工具索引",
         "file": "step2_skill_utility_reports_zh.html",
-        "description": "无效化、效果量强化、CD/概率操作、条件索引、活动访问。",
+        "description": "无效化、效果量强化、CD/概率操作、条件索引、活动访问与雷达范围。",
     },
     {
         "id": "prototype",

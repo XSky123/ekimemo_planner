@@ -194,7 +194,7 @@ target_denko:
   name:
   number: No.xx / EX No.xx / special id / unknown
   detail_url:
-  pool: original / extra / event / collaboration / unknown
+  pool: original / extra / another / iks / ekico / awamemo / event / collaboration / unknown
   type:
   attribute:
   color:
@@ -245,7 +245,7 @@ candidate_component:
   detail_url:
   source_authority: detail_page / skill_list / reverse_index / cache / inferred
   detail_reviewed: true / false
-  pool: original / extra / event / collaboration
+  pool: original / extra / another / iks / ekico / awamemo / event / collaboration
   type:
   attribute:
   color:

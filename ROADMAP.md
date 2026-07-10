@@ -17,7 +17,7 @@ Read `PROJECT_STRUCTURE.md` only for repository cleanup, ownership questions or 
 - Current step: `step3_role_profiles`
 - Legacy agent: protected in `archive/legacy_agent_2026-06-06/`
 - Git repo: active on branch `main`; static reports are published from the minimal `pages` branch.
-- Step 1 state: complete and incrementally updated through `original` 001-165 and `extra` 001-128. Canonical DB lives under `data/step1_db/`.
+- Step 1 state: complete and incrementally updated through `original` 001-165, `extra` 001-128, Another AD02-03, IKS0-6, EKICO EC1-4 and アワメモ OR0. Canonical DB lives under `data/step1_db/`.
 - Step 2 state: candidate discovery is complete enough to feed role profiles. Reports remain maintainable views, not final team scores.
 - Working tree note: the latest metric/range/VU cleanup must be committed before starting a large Step3 implementation.
 - Active TODO: `steps/step3_role_profiles/TODO.md`; Step2 decisions are closed in `steps/step2_indexes/CLOSEOUT.md`.
@@ -39,7 +39,7 @@ Path: `steps/step1_data_reading/`
 
 Goal:
 
-- Read Original + Extra wiki data.
+- Read Original, Extra and explicitly supported non-event special-series wiki data.
 - Build raw cache, cleaned records, first indexes, and review queue.
 - Do not run solver.
 
@@ -66,7 +66,6 @@ Goal:
   - `data/reports/step2_attack_support_rankings_zh.html`
   - `data/reports/step2_exp_pt_support_rankings_zh.html`
   - `data/reports/step2_defense_support_rankings_zh.html`
-  - `data/reports/step2_mobility_visit_rankings_zh.html`
   - `data/reports/step2_prototype_lookup_zh.html`
 
 Status: complete for candidate discovery; keep semantic audits green when Step1 changes.

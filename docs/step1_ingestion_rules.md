@@ -1,6 +1,6 @@
 # Step1 Ingestion Rules
 
-Step1 is complete but remains incrementally maintainable when new Original/Extra denko are added.
+Step1 is complete but remains incrementally maintainable when new supported denko are added. Current pools are Original, Extra, Another, IKS.gear, EKICO and アワメモ限定; event/collaboration pools remain excluded.
 
 ## Authority And Language
 
@@ -63,4 +63,4 @@ python pipeline\ingest\build_step1_db.py
 python pipeline\analysis\build_step2_reports.py
 ```
 
-Acceptance: `293 denko / 293 skills`, Step1 `issue_count = 0`, Step2 semantic audit `total_issue_rows = 0`, UTF-8/LF smoke checks clean.
+Acceptance: `307 denko / 307 skills`, all pool counts exact, Step1 `issue_count = 0`, Step2 semantic audit `total_issue_rows = 0`, UTF-8/LF smoke checks clean.

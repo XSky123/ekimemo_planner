@@ -94,7 +94,8 @@ def effect_label(kind: Any) -> str:
 def denko_sort_key(row: dict[str, Any]) -> tuple[int, int]:
     denko_id = row.get("denko_id") or row.get("identity", {}).get("denko_id") or ""
     pool, _, number = str(denko_id).partition(":")
-    return (0 if pool == "original" else 1, int(number or 0))
+    pool_order = {"original": 0, "extra": 1, "another": 2, "iks": 3, "ekico": 4, "awamemo": 5}
+    return (pool_order.get(pool, 99), int(number or 0))
 
 
 def probability_text(probability: Any) -> str:
@@ -292,6 +293,7 @@ def main() -> None:
   </style>
 </head>
 <body>
+  <nav aria-label="报表导航" style="margin-bottom:12px"><a href="../../docs/reports/index.html" style="color:#57606a;font-size:13px;font-weight:600">← 返回报表目录</a></nav>
   <h1>Ekimemo Step1 人工查阅总览表</h1>
   <p class="summary">一行一个でんこ。重点看：这个角色大概干什么、触发条件、Lv30/Lv50 实用值、AP/HP 关键节点。原文事实仍保留日语，说明文字尽量用中文。</p>
   <div class="toolbar">
@@ -300,6 +302,10 @@ def main() -> None:
       <option value="">全部系列</option>
       <option value="original">original</option>
       <option value="extra">extra</option>
+      <option value="another">another</option>
+      <option value="iks">IKS.gear</option>
+      <option value="ekico">EKICO</option>
+      <option value="awamemo">アワメモ限定</option>
     </select>
     <select id="attr">
       <option value="">全部属性</option>

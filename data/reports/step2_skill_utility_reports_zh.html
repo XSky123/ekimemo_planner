@@ -35,10 +35,11 @@
   </style>
 </head>
 <body>
+  <nav aria-label="报表导航" style="margin-bottom:12px"><a href="../../docs/reports/index.html" style="color:#57606a;font-size:13px;font-weight:600">← 返回报表目录</a></nav>
   <h1>Ekimemo Step2 技能工具索引</h1>
   <p>严格按机制整理：无效化/强制结束、技能/饰品/フィルム效果量强化、CD/概率操作、明确条件索引、活动/访问次数。普通 ATK/DEF/経験値/スコア 增减不会进入工具 tab。</p>
-  <div class="tabs"><button class="tab-button" type="button" data-tab="nullification_passive">被访问时无效化 <span class="count-main">9</span><span class="vu-count">+1 VU</span></button>
-<button class="tab-button" type="button" data-tab="nullification_active">访问时无效化 <span class="count-main">6</span></button>
+  <div class="tabs"><button class="tab-button" type="button" data-tab="nullification_passive">被访问时无效化 <span class="count-main">13</span><span class="vu-count">+1 VU</span></button>
+<button class="tab-button" type="button" data-tab="nullification_active">访问时无效化 <span class="count-main">8</span></button>
 <button class="tab-button" type="button" data-tab="skill_effect_boost">技能效果量强化 <span class="count-main">3</span></button>
 <button class="tab-button" type="button" data-tab="accessory_effect_boost">饰品效果量强化 <span class="count-main">5</span></button>
 <button class="tab-button" type="button" data-tab="film_effect_boost">皮肤效果量强化 <span class="count-main">2</span></button>
@@ -48,7 +49,8 @@
 <button class="tab-button" type="button" data-tab="condition_weather_temperature">条件：天气/温度 <span class="count-main">10</span></button>
 <button class="tab-button" type="button" data-tab="condition_station_count">远征：访问站数 <span class="count-main">12</span><span class="vu-count">+6 VU</span></button>
 <button class="tab-button" type="button" data-tab="condition_distance">远征：移动距离 <span class="count-main">9</span><span class="vu-count">+3 VU</span></button>
-<button class="tab-button" type="button" data-tab="event_access">活动/访问次数 <span class="count-main">7</span><span class="vu-count">+1 VU</span></button></div>
+<button class="tab-button" type="button" data-tab="event_access">活动/访问次数 <span class="count-main">8</span><span class="vu-count">+1 VU</span></button>
+<button class="tab-button" type="button" data-tab="access_range">访问范围/雷达 <span class="count-main">4</span></button></div>
   <div class="toolbar">
     <input id="q" placeholder="搜索ID、名字、条件、效果" size="34">
     <select id="levelMode">
@@ -81,7 +83,7 @@
   </div>
 
     <section class="tab-panel tab-no-metrics" id="panel-nullification_passive" data-tab-panel="nullification_passive">
-      <h2>被访问时无效化 <span class="muted">(9 +1 VU)</span></h2>
+      <h2>被访问时无效化 <span class="muted">(13 +1 VU)</span></h2>
       <p>被访问时保护我方的伤害无效化，或反制访问方的技能无效化。兼具访问/被访问方向的技能也会列入。</p>
       <table>
         <thead>
@@ -274,13 +276,81 @@
 <td class="weather-condition-column">-</td>
 <td>自己<br><span class="muted">队伍全cool</span></td>
 <td>発動条件：編成内がすべてcool属性 自身のHPが0になりそうな時、スキル発動中に受けたダメージの合計が2500以上ならそのダメージを無効化 (1回のみ発動)</td>
+</tr><tr data-tab="nullification_passive" data-search="iks:001 チイ eco trickster skill_disable skill_disable 相手編成内各でんこのスキルを無効化 访问/被访问 - 对手编成内各技能；使用フットバース时不发动 lv30: 相手編成内各でんこのスキルを無効化 相手編成内各でんこのスキルを無効化 lv80: 相手編成内各でんこのスキルを無効化" data-activation="probability" data-attr="eco" data-type="trickster" data-vu-only="false" data-sort-max="-1" data-sort-avg="-1" data-levels="{&quot;30&quot;:{&quot;level&quot;:&quot;30&quot;,&quot;sort_max&quot;:null,&quot;sort_avg&quot;:null,&quot;value_text&quot;:&quot;Lv30: 相手編成内各でんこのスキルを無効化&quot;,&quot;max_text&quot;:&quot;-&quot;,&quot;avg_text&quot;:&quot;-&quot;,&quot;probability&quot;:&quot;(1)3% (2)12.5%&quot;,&quot;duration&quot;:&quot;30分&quot;,&quot;cooldown&quot;:&quot;4時間30分&quot;},&quot;50&quot;:{&quot;level&quot;:&quot;50&quot;,&quot;sort_max&quot;:null,&quot;sort_avg&quot;:null,&quot;value_text&quot;:&quot;相手編成内各でんこのスキルを無効化&quot;,&quot;max_text&quot;:&quot;-&quot;,&quot;avg_text&quot;:&quot;-&quot;,&quot;probability&quot;:&quot;(1)4% (2)15%&quot;,&quot;duration&quot;:&quot;30分&quot;,&quot;cooldown&quot;:&quot;4時間30分&quot;},&quot;80&quot;:{&quot;level&quot;:&quot;80&quot;,&quot;sort_max&quot;:null,&quot;sort_avg&quot;:null,&quot;value_text&quot;:&quot;Lv80: 相手編成内各でんこのスキルを無効化&quot;,&quot;max_text&quot;:&quot;-&quot;,&quot;avg_text&quot;:&quot;-&quot;,&quot;probability&quot;:&quot;(1)10% (2)30%&quot;,&quot;duration&quot;:&quot;45分&quot;,&quot;cooldown&quot;:&quot;4時間15分&quot;}}">
+<td class="rank">11</td>
+<td><strong>iks:001</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E3%83%81%E3%82%A4">チイ</a></td>
+<td>eco</td>
+<td>trickster</td>
+<td>技能无效化</td>
+<td class="metric max-cell utility-hidden-metric">-</td>
+<td class="metric avg-cell utility-hidden-metric">-</td>
+<td class="level-cell">相手編成内各でんこのスキルを無効化</td>
+<td class="probability-cell">(1)4% (2)15%</td>
+<td class="duration-cell">30分</td>
+<td class="cooldown-cell">4時間30分</td>
+<td title="マスターにおまかせ">概率/自动</td>
+<td class="access-direction-cell">访问/被访问</td>
+<td class="weather-condition-column">-</td>
+<td>对手编成<br><span class="muted">对手编成内各技能；使用フットバース时不发动</span></td>
+<td>相手編成内各でんこのスキルを無効化</td>
+</tr><tr data-tab="nullification_passive" data-search="iks:002 コミュ cool defender skill_effect_nullification skill_effect_nullification 被アクセス時、相手を対象としたatk変動スキル効果量を0にする 被访问 - 仅atk变动技能效果 lv30: 被アクセス時、相手を対象としたatk変動スキル効果量を0にする 被アクセス時、相手を対象としたatk変動スキル効果量を0にする lv80: 被アクセス時、相手を対象としたatk変動スキル効果量を0にする" data-activation="probability" data-attr="cool" data-type="defender" data-vu-only="false" data-sort-max="-1" data-sort-avg="-1" data-levels="{&quot;30&quot;:{&quot;level&quot;:&quot;30&quot;,&quot;sort_max&quot;:null,&quot;sort_avg&quot;:null,&quot;value_text&quot;:&quot;Lv30: 被アクセス時、相手を対象としたATK変動スキル効果量を0にする&quot;,&quot;max_text&quot;:&quot;-&quot;,&quot;avg_text&quot;:&quot;-&quot;,&quot;probability&quot;:&quot;(1)10% (2)30%&quot;,&quot;duration&quot;:&quot;45分&quot;,&quot;cooldown&quot;:&quot;4時間45分&quot;},&quot;50&quot;:{&quot;level&quot;:&quot;50&quot;,&quot;sort_max&quot;:null,&quot;sort_avg&quot;:null,&quot;value_text&quot;:&quot;被アクセス時、相手を対象としたATK変動スキル効果量を0にする&quot;,&quot;max_text&quot;:&quot;-&quot;,&quot;avg_text&quot;:&quot;-&quot;,&quot;probability&quot;:&quot;(1)12.5% (2)40%&quot;,&quot;duration&quot;:&quot;45分&quot;,&quot;cooldown&quot;:&quot;4時間45分&quot;},&quot;80&quot;:{&quot;level&quot;:&quot;80&quot;,&quot;sort_max&quot;:null,&quot;sort_avg&quot;:null,&quot;value_text&quot;:&quot;Lv80: 被アクセス時、相手を対象としたATK変動スキル効果量を0にする&quot;,&quot;max_text&quot;:&quot;-&quot;,&quot;avg_text&quot;:&quot;-&quot;,&quot;probability&quot;:&quot;(1)35% (2)100%&quot;,&quot;duration&quot;:&quot;1時間&quot;,&quot;cooldown&quot;:&quot;4時間30分&quot;}}">
+<td class="rank">12</td>
+<td><strong>iks:002</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E3%82%B3%E3%83%9F%E3%83%A5">コミュ</a></td>
+<td>cool</td>
+<td>defender</td>
+<td>技能效果量无效化</td>
+<td class="metric max-cell utility-hidden-metric">-</td>
+<td class="metric avg-cell utility-hidden-metric">-</td>
+<td class="level-cell">被アクセス時、相手を対象としたATK変動スキル効果量を0にする</td>
+<td class="probability-cell">(1)12.5% (2)40%</td>
+<td class="duration-cell">45分</td>
+<td class="cooldown-cell">4時間45分</td>
+<td title="マスターにおまかせ">概率/自动</td>
+<td class="access-direction-cell">被访问</td>
+<td class="weather-condition-column">-</td>
+<td>对手でんこ<br><span class="muted">仅ATK变动技能效果</span></td>
+<td>被アクセス時、相手を対象としたATK変動スキル効果量を0にする</td>
+</tr><tr data-tab="nullification_passive" data-search="iks:004 ソラム eco defender damage_nullification damage_nullification_2 相手がoriginal・extra以外の場合、被ダメージが閾値以下なら無効化 被访问 - 对手非 original/extra lv30: 伤害无效化 伤害无效化 lv80: 伤害无效化" data-activation="always" data-attr="eco" data-type="defender" data-vu-only="false" data-sort-max="-1" data-sort-avg="-1" data-levels="{&quot;30&quot;:{&quot;level&quot;:&quot;30&quot;,&quot;sort_max&quot;:null,&quot;sort_avg&quot;:null,&quot;value_text&quot;:&quot;Lv30: 伤害无效化&quot;,&quot;max_text&quot;:&quot;-&quot;,&quot;avg_text&quot;:&quot;-&quot;,&quot;probability&quot;:&quot;100%&quot;,&quot;duration&quot;:&quot;-&quot;,&quot;cooldown&quot;:&quot;-&quot;},&quot;50&quot;:{&quot;level&quot;:&quot;50&quot;,&quot;sort_max&quot;:null,&quot;sort_avg&quot;:null,&quot;value_text&quot;:&quot;伤害无效化&quot;,&quot;max_text&quot;:&quot;-&quot;,&quot;avg_text&quot;:&quot;-&quot;,&quot;probability&quot;:&quot;100%&quot;,&quot;duration&quot;:&quot;-&quot;,&quot;cooldown&quot;:&quot;-&quot;},&quot;80&quot;:{&quot;level&quot;:&quot;80&quot;,&quot;sort_max&quot;:null,&quot;sort_avg&quot;:null,&quot;value_text&quot;:&quot;Lv80: 伤害无效化&quot;,&quot;max_text&quot;:&quot;-&quot;,&quot;avg_text&quot;:&quot;-&quot;,&quot;probability&quot;:&quot;100%&quot;,&quot;duration&quot;:&quot;-&quot;,&quot;cooldown&quot;:&quot;-&quot;}}">
+<td class="rank">13</td>
+<td><strong>iks:004</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E3%82%BD%E3%83%A9%E3%83%A0">ソラム</a></td>
+<td>eco</td>
+<td>defender</td>
+<td>伤害无效化</td>
+<td class="metric max-cell utility-hidden-metric">-</td>
+<td class="metric avg-cell utility-hidden-metric">-</td>
+<td class="level-cell">伤害无效化</td>
+<td class="probability-cell">100%</td>
+<td class="duration-cell">-</td>
+<td class="cooldown-cell">-</td>
+<td title="いつでもアクティブ">常驻</td>
+<td class="access-direction-cell">被访问</td>
+<td class="weather-condition-column">-</td>
+<td>自己<br><span class="muted">对手非 original/extra</span></td>
+<td>相手がOriginal・Extra以外の場合、被ダメージが閾値以下なら無効化</td>
+</tr><tr data-tab="nullification_passive" data-search="iks:004 ソラム eco defender damage_nullification damage_nullification_3 相手がoriginal・extraの場合、被ダメージが閾値以下なら無効化 被访问 - 对手系列 original/extra lv30: 伤害无效化 伤害无效化 lv80: 伤害无效化" data-activation="always" data-attr="eco" data-type="defender" data-vu-only="false" data-sort-max="-1" data-sort-avg="-1" data-levels="{&quot;30&quot;:{&quot;level&quot;:&quot;30&quot;,&quot;sort_max&quot;:null,&quot;sort_avg&quot;:null,&quot;value_text&quot;:&quot;Lv30: 伤害无效化&quot;,&quot;max_text&quot;:&quot;-&quot;,&quot;avg_text&quot;:&quot;-&quot;,&quot;probability&quot;:&quot;100%&quot;,&quot;duration&quot;:&quot;-&quot;,&quot;cooldown&quot;:&quot;-&quot;},&quot;50&quot;:{&quot;level&quot;:&quot;50&quot;,&quot;sort_max&quot;:null,&quot;sort_avg&quot;:null,&quot;value_text&quot;:&quot;伤害无效化&quot;,&quot;max_text&quot;:&quot;-&quot;,&quot;avg_text&quot;:&quot;-&quot;,&quot;probability&quot;:&quot;100%&quot;,&quot;duration&quot;:&quot;-&quot;,&quot;cooldown&quot;:&quot;-&quot;},&quot;80&quot;:{&quot;level&quot;:&quot;80&quot;,&quot;sort_max&quot;:null,&quot;sort_avg&quot;:null,&quot;value_text&quot;:&quot;Lv80: 伤害无效化&quot;,&quot;max_text&quot;:&quot;-&quot;,&quot;avg_text&quot;:&quot;-&quot;,&quot;probability&quot;:&quot;100%&quot;,&quot;duration&quot;:&quot;-&quot;,&quot;cooldown&quot;:&quot;-&quot;}}">
+<td class="rank">14</td>
+<td><strong>iks:004</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E3%82%BD%E3%83%A9%E3%83%A0">ソラム</a></td>
+<td>eco</td>
+<td>defender</td>
+<td>伤害无效化</td>
+<td class="metric max-cell utility-hidden-metric">-</td>
+<td class="metric avg-cell utility-hidden-metric">-</td>
+<td class="level-cell">伤害无效化</td>
+<td class="probability-cell">100%</td>
+<td class="duration-cell">-</td>
+<td class="cooldown-cell">-</td>
+<td title="いつでもアクティブ">常驻</td>
+<td class="access-direction-cell">被访问</td>
+<td class="weather-condition-column">-</td>
+<td>自己<br><span class="muted">对手系列 original/extra</span></td>
+<td>相手がOriginal・Extraの場合、被ダメージが閾値以下なら無効化</td>
 </tr></tbody>
       </table>
     </section>
 
 
     <section class="tab-panel tab-no-metrics" id="panel-nullification_active" data-tab-panel="nullification_active">
-      <h2>访问时无效化 <span class="muted">(6)</span></h2>
+      <h2>访问时无效化 <span class="muted">(8)</span></h2>
       <p>主动访问时干扰对手的技能无效化。兼具访问/被访问方向的技能也会列入。</p>
       <table>
         <thead>
@@ -405,6 +475,40 @@
 <td class="weather-condition-column">-</td>
 <td>双方编成内cool属性でんこ<br><span class="muted">属性技能无效化；同时无效化我方cool技能；空站不发动；使用フットバース时不发动</span></td>
 <td>一定時間、双方の編成内にいるcool属性でんこのスキルを無効化</td>
+</tr><tr data-tab="nullification_active" data-search="iks:001 チイ eco trickster skill_disable skill_disable 相手編成内各でんこのスキルを無効化 访问/被访问 - 对手编成内各技能；使用フットバース时不发动 lv30: 相手編成内各でんこのスキルを無効化 相手編成内各でんこのスキルを無効化 lv80: 相手編成内各でんこのスキルを無効化" data-activation="probability" data-attr="eco" data-type="trickster" data-vu-only="false" data-sort-max="-1" data-sort-avg="-1" data-levels="{&quot;30&quot;:{&quot;level&quot;:&quot;30&quot;,&quot;sort_max&quot;:null,&quot;sort_avg&quot;:null,&quot;value_text&quot;:&quot;Lv30: 相手編成内各でんこのスキルを無効化&quot;,&quot;max_text&quot;:&quot;-&quot;,&quot;avg_text&quot;:&quot;-&quot;,&quot;probability&quot;:&quot;(1)3% (2)12.5%&quot;,&quot;duration&quot;:&quot;30分&quot;,&quot;cooldown&quot;:&quot;4時間30分&quot;},&quot;50&quot;:{&quot;level&quot;:&quot;50&quot;,&quot;sort_max&quot;:null,&quot;sort_avg&quot;:null,&quot;value_text&quot;:&quot;相手編成内各でんこのスキルを無効化&quot;,&quot;max_text&quot;:&quot;-&quot;,&quot;avg_text&quot;:&quot;-&quot;,&quot;probability&quot;:&quot;(1)4% (2)15%&quot;,&quot;duration&quot;:&quot;30分&quot;,&quot;cooldown&quot;:&quot;4時間30分&quot;},&quot;80&quot;:{&quot;level&quot;:&quot;80&quot;,&quot;sort_max&quot;:null,&quot;sort_avg&quot;:null,&quot;value_text&quot;:&quot;Lv80: 相手編成内各でんこのスキルを無効化&quot;,&quot;max_text&quot;:&quot;-&quot;,&quot;avg_text&quot;:&quot;-&quot;,&quot;probability&quot;:&quot;(1)10% (2)30%&quot;,&quot;duration&quot;:&quot;45分&quot;,&quot;cooldown&quot;:&quot;4時間15分&quot;}}">
+<td class="rank">7</td>
+<td><strong>iks:001</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E3%83%81%E3%82%A4">チイ</a></td>
+<td>eco</td>
+<td>trickster</td>
+<td>技能无效化</td>
+<td class="metric max-cell utility-hidden-metric">-</td>
+<td class="metric avg-cell utility-hidden-metric">-</td>
+<td class="level-cell">相手編成内各でんこのスキルを無効化</td>
+<td class="probability-cell">(1)4% (2)15%</td>
+<td class="duration-cell">30分</td>
+<td class="cooldown-cell">4時間30分</td>
+<td title="マスターにおまかせ">概率/自动</td>
+<td class="access-direction-cell">访问/被访问</td>
+<td class="weather-condition-column">-</td>
+<td>对手编成<br><span class="muted">对手编成内各技能；使用フットバース时不发动</span></td>
+<td>相手編成内各でんこのスキルを無効化</td>
+</tr><tr data-tab="nullification_active" data-search="iks:003 リコ heat attacker skill_effect_nullification skill_effect_nullification アクセス時、相手を対象としたdef変動スキル効果量を0にする 访问 - 仅def变动技能效果 lv30: アクセス時、相手を対象としたdef変動スキル効果量を0にする アクセス時、相手を対象としたdef変動スキル効果量を0にする lv80: アクセス時、相手を対象としたdef変動スキル効果量を0にする" data-activation="probability" data-attr="heat" data-type="attacker" data-vu-only="false" data-sort-max="-1" data-sort-avg="-1" data-levels="{&quot;30&quot;:{&quot;level&quot;:&quot;30&quot;,&quot;sort_max&quot;:null,&quot;sort_avg&quot;:null,&quot;value_text&quot;:&quot;Lv30: アクセス時、相手を対象としたDEF変動スキル効果量を0にする&quot;,&quot;max_text&quot;:&quot;-&quot;,&quot;avg_text&quot;:&quot;-&quot;,&quot;probability&quot;:&quot;(1)10% (2)30%&quot;,&quot;duration&quot;:&quot;15分&quot;,&quot;cooldown&quot;:&quot;4時間15分&quot;},&quot;50&quot;:{&quot;level&quot;:&quot;50&quot;,&quot;sort_max&quot;:null,&quot;sort_avg&quot;:null,&quot;value_text&quot;:&quot;アクセス時、相手を対象としたDEF変動スキル効果量を0にする&quot;,&quot;max_text&quot;:&quot;-&quot;,&quot;avg_text&quot;:&quot;-&quot;,&quot;probability&quot;:&quot;(1)12.5% (2)40%&quot;,&quot;duration&quot;:&quot;15分&quot;,&quot;cooldown&quot;:&quot;4時間15分&quot;},&quot;80&quot;:{&quot;level&quot;:&quot;80&quot;,&quot;sort_max&quot;:null,&quot;sort_avg&quot;:null,&quot;value_text&quot;:&quot;Lv80: アクセス時、相手を対象としたDEF変動スキル効果量を0にする&quot;,&quot;max_text&quot;:&quot;-&quot;,&quot;avg_text&quot;:&quot;-&quot;,&quot;probability&quot;:&quot;(1)35% (2)100%&quot;,&quot;duration&quot;:&quot;30分&quot;,&quot;cooldown&quot;:&quot;4時間&quot;}}">
+<td class="rank">8</td>
+<td><strong>iks:003</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E3%83%AA%E3%82%B3">リコ</a></td>
+<td>heat</td>
+<td>attacker</td>
+<td>技能效果量无效化</td>
+<td class="metric max-cell utility-hidden-metric">-</td>
+<td class="metric avg-cell utility-hidden-metric">-</td>
+<td class="level-cell">アクセス時、相手を対象としたDEF変動スキル効果量を0にする</td>
+<td class="probability-cell">(1)12.5% (2)40%</td>
+<td class="duration-cell">15分</td>
+<td class="cooldown-cell">4時間15分</td>
+<td title="マスターにおまかせ">概率/自动</td>
+<td class="access-direction-cell">访问</td>
+<td class="weather-condition-column">-</td>
+<td>对手でんこ<br><span class="muted">仅DEF变动技能效果</span></td>
+<td>アクセス時、相手を対象としたDEF変動スキル効果量を0にする</td>
 </tr></tbody>
       </table>
     </section>
@@ -1794,7 +1898,7 @@
 
 
     <section class="tab-panel" id="panel-event_access" data-tab-panel="event_access">
-      <h2>活动/访问次数 <span class="muted">(7 +1 VU)</span></h2>
+      <h2>活动/访问次数 <span class="muted">(8 +1 VU)</span></h2>
       <p>只收会实际产生额外访问、随机/远程访问，或增加思い出し访问次数的技能。追加、随机和远程访问属于行为效果，不显示理论最大或期望值。</p>
       <table>
         <thead>
@@ -1953,6 +2057,120 @@
 <td class="weather-condition-column">-</td>
 <td>自己</td>
 <td>発動条件：自身が直近3ヶ月の最多アクセス駅とその周辺駅(合計5駅)以外にチェックイン→リンクできず 効果：直近3ヶ月の最多アクセス駅とその周辺駅(合計5駅)のどこかにアクセス</td>
+</tr><tr data-tab="event_access" data-search="ekico:003 せいむ cool trickster random_previous_station_access random_previous_station_access_1 先頭車両をアクセス済みの同属性駅へランダムアクセス 访问 - - lv30: アクセス済み同属性駅へランダムアクセス アクセス済み同属性駅へランダムアクセス lv80: アクセス済み同属性駅へランダムアクセス" data-activation="manual" data-attr="cool" data-type="trickster" data-vu-only="false" data-sort-max="-1" data-sort-avg="-1" data-levels="{&quot;30&quot;:{&quot;level&quot;:&quot;30&quot;,&quot;sort_max&quot;:null,&quot;sort_avg&quot;:null,&quot;value_text&quot;:&quot;Lv30: アクセス済み同属性駅へランダムアクセス&quot;,&quot;max_text&quot;:&quot;-&quot;,&quot;avg_text&quot;:&quot;-&quot;,&quot;probability&quot;:&quot;100%&quot;,&quot;duration&quot;:&quot;-&quot;,&quot;cooldown&quot;:&quot;19時間30分 (12時間40分30秒)&quot;},&quot;50&quot;:{&quot;level&quot;:&quot;50&quot;,&quot;sort_max&quot;:null,&quot;sort_avg&quot;:null,&quot;value_text&quot;:&quot;アクセス済み同属性駅へランダムアクセス&quot;,&quot;max_text&quot;:&quot;-&quot;,&quot;avg_text&quot;:&quot;-&quot;,&quot;probability&quot;:&quot;100%&quot;,&quot;duration&quot;:&quot;-&quot;,&quot;cooldown&quot;:&quot;18時間30分 (10時間10分30秒)&quot;},&quot;80&quot;:{&quot;level&quot;:&quot;80&quot;,&quot;sort_max&quot;:null,&quot;sort_avg&quot;:null,&quot;value_text&quot;:&quot;Lv80: アクセス済み同属性駅へランダムアクセス&quot;,&quot;max_text&quot;:&quot;-&quot;,&quot;avg_text&quot;:&quot;-&quot;,&quot;probability&quot;:&quot;100%&quot;,&quot;duration&quot;:&quot;-&quot;,&quot;cooldown&quot;:&quot;11時間 (1時間6分)&quot;}}">
+<td class="rank">9</td>
+<td><strong>ekico:003</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E3%81%9B%E3%81%84%E3%82%80">せいむ</a></td>
+<td>cool</td>
+<td>trickster</td>
+<td>随机访问已访问站<br><span class="muted">效果分支 1</span></td>
+<td class="metric max-cell utility-hidden-metric">-</td>
+<td class="metric avg-cell utility-hidden-metric">-</td>
+<td class="level-cell">アクセス済み同属性駅へランダムアクセス</td>
+<td class="probability-cell">100%</td>
+<td class="duration-cell">-</td>
+<td class="cooldown-cell">18時間30分 (10時間10分30秒)</td>
+<td title="マスターにおまかせ">手动</td>
+<td class="access-direction-cell">访问</td>
+<td class="weather-condition-column">-</td>
+<td>先头车</td>
+<td>先頭車両をアクセス済みの同属性駅へランダムアクセス</td>
+</tr></tbody>
+      </table>
+    </section>
+
+
+    <section class="tab-panel" id="panel-access_range" data-tab-panel="access_range">
+      <h2>访问范围/雷达 <span class="muted">(4)</span></h2>
+      <p>扩大レーダー检知数或最大检知数等访问范围工具。与直接产生追加访问的技能分开。</p>
+      <table>
+        <thead>
+          <tr>
+            <th>排行</th>
+            <th>でんこ</th>
+            <th>属性</th>
+            <th>类型</th>
+            <th>效果</th>
+            <th class="utility-hidden-metric">理论最大</th>
+            <th class="utility-hidden-metric">期望值</th>
+            <th>等级值</th>
+            <th>概率</th>
+            <th>持续</th>
+            <th>CD</th>
+            <th>发动</th>
+            <th>访问方向</th>
+            <th class="weather-condition-column">天气/温度</th>
+            <th>对象/限制</th>
+            <th>触发与条件</th>
+          </tr>
+        </thead>
+        <tbody><tr data-tab="access_range" data-search="awamemo:000 ひかり flat trickster radar_detection_range radar_detection_range_2 自身がフェアマスターの場合、レーダー検知数が追加増加 不限定 - 仅自身为フェアマスター lv30: レーダー検知数 +6 レーダー検知数 +7 lv80: レーダー検知数 +8" data-activation="manual" data-attr="flat" data-type="trickster" data-vu-only="false" data-sort-max="7.0" data-sort-avg="7.0" data-levels="{&quot;30&quot;:{&quot;level&quot;:&quot;30&quot;,&quot;sort_max&quot;:6.0,&quot;sort_avg&quot;:6.0,&quot;value_text&quot;:&quot;Lv30: レーダー検知数 +6&quot;,&quot;max_text&quot;:&quot;6&quot;,&quot;avg_text&quot;:&quot;6&quot;,&quot;probability&quot;:&quot;100%&quot;,&quot;duration&quot;:&quot;25分&quot;,&quot;cooldown&quot;:&quot;5時間35分&quot;},&quot;50&quot;:{&quot;level&quot;:&quot;50&quot;,&quot;sort_max&quot;:7.0,&quot;sort_avg&quot;:7.0,&quot;value_text&quot;:&quot;レーダー検知数 +7&quot;,&quot;max_text&quot;:&quot;7&quot;,&quot;avg_text&quot;:&quot;7&quot;,&quot;probability&quot;:&quot;100%&quot;,&quot;duration&quot;:&quot;30分&quot;,&quot;cooldown&quot;:&quot;5時間30分&quot;},&quot;80&quot;:{&quot;level&quot;:&quot;80&quot;,&quot;sort_max&quot;:8.0,&quot;sort_avg&quot;:8.0,&quot;value_text&quot;:&quot;Lv80: レーダー検知数 +8&quot;,&quot;max_text&quot;:&quot;8&quot;,&quot;avg_text&quot;:&quot;8&quot;,&quot;probability&quot;:&quot;100%&quot;,&quot;duration&quot;:&quot;45分&quot;,&quot;cooldown&quot;:&quot;5時間15分&quot;}}">
+<td class="rank">1</td>
+<td><strong>awamemo:000</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E3%81%B2%E3%81%8B%E3%82%8A">ひかり</a></td>
+<td>flat</td>
+<td>trickster</td>
+<td>雷达探测范围<br><span class="muted">效果分支 2</span></td>
+<td class="metric max-cell utility-hidden-metric">7</td>
+<td class="metric avg-cell utility-hidden-metric">7</td>
+<td class="level-cell">レーダー検知数 +7</td>
+<td class="probability-cell">100%</td>
+<td class="duration-cell">30分</td>
+<td class="cooldown-cell">5時間30分</td>
+<td title="マスターにおまかせ">手动</td>
+<td class="access-direction-cell">不限定</td>
+<td class="weather-condition-column">-</td>
+<td>Master<br><span class="muted">仅自身为フェアマスター</span></td>
+<td>自身がフェアマスターの場合、レーダー検知数が追加増加</td>
+</tr><tr data-tab="access_range" data-search="original:047 三条なつめ eco trickster radar_detection_range radar_detection_range レーダー最大検知数+2 不限定 - - lv30: レーダー最大検知数 +2 レーダー最大検知数 +2 lv80: レーダー最大検知数 +2" data-activation="manual" data-attr="eco" data-type="trickster" data-vu-only="false" data-sort-max="2.0" data-sort-avg="2.0" data-levels="{&quot;30&quot;:{&quot;level&quot;:&quot;30&quot;,&quot;sort_max&quot;:2.0,&quot;sort_avg&quot;:2.0,&quot;value_text&quot;:&quot;Lv30: レーダー最大検知数 +2&quot;,&quot;max_text&quot;:&quot;2&quot;,&quot;avg_text&quot;:&quot;2&quot;,&quot;probability&quot;:&quot;100%&quot;,&quot;duration&quot;:&quot;40分&quot;,&quot;cooldown&quot;:&quot;3時間&quot;},&quot;50&quot;:{&quot;level&quot;:&quot;50&quot;,&quot;sort_max&quot;:2.0,&quot;sort_avg&quot;:2.0,&quot;value_text&quot;:&quot;レーダー最大検知数 +2&quot;,&quot;max_text&quot;:&quot;2&quot;,&quot;avg_text&quot;:&quot;2&quot;,&quot;probability&quot;:&quot;100%&quot;,&quot;duration&quot;:&quot;45分&quot;,&quot;cooldown&quot;:&quot;3時間&quot;},&quot;80&quot;:{&quot;level&quot;:&quot;80&quot;,&quot;sort_max&quot;:2.0,&quot;sort_avg&quot;:2.0,&quot;value_text&quot;:&quot;Lv80: レーダー最大検知数 +2&quot;,&quot;max_text&quot;:&quot;2&quot;,&quot;avg_text&quot;:&quot;2&quot;,&quot;probability&quot;:&quot;100%&quot;,&quot;duration&quot;:&quot;1時間&quot;,&quot;cooldown&quot;:&quot;3時間&quot;}}">
+<td class="rank">2</td>
+<td><strong>original:047</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E4%B8%89%E6%9D%A1%E3%81%AA%E3%81%A4%E3%82%81">三条なつめ</a></td>
+<td>eco</td>
+<td>trickster</td>
+<td>雷达探测范围</td>
+<td class="metric max-cell utility-hidden-metric">2</td>
+<td class="metric avg-cell utility-hidden-metric">2</td>
+<td class="level-cell">レーダー最大検知数 +2</td>
+<td class="probability-cell">100%</td>
+<td class="duration-cell">45分</td>
+<td class="cooldown-cell">3時間</td>
+<td title="マスターにおまかせ">手动</td>
+<td class="access-direction-cell">不限定</td>
+<td class="weather-condition-column">-</td>
+<td>自己</td>
+<td>レーダー最大検知数+2</td>
+</tr><tr data-tab="access_range" data-search="awamemo:000 ひかり flat trickster radar_detection_range radar_detection_range_1 レーダー検知数増加 不限定 - - lv30: レーダー検知数 +2 レーダー検知数 +2 lv80: レーダー検知数 +4" data-activation="manual" data-attr="flat" data-type="trickster" data-vu-only="false" data-sort-max="2.0" data-sort-avg="2.0" data-levels="{&quot;30&quot;:{&quot;level&quot;:&quot;30&quot;,&quot;sort_max&quot;:2.0,&quot;sort_avg&quot;:2.0,&quot;value_text&quot;:&quot;Lv30: レーダー検知数 +2&quot;,&quot;max_text&quot;:&quot;2&quot;,&quot;avg_text&quot;:&quot;2&quot;,&quot;probability&quot;:&quot;100%&quot;,&quot;duration&quot;:&quot;25分&quot;,&quot;cooldown&quot;:&quot;5時間35分&quot;},&quot;50&quot;:{&quot;level&quot;:&quot;50&quot;,&quot;sort_max&quot;:2.0,&quot;sort_avg&quot;:2.0,&quot;value_text&quot;:&quot;レーダー検知数 +2&quot;,&quot;max_text&quot;:&quot;2&quot;,&quot;avg_text&quot;:&quot;2&quot;,&quot;probability&quot;:&quot;100%&quot;,&quot;duration&quot;:&quot;30分&quot;,&quot;cooldown&quot;:&quot;5時間30分&quot;},&quot;80&quot;:{&quot;level&quot;:&quot;80&quot;,&quot;sort_max&quot;:4.0,&quot;sort_avg&quot;:4.0,&quot;value_text&quot;:&quot;Lv80: レーダー検知数 +4&quot;,&quot;max_text&quot;:&quot;4&quot;,&quot;avg_text&quot;:&quot;4&quot;,&quot;probability&quot;:&quot;100%&quot;,&quot;duration&quot;:&quot;45分&quot;,&quot;cooldown&quot;:&quot;5時間15分&quot;}}">
+<td class="rank">3</td>
+<td><strong>awamemo:000</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E3%81%B2%E3%81%8B%E3%82%8A">ひかり</a></td>
+<td>flat</td>
+<td>trickster</td>
+<td>雷达探测范围<br><span class="muted">效果分支 1</span></td>
+<td class="metric max-cell utility-hidden-metric">2</td>
+<td class="metric avg-cell utility-hidden-metric">2</td>
+<td class="level-cell">レーダー検知数 +2</td>
+<td class="probability-cell">100%</td>
+<td class="duration-cell">30分</td>
+<td class="cooldown-cell">5時間30分</td>
+<td title="マスターにおまかせ">手动</td>
+<td class="access-direction-cell">不限定</td>
+<td class="weather-condition-column">-</td>
+<td>Master</td>
+<td>レーダー検知数増加</td>
+</tr><tr data-tab="access_range" data-search="awamemo:000 ひかり flat trickster radar_max_detection_range radar_max_detection_range_2 自身がフェアマスターの場合、レーダー最大検知数増加 不限定 - 仅自身为フェアマスター lv30: レーダー最大検知数 +2 レーダー最大検知数 +2 lv80: レーダー最大検知数 +2" data-activation="manual" data-attr="flat" data-type="trickster" data-vu-only="false" data-sort-max="2.0" data-sort-avg="2.0" data-levels="{&quot;30&quot;:{&quot;level&quot;:&quot;30&quot;,&quot;sort_max&quot;:2.0,&quot;sort_avg&quot;:2.0,&quot;value_text&quot;:&quot;Lv30: レーダー最大検知数 +2&quot;,&quot;max_text&quot;:&quot;2&quot;,&quot;avg_text&quot;:&quot;2&quot;,&quot;probability&quot;:&quot;100%&quot;,&quot;duration&quot;:&quot;25分&quot;,&quot;cooldown&quot;:&quot;5時間35分&quot;},&quot;50&quot;:{&quot;level&quot;:&quot;50&quot;,&quot;sort_max&quot;:2.0,&quot;sort_avg&quot;:2.0,&quot;value_text&quot;:&quot;レーダー最大検知数 +2&quot;,&quot;max_text&quot;:&quot;2&quot;,&quot;avg_text&quot;:&quot;2&quot;,&quot;probability&quot;:&quot;100%&quot;,&quot;duration&quot;:&quot;30分&quot;,&quot;cooldown&quot;:&quot;5時間30分&quot;},&quot;80&quot;:{&quot;level&quot;:&quot;80&quot;,&quot;sort_max&quot;:2.0,&quot;sort_avg&quot;:2.0,&quot;value_text&quot;:&quot;Lv80: レーダー最大検知数 +2&quot;,&quot;max_text&quot;:&quot;2&quot;,&quot;avg_text&quot;:&quot;2&quot;,&quot;probability&quot;:&quot;100%&quot;,&quot;duration&quot;:&quot;45分&quot;,&quot;cooldown&quot;:&quot;5時間15分&quot;}}">
+<td class="rank">4</td>
+<td><strong>awamemo:000</strong><br><a href="https://newekimemo.wiki.fc2.com/wiki/%E3%81%B2%E3%81%8B%E3%82%8A">ひかり</a></td>
+<td>flat</td>
+<td>trickster</td>
+<td>雷达最大探测范围<br><span class="muted">效果分支 2</span></td>
+<td class="metric max-cell utility-hidden-metric">2</td>
+<td class="metric avg-cell utility-hidden-metric">2</td>
+<td class="level-cell">レーダー最大検知数 +2</td>
+<td class="probability-cell">100%</td>
+<td class="duration-cell">30分</td>
+<td class="cooldown-cell">5時間30分</td>
+<td title="マスターにおまかせ">手动</td>
+<td class="access-direction-cell">不限定</td>
+<td class="weather-condition-column">-</td>
+<td>Master<br><span class="muted">仅自身为フェアマスター</span></td>
+<td>自身がフェアマスターの場合、レーダー最大検知数増加</td>
 </tr></tbody>
       </table>
     </section>

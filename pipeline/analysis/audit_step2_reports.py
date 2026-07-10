@@ -14,7 +14,6 @@ REPORTS = {
     "attack": ROOT / "data" / "reports" / "step2_attack_support_rankings_zh.html",
     "exp_pt": ROOT / "data" / "reports" / "step2_exp_pt_support_rankings_zh.html",
     "defense": ROOT / "data" / "reports" / "step2_defense_support_rankings_zh.html",
-    "mobility": ROOT / "data" / "reports" / "step2_mobility_visit_rankings_zh.html",
 }
 OUT_JSON = ROOT / "data" / "audits" / "step2_semantic_audit.json"
 OUT_MD = ROOT / "data" / "audits" / "step2_semantic_audit_zh.md"

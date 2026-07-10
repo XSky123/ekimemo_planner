@@ -1,17 +1,33 @@
 {
   "counts": {
     "by_pool": {
+      "another": {
+        "denko": 2,
+        "skill": 2
+      },
+      "awamemo": {
+        "denko": 1,
+        "skill": 1
+      },
+      "ekico": {
+        "denko": 4,
+        "skill": 4
+      },
       "extra": {
         "denko": 128,
         "skill": 128
+      },
+      "iks": {
+        "denko": 7,
+        "skill": 7
       },
       "original": {
         "denko": 165,
         "skill": 165
       }
     },
-    "denko_total": 293,
-    "skill_total": 293
+    "denko_total": 307,
+    "skill_total": 307
   },
   "issue_count": 0,
   "issues": []

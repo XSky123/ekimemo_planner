@@ -91,6 +91,7 @@ EFFECT_LABELS = {
     "link_bonus": "リンクボーナス",
     "today_new_station_bonus": "今日の新駅ボーナス",
     "mile_gain": "マイル付与",
+    "match_bonus": "属性マッチボーナス",
     "effect_multiplier": "効果量増加",
 }
 
@@ -550,10 +551,10 @@ def metric_type(component: dict[str, Any], value: dict[str, Any]) -> str:
         if is_percent_or_ratio(value):
             return "exp_ratio"
         return "fixed_exp" if has_numeric_value(value) else "unknown_metric"
-    if kind in {"score_gain", "additional_score_gain", "score_random_modifier"}:
+    if kind in {"score_gain", "additional_score_gain", "score_random_modifier", "match_bonus"}:
         if raw in UNKNOWN_VALUE_TOKENS or unit == "condition_only":
             return "unknown_metric"
-        if kind == "score_random_modifier" or is_percent_or_ratio(value):
+        if kind in {"score_random_modifier", "match_bonus"} or is_percent_or_ratio(value):
             return "score_percent_modifier"
         return "fixed_score" if has_numeric_value(value) else "unknown_metric"
     return "ignore"
@@ -998,6 +999,7 @@ def main() -> None:
   </style>
 </head>
 <body>
+  <nav aria-label="报表导航" style="margin-bottom:12px"><a href="../../docs/reports/index.html" style="color:#57606a;font-size:13px;font-weight:600">← 返回报表目录</a></nav>
   <h1>Ekimemo Step2 经验/PT辅助排行</h1>
   <p>从 Step1 DB 自动整理，分类参考 wiki「経験値、スコア系スキル」。固定值、百分比/倍率、ねこぱんち专用、效果量强化分开排行；默认按 Lv50 查看，可切换 Lv30/Lv80/Lv92/Lv100。</p>
   <div class="tabs">{tab_buttons}</div>

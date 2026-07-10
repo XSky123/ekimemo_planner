@@ -4,15 +4,15 @@
     "denko": {
       "duplicate_denko_count": 0,
       "duplicate_details": [],
-      "unique_count": 293
+      "unique_count": 307
     },
     "skill": {
       "duplicate_denko_count": 0,
       "duplicate_details": [],
-      "unique_count": 293
+      "unique_count": 307
     }
   },
-  "generated_at": "2026-07-11T02:57:13.373382+09:00",
+  "generated_at": "2026-07-11T03:48:35.740867+09:00",
   "language_policy": {
     "display": "zh",
     "schema_keys": "en",
@@ -20,46 +20,63 @@
   },
   "metrics": {
     "by_pool": {
+      "another": {
+        "denko": 2,
+        "skill": 2
+      },
+      "awamemo": {
+        "denko": 1,
+        "skill": 1
+      },
+      "ekico": {
+        "denko": 4,
+        "skill": 4
+      },
       "extra": {
         "denko": 128,
         "skill": 128
+      },
+      "iks": {
+        "denko": 7,
+        "skill": 7
       },
       "original": {
         "denko": 165,
         "skill": 165
       }
     },
-    "denko_total": 293,
+    "denko_total": 307,
     "skill_component_effect_kind_counts": {
       "activation_probability_boost": 11,
       "additional_fixed_damage": 5,
       "additional_score_gain": 4,
-      "ap_debuff": 3,
+      "ap_buff": 2,
+      "ap_debuff": 4,
       "atk_buff": 127,
-      "atk_debuff": 13,
+      "atk_debuff": 14,
       "battery_disable": 2,
       "cooldown_entry": 1,
-      "cooldown_reduction": 1,
+      "cooldown_reduction": 2,
       "cooldown_reset": 1,
       "counter": 3,
       "counter_damage": 1,
       "damage_cap": 1,
-      "damage_nullification": 4,
+      "damage_nullification": 6,
       "damage_reduction": 32,
       "damage_substitution": 1,
-      "def_buff": 148,
-      "def_debuff": 16,
+      "def_buff": 150,
+      "def_debuff": 17,
       "def_modifier": 1,
       "duration_extension": 20,
       "effect_multiplier": 13,
       "exp_distribution": 4,
       "exp_distribution_bonus": 1,
-      "exp_gain": 66,
+      "exp_gain": 67,
       "extra_access": 4,
       "film_effect_multiplier": 1,
       "film_series_effect_boost": 1,
       "fixed_damage": 24,
-      "footbar": 1,
+      "footbar": 2,
       "force_hp_zero": 2,
       "friend_slot_increase": 1,
       "hp_recovery": 16,
@@ -67,27 +84,30 @@
       "item_gain": 1,
       "link_bonus": 3,
       "link_bonus_zero": 1,
-      "link_continue": 1,
+      "link_continue": 2,
       "link_retention": 1,
       "link_transfer": 1,
+      "match_bonus": 1,
       "memory_access_station_count": 1,
       "memory_access_time": 1,
       "mile_gain": 1,
       "none": 2,
-      "radar_detection_range": 1,
-      "random_previous_station_access": 2,
-      "reboot": 5,
+      "radar_detection_range": 3,
+      "radar_max_detection_range": 1,
+      "random_previous_station_access": 3,
+      "reboot": 8,
       "remote_station_access": 1,
-      "score_gain": 28,
+      "score_gain": 31,
       "score_random_modifier": 1,
       "skill_continue": 1,
-      "skill_disable": 13,
-      "skill_force_end": 5,
+      "skill_disable": 14,
+      "skill_effect_nullification": 2,
+      "skill_force_end": 6,
       "station_link_transfer": 1,
       "survive_hp1": 1,
       "today_new_station_bonus": 3
     },
-    "skill_total": 293
+    "skill_total": 307
   },
   "outputs": {
     "denko_facts": "data/step1_db/denko_facts.jsonl",
@@ -96,7 +116,7 @@
     "skill_facts": "data/step1_db/skill_facts.jsonl",
     "validation": "data/step1_db/validation.json"
   },
-  "parser_version": "detail_html_table_matrix.v8",
+  "parser_version": "detail_html_table_matrix.v9",
   "review_status": {
     "checklist_issue_count": 0,
     "extra_audit": "data/reports/extra_full_audit_zh.html",
@@ -105,12 +125,17 @@
   "schema_version": 1,
   "scope": {
     "excluded_pools": [
-      "special",
-      "collaboration"
+      "event",
+      "collaboration",
+      "other_special"
     ],
     "included_pools": [
       "original",
-      "extra"
+      "extra",
+      "another",
+      "iks",
+      "ekico",
+      "awamemo"
     ]
   },
   "source_batches": {
@@ -125,9 +150,13 @@
         "data\\records\\extra_041_080_denko_facts.jsonl",
         "data\\records\\extra_081_120_denko_facts.jsonl",
         "data\\records\\extra_121_126_denko_facts.jsonl",
-        "data\\records\\extra_127_128_denko_facts.jsonl"
+        "data\\records\\extra_127_128_denko_facts.jsonl",
+        "data\\records\\another_002_003_denko_facts.jsonl",
+        "data\\records\\iks_000_006_denko_facts.jsonl",
+        "data\\records\\ekico_001_004_denko_facts.jsonl",
+        "data\\records\\awamemo_000_000_denko_facts.jsonl"
       ],
-      "source_row_count": 293
+      "source_row_count": 307
     },
     "skill": {
       "source_files": [
@@ -140,9 +169,13 @@
         "data\\records\\extra_041_080_skill_facts.jsonl",
         "data\\records\\extra_081_120_skill_facts.jsonl",
         "data\\records\\extra_121_126_skill_facts.jsonl",
-        "data\\records\\extra_127_128_skill_facts.jsonl"
+        "data\\records\\extra_127_128_skill_facts.jsonl",
+        "data\\records\\another_002_003_skill_facts.jsonl",
+        "data\\records\\iks_000_006_skill_facts.jsonl",
+        "data\\records\\ekico_001_004_skill_facts.jsonl",
+        "data\\records\\awamemo_000_000_skill_facts.jsonl"
       ],
-      "source_row_count": 293
+      "source_row_count": 307
     }
   }
 }

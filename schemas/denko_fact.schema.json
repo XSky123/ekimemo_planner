@@ -12,7 +12,7 @@
       "properties": {
         "denko_id": {
           "type": "string",
-          "description": "Stable project id, e.g. original:006 or extra:035."
+          "description": "Stable project id, e.g. original:006, extra:035, another:002, iks:000, ekico:001, or awamemo:000."
         },
         "wiki_no": {
           "type": ["string", "null"],
@@ -24,7 +24,7 @@
         "number": { "type": ["string", "null"] },
         "id_pool": {
           "type": "string",
-          "description": "original, extra, special, collaboration, or unknown."
+          "description": "original, extra, another, iks, ekico, awamemo, special, collaboration, or unknown."
         },
         "id_number": {
           "type": ["integer", "null"],

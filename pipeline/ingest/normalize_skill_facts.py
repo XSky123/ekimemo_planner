@@ -11,7 +11,8 @@ import parse as base
 import review_cycle_controller as controller
 
 
-BATCH_RE = re.compile(r"(?P<pool>original|extra)_(?P<start>\d{3})_(?P<end>\d{3})_skill_facts\.jsonl$")
+POOL_PATTERN = "|".join(re.escape(pool) for pool in base.LIST_PAGES)
+BATCH_RE = re.compile(rf"(?P<pool>{POOL_PATTERN})_(?P<start>\d{{3}})_(?P<end>\d{{3}})_skill_facts\.jsonl$")
 ATTRIBUTES = ("heat", "cool", "eco", "flat")
 
 
