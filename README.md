@@ -20,3 +20,4 @@ Reports:
 
 - Local report index: [docs/reports/index.html](docs/reports/index.html)
 - GitHub Pages: https://xsky123.github.io/ekimemo_planner/docs/reports/
+- Rebuild Step2 reports: `python pipeline/analysis/build_step2_reports.py`
