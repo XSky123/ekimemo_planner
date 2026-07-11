@@ -1,6 +1,0 @@
-{
-  "iteration": 3,
-  "db_backfill": {"decision": "no_change", "changed_items": 0, "changed_rows": 0},
-  "condition_findings": 0,
-  "severe_team_mismatches": 0
-}
