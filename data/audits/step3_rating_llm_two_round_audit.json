@@ -41,7 +41,8 @@
     "template_recommendations_removed": true,
     "report_hides_review_process_metadata": true,
     "report_has_review_comments": true,
-    "report_has_structured_factor_columns": true
+    "report_has_structured_factor_columns": true,
+    "report_localizes_scope_cost_condition_labels": true
   },
   "issue_count": 0,
   "issues": []

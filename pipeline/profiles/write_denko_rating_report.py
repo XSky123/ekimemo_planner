@@ -14,6 +14,60 @@ LLM_REVIEWS = [
     ROOT / "data/audits/step3_rating_llm_round1.jsonl",
     ROOT / "data/audits/step3_rating_llm_round2.jsonl",
 ]
+SCOPE_ZH = {
+    "accessed_denko": "被访问角色", "accessing_denko": "访问角色", "front_car": "队伍首位",
+    "master": "玩家", "master_account": "玩家账号", "opponent_denko": "对手角色",
+    "opponent_team": "对方队伍", "own_front_car": "己方首位", "own_skill_effects": "自身技能效果",
+    "own_team": "己方队伍", "relative_car": "相对位置角色", "self": "自身", "team_all": "全队",
+}
+COST_ZH = {
+    "context_or_formation_constraint": "场景或编成限制", "long_cooldown": "长冷却",
+    "manual_activation": "需要手动启动", "probabilistic": "概率发动", "self_debuff": "附带自身减益",
+}
+CONDITION_EXACT_ZH = {
+    "basis": "计算基准", "source": "效果来源", "state": "状态限定", "operator": "比较方式",
+    "frequency": "发动次数限制", "item": "指定道具", "keyword": "指定关键词", "destination": "目的地限定",
+    "exclude_self": "不含自身", "formation_only": "仅编成内", "formation_required": "需要指定编成",
+    "not_rebooted": "尚未重启", "hp_zero": "HP 为 0", "weather": "天气限定", "weekday": "星期限定",
+    "weekday_dependent": "效果随星期变化", "time_window": "时段限定", "season_months": "月份限定",
+    "position_rule": "队列位置限定", "position_relative_to_self": "相对自身的位置限定",
+    "relative_position": "相对位置限定", "probability_basis": "发动率计算基准",
+    "progression_stage": "养成阶段限定", "requires_link_success": "需要先取得 Link",
+    "requires_occupied_station": "需要目标站已被占领", "station_is_today_new": "仅今日新站",
+    "station_ownership": "车站持有状态限定", "station_attribute": "车站属性限定",
+    "same_attribute_station": "需要同属性车站", "accessory_skill_tag": "指定饰品技能标签",
+    "accessory_slot_progression_required": "需要解锁饰品槽", "own_skill_conflict": "与自身其他技能冲突",
+    "ends_own_team_active_skills": "会结束己方已启动技能", "excluded_when_footbar": "使用 Footbar 时无效",
+    "film_skill_effects_excluded": "不计入装扮技能效果", "mutually_exclusive_branch_group": "效果分支互斥",
+    "scaling_from_zero": "从零开始累积", "scaling_from_low_or_zero": "低值或零值起算",
+}
+
+
+def condition_label(key: str) -> str:
+    if key in CONDITION_EXACT_ZH:
+        return CONDITION_EXACT_ZH[key]
+    if key.endswith("_raw"):
+        if "time" in key: return "原文时段限定"
+        if "weekday" in key: return "原文星期限定"
+        if "season" in key: return "原文月份限定"
+        if "position" in key: return "原文位置例外"
+        if "debuff" in key: return "原文减益说明"
+        if "station" in key: return "原文车站限定"
+        if "opponent" in key: return "原文对手限定"
+        return "原文补充限定"
+    categories = [
+        (("accessory", "equipped"), "饰品限定"), (("attribute",), "属性限定"),
+        (("type",), "角色类型限定"), (("opponent",), "对手条件"), (("own_team", "formation"), "己方编成条件"),
+        (("station", "link"), "车站或 Link 条件"), (("distance", "travel"), "距离条件"),
+        (("hp", "damage"), "HP 或伤害条件"), (("temperature",), "气温条件"),
+        (("time", "recent", "previous"), "时间窗口条件"), (("count", "cap", "minimum", "min_", "max_"), "数量门槛"),
+        (("skill", "component", "effect"), "技能联动条件"), (("pool", "rank"), "角色池或等级条件"),
+        (("outcome", "failure", "reboot"), "访问结果条件"),
+    ]
+    for needles, label in categories:
+        if any(needle in key for needle in needles):
+            return label
+    return "其他结构化条件"
 SCENES = [
     ("daily_attack", "无脑打站"), ("burst_attack", "计划爆发"),
     ("home_defense", "在家守站"), ("expedition_score", "远征积分"),
@@ -79,13 +133,8 @@ def render() -> str:
             for role, _ in ROLES
         )
         prior = row["calibration"].get("beginner_prior_marker") or "—"
-        calibration_detail = ""
-        if row["calibration"].get("status") == "mismatch":
-            calibration_detail = (
-                '<details><summary>模型原始分与 Wiki 不一致</summary>'
-                f'<small>Wiki：{esc(row["calibration"].get("wiki_reason_ja") or "-")}</small>'
-                f'<small>处理：{esc(row["calibration"].get("reason_zh") or "-")}</small></details>'
-            )
+        wiki_comment = row["calibration"].get("wiki_reason_ja")
+        calibration_detail = f'<small>Wiki 评语：{esc(wiki_comment)}</small>' if wiki_comment else ""
         factor_cells = {}
         for level in ("50", "80"):
             component = level_cells[level]["component"]
@@ -94,8 +143,11 @@ def render() -> str:
                 "effect": component["effect_zh"] if component else "—",
                 "probability": f"{factors.get('probability', 0) * 100:.0f}%" if component else "—",
                 "availability": f"{factors.get('availability', 0) * 100:.0f}%" if component else "—",
-                "conditions": "、".join(item["key"] for item in factors.get("condition_details") or []) or "无",
-                "scope_cost": (str(factors.get("scope_basis") or "—") + (" / " + "、".join(factors.get("cost_details") or []) if factors.get("cost_details") else "")),
+                "conditions": "、".join(dict.fromkeys(condition_label(str(item["key"])) for item in factors.get("condition_details") or [])) or "无",
+                "scope_cost": (
+                    SCOPE_ZH.get(str(factors.get("scope_basis")), "未知范围")
+                    + (" / " + "、".join(COST_ZH.get(str(item), "其他使用代价") for item in factors.get("cost_details") or []) if factors.get("cost_details") else " / 无额外代价")
+                ),
             }
         reviewed_items = reviews.get(row["rating_id"], [])
         comments = list(dict.fromkeys(
@@ -113,7 +165,7 @@ def render() -> str:
         body.append(
             f'<tr data-search="{esc(search.lower())}" data-score50="{level_cells["50"]["overall"]}" data-score80="{level_cells["80"]["overall"]}">'
             f'<td class="identity"><a href="{esc(row["record_meta"].get("source_url") or "#")}" target="_blank" rel="noreferrer"><code>{esc(row["rating_id"])}</code><br>{esc(denko.get("name"))}</a><small>{esc(denko.get("attribute") or "-")} · {esc(denko.get("type") or "-")}</small></td>'
-            f'<td class="overall"><strong class="g50 grade grade-{level_cells["50"]["grade"]}">{level_cells["50"]["grade"]}</strong><strong class="g80 grade grade-{level_cells["80"]["grade"]}">{level_cells["80"]["grade"]}</strong><b class="s50">{level_cells["50"]["overall"]}</b><b class="s80">{level_cells["80"]["overall"]}</b><small class="s50">模型原始 {level_cells["50"]["model"]}</small></td>'
+            f'<td class="overall"><strong class="g50 grade grade-{level_cells["50"]["grade"]}">{level_cells["50"]["grade"]}</strong><strong class="g80 grade grade-{level_cells["80"]["grade"]}">{level_cells["80"]["grade"]}</strong><b class="s50">{level_cells["50"]["overall"]}</b><b class="s80">{level_cells["80"]["overall"]}</b></td>'
             f'<td><span class="s50">{esc(level_cells["50"]["top_scene"])} {level_cells["50"]["top_score"]}</span><span class="s80">{esc(level_cells["80"]["top_scene"])} {level_cells["80"]["top_score"]}</span></td>'
             f'<td><span class="s50">{esc(factor_cells["50"]["effect"])}</span><span class="s80">{esc(factor_cells["80"]["effect"])}</span></td>'
             f'<td><span class="s50">{esc(factor_cells["50"]["probability"])}</span><span class="s80">{esc(factor_cells["80"]["probability"])}</span></td>'
@@ -132,9 +184,9 @@ def render() -> str:
 .reviewed{{width:360px}}.review-item{{margin-bottom:7px;padding-bottom:7px;border-bottom:1px dashed #d8dee5}}.verdict{{color:#8b4314}}.muted{{color:#78838d}}
 </style></head><body class="lv80">
 <header><a class="back" href="../../docs/reports/index.html">返回报表目录</a><h1>Step3 角色综合评分与一句话推荐</h1>
-<p class="meta">共 {manifest['counts']['denko']} 名でんこ。Lv50 是 Wiki 校准的新手推荐分，Lv80 是不受新手标签约束的后期模型分；场景拆开后，不再用一个“常驻权重”解释所有玩法。</p>
-<div class="formula"><div><b>组件有效效用</b>固定效果量锚点 × 发动概率 × 场景覆盖 × 成长阶段条件 × 作用范围 × 代价。</div><div><b>七个实际场景</b>无脑打站、计划爆发、在家守站、远征积分、远征经验、日常育成、机制辅助分别计算。</div><div><b>Wiki 校准</b>×/△/○/◎ 决定新手推荐粗区间，事实模型只负责区间内排序；※ 保留为场景型。所有模型分歧均进入审计并保留双方理由。</div></div>
-<p class="note">Mileage Class 10、饰品槽/饰品数量、先 Link 成功、今日新站、车站属性分支等条件会随新手/后期和场景使用不同满足率。Lv50 表中同时显示“模型原始分”，便于继续发现 Wiki 与模型的偏差。</p></header>
+<p class="meta">共 {manifest['counts']['denko']} 名でんこ。Lv50 表示入门养成阶段，Lv80 表示常用满级阶段；Wiki 推荐只作为外部对照，不参与模型打分。</p>
+<div class="formula"><div><b>组件有效效用</b>固定效果量锚点 × 发动概率 × 场景覆盖 × 成长阶段条件 × 作用范围 × 代价。</div><div><b>六项职责分</b>攻击、防守、辅助、远征、育成与机制独立排名，避免强力专职角色被无关场景平均拉低。</div><div><b>Wiki 对照</b>×/△/○/◎ 仅用于发现模型与玩家经验的分歧；表中只展示可供读者判断的核查评语。</div></div>
+<p class="note">Mileage Class 10、饰品槽/饰品数量、先 Link 成功、今日新站、车站属性分支等条件会随成长阶段和使用场景采用不同满足率。</p></header>
 <main><div class="tools"><button data-level="80" class="active">Lv80 标准</button><button data-level="50">Lv50 入门</button><input id="search" placeholder="搜索 ID、名字、属性、类型或推荐"><select id="grade"><option value="">全部等级</option><option>S</option><option>A</option><option>B</option><option>C</option><option>D</option></select><button id="sortOverall">按总分排序</button></div>
 <div class="table-wrap"><table><thead><tr><th>でんこ</th><th>总评</th><th>最强场景</th><th>主效果</th><th>概率</th><th>覆盖</th><th>启动条件</th><th>范围 / 代价</th>{role_heads}{heads}<th>核查评语</th></tr></thead><tbody>{''.join(body)}</tbody></table></div></main>
 <script>
