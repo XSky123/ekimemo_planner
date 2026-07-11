@@ -506,7 +506,15 @@ def build() -> tuple[list[dict[str, Any]], dict[str, Any], dict[str, Any]]:
                 if scene in {"daily_attack", "burst_attack"}:
                     skill_utility += 0.12 * ap.get(denko_id, 0.5)
                 elif scene == "home_defense":
-                    skill_utility += 0.12 * hp.get(denko_id, 0.5)
+                    denko_type = str(items[0]["denko"].get("type") or "")
+                    hp_foundation = hp.get(denko_id, 0.5)
+                    if "ディフェンダー" in denko_type:
+                        # High-level holding teams value surviving one hit and
+                        # rotating supporters/batteries. Defender base HP is a
+                        # real role asset even when the personal skill is niche.
+                        skill_utility += 0.42 * hp_foundation + 0.10
+                    else:
+                        skill_utility += 0.12 * hp_foundation
                 utilities[scene][denko_id] = round(skill_utility, 6)
         payload: dict[str, dict[str, Any]] = {}
         for denko_id in grouped:

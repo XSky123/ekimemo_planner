@@ -73,6 +73,12 @@ def main() -> int:
             for row in ratings.values()
         )},
     ])
+    defenders = [row for row in ratings.values() if "ディフェンダー" in str(row["denko"].get("type") or "")]
+    defender_scores = sorted((row["levels"]["80"]["role_scores"]["defense"] for row in defenders), reverse=True)
+    checks.extend([
+        {"id": "defender_role_median_not_structurally_suppressed", "passed": defender_scores[len(defender_scores) // 2] >= 65},
+        {"id": "top_defender_role_floor", "passed": defender_scores[14] >= 70},
+    ])
     result = {
         "artifact": "step3_denko_rating_regressions", "checks": checks,
         "utilities": {key: value["utility"] for key, value in utilities.items()},

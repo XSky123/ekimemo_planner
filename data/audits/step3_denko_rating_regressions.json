@@ -44,6 +44,14 @@
     {
       "id": "wiki_does_not_override_model_score",
       "passed": true
+    },
+    {
+      "id": "defender_role_median_not_structurally_suppressed",
+      "passed": true
+    },
+    {
+      "id": "top_defender_role_floor",
+      "passed": true
     }
   ],
   "utilities": {
