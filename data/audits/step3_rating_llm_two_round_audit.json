@@ -40,11 +40,12 @@
     "profile_issue_count": 0,
     "one_line_recommendations_present": true,
     "report_hides_review_process_metadata": true,
-    "report_has_review_comments": true,
+    "report_has_external_review_columns": true,
     "report_is_compact_use_case_lookup": true,
     "report_has_attribute_type_filters": true,
     "report_hides_step2_detail_columns": true,
-    "report_has_no_published_overall": true
+    "report_has_no_published_overall": true,
+    "report_hides_generic_llm_review_column": true
   },
   "issue_count": 0,
   "issues": []

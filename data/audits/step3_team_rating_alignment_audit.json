@@ -1,0 +1,782 @@
+{
+  "artifact": "step3_team_rating_alignment_audit",
+  "source": {
+    "archive_name": "ekimemo_codex_handoff_20260711.zip",
+    "archive_hash": "dcd3f3ed62a0d5d7a1472441bca5d5c8f0b67e729c1a19ddbe1f031ddef32183",
+    "entries": [
+      {
+        "path": "ekimemo_codex_handoff_20260711/data/derived_current/team_templates_20260711.json",
+        "hash": "3f7f54eeeb497338a0b57a9b506b69675f6834d23ca0d98d13c83f980ebac151"
+      },
+      {
+        "path": "ekimemo_codex_handoff_20260711/source_snapshot/opponent_database.json",
+        "hash": "94c7f2e3ae9b8460cc1c3bca0561261f77b25db068f61f13fa072ef16d34fdde"
+      }
+    ],
+    "source_authority": "observed_case",
+    "calibration_only": true
+  },
+  "counts": {
+    "comparisons": 66,
+    "severe_mismatches": 0,
+    "observed_without_direct_capability": 26,
+    "blog_ratings": 149,
+    "blog_identity_issues": 0
+  },
+  "checks": {
+    "team_archive_parsed": true,
+    "no_severe_observed_model_mismatches": true,
+    "reno_high": true,
+    "nagisa_visible": true,
+    "momiji_high": true,
+    "named_blog_ratings_present": true,
+    "blog_ids_resolve_to_step1": true,
+    "report_separates_evidence": true,
+    "report_hides_generic_review": true
+  },
+  "named": {
+    "original:030": {
+      "rank_lv80_attack_front": 1,
+      "score_lv80_attack_front": 100,
+      "observed_weight": 1.25
+    },
+    "original:072": {
+      "rank_lv80_attack_front": 16,
+      "score_lv80_attack_front": 79,
+      "observed_weight": 1.8
+    },
+    "original:059": {
+      "rank_lv80_attack_front": 10,
+      "score_lv80_attack_front": 87,
+      "observed_weight": 3.9
+    }
+  },
+  "severe_mismatches": [],
+  "observed_without_direct_capability": [
+    {
+      "denko_id": "extra:002",
+      "category": "attack_support",
+      "observed_weight": 0.9,
+      "rank": 67,
+      "score": 0,
+      "fact_model_score": 0,
+      "team_ids": [
+        "template:eco_nullification_counter",
+        "template:eco_nullification_special"
+      ]
+    },
+    {
+      "denko_id": "extra:003",
+      "category": "attack_support",
+      "observed_weight": 1.25,
+      "rank": 68,
+      "score": 0,
+      "fact_model_score": 0,
+      "team_ids": [
+        "template:heat_counter_with_nullification",
+        "template:temporary_heat_counter_if_nagisa_unready"
+      ]
+    },
+    {
+      "denko_id": "extra:004",
+      "category": "defense_support",
+      "observed_weight": 1.25,
+      "rank": 104,
+      "score": 0,
+      "fact_model_score": 0,
+      "team_ids": [
+        "opponent:あっちぇれらんど:common:1"
+      ]
+    },
+    {
+      "denko_id": "extra:028",
+      "category": "defense_support",
+      "observed_weight": 1.25,
+      "rank": 120,
+      "score": 0,
+      "fact_model_score": 0,
+      "team_ids": [
+        "opponent:あっちぇれらんど:common:1"
+      ]
+    },
+    {
+      "denko_id": "extra:041",
+      "category": "defense_support",
+      "observed_weight": 2.5,
+      "rank": 132,
+      "score": 0,
+      "fact_model_score": 0,
+      "team_ids": [
+        "opponent:おもち:rara_all_heat",
+        "opponent:むうむう:team"
+      ]
+    },
+    {
+      "denko_id": "extra:046",
+      "category": "exp_gain",
+      "observed_weight": 1.8,
+      "rank": 87,
+      "score": 0,
+      "fact_model_score": 0,
+      "team_ids": [
+        "template:cat_punch_spending",
+        "template:normal_exp_running"
+      ]
+    },
+    {
+      "denko_id": "extra:048",
+      "category": "attack_support",
+      "observed_weight": 0.8,
+      "rank": 103,
+      "score": 0,
+      "fact_model_score": 0,
+      "team_ids": [
+        "opponent:びー:team",
+        "template:new_station_monthly_scoring"
+      ]
+    },
+    {
+      "denko_id": "extra:068",
+      "category": "defense_support",
+      "observed_weight": 2.5,
+      "rank": 146,
+      "score": 0,
+      "fact_model_score": 0,
+      "team_ids": [
+        "opponent:あっちぇれらんど:common:2",
+        "opponent:きゅあらん:team"
+      ]
+    },
+    {
+      "denko_id": "extra:117",
+      "category": "defense_support",
+      "observed_weight": 1.25,
+      "rank": 176,
+      "score": 0,
+      "fact_model_score": 0,
+      "team_ids": [
+        "opponent:きゅあらん:team"
+      ]
+    },
+    {
+      "denko_id": "original:005",
+      "category": "defense_support",
+      "observed_weight": 1.25,
+      "rank": 195,
+      "score": 0,
+      "fact_model_score": 0,
+      "team_ids": [
+        "opponent:むうむう:team",
+        "template:eco_counter_temperature_invalid",
+        "template:eco_counter_temperature_valid",
+        "template:eco_nullification_counter",
+        "template:eco_nullification_special",
+        "template:hard_station_burst"
+      ]
+    },
+    {
+      "denko_id": "original:009",
+      "category": "attack_support",
+      "observed_weight": 1.25,
+      "rank": 184,
+      "score": 0,
+      "fact_model_score": 0,
+      "team_ids": [
+        "opponent:おもち:reno_mixed_support",
+        "opponent:きゅあらん:team"
+      ]
+    },
+    {
+      "denko_id": "original:010",
+      "category": "defense_front",
+      "observed_weight": 0.8,
+      "rank": 184,
+      "score": 0,
+      "fact_model_score": 0,
+      "team_ids": [
+        "opponent:Dyunn:team"
+      ]
+    },
+    {
+      "denko_id": "original:011",
+      "category": "defense_support",
+      "observed_weight": 0.8,
+      "rank": 200,
+      "score": 0,
+      "fact_model_score": 0,
+      "team_ids": [
+        "opponent:きゅあらん:team",
+        "opponent:はやて:team"
+      ]
+    },
+    {
+      "denko_id": "original:021",
+      "category": "attack_support",
+      "observed_weight": 1.25,
+      "rank": 196,
+      "score": 0,
+      "fact_model_score": 0,
+      "team_ids": [
+        "opponent:おもち:reno_mixed_support"
+      ]
+    },
+    {
+      "denko_id": "original:037",
+      "category": "defense_support",
+      "observed_weight": 1.25,
+      "rank": 224,
+      "score": 0,
+      "fact_model_score": 0,
+      "team_ids": [
+        "opponent:あっちぇれらんど:common:1"
+      ]
+    },
+    {
+      "denko_id": "original:045",
+      "category": "score_gain",
+      "observed_weight": 1.0,
+      "rank": 193,
+      "score": 0,
+      "fact_model_score": 0,
+      "team_ids": [
+        "opponent:びー:team",
+        "template:eco_counter_temperature_invalid",
+        "template:eco_counter_temperature_valid",
+        "template:eco_nullification_counter",
+        "template:eco_nullification_special",
+        "template:hard_station_burst",
+        "template:heat_counter_with_nullification",
+        "template:new_station_monthly_scoring",
+        "template:temporary_heat_counter_if_nagisa_unready"
+      ]
+    },
+    {
+      "denko_id": "original:048",
+      "category": "attack_support",
+      "observed_weight": 1.25,
+      "rank": 221,
+      "score": 0,
+      "fact_model_score": 0,
+      "team_ids": [
+        "opponent:Dyunn:team",
+        "opponent:おもち:rara_all_heat",
+        "opponent:おもち:reno_mixed_support"
+      ]
+    },
+    {
+      "denko_id": "original:069",
+      "category": "defense_support",
+      "observed_weight": 1.25,
+      "rank": 249,
+      "score": 0,
+      "fact_model_score": 0,
+      "team_ids": [
+        "opponent:きゅあらん:team",
+        "template:cat_punch_spending",
+        "template:normal_exp_running"
+      ]
+    },
+    {
+      "denko_id": "original:103",
+      "category": "defense_support",
+      "observed_weight": 0.8,
+      "rank": 275,
+      "score": 0,
+      "fact_model_score": 0,
+      "team_ids": [
+        "opponent:はやて:team"
+      ]
+    },
+    {
+      "denko_id": "original:107",
+      "category": "defense_support",
+      "observed_weight": 2.5,
+      "rank": 276,
+      "score": 0,
+      "fact_model_score": 0,
+      "team_ids": [
+        "opponent:あっちぇれらんど:common:1",
+        "opponent:あっちぇれらんど:common:2"
+      ]
+    },
+    {
+      "denko_id": "original:108",
+      "category": "defense_support",
+      "observed_weight": 0.8,
+      "rank": 277,
+      "score": 0,
+      "fact_model_score": 0,
+      "team_ids": [
+        "opponent:Dyunn:team",
+        "opponent:びー:team",
+        "template:eco_counter_temperature_invalid",
+        "template:eco_counter_temperature_valid",
+        "template:eco_nullification_counter",
+        "template:eco_nullification_special",
+        "template:hard_station_burst",
+        "template:heat_counter_with_nullification",
+        "template:new_station_monthly_scoring",
+        "template:temporary_heat_counter_if_nagisa_unready"
+      ]
+    },
+    {
+      "denko_id": "original:108",
+      "category": "score_gain",
+      "observed_weight": 1.0,
+      "rank": 253,
+      "score": 0,
+      "fact_model_score": 0,
+      "team_ids": [
+        "opponent:Dyunn:team",
+        "opponent:びー:team",
+        "template:eco_counter_temperature_invalid",
+        "template:eco_counter_temperature_valid",
+        "template:eco_nullification_counter",
+        "template:eco_nullification_special",
+        "template:hard_station_burst",
+        "template:heat_counter_with_nullification",
+        "template:new_station_monthly_scoring",
+        "template:temporary_heat_counter_if_nagisa_unready"
+      ]
+    },
+    {
+      "denko_id": "original:109",
+      "category": "attack_support",
+      "observed_weight": 1.25,
+      "rank": 267,
+      "score": 0,
+      "fact_model_score": 0,
+      "team_ids": [
+        "opponent:おもち:rara_all_heat",
+        "opponent:おもち:reno_mixed_support"
+      ]
+    },
+    {
+      "denko_id": "original:118",
+      "category": "score_gain",
+      "observed_weight": 1.0,
+      "rank": 262,
+      "score": 0,
+      "fact_model_score": 0,
+      "team_ids": [
+        "template:heat_counter_with_nullification",
+        "template:new_station_monthly_scoring",
+        "template:temporary_heat_counter_if_nagisa_unready"
+      ]
+    },
+    {
+      "denko_id": "original:127",
+      "category": "defense_support",
+      "observed_weight": 1.25,
+      "rank": 288,
+      "score": 0,
+      "fact_model_score": 0,
+      "team_ids": [
+        "opponent:あっちぇれらんど:common:2"
+      ]
+    },
+    {
+      "denko_id": "original:157",
+      "category": "defense_support",
+      "observed_weight": 0.8,
+      "rank": 303,
+      "score": 0,
+      "fact_model_score": 0,
+      "team_ids": [
+        "opponent:はやて:team"
+      ]
+    }
+  ],
+  "blog_identity_issues": [],
+  "top_observed_comparisons": [
+    {
+      "denko_id": "original:108",
+      "category": "attack_support",
+      "observed_weight": 5.95,
+      "rank": 3,
+      "score": 94,
+      "fact_model_score": 79,
+      "team_ids": [
+        "opponent:Dyunn:team",
+        "opponent:びー:team",
+        "template:eco_counter_temperature_invalid",
+        "template:eco_counter_temperature_valid",
+        "template:eco_nullification_counter",
+        "template:eco_nullification_special",
+        "template:hard_station_burst",
+        "template:heat_counter_with_nullification",
+        "template:new_station_monthly_scoring",
+        "template:temporary_heat_counter_if_nagisa_unready"
+      ]
+    },
+    {
+      "denko_id": "original:045",
+      "category": "attack_support",
+      "observed_weight": 5.95,
+      "rank": 4,
+      "score": 93,
+      "fact_model_score": 78,
+      "team_ids": [
+        "opponent:びー:team",
+        "template:eco_counter_temperature_invalid",
+        "template:eco_counter_temperature_valid",
+        "template:eco_nullification_counter",
+        "template:eco_nullification_special",
+        "template:hard_station_burst",
+        "template:heat_counter_with_nullification",
+        "template:new_station_monthly_scoring",
+        "template:temporary_heat_counter_if_nagisa_unready"
+      ]
+    },
+    {
+      "denko_id": "original:161",
+      "category": "attack_support",
+      "observed_weight": 4.25,
+      "rank": 5,
+      "score": 93,
+      "fact_model_score": 88,
+      "team_ids": [
+        "template:eco_counter_temperature_invalid",
+        "template:eco_counter_temperature_valid",
+        "template:hard_station_burst",
+        "template:heat_counter_with_nullification",
+        "template:temporary_heat_counter_if_nagisa_unready"
+      ]
+    },
+    {
+      "denko_id": "original:005",
+      "category": "attack_support",
+      "observed_weight": 3.9,
+      "rank": 2,
+      "score": 100,
+      "fact_model_score": 95,
+      "team_ids": [
+        "opponent:むうむう:team",
+        "template:eco_counter_temperature_invalid",
+        "template:eco_counter_temperature_valid",
+        "template:eco_nullification_counter",
+        "template:eco_nullification_special",
+        "template:hard_station_burst"
+      ]
+    },
+    {
+      "denko_id": "original:059",
+      "category": "attack_front",
+      "observed_weight": 3.9,
+      "rank": 10,
+      "score": 87,
+      "fact_model_score": 68,
+      "team_ids": [
+        "template:eco_counter_temperature_invalid",
+        "template:eco_counter_temperature_valid",
+        "template:eco_nullification_counter",
+        "template:eco_nullification_special",
+        "template:hard_station_burst"
+      ]
+    },
+    {
+      "denko_id": "original:056",
+      "category": "defense_front",
+      "observed_weight": 2.5,
+      "rank": 1,
+      "score": 100,
+      "fact_model_score": 98,
+      "team_ids": [
+        "opponent:おもち:rara_all_heat",
+        "opponent:むうむう:team"
+      ]
+    },
+    {
+      "denko_id": "extra:057",
+      "category": "defense_support",
+      "observed_weight": 2.5,
+      "rank": 5,
+      "score": 96,
+      "fact_model_score": 88,
+      "team_ids": [
+        "opponent:あっちぇれらんど:common:1",
+        "opponent:あっちぇれらんど:common:2"
+      ]
+    },
+    {
+      "denko_id": "original:113",
+      "category": "defense_front",
+      "observed_weight": 2.5,
+      "rank": 18,
+      "score": 72,
+      "fact_model_score": 44,
+      "team_ids": [
+        "opponent:あっちぇれらんど:common:1",
+        "opponent:あっちぇれらんど:common:2"
+      ]
+    },
+    {
+      "denko_id": "extra:041",
+      "category": "defense_support",
+      "observed_weight": 2.5,
+      "rank": 132,
+      "score": 0,
+      "fact_model_score": 0,
+      "team_ids": [
+        "opponent:おもち:rara_all_heat",
+        "opponent:むうむう:team"
+      ]
+    },
+    {
+      "denko_id": "extra:068",
+      "category": "defense_support",
+      "observed_weight": 2.5,
+      "rank": 146,
+      "score": 0,
+      "fact_model_score": 0,
+      "team_ids": [
+        "opponent:あっちぇれらんど:common:2",
+        "opponent:きゅあらん:team"
+      ]
+    },
+    {
+      "denko_id": "original:107",
+      "category": "defense_support",
+      "observed_weight": 2.5,
+      "rank": 276,
+      "score": 0,
+      "fact_model_score": 0,
+      "team_ids": [
+        "opponent:あっちぇれらんど:common:1",
+        "opponent:あっちぇれらんど:common:2"
+      ]
+    },
+    {
+      "denko_id": "original:084",
+      "category": "attack_support",
+      "observed_weight": 2.25,
+      "rank": 20,
+      "score": 71,
+      "fact_model_score": 56,
+      "team_ids": [
+        "opponent:おもち:rara_all_heat",
+        "opponent:おもち:reno_mixed_support",
+        "opponent:はやて:team",
+        "template:eco_counter_temperature_invalid"
+      ]
+    },
+    {
+      "denko_id": "original:084",
+      "category": "defense_support",
+      "observed_weight": 2.05,
+      "rank": 15,
+      "score": 83,
+      "fact_model_score": 70,
+      "team_ids": [
+        "opponent:おもち:rara_all_heat",
+        "opponent:おもち:reno_mixed_support",
+        "opponent:はやて:team",
+        "template:eco_counter_temperature_invalid"
+      ]
+    },
+    {
+      "denko_id": "original:048",
+      "category": "defense_support",
+      "observed_weight": 2.05,
+      "rank": 36,
+      "score": 70,
+      "fact_model_score": 40,
+      "team_ids": [
+        "opponent:Dyunn:team",
+        "opponent:おもち:rara_all_heat",
+        "opponent:おもち:reno_mixed_support"
+      ]
+    },
+    {
+      "denko_id": "original:162",
+      "category": "attack_support",
+      "observed_weight": 1.9,
+      "rank": 24,
+      "score": 68,
+      "fact_model_score": 57,
+      "team_ids": [
+        "template:eco_counter_temperature_valid",
+        "template:eco_nullification_counter",
+        "template:eco_nullification_special"
+      ]
+    },
+    {
+      "denko_id": "original:094",
+      "category": "exp_gain",
+      "observed_weight": 1.8,
+      "rank": 1,
+      "score": 100,
+      "fact_model_score": 98,
+      "team_ids": [
+        "template:cat_punch_spending",
+        "template:normal_exp_running"
+      ]
+    },
+    {
+      "denko_id": "original:116",
+      "category": "exp_gain",
+      "observed_weight": 1.8,
+      "rank": 3,
+      "score": 98,
+      "fact_model_score": 95,
+      "team_ids": [
+        "template:cat_punch_spending",
+        "template:normal_exp_running"
+      ]
+    },
+    {
+      "denko_id": "original:072",
+      "category": "attack_front",
+      "observed_weight": 1.8,
+      "rank": 16,
+      "score": 79,
+      "fact_model_score": 76,
+      "team_ids": [
+        "opponent:びー:team",
+        "template:heat_counter_with_nullification"
+      ]
+    },
+    {
+      "denko_id": "original:069",
+      "category": "exp_gain",
+      "observed_weight": 1.8,
+      "rank": 20,
+      "score": 69,
+      "fact_model_score": 46,
+      "team_ids": [
+        "opponent:きゅあらん:team",
+        "template:cat_punch_spending",
+        "template:normal_exp_running"
+      ]
+    },
+    {
+      "denko_id": "extra:046",
+      "category": "exp_gain",
+      "observed_weight": 1.8,
+      "rank": 87,
+      "score": 0,
+      "fact_model_score": 0,
+      "team_ids": [
+        "template:cat_punch_spending",
+        "template:normal_exp_running"
+      ]
+    },
+    {
+      "denko_id": "original:030",
+      "category": "attack_front",
+      "observed_weight": 1.25,
+      "rank": 1,
+      "score": 100,
+      "fact_model_score": 99,
+      "team_ids": [
+        "opponent:おもち:reno_mixed_support"
+      ]
+    },
+    {
+      "denko_id": "original:009",
+      "category": "defense_support",
+      "observed_weight": 1.25,
+      "rank": 2,
+      "score": 98,
+      "fact_model_score": 96,
+      "team_ids": [
+        "opponent:おもち:reno_mixed_support",
+        "opponent:きゅあらん:team"
+      ]
+    },
+    {
+      "denko_id": "original:011",
+      "category": "defense_front",
+      "observed_weight": 1.25,
+      "rank": 14,
+      "score": 78,
+      "fact_model_score": 76,
+      "team_ids": [
+        "opponent:きゅあらん:team",
+        "opponent:はやて:team"
+      ]
+    },
+    {
+      "denko_id": "original:118",
+      "category": "attack_support",
+      "observed_weight": 1.25,
+      "rank": 16,
+      "score": 76,
+      "fact_model_score": 74,
+      "team_ids": [
+        "template:heat_counter_with_nullification",
+        "template:new_station_monthly_scoring",
+        "template:temporary_heat_counter_if_nagisa_unready"
+      ]
+    },
+    {
+      "denko_id": "original:133",
+      "category": "defense_support",
+      "observed_weight": 1.25,
+      "rank": 19,
+      "score": 82,
+      "fact_model_score": 80,
+      "team_ids": [
+        "opponent:おもち:rara_all_heat"
+      ]
+    },
+    {
+      "denko_id": "extra:089",
+      "category": "defense_support",
+      "observed_weight": 1.25,
+      "rank": 30,
+      "score": 74,
+      "fact_model_score": 72,
+      "team_ids": [
+        "opponent:むうむう:team"
+      ]
+    },
+    {
+      "denko_id": "extra:083",
+      "category": "defense_support",
+      "observed_weight": 1.25,
+      "rank": 34,
+      "score": 73,
+      "fact_model_score": 71,
+      "team_ids": [
+        "opponent:むうむう:team"
+      ]
+    },
+    {
+      "denko_id": "original:109",
+      "category": "defense_support",
+      "observed_weight": 1.25,
+      "rank": 40,
+      "score": 68,
+      "fact_model_score": 64,
+      "team_ids": [
+        "opponent:おもち:rara_all_heat",
+        "opponent:おもち:reno_mixed_support"
+      ]
+    },
+    {
+      "denko_id": "original:106",
+      "category": "defense_support",
+      "observed_weight": 1.25,
+      "rank": 50,
+      "score": 61,
+      "fact_model_score": 49,
+      "team_ids": [
+        "opponent:むうむう:team"
+      ]
+    },
+    {
+      "denko_id": "original:140",
+      "category": "defense_support",
+      "observed_weight": 1.25,
+      "rank": 52,
+      "score": 61,
+      "fact_model_score": 49,
+      "team_ids": [
+        "opponent:あっちぇれらんど:common:2"
+      ]
+    }
+  ],
+  "issue_count": 0,
+  "issues": []
+}

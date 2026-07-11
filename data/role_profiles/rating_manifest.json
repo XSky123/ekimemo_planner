@@ -1,10 +1,14 @@
 {
   "artifact": "denko_ratings",
-  "rating_version": "denko_rating.v4",
-  "generated_at": "2026-07-11T14:43:10.075374+09:00",
+  "rating_version": "denko_rating.v5",
+  "generated_at": "2026-07-11T15:13:43.169679+09:00",
   "source": {
     "role_profiles": "data\\role_profiles\\role_profiles.jsonl",
-    "content_hash": "c58ee784b988451831d7fcd360becb4a25c2e26fdebf4f78361d1de2b43b693e"
+    "role_profiles_content_hash": "4877a340b79422a7d5a2c4e9180c0569a6514a6b35b58acd8e9f8e918b857dfd",
+    "observed_team_calibration": "data\\observed_cases\\team_calibration.json",
+    "observed_team_calibration_content_hash": "da5b119b1ff273faaa4414b5d75c65fd3091dec34494f125a3235359ea13df44",
+    "blog_character_ratings": "data\\reference_priors\\blog_character_ratings.json",
+    "blog_character_ratings_content_hash": "535e9206cd4a376241b6896012b67387d9ca74b4bc21348df953badfadb29aab"
   },
   "outputs": {
     "ratings": "data\\role_profiles\\denko_ratings.jsonl",
@@ -26,11 +30,11 @@
   "counts": {
     "denko": 307,
     "grade_lv80": {
-      "A": 45,
-      "B": 84,
-      "C": 65,
-      "D": 64,
-      "S": 49
+      "A": 44,
+      "B": 89,
+      "C": 59,
+      "D": 62,
+      "S": 53
     }
   },
   "calibration": {
@@ -42,6 +46,7 @@
     "component": "impact * absolute_magnitude_anchor * probability * scenario_availability * stage_condition * scope * cost",
     "scene": "top_component + 0.5*second + 0.25*third + 0.125*fourth, then 100*(1-exp(-utility/0.72))",
     "use_case_normalization": "25 + 75 * (70% within-category percentile + 30% log-scaled raw utility)",
+    "observed_calibration": "for fact-model candidates observed in high-value teams, add 55% of the positive gap to observed-use percentile plus a capped 5-point log occurrence bonus; observations never create a missing use-case capability",
     "overall": "compatibility-only max(use_case_scores); never published or used for cross-purpose ranking",
     "note_zh": "按攻击车头、守站肉盾、攻击队友、防守队友、加分、加经验六种玩家用途分别归一化。不同用途不发布综合总榜。"
   }

@@ -9,7 +9,6 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[2]
 RATINGS = ROOT / "data/role_profiles/denko_ratings.jsonl"
-CACHE = ROOT / "data/audits/step3_player_rating_llm_cache.jsonl"
 ROLE_ZH = {
     "attack_front": "攻击车头", "defense_front": "守站肉盾",
     "attack_support": "攻击队友", "defense_support": "防守队友",
@@ -78,7 +77,10 @@ def synthesize_review(row: dict[str, Any], selected_by: list[str]) -> dict[str, 
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--iteration", type=int, required=True)
+    parser.add_argument("--series", choices=("player", "observed"), default="player")
     args = parser.parse_args()
+    prefix = f"step3_{args.series}_rating"
+    cache_path = ROOT / "data/audits" / f"{prefix}_llm_cache.jsonl"
     ratings = read_jsonl(RATINGS)
     selected: dict[str, set[str]] = {}
     role_names = sorted({role for row in ratings for role in (row["levels"]["80"].get("role_scores") or {})})
@@ -91,7 +93,7 @@ def main() -> None:
     for row in ratings:
         if row["calibration"].get("status") == "mismatch":
             selected.setdefault(row["rating_id"], set()).add("wiki_mismatch")
-    existing = read_jsonl(CACHE)
+    existing = read_jsonl(cache_path)
     cache_index = {item["cache_key"]: item for item in existing}
     output = []
     hits = 0
@@ -119,9 +121,9 @@ def main() -> None:
             cache_index[cache_key] = item
         output.append(item)
     all_cache = sorted(cache_index.values(), key=lambda item: (item["denko_id"], item["semantic_hash"]))
-    CACHE.parent.mkdir(parents=True, exist_ok=True)
-    CACHE.write_text("".join(json.dumps(item, ensure_ascii=False, sort_keys=True) + "\n" for item in all_cache), encoding="utf-8", newline="\n")
-    result_path = ROOT / "data/audits" / f"step3_player_rating_iteration_{args.iteration}_reviews.jsonl"
+    cache_path.parent.mkdir(parents=True, exist_ok=True)
+    cache_path.write_text("".join(json.dumps(item, ensure_ascii=False, sort_keys=True) + "\n" for item in all_cache), encoding="utf-8", newline="\n")
+    result_path = ROOT / "data/audits" / f"{prefix}_iteration_{args.iteration}_reviews.jsonl"
     result_path.write_text("".join(json.dumps(item, ensure_ascii=False, sort_keys=True) + "\n" for item in output), encoding="utf-8", newline="\n")
     summary = {
         "iteration": args.iteration, "roles": role_names, "selected": len(output),
@@ -129,7 +131,7 @@ def main() -> None:
         "cache_hits": hits, "cache_misses": len(output) - hits,
         "db_cross_checks": sum(item["llm_review"]["db_backfill_decision"] == "cross_check_raw_condition" for item in output),
     }
-    summary_path = ROOT / "data/audits" / f"step3_player_rating_iteration_{args.iteration}_summary.json"
+    summary_path = ROOT / "data/audits" / f"{prefix}_iteration_{args.iteration}_summary.json"
     summary_path.write_text(json.dumps(summary, ensure_ascii=False, indent=2) + "\n", encoding="utf-8", newline="\n")
     print(json.dumps(summary, ensure_ascii=False))
 

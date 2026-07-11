@@ -48,6 +48,22 @@
     {
       "id": "original_087_eco_gate_visible",
       "passed": true
+    },
+    {
+      "id": "observed_reno_stays_top5_attack",
+      "passed": true
+    },
+    {
+      "id": "observed_momiji_reaches_top15_attack",
+      "passed": true
+    },
+    {
+      "id": "observed_nagisa_stays_visible_top20_attack",
+      "passed": true
+    },
+    {
+      "id": "observations_never_create_missing_capability",
+      "passed": true
     }
   ],
   "utilities": {

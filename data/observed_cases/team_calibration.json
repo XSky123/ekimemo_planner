@@ -1,0 +1,2056 @@
+{
+  "artifact": "observed_team_calibration",
+  "version": "observed_team_calibration.v1",
+  "source": {
+    "archive_name": "ekimemo_codex_handoff_20260711.zip",
+    "archive_hash": "dcd3f3ed62a0d5d7a1472441bca5d5c8f0b67e729c1a19ddbe1f031ddef32183",
+    "entries": [
+      {
+        "path": "ekimemo_codex_handoff_20260711/data/derived_current/team_templates_20260711.json",
+        "hash": "3f7f54eeeb497338a0b57a9b506b69675f6834d23ca0d98d13c83f980ebac151"
+      },
+      {
+        "path": "ekimemo_codex_handoff_20260711/source_snapshot/opponent_database.json",
+        "hash": "94c7f2e3ae9b8460cc1c3bca0561261f77b25db068f61f13fa072ef16d34fdde"
+      }
+    ],
+    "source_authority": "observed_case",
+    "calibration_only": true
+  },
+  "counts": {
+    "teams": 19,
+    "resolved_denko": 53,
+    "unresolved_members": 2
+  },
+  "teams": [
+    {
+      "team_id": "template:cat_punch_spending",
+      "origin": "user_template",
+      "context": "exp_gain",
+      "quality_weight": 0.9,
+      "members": [
+        {
+          "position": 1,
+          "raw": "目标角色",
+          "name": "目标角色",
+          "denko_id": null,
+          "slot": "leader"
+        },
+        {
+          "position": 2,
+          "raw": "みゅう（EX No.45）",
+          "name": "みゅう",
+          "denko_id": "extra:045",
+          "slot": "support"
+        },
+        {
+          "position": 3,
+          "raw": "あこ（EX No.46）",
+          "name": "あこ",
+          "denko_id": "extra:046",
+          "slot": "support"
+        },
+        {
+          "position": 4,
+          "raw": "こうめ（No.116）",
+          "name": "こうめ",
+          "denko_id": "original:116",
+          "slot": "support"
+        },
+        {
+          "position": 5,
+          "raw": "ゆき（No.94）",
+          "name": "ゆき",
+          "denko_id": "original:094",
+          "slot": "support"
+        },
+        {
+          "position": 6,
+          "raw": "ミユ（No.69）",
+          "name": "ミユ",
+          "denko_id": "original:069",
+          "slot": "support"
+        }
+      ],
+      "evidence": {
+        "availability": "current_with_placeholder_target",
+        "use_cases": [],
+        "notes": [
+          "みゅう Lv50 + あこ Lv50，猫拳额外约+32.5%。",
+          "如果目标是ナギサ/すすぐ/まひる/ウシオ，直接把目标放1号位。"
+        ],
+        "warning": null
+      }
+    },
+    {
+      "team_id": "template:eco_counter_temperature_invalid",
+      "origin": "user_template",
+      "context": "attack_front",
+      "quality_weight": 1.0,
+      "members": [
+        {
+          "position": 1,
+          "raw": "もみじ（No.59）",
+          "name": "もみじ",
+          "denko_id": "original:059",
+          "slot": "leader"
+        },
+        {
+          "position": 2,
+          "raw": "ていら（No.108）",
+          "name": "ていら",
+          "denko_id": "original:108",
+          "slot": "support"
+        },
+        {
+          "position": 3,
+          "raw": "カノン（No.45）",
+          "name": "カノン",
+          "denko_id": "original:045",
+          "slot": "support"
+        },
+        {
+          "position": 4,
+          "raw": "レイカ（No.5）",
+          "name": "レイカ",
+          "denko_id": "original:005",
+          "slot": "support"
+        },
+        {
+          "position": 5,
+          "raw": "さとり（No.161）",
+          "name": "さとり",
+          "denko_id": "original:161",
+          "slot": "support"
+        },
+        {
+          "position": 6,
+          "raw": "みそら（No.84）",
+          "name": "みそら",
+          "denko_id": "original:084",
+          "slot": "support"
+        }
+      ],
+      "evidence": {
+        "availability": "current_available",
+        "use_cases": [],
+        "notes": null,
+        "warning": null
+      }
+    },
+    {
+      "team_id": "template:eco_counter_temperature_valid",
+      "origin": "user_template",
+      "context": "attack_front",
+      "quality_weight": 1.0,
+      "members": [
+        {
+          "position": 1,
+          "raw": "もみじ（No.59）",
+          "name": "もみじ",
+          "denko_id": "original:059",
+          "slot": "leader"
+        },
+        {
+          "position": 2,
+          "raw": "ていら（No.108）",
+          "name": "ていら",
+          "denko_id": "original:108",
+          "slot": "support"
+        },
+        {
+          "position": 3,
+          "raw": "カノン（No.45）",
+          "name": "カノン",
+          "denko_id": "original:045",
+          "slot": "support"
+        },
+        {
+          "position": 4,
+          "raw": "レイカ（No.5）",
+          "name": "レイカ",
+          "denko_id": "original:005",
+          "slot": "support"
+        },
+        {
+          "position": 5,
+          "raw": "さとり（No.161）",
+          "name": "さとり",
+          "denko_id": "original:161",
+          "slot": "support"
+        },
+        {
+          "position": 6,
+          "raw": "みぞれ（No.162）",
+          "name": "みぞれ",
+          "denko_id": "original:162",
+          "slot": "support"
+        }
+      ],
+      "evidence": {
+        "availability": "current_available",
+        "use_cases": [
+          "all eco",
+          "しいら",
+          "ソユン",
+          "レーノ",
+          "なのか",
+          "コヨイ",
+          "あっちぇれらんど",
+          "おもちレーノ形态"
+        ],
+        "notes": null,
+        "warning": null
+      }
+    },
+    {
+      "team_id": "template:eco_nullification_counter",
+      "origin": "user_template",
+      "context": "attack_front",
+      "quality_weight": 0.45,
+      "members": [
+        {
+          "position": 1,
+          "raw": "もみじ（No.59）",
+          "name": "もみじ",
+          "denko_id": "original:059",
+          "slot": "leader"
+        },
+        {
+          "position": 2,
+          "raw": "まひる（EX No.2）",
+          "name": "まひる",
+          "denko_id": "extra:002",
+          "slot": "support"
+        },
+        {
+          "position": 3,
+          "raw": "ていら（No.108）",
+          "name": "ていら",
+          "denko_id": "original:108",
+          "slot": "support"
+        },
+        {
+          "position": 4,
+          "raw": "カノン（No.45）",
+          "name": "カノン",
+          "denko_id": "original:045",
+          "slot": "support"
+        },
+        {
+          "position": 5,
+          "raw": "レイカ（No.5）",
+          "name": "レイカ",
+          "denko_id": "original:005",
+          "slot": "support"
+        },
+        {
+          "position": 6,
+          "raw": "みぞれ（No.162）",
+          "name": "みぞれ",
+          "denko_id": "original:162",
+          "slot": "support"
+        }
+      ],
+      "evidence": {
+        "availability": "future_not_owned",
+        "use_cases": [
+          "hard all-eco stacks",
+          "きゅあらん しいら Lv100",
+          "ソユン/アダリヤ/チェル skill stacks"
+        ],
+        "notes": "Avoid relying on さとり because まひる nullifies own eco skills.",
+        "warning": null
+      }
+    },
+    {
+      "team_id": "template:eco_nullification_special",
+      "origin": "user_template",
+      "context": "attack_front",
+      "quality_weight": 0.45,
+      "members": [
+        {
+          "position": 1,
+          "raw": "もみじ（No.59）",
+          "name": "もみじ",
+          "denko_id": "original:059",
+          "slot": "leader"
+        },
+        {
+          "position": 2,
+          "raw": "まひる（EX No.2）",
+          "name": "まひる",
+          "denko_id": "extra:002",
+          "slot": "support"
+        },
+        {
+          "position": 3,
+          "raw": "ていら（No.108）",
+          "name": "ていら",
+          "denko_id": "original:108",
+          "slot": "support"
+        },
+        {
+          "position": 4,
+          "raw": "カノン（No.45）",
+          "name": "カノン",
+          "denko_id": "original:045",
+          "slot": "support"
+        },
+        {
+          "position": 5,
+          "raw": "レイカ（No.5）",
+          "name": "レイカ",
+          "denko_id": "original:005",
+          "slot": "support"
+        },
+        {
+          "position": 6,
+          "raw": "みぞれ（No.162）",
+          "name": "みぞれ",
+          "denko_id": "original:162",
+          "slot": "support"
+        }
+      ],
+      "evidence": {
+        "availability": "future_not_owned",
+        "use_cases": [
+          "きゅあらん这类超硬all eco",
+          "しいら/ソユン/アダリヤ/チェル技能栈",
+          "完整もみじ仍打不穿时"
+        ],
+        "notes": "まひる会关さとり，所以不用さとり。",
+        "warning": null
+      }
+    },
+    {
+      "team_id": "template:hard_station_burst",
+      "origin": "user_template",
+      "context": "attack_front",
+      "quality_weight": 1.0,
+      "members": [
+        {
+          "position": 1,
+          "raw": "もみじ（No.59）",
+          "name": "もみじ",
+          "denko_id": "original:059",
+          "slot": "leader"
+        },
+        {
+          "position": 2,
+          "raw": "ウシオ（EX No.10）",
+          "name": "ウシオ",
+          "denko_id": "extra:010",
+          "slot": "support"
+        },
+        {
+          "position": 3,
+          "raw": "ていら（No.108）",
+          "name": "ていら",
+          "denko_id": "original:108",
+          "slot": "support"
+        },
+        {
+          "position": 4,
+          "raw": "カノン（No.45）",
+          "name": "カノン",
+          "denko_id": "original:045",
+          "slot": "support"
+        },
+        {
+          "position": 5,
+          "raw": "レイカ（No.5）",
+          "name": "レイカ",
+          "denko_id": "original:005",
+          "slot": "support"
+        },
+        {
+          "position": 6,
+          "raw": "さとり（No.161）",
+          "name": "さとり",
+          "denko_id": "original:161",
+          "slot": "support"
+        }
+      ],
+      "evidence": {
+        "availability": "current_available",
+        "use_cases": [
+          "普通もみじ打不穿",
+          "站很想拿",
+          "对方不明显在线",
+          "需要做火力测试"
+        ],
+        "notes": null,
+        "warning": "不要在家站附近日常乱交ウシオ。"
+      }
+    },
+    {
+      "team_id": "template:heat_counter_with_nullification",
+      "origin": "user_template",
+      "context": "attack_front",
+      "quality_weight": 1.0,
+      "members": [
+        {
+          "position": 1,
+          "raw": "ナギサ（No.72）",
+          "name": "ナギサ",
+          "denko_id": "original:072",
+          "slot": "leader"
+        },
+        {
+          "position": 2,
+          "raw": "すすぐ（EX No.3）",
+          "name": "すすぐ",
+          "denko_id": "extra:003",
+          "slot": "support"
+        },
+        {
+          "position": 3,
+          "raw": "ていら（No.108）",
+          "name": "ていら",
+          "denko_id": "original:108",
+          "slot": "support"
+        },
+        {
+          "position": 4,
+          "raw": "カノン（No.45）",
+          "name": "カノン",
+          "denko_id": "original:045",
+          "slot": "support"
+        },
+        {
+          "position": 5,
+          "raw": "さとり（No.161）",
+          "name": "さとり",
+          "denko_id": "original:161",
+          "slot": "support"
+        },
+        {
+          "position": 6,
+          "raw": "ると（No.118）",
+          "name": "ると",
+          "denko_id": "original:118",
+          "slot": "support"
+        }
+      ],
+      "evidence": {
+        "availability": "current_available",
+        "use_cases": [
+          "らら",
+          "まぜ",
+          "レニャ",
+          "ロッサ",
+          "all heat守站收益"
+        ],
+        "notes": [
+          "すすぐ不要进もみじ队。",
+          "ナギサ/すすぐ未练好前不要坐牢。"
+        ],
+        "warning": null
+      }
+    },
+    {
+      "team_id": "template:new_station_monthly_scoring",
+      "origin": "user_template",
+      "context": "score_gain",
+      "quality_weight": 1.0,
+      "members": [
+        {
+          "position": 1,
+          "raw": "なる（No.78）",
+          "name": "なる",
+          "denko_id": "original:078",
+          "slot": "leader"
+        },
+        {
+          "position": 2,
+          "raw": "ていら（No.108）",
+          "name": "ていら",
+          "denko_id": "original:108",
+          "slot": "support"
+        },
+        {
+          "position": 3,
+          "raw": "カノン（No.45）",
+          "name": "カノン",
+          "denko_id": "original:045",
+          "slot": "support"
+        },
+        {
+          "position": 4,
+          "raw": "エマ（EX No.48）",
+          "name": "エマ",
+          "denko_id": "extra:048",
+          "slot": "support"
+        },
+        {
+          "position": 5,
+          "raw": "ポム（EX No.105）",
+          "name": "ポム",
+          "denko_id": "extra:105",
+          "slot": "support"
+        },
+        {
+          "position": 6,
+          "raw": "ると（No.118）",
+          "name": "ると",
+          "denko_id": "original:118",
+          "slot": "support"
+        }
+      ],
+      "evidence": {
+        "availability": "current_available",
+        "use_cases": [
+          "红新站",
+          "黄色月新站",
+          "今日の新駅",
+          "月初市区短转",
+          "远征第一轮"
+        ],
+        "notes": [
+          "这是拿分队，不是硬站队。",
+          "不要用这队判断硬站破点能力。",
+          "用户有时用みぞれ替ると，但可能破all cool结构。"
+        ],
+        "warning": null
+      }
+    },
+    {
+      "team_id": "template:normal_exp_running",
+      "origin": "user_template",
+      "context": "exp_gain",
+      "quality_weight": 0.9,
+      "members": [
+        {
+          "position": 1,
+          "raw": "目标角色",
+          "name": "目标角色",
+          "denko_id": null,
+          "slot": "leader"
+        },
+        {
+          "position": 2,
+          "raw": "あこ（EX No.46）",
+          "name": "あこ",
+          "denko_id": "extra:046",
+          "slot": "support"
+        },
+        {
+          "position": 3,
+          "raw": "こうめ（No.116）",
+          "name": "こうめ",
+          "denko_id": "original:116",
+          "slot": "support"
+        },
+        {
+          "position": 4,
+          "raw": "ゆき（No.94）",
+          "name": "ゆき",
+          "denko_id": "original:094",
+          "slot": "support"
+        },
+        {
+          "position": 5,
+          "raw": "ミユ（No.69）",
+          "name": "ミユ",
+          "denko_id": "original:069",
+          "slot": "support"
+        },
+        {
+          "position": 6,
+          "raw": "もくり（No.153）",
+          "name": "もくり",
+          "denko_id": "original:153",
+          "slot": "support"
+        }
+      ],
+      "evidence": {
+        "availability": "current_with_placeholder_target",
+        "use_cases": [
+          "月新站扫完后",
+          "重复线",
+          "通勤/市区绕圈",
+          "非猫拳日常练级"
+        ],
+        "notes": [
+          "みゅう已Lv50，不要再当前排普通跑。",
+          "にこ只在link失败时有价值，平时优先下。"
+        ],
+        "warning": null
+      }
+    },
+    {
+      "team_id": "template:temporary_heat_counter_if_nagisa_unready",
+      "origin": "user_template",
+      "context": "attack_front",
+      "quality_weight": 0.25,
+      "members": [
+        {
+          "position": 1,
+          "raw": "なる（No.78）",
+          "name": "なる",
+          "denko_id": "original:078",
+          "slot": "leader"
+        },
+        {
+          "position": 2,
+          "raw": "すすぐ（EX No.3）",
+          "name": "すすぐ",
+          "denko_id": "extra:003",
+          "slot": "support"
+        },
+        {
+          "position": 3,
+          "raw": "ていら（No.108）",
+          "name": "ていら",
+          "denko_id": "original:108",
+          "slot": "support"
+        },
+        {
+          "position": 4,
+          "raw": "カノン（No.45）",
+          "name": "カノン",
+          "denko_id": "original:045",
+          "slot": "support"
+        },
+        {
+          "position": 5,
+          "raw": "さとり（No.161）",
+          "name": "さとり",
+          "denko_id": "original:161",
+          "slot": "support"
+        },
+        {
+          "position": 6,
+          "raw": "ると（No.118）",
+          "name": "ると",
+          "denko_id": "original:118",
+          "slot": "support"
+        }
+      ],
+      "evidence": {
+        "availability": "deprecated_after_nagisa_lv60",
+        "use_cases": [
+          "ナギサ还没成型但すすぐ可用时的临时测试"
+        ],
+        "notes": null,
+        "warning": "只能试，不要连续送分。"
+      }
+    },
+    {
+      "team_id": "opponent:おもち:reno_mixed_support",
+      "origin": "opponent_database",
+      "context": "attack_front",
+      "quality_weight": 1.25,
+      "members": [
+        {
+          "position": 1,
+          "raw": "レーノ（No.30）Lv100",
+          "name": "レーノ",
+          "denko_id": "original:030",
+          "slot": "leader"
+        },
+        {
+          "position": 2,
+          "raw": "スピカ（No.48）Lv100",
+          "name": "スピカ",
+          "denko_id": "original:048",
+          "slot": "support"
+        },
+        {
+          "position": 3,
+          "raw": "もえ（No.9）Lv100",
+          "name": "もえ",
+          "denko_id": "original:009",
+          "slot": "support"
+        },
+        {
+          "position": 4,
+          "raw": "あすか（No.109）Lv100",
+          "name": "あすか",
+          "denko_id": "original:109",
+          "slot": "support"
+        },
+        {
+          "position": 5,
+          "raw": "しぐれ（No.21）Lv100",
+          "name": "しぐれ",
+          "denko_id": "original:021",
+          "slot": "support"
+        },
+        {
+          "position": 6,
+          "raw": "みそら（No.84）Lv100",
+          "name": "みそら",
+          "denko_id": "original:084",
+          "slot": "support"
+        }
+      ],
+      "evidence": {
+        "classification": "GM, local strong player with multiple forms",
+        "results": [
+          "なる score team dealt about 180-203 damage, not reliable break.",
+          "もみじ team dealt 221 damage and barely rebooted レーノ."
+        ],
+        "counter": "もみじ mixed heat breaker; future シズ/クラウディア testing because opponent attributes/supporters are mixed."
+      }
+    },
+    {
+      "team_id": "opponent:おもち:rara_all_heat",
+      "origin": "opponent_database",
+      "context": "defense_front",
+      "quality_weight": 1.25,
+      "members": [
+        {
+          "position": 1,
+          "raw": "らら（No.56）Lv100",
+          "name": "らら",
+          "denko_id": "original:056",
+          "slot": "leader"
+        },
+        {
+          "position": 2,
+          "raw": "レニャ（EX No.41）Lv100",
+          "name": "レニャ",
+          "denko_id": "extra:041",
+          "slot": "support"
+        },
+        {
+          "position": 3,
+          "raw": "きらら Lv80",
+          "name": "きらら",
+          "denko_id": "original:133",
+          "slot": "support"
+        },
+        {
+          "position": 4,
+          "raw": "みそら（No.84）Lv100",
+          "name": "みそら",
+          "denko_id": "original:084",
+          "slot": "support"
+        },
+        {
+          "position": 5,
+          "raw": "スピカ（No.48）Lv100",
+          "name": "スピカ",
+          "denko_id": "original:048",
+          "slot": "support"
+        },
+        {
+          "position": 6,
+          "raw": "あすか（No.109）Lv100",
+          "name": "あすか",
+          "denko_id": "original:109",
+          "slot": "support"
+        }
+      ],
+      "evidence": {
+        "classification": "GM, local strong player with multiple forms",
+        "results": [
+          "もみじ team dealt 237 damage and did not reboot; らら survived at 156/393."
+        ],
+        "counter": "ナギサ + すすぐ. Do not use もみじ as main answer."
+      }
+    },
+    {
+      "team_id": "opponent:あっちぇれらんど:common:1",
+      "origin": "opponent_database",
+      "context": "defense_front",
+      "quality_weight": 1.25,
+      "members": [
+        {
+          "position": 1,
+          "raw": "なのか（No.113）Lv80",
+          "name": "なのか",
+          "denko_id": "original:113",
+          "slot": "leader"
+        },
+        {
+          "position": 2,
+          "raw": "ソユン（EX No.57）Lv96",
+          "name": "ソユン",
+          "denko_id": "extra:057",
+          "slot": "support"
+        },
+        {
+          "position": 3,
+          "raw": "シキネ Lv100",
+          "name": "シキネ",
+          "denko_id": "original:107",
+          "slot": "support"
+        },
+        {
+          "position": 4,
+          "raw": "リンファ（EX No.28）Lv80",
+          "name": "リンファ",
+          "denko_id": "extra:028",
+          "slot": "support"
+        },
+        {
+          "position": 5,
+          "raw": "てすと Lv60",
+          "name": "てすと",
+          "denko_id": "extra:004",
+          "slot": "support"
+        },
+        {
+          "position": 6,
+          "raw": "みこと（No.37）Lv70",
+          "name": "みこと",
+          "denko_id": "original:037",
+          "slot": "support"
+        }
+      ],
+      "evidence": {
+        "classification": "GM, local all-eco attack/defense stack",
+        "results": [
+          "Opponent rebooted user's なる team with 428 damage.",
+          "User's もみじ team at 22C cloudy dealt 753 damage and rebooted なのか. No ウシオ needed.",
+          "Displayed 2000pt/5483exp belonged to opponent side, not user."
+        ],
+        "counter": "Standard もみじ mixed heat breaker. Consider まひる only if future harder eco form appears."
+      }
+    },
+    {
+      "team_id": "opponent:あっちぇれらんど:common:2",
+      "origin": "opponent_database",
+      "context": "defense_front",
+      "quality_weight": 1.25,
+      "members": [
+        {
+          "position": 1,
+          "raw": "なのか（No.113）Lv80",
+          "name": "なのか",
+          "denko_id": "original:113",
+          "slot": "leader"
+        },
+        {
+          "position": 2,
+          "raw": "アダリヤ（EX No.68）Lv80",
+          "name": "アダリヤ",
+          "denko_id": "extra:068",
+          "slot": "support"
+        },
+        {
+          "position": 3,
+          "raw": "ソユン（EX No.57）Lv96",
+          "name": "ソユン",
+          "denko_id": "extra:057",
+          "slot": "support"
+        },
+        {
+          "position": 4,
+          "raw": "シキネ Lv100",
+          "name": "シキネ",
+          "denko_id": "original:107",
+          "slot": "support"
+        },
+        {
+          "position": 5,
+          "raw": "ゆづる Lv80",
+          "name": "ゆづる",
+          "denko_id": "original:140",
+          "slot": "support"
+        },
+        {
+          "position": 6,
+          "raw": "あずさ Lv75",
+          "name": "あずさ",
+          "denko_id": "original:127",
+          "slot": "support"
+        }
+      ],
+      "evidence": {
+        "classification": "GM, local all-eco attack/defense stack",
+        "results": [
+          "Opponent rebooted user's なる team with 428 damage.",
+          "User's もみじ team at 22C cloudy dealt 753 damage and rebooted なのか. No ウシオ needed.",
+          "Displayed 2000pt/5483exp belonged to opponent side, not user."
+        ],
+        "counter": "Standard もみじ mixed heat breaker. Consider まひる only if future harder eco form appears."
+      }
+    },
+    {
+      "team_id": "opponent:きゅあらん:team",
+      "origin": "opponent_database",
+      "context": "defense_front",
+      "quality_weight": 1.25,
+      "members": [
+        {
+          "position": 1,
+          "raw": "しいら（No.11）Lv100",
+          "name": "しいら",
+          "denko_id": "original:011",
+          "slot": "leader"
+        },
+        {
+          "position": 2,
+          "raw": "もえ（No.9）Lv92",
+          "name": "もえ",
+          "denko_id": "original:009",
+          "slot": "support"
+        },
+        {
+          "position": 3,
+          "raw": "ミユ Lv80",
+          "name": "ミユ",
+          "denko_id": "original:069",
+          "slot": "support"
+        },
+        {
+          "position": 4,
+          "raw": "ジュマーナ（EX No.117）Lv60",
+          "name": "ジュマーナ",
+          "denko_id": "extra:117",
+          "slot": "support"
+        },
+        {
+          "position": 5,
+          "raw": "リタ（EX No.64）Lv65",
+          "name": "リタ",
+          "denko_id": "extra:064",
+          "slot": "support"
+        },
+        {
+          "position": 6,
+          "raw": "アダリヤ（EX No.68）Lv80",
+          "name": "アダリヤ",
+          "denko_id": "extra:068",
+          "slot": "support"
+        },
+        {
+          "position": 7,
+          "raw": "チェル（EX No.6）Lv80",
+          "name": "チェル",
+          "denko_id": "extra:006",
+          "slot": "support"
+        }
+      ],
+      "evidence": {
+        "classification": "SM, hard all-eco しいら stack at 森下1番線",
+        "results": [
+          "User's incomplete もみじ team dealt 138 damage, reducing しいら from 281 to 143/440, not reboot."
+        ],
+        "counter": "Retest with full もみじ/ていら/カノン/レイカ/さとり/みぞれ when key skills active and temperature valid. If still insufficient, test まひる version or ウシオ."
+      }
+    },
+    {
+      "team_id": "opponent:びー:team",
+      "origin": "opponent_database",
+      "context": "attack_front",
+      "quality_weight": 0.8,
+      "members": [
+        {
+          "position": 1,
+          "raw": "ナギサ（No.72）Lv92",
+          "name": "ナギサ",
+          "denko_id": "original:072",
+          "slot": "leader"
+        },
+        {
+          "position": 2,
+          "raw": "ていら（No.108）Lv80",
+          "name": "ていら",
+          "denko_id": "original:108",
+          "slot": "support"
+        },
+        {
+          "position": 3,
+          "raw": "エマ（EX No.48）Lv80",
+          "name": "エマ",
+          "denko_id": "extra:048",
+          "slot": "support"
+        },
+        {
+          "position": 4,
+          "raw": "すばる Lv80",
+          "name": "すばる",
+          "denko_id": "original:092",
+          "slot": "support"
+        },
+        {
+          "position": 5,
+          "raw": "カノン（No.45）Lv80",
+          "name": "カノン",
+          "denko_id": "original:045",
+          "slot": "support"
+        },
+        {
+          "position": 6,
+          "raw": "ルース Lv80",
+          "name": "ルース",
+          "denko_id": null,
+          "slot": "support"
+        }
+      ],
+      "evidence": {
+        "classification": "nearby recurring all-cool Nagisa attacker",
+        "results": [
+          "Dealt 563 damage to user's もみじ and rebooted."
+        ],
+        "counter": "Do not hold with もみじ when active. Future answer is てすと + eco attack route or avoidance."
+      }
+    },
+    {
+      "team_id": "opponent:はやて:team",
+      "origin": "opponent_database",
+      "context": "defense_front",
+      "quality_weight": 0.8,
+      "members": [
+        {
+          "position": 1,
+          "raw": "ふみか Lv80",
+          "name": "ふみか",
+          "denko_id": null,
+          "slot": "leader"
+        },
+        {
+          "position": 2,
+          "raw": "しいら（No.11）Lv100",
+          "name": "しいら",
+          "denko_id": "original:011",
+          "slot": "support"
+        },
+        {
+          "position": 3,
+          "raw": "ナツミ Lv100",
+          "name": "ナツミ",
+          "denko_id": "original:103",
+          "slot": "support"
+        },
+        {
+          "position": 4,
+          "raw": "えつこ Lv23",
+          "name": "えつこ",
+          "denko_id": "original:165",
+          "slot": "support"
+        },
+        {
+          "position": 5,
+          "raw": "あきら（No.104）Lv100",
+          "name": "あきら",
+          "denko_id": "original:104",
+          "slot": "support"
+        },
+        {
+          "position": 6,
+          "raw": "にあ Lv68",
+          "name": "にあ",
+          "denko_id": "original:157",
+          "slot": "support"
+        },
+        {
+          "position": 7,
+          "raw": "みそら（No.84）Lv100",
+          "name": "みそら",
+          "denko_id": "original:084",
+          "slot": "support"
+        }
+      ],
+      "evidence": {
+        "classification": "local mid-hard mixed defensive/support player",
+        "results": [
+          "Opponent dealt 205 damage to user's もみじ; user's link continued with 101/306 HP."
+        ],
+        "counter": "Battery if holding; no ウシオ."
+      }
+    },
+    {
+      "team_id": "opponent:Dyunn:team",
+      "origin": "opponent_database",
+      "context": "defense_front",
+      "quality_weight": 0.8,
+      "members": [
+        {
+          "position": 1,
+          "raw": "いろは Lv88",
+          "name": "いろは",
+          "denko_id": "original:010",
+          "slot": "leader"
+        },
+        {
+          "position": 2,
+          "raw": "ていら（No.108）Lv70",
+          "name": "ていら",
+          "denko_id": "original:108",
+          "slot": "support"
+        },
+        {
+          "position": 3,
+          "raw": "ぼたん（No.120）Lv70",
+          "name": "ぼたん",
+          "denko_id": "original:120",
+          "slot": "support"
+        },
+        {
+          "position": 4,
+          "raw": "このは Lv50",
+          "name": "このは",
+          "denko_id": "original:155",
+          "slot": "support"
+        },
+        {
+          "position": 5,
+          "raw": "スピカ（No.48）Lv50",
+          "name": "スピカ",
+          "denko_id": "original:048",
+          "slot": "support"
+        }
+      ],
+      "evidence": {
+        "classification": "unfamiliar soft/mid home-area sample",
+        "results": [
+          "User full もみじ team dealt 782 damage and overkilled."
+        ],
+        "counter": "Soft/mid sample; do not spend counter resources."
+      }
+    },
+    {
+      "team_id": "opponent:むうむう:team",
+      "origin": "opponent_database",
+      "context": "defense_front",
+      "quality_weight": 1.25,
+      "members": [
+        {
+          "position": 1,
+          "raw": "らら（No.56）Lv93",
+          "name": "らら",
+          "denko_id": "original:056",
+          "slot": "leader"
+        },
+        {
+          "position": 2,
+          "raw": "レニャ（EX No.41）Lv88",
+          "name": "レニャ",
+          "denko_id": "extra:041",
+          "slot": "support"
+        },
+        {
+          "position": 3,
+          "raw": "レイカ（No.5）Lv100",
+          "name": "レイカ",
+          "denko_id": "original:005",
+          "slot": "support"
+        },
+        {
+          "position": 4,
+          "raw": "ゆめの Lv80",
+          "name": "ゆめの",
+          "denko_id": "original:106",
+          "slot": "support"
+        },
+        {
+          "position": 5,
+          "raw": "ビアンカ（EX No.83）Lv80",
+          "name": "ビアンカ",
+          "denko_id": "extra:083",
+          "slot": "support"
+        },
+        {
+          "position": 6,
+          "raw": "ロッサ（EX No.89）Lv75",
+          "name": "ロッサ",
+          "denko_id": "extra:089",
+          "slot": "support"
+        }
+      ],
+      "evidence": {
+        "classification": "GM, another high-level all-heat らら team",
+        "results": [
+          "User EXP/cat-punch team with みゅう dealt only 1 damage by radar; do not evaluate combat from that."
+        ],
+        "counter": "ナギサ + すすぐ. Reinforces priority of red-team counter."
+      }
+    }
+  ],
+  "denko_usage": {
+    "extra:002": {
+      "weighted_appearances": 0.9,
+      "weighted_leader_appearances": 0.0,
+      "team_count": 2,
+      "leader_count": 0,
+      "contexts": {
+        "attack_front": 0.9
+      },
+      "use_case_signals": {
+        "attack_support": 0.9
+      },
+      "team_ids": [
+        "template:eco_nullification_counter",
+        "template:eco_nullification_special"
+      ]
+    },
+    "extra:003": {
+      "weighted_appearances": 1.25,
+      "weighted_leader_appearances": 0.0,
+      "team_count": 2,
+      "leader_count": 0,
+      "contexts": {
+        "attack_front": 1.25
+      },
+      "use_case_signals": {
+        "attack_support": 1.25
+      },
+      "team_ids": [
+        "template:heat_counter_with_nullification",
+        "template:temporary_heat_counter_if_nagisa_unready"
+      ]
+    },
+    "extra:004": {
+      "weighted_appearances": 1.25,
+      "weighted_leader_appearances": 0.0,
+      "team_count": 1,
+      "leader_count": 0,
+      "contexts": {
+        "defense_front": 1.25
+      },
+      "use_case_signals": {
+        "defense_support": 1.25
+      },
+      "team_ids": [
+        "opponent:あっちぇれらんど:common:1"
+      ]
+    },
+    "extra:006": {
+      "weighted_appearances": 1.25,
+      "weighted_leader_appearances": 0.0,
+      "team_count": 1,
+      "leader_count": 0,
+      "contexts": {
+        "defense_front": 1.25
+      },
+      "use_case_signals": {
+        "defense_support": 1.25
+      },
+      "team_ids": [
+        "opponent:きゅあらん:team"
+      ]
+    },
+    "extra:010": {
+      "weighted_appearances": 1.0,
+      "weighted_leader_appearances": 0.0,
+      "team_count": 1,
+      "leader_count": 0,
+      "contexts": {
+        "attack_front": 1.0
+      },
+      "use_case_signals": {
+        "attack_support": 1.0
+      },
+      "team_ids": [
+        "template:hard_station_burst"
+      ]
+    },
+    "extra:028": {
+      "weighted_appearances": 1.25,
+      "weighted_leader_appearances": 0.0,
+      "team_count": 1,
+      "leader_count": 0,
+      "contexts": {
+        "defense_front": 1.25
+      },
+      "use_case_signals": {
+        "defense_support": 1.25
+      },
+      "team_ids": [
+        "opponent:あっちぇれらんど:common:1"
+      ]
+    },
+    "extra:041": {
+      "weighted_appearances": 2.5,
+      "weighted_leader_appearances": 0.0,
+      "team_count": 2,
+      "leader_count": 0,
+      "contexts": {
+        "defense_front": 2.5
+      },
+      "use_case_signals": {
+        "defense_support": 2.5
+      },
+      "team_ids": [
+        "opponent:おもち:rara_all_heat",
+        "opponent:むうむう:team"
+      ]
+    },
+    "extra:045": {
+      "weighted_appearances": 0.9,
+      "weighted_leader_appearances": 0.0,
+      "team_count": 1,
+      "leader_count": 0,
+      "contexts": {
+        "exp_gain": 0.9
+      },
+      "use_case_signals": {
+        "exp_gain": 0.9
+      },
+      "team_ids": [
+        "template:cat_punch_spending"
+      ]
+    },
+    "extra:046": {
+      "weighted_appearances": 1.8,
+      "weighted_leader_appearances": 0.0,
+      "team_count": 2,
+      "leader_count": 0,
+      "contexts": {
+        "exp_gain": 1.8
+      },
+      "use_case_signals": {
+        "exp_gain": 1.8
+      },
+      "team_ids": [
+        "template:cat_punch_spending",
+        "template:normal_exp_running"
+      ]
+    },
+    "extra:048": {
+      "weighted_appearances": 1.8,
+      "weighted_leader_appearances": 0.0,
+      "team_count": 2,
+      "leader_count": 0,
+      "contexts": {
+        "attack_front": 0.8,
+        "score_gain": 1.0
+      },
+      "use_case_signals": {
+        "attack_support": 0.8,
+        "score_gain": 1.0
+      },
+      "team_ids": [
+        "opponent:びー:team",
+        "template:new_station_monthly_scoring"
+      ]
+    },
+    "extra:057": {
+      "weighted_appearances": 2.5,
+      "weighted_leader_appearances": 0.0,
+      "team_count": 2,
+      "leader_count": 0,
+      "contexts": {
+        "defense_front": 2.5
+      },
+      "use_case_signals": {
+        "defense_support": 2.5
+      },
+      "team_ids": [
+        "opponent:あっちぇれらんど:common:1",
+        "opponent:あっちぇれらんど:common:2"
+      ]
+    },
+    "extra:064": {
+      "weighted_appearances": 1.25,
+      "weighted_leader_appearances": 0.0,
+      "team_count": 1,
+      "leader_count": 0,
+      "contexts": {
+        "defense_front": 1.25
+      },
+      "use_case_signals": {
+        "defense_support": 1.25
+      },
+      "team_ids": [
+        "opponent:きゅあらん:team"
+      ]
+    },
+    "extra:068": {
+      "weighted_appearances": 2.5,
+      "weighted_leader_appearances": 0.0,
+      "team_count": 2,
+      "leader_count": 0,
+      "contexts": {
+        "defense_front": 2.5
+      },
+      "use_case_signals": {
+        "defense_support": 2.5
+      },
+      "team_ids": [
+        "opponent:あっちぇれらんど:common:2",
+        "opponent:きゅあらん:team"
+      ]
+    },
+    "extra:083": {
+      "weighted_appearances": 1.25,
+      "weighted_leader_appearances": 0.0,
+      "team_count": 1,
+      "leader_count": 0,
+      "contexts": {
+        "defense_front": 1.25
+      },
+      "use_case_signals": {
+        "defense_support": 1.25
+      },
+      "team_ids": [
+        "opponent:むうむう:team"
+      ]
+    },
+    "extra:089": {
+      "weighted_appearances": 1.25,
+      "weighted_leader_appearances": 0.0,
+      "team_count": 1,
+      "leader_count": 0,
+      "contexts": {
+        "defense_front": 1.25
+      },
+      "use_case_signals": {
+        "defense_support": 1.25
+      },
+      "team_ids": [
+        "opponent:むうむう:team"
+      ]
+    },
+    "extra:105": {
+      "weighted_appearances": 1.0,
+      "weighted_leader_appearances": 0.0,
+      "team_count": 1,
+      "leader_count": 0,
+      "contexts": {
+        "score_gain": 1.0
+      },
+      "use_case_signals": {
+        "score_gain": 1.0
+      },
+      "team_ids": [
+        "template:new_station_monthly_scoring"
+      ]
+    },
+    "extra:117": {
+      "weighted_appearances": 1.25,
+      "weighted_leader_appearances": 0.0,
+      "team_count": 1,
+      "leader_count": 0,
+      "contexts": {
+        "defense_front": 1.25
+      },
+      "use_case_signals": {
+        "defense_support": 1.25
+      },
+      "team_ids": [
+        "opponent:きゅあらん:team"
+      ]
+    },
+    "original:005": {
+      "weighted_appearances": 5.15,
+      "weighted_leader_appearances": 0.0,
+      "team_count": 6,
+      "leader_count": 0,
+      "contexts": {
+        "attack_front": 3.9,
+        "defense_front": 1.25
+      },
+      "use_case_signals": {
+        "attack_support": 3.9,
+        "defense_support": 1.25
+      },
+      "team_ids": [
+        "opponent:むうむう:team",
+        "template:eco_counter_temperature_invalid",
+        "template:eco_counter_temperature_valid",
+        "template:eco_nullification_counter",
+        "template:eco_nullification_special",
+        "template:hard_station_burst"
+      ]
+    },
+    "original:009": {
+      "weighted_appearances": 2.5,
+      "weighted_leader_appearances": 0.0,
+      "team_count": 2,
+      "leader_count": 0,
+      "contexts": {
+        "attack_front": 1.25,
+        "defense_front": 1.25
+      },
+      "use_case_signals": {
+        "attack_support": 1.25,
+        "defense_support": 1.25
+      },
+      "team_ids": [
+        "opponent:おもち:reno_mixed_support",
+        "opponent:きゅあらん:team"
+      ]
+    },
+    "original:010": {
+      "weighted_appearances": 0.8,
+      "weighted_leader_appearances": 0.8,
+      "team_count": 1,
+      "leader_count": 1,
+      "contexts": {
+        "defense_front": 0.8
+      },
+      "use_case_signals": {
+        "defense_front": 0.8
+      },
+      "team_ids": [
+        "opponent:Dyunn:team"
+      ]
+    },
+    "original:011": {
+      "weighted_appearances": 2.05,
+      "weighted_leader_appearances": 1.25,
+      "team_count": 2,
+      "leader_count": 1,
+      "contexts": {
+        "defense_front": 2.05
+      },
+      "use_case_signals": {
+        "defense_front": 1.25,
+        "defense_support": 0.8
+      },
+      "team_ids": [
+        "opponent:きゅあらん:team",
+        "opponent:はやて:team"
+      ]
+    },
+    "original:021": {
+      "weighted_appearances": 1.25,
+      "weighted_leader_appearances": 0.0,
+      "team_count": 1,
+      "leader_count": 0,
+      "contexts": {
+        "attack_front": 1.25
+      },
+      "use_case_signals": {
+        "attack_support": 1.25
+      },
+      "team_ids": [
+        "opponent:おもち:reno_mixed_support"
+      ]
+    },
+    "original:030": {
+      "weighted_appearances": 1.25,
+      "weighted_leader_appearances": 1.25,
+      "team_count": 1,
+      "leader_count": 1,
+      "contexts": {
+        "attack_front": 1.25
+      },
+      "use_case_signals": {
+        "attack_front": 1.25
+      },
+      "team_ids": [
+        "opponent:おもち:reno_mixed_support"
+      ]
+    },
+    "original:037": {
+      "weighted_appearances": 1.25,
+      "weighted_leader_appearances": 0.0,
+      "team_count": 1,
+      "leader_count": 0,
+      "contexts": {
+        "defense_front": 1.25
+      },
+      "use_case_signals": {
+        "defense_support": 1.25
+      },
+      "team_ids": [
+        "opponent:あっちぇれらんど:common:1"
+      ]
+    },
+    "original:045": {
+      "weighted_appearances": 6.95,
+      "weighted_leader_appearances": 0.0,
+      "team_count": 9,
+      "leader_count": 0,
+      "contexts": {
+        "attack_front": 5.95,
+        "score_gain": 1.0
+      },
+      "use_case_signals": {
+        "attack_support": 5.95,
+        "score_gain": 1.0
+      },
+      "team_ids": [
+        "opponent:びー:team",
+        "template:eco_counter_temperature_invalid",
+        "template:eco_counter_temperature_valid",
+        "template:eco_nullification_counter",
+        "template:eco_nullification_special",
+        "template:hard_station_burst",
+        "template:heat_counter_with_nullification",
+        "template:new_station_monthly_scoring",
+        "template:temporary_heat_counter_if_nagisa_unready"
+      ]
+    },
+    "original:048": {
+      "weighted_appearances": 3.3,
+      "weighted_leader_appearances": 0.0,
+      "team_count": 3,
+      "leader_count": 0,
+      "contexts": {
+        "attack_front": 1.25,
+        "defense_front": 2.05
+      },
+      "use_case_signals": {
+        "attack_support": 1.25,
+        "defense_support": 2.05
+      },
+      "team_ids": [
+        "opponent:Dyunn:team",
+        "opponent:おもち:rara_all_heat",
+        "opponent:おもち:reno_mixed_support"
+      ]
+    },
+    "original:056": {
+      "weighted_appearances": 2.5,
+      "weighted_leader_appearances": 2.5,
+      "team_count": 2,
+      "leader_count": 2,
+      "contexts": {
+        "defense_front": 2.5
+      },
+      "use_case_signals": {
+        "defense_front": 2.5
+      },
+      "team_ids": [
+        "opponent:おもち:rara_all_heat",
+        "opponent:むうむう:team"
+      ]
+    },
+    "original:059": {
+      "weighted_appearances": 3.9,
+      "weighted_leader_appearances": 3.9,
+      "team_count": 5,
+      "leader_count": 5,
+      "contexts": {
+        "attack_front": 3.9
+      },
+      "use_case_signals": {
+        "attack_front": 3.9
+      },
+      "team_ids": [
+        "template:eco_counter_temperature_invalid",
+        "template:eco_counter_temperature_valid",
+        "template:eco_nullification_counter",
+        "template:eco_nullification_special",
+        "template:hard_station_burst"
+      ]
+    },
+    "original:069": {
+      "weighted_appearances": 3.05,
+      "weighted_leader_appearances": 0.0,
+      "team_count": 3,
+      "leader_count": 0,
+      "contexts": {
+        "defense_front": 1.25,
+        "exp_gain": 1.8
+      },
+      "use_case_signals": {
+        "defense_support": 1.25,
+        "exp_gain": 1.8
+      },
+      "team_ids": [
+        "opponent:きゅあらん:team",
+        "template:cat_punch_spending",
+        "template:normal_exp_running"
+      ]
+    },
+    "original:072": {
+      "weighted_appearances": 1.8,
+      "weighted_leader_appearances": 1.8,
+      "team_count": 2,
+      "leader_count": 2,
+      "contexts": {
+        "attack_front": 1.8
+      },
+      "use_case_signals": {
+        "attack_front": 1.8
+      },
+      "team_ids": [
+        "opponent:びー:team",
+        "template:heat_counter_with_nullification"
+      ]
+    },
+    "original:078": {
+      "weighted_appearances": 1.25,
+      "weighted_leader_appearances": 1.25,
+      "team_count": 2,
+      "leader_count": 2,
+      "contexts": {
+        "attack_front": 0.25,
+        "score_gain": 1.0
+      },
+      "use_case_signals": {
+        "attack_front": 0.25,
+        "score_gain": 1.0
+      },
+      "team_ids": [
+        "template:new_station_monthly_scoring",
+        "template:temporary_heat_counter_if_nagisa_unready"
+      ]
+    },
+    "original:084": {
+      "weighted_appearances": 4.3,
+      "weighted_leader_appearances": 0.0,
+      "team_count": 4,
+      "leader_count": 0,
+      "contexts": {
+        "attack_front": 2.25,
+        "defense_front": 2.05
+      },
+      "use_case_signals": {
+        "attack_support": 2.25,
+        "defense_support": 2.05
+      },
+      "team_ids": [
+        "opponent:おもち:rara_all_heat",
+        "opponent:おもち:reno_mixed_support",
+        "opponent:はやて:team",
+        "template:eco_counter_temperature_invalid"
+      ]
+    },
+    "original:092": {
+      "weighted_appearances": 0.8,
+      "weighted_leader_appearances": 0.0,
+      "team_count": 1,
+      "leader_count": 0,
+      "contexts": {
+        "attack_front": 0.8
+      },
+      "use_case_signals": {
+        "attack_support": 0.8
+      },
+      "team_ids": [
+        "opponent:びー:team"
+      ]
+    },
+    "original:094": {
+      "weighted_appearances": 1.8,
+      "weighted_leader_appearances": 0.0,
+      "team_count": 2,
+      "leader_count": 0,
+      "contexts": {
+        "exp_gain": 1.8
+      },
+      "use_case_signals": {
+        "exp_gain": 1.8
+      },
+      "team_ids": [
+        "template:cat_punch_spending",
+        "template:normal_exp_running"
+      ]
+    },
+    "original:103": {
+      "weighted_appearances": 0.8,
+      "weighted_leader_appearances": 0.0,
+      "team_count": 1,
+      "leader_count": 0,
+      "contexts": {
+        "defense_front": 0.8
+      },
+      "use_case_signals": {
+        "defense_support": 0.8
+      },
+      "team_ids": [
+        "opponent:はやて:team"
+      ]
+    },
+    "original:104": {
+      "weighted_appearances": 0.8,
+      "weighted_leader_appearances": 0.0,
+      "team_count": 1,
+      "leader_count": 0,
+      "contexts": {
+        "defense_front": 0.8
+      },
+      "use_case_signals": {
+        "defense_support": 0.8
+      },
+      "team_ids": [
+        "opponent:はやて:team"
+      ]
+    },
+    "original:106": {
+      "weighted_appearances": 1.25,
+      "weighted_leader_appearances": 0.0,
+      "team_count": 1,
+      "leader_count": 0,
+      "contexts": {
+        "defense_front": 1.25
+      },
+      "use_case_signals": {
+        "defense_support": 1.25
+      },
+      "team_ids": [
+        "opponent:むうむう:team"
+      ]
+    },
+    "original:107": {
+      "weighted_appearances": 2.5,
+      "weighted_leader_appearances": 0.0,
+      "team_count": 2,
+      "leader_count": 0,
+      "contexts": {
+        "defense_front": 2.5
+      },
+      "use_case_signals": {
+        "defense_support": 2.5
+      },
+      "team_ids": [
+        "opponent:あっちぇれらんど:common:1",
+        "opponent:あっちぇれらんど:common:2"
+      ]
+    },
+    "original:108": {
+      "weighted_appearances": 7.75,
+      "weighted_leader_appearances": 0.0,
+      "team_count": 10,
+      "leader_count": 0,
+      "contexts": {
+        "attack_front": 5.95,
+        "defense_front": 0.8,
+        "score_gain": 1.0
+      },
+      "use_case_signals": {
+        "attack_support": 5.95,
+        "defense_support": 0.8,
+        "score_gain": 1.0
+      },
+      "team_ids": [
+        "opponent:Dyunn:team",
+        "opponent:びー:team",
+        "template:eco_counter_temperature_invalid",
+        "template:eco_counter_temperature_valid",
+        "template:eco_nullification_counter",
+        "template:eco_nullification_special",
+        "template:hard_station_burst",
+        "template:heat_counter_with_nullification",
+        "template:new_station_monthly_scoring",
+        "template:temporary_heat_counter_if_nagisa_unready"
+      ]
+    },
+    "original:109": {
+      "weighted_appearances": 2.5,
+      "weighted_leader_appearances": 0.0,
+      "team_count": 2,
+      "leader_count": 0,
+      "contexts": {
+        "attack_front": 1.25,
+        "defense_front": 1.25
+      },
+      "use_case_signals": {
+        "attack_support": 1.25,
+        "defense_support": 1.25
+      },
+      "team_ids": [
+        "opponent:おもち:rara_all_heat",
+        "opponent:おもち:reno_mixed_support"
+      ]
+    },
+    "original:113": {
+      "weighted_appearances": 2.5,
+      "weighted_leader_appearances": 2.5,
+      "team_count": 2,
+      "leader_count": 2,
+      "contexts": {
+        "defense_front": 2.5
+      },
+      "use_case_signals": {
+        "defense_front": 2.5
+      },
+      "team_ids": [
+        "opponent:あっちぇれらんど:common:1",
+        "opponent:あっちぇれらんど:common:2"
+      ]
+    },
+    "original:116": {
+      "weighted_appearances": 1.8,
+      "weighted_leader_appearances": 0.0,
+      "team_count": 2,
+      "leader_count": 0,
+      "contexts": {
+        "exp_gain": 1.8
+      },
+      "use_case_signals": {
+        "exp_gain": 1.8
+      },
+      "team_ids": [
+        "template:cat_punch_spending",
+        "template:normal_exp_running"
+      ]
+    },
+    "original:118": {
+      "weighted_appearances": 2.25,
+      "weighted_leader_appearances": 0.0,
+      "team_count": 3,
+      "leader_count": 0,
+      "contexts": {
+        "attack_front": 1.25,
+        "score_gain": 1.0
+      },
+      "use_case_signals": {
+        "attack_support": 1.25,
+        "score_gain": 1.0
+      },
+      "team_ids": [
+        "template:heat_counter_with_nullification",
+        "template:new_station_monthly_scoring",
+        "template:temporary_heat_counter_if_nagisa_unready"
+      ]
+    },
+    "original:120": {
+      "weighted_appearances": 0.8,
+      "weighted_leader_appearances": 0.0,
+      "team_count": 1,
+      "leader_count": 0,
+      "contexts": {
+        "defense_front": 0.8
+      },
+      "use_case_signals": {
+        "defense_support": 0.8
+      },
+      "team_ids": [
+        "opponent:Dyunn:team"
+      ]
+    },
+    "original:127": {
+      "weighted_appearances": 1.25,
+      "weighted_leader_appearances": 0.0,
+      "team_count": 1,
+      "leader_count": 0,
+      "contexts": {
+        "defense_front": 1.25
+      },
+      "use_case_signals": {
+        "defense_support": 1.25
+      },
+      "team_ids": [
+        "opponent:あっちぇれらんど:common:2"
+      ]
+    },
+    "original:133": {
+      "weighted_appearances": 1.25,
+      "weighted_leader_appearances": 0.0,
+      "team_count": 1,
+      "leader_count": 0,
+      "contexts": {
+        "defense_front": 1.25
+      },
+      "use_case_signals": {
+        "defense_support": 1.25
+      },
+      "team_ids": [
+        "opponent:おもち:rara_all_heat"
+      ]
+    },
+    "original:140": {
+      "weighted_appearances": 1.25,
+      "weighted_leader_appearances": 0.0,
+      "team_count": 1,
+      "leader_count": 0,
+      "contexts": {
+        "defense_front": 1.25
+      },
+      "use_case_signals": {
+        "defense_support": 1.25
+      },
+      "team_ids": [
+        "opponent:あっちぇれらんど:common:2"
+      ]
+    },
+    "original:153": {
+      "weighted_appearances": 0.9,
+      "weighted_leader_appearances": 0.0,
+      "team_count": 1,
+      "leader_count": 0,
+      "contexts": {
+        "exp_gain": 0.9
+      },
+      "use_case_signals": {
+        "exp_gain": 0.9
+      },
+      "team_ids": [
+        "template:normal_exp_running"
+      ]
+    },
+    "original:155": {
+      "weighted_appearances": 0.8,
+      "weighted_leader_appearances": 0.0,
+      "team_count": 1,
+      "leader_count": 0,
+      "contexts": {
+        "defense_front": 0.8
+      },
+      "use_case_signals": {
+        "defense_support": 0.8
+      },
+      "team_ids": [
+        "opponent:Dyunn:team"
+      ]
+    },
+    "original:157": {
+      "weighted_appearances": 0.8,
+      "weighted_leader_appearances": 0.0,
+      "team_count": 1,
+      "leader_count": 0,
+      "contexts": {
+        "defense_front": 0.8
+      },
+      "use_case_signals": {
+        "defense_support": 0.8
+      },
+      "team_ids": [
+        "opponent:はやて:team"
+      ]
+    },
+    "original:161": {
+      "weighted_appearances": 4.25,
+      "weighted_leader_appearances": 0.0,
+      "team_count": 5,
+      "leader_count": 0,
+      "contexts": {
+        "attack_front": 4.25
+      },
+      "use_case_signals": {
+        "attack_support": 4.25
+      },
+      "team_ids": [
+        "template:eco_counter_temperature_invalid",
+        "template:eco_counter_temperature_valid",
+        "template:hard_station_burst",
+        "template:heat_counter_with_nullification",
+        "template:temporary_heat_counter_if_nagisa_unready"
+      ]
+    },
+    "original:162": {
+      "weighted_appearances": 1.9,
+      "weighted_leader_appearances": 0.0,
+      "team_count": 3,
+      "leader_count": 0,
+      "contexts": {
+        "attack_front": 1.9
+      },
+      "use_case_signals": {
+        "attack_support": 1.9
+      },
+      "team_ids": [
+        "template:eco_counter_temperature_valid",
+        "template:eco_nullification_counter",
+        "template:eco_nullification_special"
+      ]
+    },
+    "original:165": {
+      "weighted_appearances": 0.8,
+      "weighted_leader_appearances": 0.0,
+      "team_count": 1,
+      "leader_count": 0,
+      "contexts": {
+        "defense_front": 0.8
+      },
+      "use_case_signals": {
+        "defense_support": 0.8
+      },
+      "team_ids": [
+        "opponent:はやて:team"
+      ]
+    }
+  },
+  "unresolved_members": [
+    {
+      "team_id": "opponent:びー:team",
+      "raw": "ルース Lv80"
+    },
+    {
+      "team_id": "opponent:はやて:team",
+      "raw": "ふみか Lv80"
+    }
+  ]
+}

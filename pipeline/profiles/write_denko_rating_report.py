@@ -10,6 +10,8 @@ ROOT = Path(__file__).resolve().parents[2]
 RATINGS = ROOT / "data/role_profiles/denko_ratings.jsonl"
 MANIFEST = ROOT / "data/role_profiles/rating_manifest.json"
 OUT = ROOT / "data/reports/step3_denko_ratings_zh.html"
+TEAM_CALIBRATION = ROOT / "data/observed_cases/team_calibration.json"
+BLOG_RATINGS = ROOT / "data/reference_priors/blog_character_ratings.json"
 LLM_REVIEWS = [ROOT / "data/audits/step3_rating_iteration_5_reviews.jsonl"]
 SCOPE_ZH = {
     "accessed_denko": "被访问角色", "accessing_denko": "访问角色", "front_car": "队伍首位",
@@ -199,16 +201,15 @@ function sort(scene=''){{[...rows].sort((a,b)=>val(b,scene)-val(a,scene)||a.data
 def render_compact() -> str:
     rows = read_jsonl(RATINGS)
     manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
+    observed_payload = json.loads(TEAM_CALIBRATION.read_text(encoding="utf-8")) if TEAM_CALIBRATION.exists() else {}
+    observed = observed_payload.get("denko_usage") or {}
+    blog_payload = json.loads(BLOG_RATINGS.read_text(encoding="utf-8")) if BLOG_RATINGS.exists() else {}
+    blog = {item["denko_id"]: item for item in blog_payload.get("ratings") or []}
     categories = [
         ("attack_front", "攻击车头"), ("defense_front", "守站肉盾"),
         ("attack_support", "攻击队友"), ("defense_support", "防守队友"),
         ("score_gain", "加分"), ("exp_gain", "加经验"),
     ]
-    review_paths = sorted((ROOT / "data/audits").glob("step3_player_rating_iteration_*_reviews.jsonl"))
-    reviews: dict[str, str] = {}
-    if review_paths:
-        for item in read_jsonl(review_paths[-1]):
-            reviews[item["denko_id"]] = item["llm_review"]["review_zh"]
     attributes = sorted({str(row["denko"].get("attribute") or "-") for row in rows})
     types = sorted({str(row["denko"].get("type") or "-") for row in rows})
     body: list[str] = []
@@ -217,10 +218,8 @@ def render_compact() -> str:
         attribute = str(denko.get("attribute") or "-")
         denko_type = str(denko.get("type") or "-")
         wiki = row["calibration"].get("wiki_reason_ja")
-        review = reviews.get(row["rating_id"])
-        review_html = f'<div>{esc(review)}</div>' if review else '<span class="muted">暂无专项核查评语</span>'
-        if wiki:
-            review_html += f'<details><summary>Wiki 对照</summary>{esc(wiki)}</details>'
+        wiki_marker = row["calibration"].get("beginner_prior_marker") or "—"
+        blog_item = blog.get(row["rating_id"])
         for category, _ in categories:
             score50 = row["levels"]["50"]["role_scores"].get(category, 0)
             score80 = row["levels"]["80"]["role_scores"].get(category, 0)
@@ -228,23 +227,38 @@ def render_compact() -> str:
                 continue
             rec50 = row.get("recommendations_by_level", {}).get("50", {}).get(category) or "—"
             rec80 = row.get("recommendations_by_level", {}).get("80", {}).get(category) or row.get("recommendations_zh", {}).get(category) or row.get("recommendation_zh") or "—"
+            usage = observed.get(row["rating_id"]) or {}
+            signal = float((usage.get("use_case_signals") or {}).get(category, 0) or 0)
+            if signal > 0:
+                team_ids = usage.get("team_ids") or []
+                observed_html = f'<b>权重 {signal:g}</b> · {len(team_ids)} 个相关队伍<details><summary>查看队伍来源</summary>{esc("、".join(team_ids))}</details>'
+            else:
+                observed_html = '<span class="muted">当前样本未出现</span>'
+            if blog_item:
+                blog_rating = f'<a href="{esc(blog_item["source_url"])}" target="_blank" rel="noreferrer">{esc(blog_item["rating_display"])}</a>'
+                blog_comment = esc(blog_item.get("comment_ja") or "—")
+            else:
+                blog_rating = '<span class="muted">无收录</span>'
+                blog_comment = '<span class="muted">博客停止更新前未收录</span>'
             search = " ".join((row["rating_id"], str(denko.get("name") or ""), attribute, denko_type, rec50, rec80)).lower()
             body.append(
                 f'<tr data-category="{category}" data-attribute="{esc(attribute)}" data-type="{esc(denko_type)}" data-search="{esc(search)}" data-score50="{score50}" data-score80="{score80}">'
                 f'<td><a href="{esc(row["record_meta"].get("source_url") or "#")}" target="_blank" rel="noreferrer"><code>{esc(row["rating_id"])}</code><br><b>{esc(denko.get("name") or "-")}</b></a></td>'
                 f'<td class="score"><span class="s50">{score50}</span><span class="s80">{score80}</span></td>'
-                f'<td>{esc(attribute)}</td><td>{esc(denko_type)}</td><td class="recommend"><span class="s50">{esc(rec50)}</span><span class="s80">{esc(rec80)}</span></td><td class="review">{review_html}</td></tr>'
+                f'<td>{esc(attribute)}</td><td>{esc(denko_type)}</td><td class="recommend"><span class="s50">{esc(rec50)}</span><span class="s80">{esc(rec80)}</span></td>'
+                f'<td class="observed">{observed_html}</td><td class="wiki-rating">{esc(wiki_marker)}</td><td class="wiki-comment">{esc(wiki or "无 Wiki 评语")}</td>'
+                f'<td class="blog-rating">{blog_rating}</td><td class="blog-comment">{blog_comment}</td></tr>'
             )
     tabs = "".join(f'<button data-category="{key}" class="{"active" if i == 0 else ""}">{label}</button>' for i, (key, label) in enumerate(categories))
     attr_options = "".join(f'<option>{esc(item)}</option>' for item in attributes)
     type_options = "".join(f'<option>{esc(item)}</option>' for item in types)
     return f'''<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Ekimemo Step3 玩家用途速查</title><style>
-:root{{font-family:system-ui,"Microsoft YaHei",sans-serif;color:#172033;background:#f5f7fa}}*{{box-sizing:border-box}}body{{margin:0}}header,main{{padding:20px max(16px,calc((100vw - 1180px)/2))}}header{{background:#fff;border-bottom:1px solid #dbe1e8}}h1{{margin:8px 0}}p{{line-height:1.65;color:#586574}}.tabs,.tools{{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}}button,input,select{{font:inherit;border:1px solid #bdc8d3;background:#fff;border-radius:5px;padding:8px 10px}}button{{cursor:pointer}}button.active{{background:#1261a0;color:#fff;border-color:#1261a0}}input{{min-width:260px}}.table-wrap{{overflow:auto;background:#fff;border:1px solid #d9e0e7}}table{{border-collapse:collapse;width:100%}}th,td{{padding:10px;border-bottom:1px solid #e1e6eb;text-align:left;vertical-align:top;font-size:13px;line-height:1.55}}th{{background:#eaf0f5;position:sticky;top:0}}td.score{{font-size:24px;font-weight:700;width:72px;text-align:center}}td.recommend{{min-width:330px;width:38%}}td.review{{min-width:330px;width:38%}}details{{margin-top:7px;color:#647180}}a{{color:#075f9c;text-decoration:none}}code{{font-size:11px}}.muted{{color:#78838d}}.hidden,.s50{{display:none}}body.lv50 .s50{{display:inline}}body.lv50 .s80{{display:none}}@media(max-width:760px){{header,main{{padding:12px}}input{{min-width:100%}}td.recommend,td.review{{min-width:260px}}}}
+:root{{font-family:system-ui,"Microsoft YaHei",sans-serif;color:#172033;background:#f5f7fa}}*{{box-sizing:border-box}}body{{margin:0}}header,main{{padding:20px max(16px,calc((100vw - 1500px)/2))}}header{{background:#fff;border-bottom:1px solid #dbe1e8}}h1{{margin:8px 0}}p{{line-height:1.65;color:#586574}}.tabs,.tools{{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}}button,input,select{{font:inherit;border:1px solid #bdc8d3;background:#fff;border-radius:5px;padding:8px 10px}}button{{cursor:pointer}}button.active{{background:#1261a0;color:#fff;border-color:#1261a0}}input{{min-width:260px}}.table-wrap{{overflow:auto;background:#fff;border:1px solid #d9e0e7}}table{{border-collapse:collapse;width:100%;min-width:1550px}}th,td{{padding:10px;border-bottom:1px solid #e1e6eb;text-align:left;vertical-align:top;font-size:13px;line-height:1.55}}th{{background:#eaf0f5;position:sticky;top:0}}td.score{{font-size:24px;font-weight:700;width:72px;text-align:center}}td.recommend{{min-width:290px;width:24%}}td.observed{{min-width:190px}}td.wiki-comment,td.blog-comment{{min-width:300px;width:22%}}td.wiki-rating,td.blog-rating{{white-space:nowrap;text-align:center}}details{{margin-top:7px;color:#647180}}a{{color:#075f9c;text-decoration:none}}code{{font-size:11px}}.muted{{color:#78838d}}.hidden,.s50{{display:none}}body.lv50 .s50{{display:inline}}body.lv50 .s80{{display:none}}@media(max-width:760px){{header,main{{padding:12px}}input{{min-width:100%}}td.recommend,td.wiki-comment,td.blog-comment{{min-width:260px}}}}
 </style></head><body class="lv80"><header><a href="../../docs/reports/index.html">返回报表目录</a><h1>Step3 玩家用途速查</h1>
-<p>这是 Step2 的懒人入口：先选择你要找的用途，再在同一用途内部比较。不同用途分别归一化，不发布跨用途综合总榜；需要技能数值、分支和完整条件时请进入 Step2 报表。</p>
+<p>这是 Step2 的懒人入口：先选择用途，再在同一用途内部比较。用途分由详情事实模型计算，并用压缩包中的高价值配队作小幅校准；Wiki 与博客评价分列展示，互不覆盖。博客已于 2025-05-07 停止更新。</p>
 <div class="tabs">{tabs}</div></header><main><div class="tools"><button data-level="80" class="active">Lv80</button><button data-level="50">Lv50</button><input id="search" placeholder="搜索名字或 ID"><select id="attribute"><option value="">全部属性</option>{attr_options}</select><select id="type"><option value="">全部类型</option>{type_options}</select></div>
-<div class="table-wrap"><table><thead><tr><th>でんこ</th><th id="scoreHead">用途分</th><th>属性</th><th>类型</th><th>一句话推荐</th><th>核查评语</th></tr></thead><tbody>{''.join(body)}</tbody></table></div></main><script>
+<div class="table-wrap"><table><thead><tr><th>でんこ</th><th id="scoreHead">用途分</th><th>属性</th><th>类型</th><th>模型一句话推荐</th><th>高价值配队观测</th><th>Wiki评价</th><th>Wiki评语</th><th>博客评价</th><th>博客评语</th></tr></thead><tbody>{''.join(body)}</tbody></table></div></main><script>
 const rows=[...document.querySelectorAll('tbody tr')],tbody=document.querySelector('tbody'),body=document.body;let category='attack_front',level='80';
 function apply(){{const q=document.querySelector('#search').value.trim().toLowerCase(),a=document.querySelector('#attribute').value,t=document.querySelector('#type').value;rows.forEach(r=>r.classList.toggle('hidden',r.dataset.category!==category||!!q&&!r.dataset.search.includes(q)||!!a&&r.dataset.attribute!==a||!!t&&r.dataset.type!==t));[...rows].filter(r=>!r.classList.contains('hidden')).sort((a,b)=>+b.dataset['score'+level]-+a.dataset['score'+level]||a.dataset.search.localeCompare(b.dataset.search)).forEach(r=>tbody.appendChild(r));}}
 document.querySelectorAll('button[data-category]').forEach(b=>b.onclick=()=>{{category=b.dataset.category;document.querySelectorAll('button[data-category]').forEach(x=>x.classList.toggle('active',x===b));apply()}});document.querySelectorAll('[data-level]').forEach(b=>b.onclick=()=>{{level=b.dataset.level;body.className='lv'+level;document.querySelectorAll('[data-level]').forEach(x=>x.classList.toggle('active',x===b));apply()}});document.querySelector('#search').oninput=apply;document.querySelector('#attribute').onchange=apply;document.querySelector('#type').onchange=apply;document.querySelector('#scoreHead').onclick=apply;apply();

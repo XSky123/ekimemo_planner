@@ -70,6 +70,8 @@ def main() -> int:
     ])
     attack_order50 = sorted(ratings.values(), key=lambda row: (-row["levels"]["50"]["role_scores"]["attack_front"], row["rating_id"]))
     attack_ids50 = [row["rating_id"] for row in attack_order50]
+    attack_order80 = sorted(ratings.values(), key=lambda row: (-row["levels"]["80"]["role_scores"]["attack_front"], row["rating_id"]))
+    attack_ids80 = [row["rating_id"] for row in attack_order80]
     checks.extend([
         {"id": "extra_049_repeat_access_not_attack_number_one", "passed": attack_ids50.index("extra:049") >= 10},
         {"id": "original_087_eco_counter_not_attack_number_two", "passed": attack_ids50.index("original:087") >= 10},
@@ -82,6 +84,14 @@ def main() -> int:
             item.get("key") == "opponent_attribute"
             for component in ratings["original:087"]["levels"]["50"]["use_case_components"]["attack_front"]
             for item in component["factors"].get("condition_details") or []
+        )},
+        {"id": "observed_reno_stays_top5_attack", "passed": attack_ids80.index("original:030") < 5},
+        {"id": "observed_momiji_reaches_top15_attack", "passed": attack_ids80.index("original:059") < 15},
+        {"id": "observed_nagisa_stays_visible_top20_attack", "passed": attack_ids80.index("original:072") < 20},
+        {"id": "observations_never_create_missing_capability", "passed": all(
+            result["role_scores"][category] == 0
+            for row in ratings.values() for result in row["levels"].values() for category in categories
+            if result["model_role_scores"][category] == 0
         )},
     ])
     result = {

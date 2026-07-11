@@ -45,11 +45,12 @@ def main() -> int:
         "profile_issue_count": profile_validation["issue_count"],
         "one_line_recommendations_present": rating_audit["checks"].get("one_line_recommendations_present"),
         "report_hides_review_process_metadata": all(token not in report for token in ("R1 ", "R2 ", "模型原始分", "处理：")),
-        "report_has_review_comments": "峰值" in report or "门槛" in report or "条件" in report,
-        "report_is_compact_use_case_lookup": all(label in report for label in ("攻击车头", "守站肉盾", "攻击队友", "防守队友", "加分", "加经验", "一句话推荐")),
+        "report_has_external_review_columns": all(label in report for label in ("Wiki评价", "Wiki评语", "博客评价", "博客评语")),
+        "report_is_compact_use_case_lookup": all(label in report for label in ("攻击车头", "守站肉盾", "攻击队友", "防守队友", "加分", "加经验", "模型一句话推荐", "高价值配队观测")),
         "report_has_attribute_type_filters": all(token in report for token in ('id="attribute"', 'id="type"')),
         "report_hides_step2_detail_columns": all(label not in report for label in (">概率<", ">覆盖<", ">启动条件<", ">范围 / 代价<")),
         "report_has_no_published_overall": ">总评<" not in report and "按总分排序" not in report,
+        "report_hides_generic_llm_review_column": ">核查评语<" not in report,
     }
     if not all(value == 0 for key, value in final_checks.items() if key.endswith("issue_count")):
         issues.append("final_generated_audit_not_green")

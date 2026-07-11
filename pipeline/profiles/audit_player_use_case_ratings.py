@@ -32,14 +32,21 @@ def main() -> int:
             eligible = [row for row in rows if row["levels"][level]["use_case_raw"][category] > 0]
             ordered = sorted(eligible, key=lambda row: row["levels"][level]["use_case_raw"][category])
             raw_score_pairs = [
-                (row["levels"][level]["use_case_raw"][category], row["levels"][level]["role_scores"][category])
+                (row["levels"][level]["use_case_raw"][category], row["levels"][level]["model_role_scores"][category])
                 for row in ordered
             ]
             if any(a_raw < b_raw and a_score > b_score for a_raw, a_score in raw_score_pairs for b_raw, b_score in raw_score_pairs):
                 issues.append(f"{level}:{category}:normalization_not_monotonic")
-            scores = [score for _, score in raw_score_pairs]
+            scores = [row["levels"][level]["role_scores"][category] for row in eligible]
             if not scores or max(scores) < 95:
                 issues.append(f"{level}:{category}:top_not_normalized")
+            for row in eligible:
+                final_score = row["levels"][level]["role_scores"][category]
+                base_score = row["levels"][level]["model_role_scores"][category]
+                signal = row["levels"][level]["observed_use_case_signals"][category]
+                blog_bonus = row["levels"][level]["blog_prior_bonuses"][category]
+                if final_score < base_score or (final_score != base_score and signal <= 0 and blog_bonus <= 0):
+                    issues.append(f"{level}:{category}:{row['rating_id']}:invalid_observed_adjustment")
             distributions[f"{level}:{category}"] = {
                 "candidate_count": len(scores), "min": min(scores), "median": statistics.median(scores), "max": max(scores),
             }
@@ -58,7 +65,7 @@ def main() -> int:
     checks = {
         "six_use_cases": all(label in report for label in ("攻击车头", "守站肉盾", "攻击队友", "防守队友", "加分", "加经验")),
         "no_published_overall": ">总评<" not in report and "按总分" not in report,
-        "compact_columns": all(label in report for label in ("用途分", "属性", "类型", "一句话推荐", "核查评语")) and all(label not in report for label in (">概率<", ">覆盖<", ">启动条件<")),
+        "compact_columns": all(label in report for label in ("用途分", "属性", "类型", "模型一句话推荐", "高价值配队观测", "Wiki评价", "Wiki评语", "博客评价", "博客评语")) and all(label not in report for label in (">概率<", ">覆盖<", ">启动条件<", ">核查评语<")),
         "attribute_type_filters": 'id="attribute"' in report and 'id="type"' in report,
         "extra_049_not_top10_lv50_attack": rank(rows, "extra:049", "50", "attack_front") > 10,
         "original_087_not_top10_lv50_attack": rank(rows, "original:087", "50", "attack_front") > 10,

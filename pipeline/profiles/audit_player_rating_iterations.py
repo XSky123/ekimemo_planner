@@ -66,7 +66,7 @@ def main() -> int:
         "final_all_category_extremes_reviewed": all(labels[f"{category}:{band}"] == 15 for category in CATEGORIES for band in ("top15", "bottom15")),
         "step1_validation_green": step1_validation["issue_count"] == 0,
         "use_case_audit_green": use_case_audit["issue_count"] == 0,
-        "report_is_compact": all(label in report for label in ("用途分", "属性", "类型", "一句话推荐", "核查评语")),
+        "report_is_compact": all(label in report for label in ("用途分", "属性", "类型", "模型一句话推荐", "高价值配队观测", "Wiki评价", "Wiki评语", "博客评价", "博客评语")),
         "report_has_no_overall_or_process": all(token not in report for token in (">总评<", "按总分", "cache_hit", "review_method", "R1 ", "R2 ")),
     }
     if not all(checks.values()):

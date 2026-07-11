@@ -13,10 +13,12 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[2]
 PROFILES = ROOT / "data/role_profiles/role_profiles.jsonl"
 PRIOR_AUDIT = ROOT / "data/audits/recommendation_prior_audit.json"
+TEAM_CALIBRATION = ROOT / "data/observed_cases/team_calibration.json"
+BLOG_RATINGS = ROOT / "data/reference_priors/blog_character_ratings.json"
 OUT = ROOT / "data/role_profiles/denko_ratings.jsonl"
 MANIFEST = ROOT / "data/role_profiles/rating_manifest.json"
 AUDIT = ROOT / "data/audits/step3_denko_rating_audit.json"
-MODEL_VERSION = "denko_rating.v4"
+MODEL_VERSION = "denko_rating.v5"
 JST = timezone(timedelta(hours=9))
 LEVELS = ("50", "80")
 PRIMARY_SCENES = (
@@ -453,6 +455,38 @@ def prior_comments() -> dict[str, str]:
     return {str(row["denko_id"]): str((row.get("cells") or [""])[-1]) for row in rows if row.get("denko_id")}
 
 
+def observed_use_case_signals(denko_ids: list[str]) -> dict[str, dict[str, float]]:
+    result = {category: {denko_id: 0.0 for denko_id in denko_ids} for category in USE_CASE_ZH}
+    if not TEAM_CALIBRATION.exists():
+        return result
+    payload = json.loads(TEAM_CALIBRATION.read_text(encoding="utf-8"))
+    for denko_id, usage in (payload.get("denko_usage") or {}).items():
+        if denko_id not in result["attack_front"]:
+            continue
+        for category, value in (usage.get("use_case_signals") or {}).items():
+            if category in result:
+                result[category][denko_id] = float(value)
+    return result
+
+
+def blog_use_case_bonuses(denko_ids: list[str]) -> dict[str, dict[str, int]]:
+    result = {category: {denko_id: 0 for denko_id in denko_ids} for category in USE_CASE_ZH}
+    if not BLOG_RATINGS.exists():
+        return result
+    payload = json.loads(BLOG_RATINGS.read_text(encoding="utf-8"))
+    for item in payload.get("ratings") or []:
+        denko_id = item.get("denko_id")
+        if denko_id not in result["attack_front"]:
+            continue
+        category = {"attacker": "attack_front", "defender": "defense_front"}.get(item.get("type_page"))
+        if not category:
+            continue
+        # Kept as a zero-valued compatibility field. Blog ratings are an
+        # independent recommendation prior and must never alter fact scores.
+        result[category][denko_id] = 0
+    return result
+
+
 def calibrated_beginner_score(marker: str | None, model_score: int) -> int:
     """Use Wiki as a coarse supervised band and the fact model within the band."""
     bands = {"×": (5, 40), "△": (47, 62), "○": (67, 82), "◎": (87, 98)}
@@ -587,7 +621,9 @@ def use_case_recommendation(row: dict[str, Any], level: str, category: str) -> s
     if "self_debuff" in (factors.get("cost_details") or []):
         caveats.append("伴随自身减益")
     suffix = "；" + "、".join(caveats[:2]) if caveats else "；条件宽松，适合日常采用"
-    return f"{score}分：以{lead['effect_zh']}承担{USE_CASE_ZH[category]}用途{suffix}。"
+    observed = float((result.get("observed_use_case_signals") or {}).get(category, 0) or 0)
+    observed_text = f"；高价值配队观测权重 {observed:g}" if observed > 0 else ""
+    return f"{score}分：以{lead['effect_zh']}承担{USE_CASE_ZH[category]}用途{suffix}{observed_text}。"
 
 
 def build() -> tuple[list[dict[str, Any]], dict[str, Any], dict[str, Any]]:
@@ -597,6 +633,9 @@ def build() -> tuple[list[dict[str, Any]], dict[str, Any], dict[str, Any]]:
         grouped[profile["denko"]["denko_id"]].append(profile)
     priors = prior_markers()
     comments = prior_comments()
+    observed_raw = observed_use_case_signals(list(grouped))
+    observed_scores = {category: normalize_use_case(values) for category, values in observed_raw.items()}
+    blog_bonuses = blog_use_case_bonuses(list(grouped))
     level_payloads: dict[str, dict[str, dict[str, Any]]] = {}
     for level in LEVELS:
         stage = "beginner" if level == "50" else "veteran"
@@ -662,11 +701,27 @@ def build() -> tuple[list[dict[str, Any]], dict[str, Any], dict[str, Any]]:
             }
         normalized = {category: normalize_use_case(values) for category, values in category_raw.items()}
         for denko_id, result in payload.items():
-            scores = {category: normalized[category][denko_id] for category in USE_CASE_ZH}
+            base_scores = {category: normalized[category][denko_id] for category in USE_CASE_ZH}
+            scores = {}
+            for category, base_score in base_scores.items():
+                observed_score = observed_scores[category][denko_id]
+                signal = observed_raw[category][denko_id]
+                if base_score > 0 and signal > 0:
+                    gap_bonus = 0.55 * max(0, observed_score - base_score)
+                    occurrence_bonus = min(5, round(3.0 * math.log1p(signal)))
+                    scores[category] = min(100, round(base_score + gap_bonus + occurrence_bonus))
+                else:
+                    scores[category] = base_score
+                if scores[category] > 0:
+                    scores[category] = min(100, scores[category] + blog_bonuses[category][denko_id])
             # Kept only for schema compatibility. The report intentionally has
             # no cross-purpose total or global ranking.
             compatibility_score = max(scores.values(), default=0)
             result["role_scores"] = scores
+            result["model_role_scores"] = base_scores
+            result["observed_use_case_scores"] = {category: observed_scores[category][denko_id] for category in USE_CASE_ZH}
+            result["observed_use_case_signals"] = {category: observed_raw[category][denko_id] for category in USE_CASE_ZH}
+            result["blog_prior_bonuses"] = {category: blog_bonuses[category][denko_id] for category in USE_CASE_ZH}
             result["overall_score"] = compatibility_score
             result["grade"] = grade(compatibility_score)
         level_payloads[level] = payload
@@ -704,7 +759,14 @@ def build() -> tuple[list[dict[str, Any]], dict[str, Any], dict[str, Any]]:
     manifest = {
         "artifact": "denko_ratings", "rating_version": MODEL_VERSION,
         "generated_at": datetime.now(JST).isoformat(),
-        "source": {"role_profiles": str(PROFILES.relative_to(ROOT)), "content_hash": source_hash},
+        "source": {
+            "role_profiles": str(PROFILES.relative_to(ROOT)),
+            "role_profiles_content_hash": source_hash,
+            "observed_team_calibration": str(TEAM_CALIBRATION.relative_to(ROOT)),
+            "observed_team_calibration_content_hash": hashlib.sha256(TEAM_CALIBRATION.read_bytes()).hexdigest() if TEAM_CALIBRATION.exists() else None,
+            "blog_character_ratings": str(BLOG_RATINGS.relative_to(ROOT)),
+            "blog_character_ratings_content_hash": hashlib.sha256(BLOG_RATINGS.read_bytes()).hexdigest() if BLOG_RATINGS.exists() else None,
+        },
         "outputs": {"ratings": str(OUT.relative_to(ROOT)), "audit": str(AUDIT.relative_to(ROOT))},
         "levels": list(LEVELS), "primary_scenes": list(PRIMARY_SCENES),
         "counts": {"denko": len(rows), "grade_lv80": dict(sorted(score_counts.items()))},
@@ -717,6 +779,7 @@ def build() -> tuple[list[dict[str, Any]], dict[str, Any], dict[str, Any]]:
             "component": "impact * absolute_magnitude_anchor * probability * scenario_availability * stage_condition * scope * cost",
             "scene": "top_component + 0.5*second + 0.25*third + 0.125*fourth, then 100*(1-exp(-utility/0.72))",
             "use_case_normalization": "25 + 75 * (70% within-category percentile + 30% log-scaled raw utility)",
+            "observed_calibration": "for fact-model candidates observed in high-value teams, add 55% of the positive gap to observed-use percentile plus a capped 5-point log occurrence bonus; observations never create a missing use-case capability",
             "overall": "compatibility-only max(use_case_scores); never published or used for cross-purpose ranking",
             "note_zh": "按攻击车头、守站肉盾、攻击队友、防守队友、加分、加经验六种玩家用途分别归一化。不同用途不发布综合总榜。",
         },
@@ -776,7 +839,7 @@ def audit_rows(rows: list[dict[str, Any]], manifest: dict[str, Any]) -> dict[str
         },
         "mismatches": mismatch_rows,
         "formula": manifest["formula"],
-        "caveat_zh": "推荐页标记只用于分布校准，不参与公式，也不覆盖详情页事实。条件满足率目前是可解释先验，后续应由观察队伍和实际使用记录校准。",
+        "caveat_zh": "Wiki 推荐页和旧博客评价只作独立对照，不参与公式；高价值配队只作小幅校准，不覆盖详情页事实，也不能凭空创建用途能力。",
     }
 
 
