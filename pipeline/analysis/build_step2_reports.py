@@ -36,8 +36,8 @@ STEP2_REPORTS = [
     "step2_prototype_lookup_zh.html",
 ]
 
-UTILITY_WARNING = (
-    "提醒：技能工具索引仍按用户标记为风险报表。下次改动/发布前，需要复查分类边界："
+UTILITY_REVIEW_STATUS = (
+    "技能工具索引分类边界已纳入生成器断言与 Step2 全量审计："
     "无效化、效果量强化、CD/概率操作、条件索引、访问次数。"
 )
 
@@ -109,7 +109,6 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    print(UTILITY_WARNING)
     generators = [*RANKING_GENERATORS]
     if args.include_prototype:
         generators.append(PROTOTYPE_GENERATOR)
@@ -121,7 +120,7 @@ def main() -> None:
     result = {
         "steps": steps,
         "smoke_check": smoke,
-        "warning": UTILITY_WARNING,
+        "utility_review_status": UTILITY_REVIEW_STATUS,
     }
     print(json.dumps(result, ensure_ascii=False, indent=2))
 

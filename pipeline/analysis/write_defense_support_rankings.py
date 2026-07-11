@@ -539,7 +539,7 @@ def main() -> None:
 <body>
   <nav aria-label="报表导航" style="margin-bottom:12px"><a href="../../docs/reports/index.html" style="color:#57606a;font-size:13px;font-weight:600">← 返回报表目录</a></nav>
   <h1>Ekimemo Step2 防御/守站辅助排行</h1>
-  <p>从 Step1 DB 自动整理。防御候选按 DEF、减伤、回复、无效化/保命、降低对手输出、link保持、反击惩罚拆分；默认 Lv50，可切换 Lv30/Lv80/Lv92/Lv100。理论最大是该维度的原始量级，期望值会粗略乘以发动概率。</p>
+  <p>从 Step1 DB 自动整理。防御候选按 DEF、减伤、回复、无效化/保命、降低对手输出、link保持、反击惩罚拆分；默认 Lv50，可切换 Lv30/Lv80/Lv92/Lv96/Lv100。理论最大是该维度的原始量级，期望值会粗略乘以发动概率。</p>
   <div class="tabs">{tab_buttons}</div>
   <div class="toolbar">
     <input id="q" placeholder="搜索ID、名字、条件、效果" size="34">
@@ -548,6 +548,7 @@ def main() -> None:
       <option value="30">Lv30</option>
       <option value="80">Lv80</option>
       <option value="92">Lv92(VU)</option>
+      <option value="96">Lv96(VU)</option>
       <option value="100">Lv100(VU)</option>
     </select>
     <select id="activation">

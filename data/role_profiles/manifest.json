@@ -1,10 +1,10 @@
 {
   "artifact": "role_profiles",
   "profile_version": "role_profile.v1",
-  "generated_at": "2026-07-11T15:23:55.155195+09:00",
+  "generated_at": "2026-07-11T15:47:36.977775+09:00",
   "source": {
     "skill_facts": "data\\step1_db\\skill_facts.jsonl",
-    "content_hash": "8d4197fa65b26ac32b53d2410ff135ce3db5072c4c60b14f8764f947d7888eb0"
+    "content_hash": "ec0e24f728d0909c3e7d26281911d7490a3fd74c48b4ac0f58674e9ffd39f039"
   },
   "outputs": {
     "profiles": "data\\role_profiles\\role_profiles.jsonl",
@@ -12,13 +12,13 @@
     "review_queue": "data\\review_queue\\step3_role_profile_review.jsonl"
   },
   "counts": {
-    "source_components": 636,
-    "profiles": 636,
+    "source_components": 637,
+    "profiles": 637,
     "excluded": 2,
-    "conditional": 599,
+    "conditional": 600,
     "needs_review": 0,
     "missing_recipient_info": 0,
-    "unknown_access_direction_info": 388
+    "unknown_access_direction_info": 389
   },
   "generator": "pipeline\\profiles\\build_role_profiles.py",
   "schema": "schemas/role_profile.schema.json"

@@ -163,7 +163,7 @@ def components_for(row: dict[str, Any]) -> list[dict[str, Any]]:
     if denko_id == "another:003":
         return [
             component(row, "def_buff_1", "def_buff", labeled_numeric(r"\(1\)\s*DEF\s*([+-]\d+)%", "DEF", "percent", "(1)"), target_scope=["self"], condition_raw="昼間(6:00～18:00)は自身のDEF増加", label="(1)", role="default_effect", target_filters={"time_window": "daytime"}, trigger_conditions={"time_window_raw": "6:00～18:00"}, self_debuff_note="夜間(18:00～翌6:00)は自身DEF-60%"),
-            component(row, "score_gain_2", "score_gain", labeled_numeric(r"\(2\)\s*スコア獲得量\s*([+-]\d+)%", "スコア獲得量", "percent_score", "(2)"), target_scope=["self"], condition_raw="夜間に被アクセスでリブートした時の獲得スコア増加", label="(2)", role="additional_effect", target_filters={"time_window": "nighttime"}, trigger_conditions={"access_direction": "passive", "event_hint": "reboot", "time_window_raw": "18:00～翌6:00"}),
+            component(row, "score_gain_2", "score_gain", labeled_numeric(r"\(2\)\s*スコア獲得量\s*([+-]\d+)%", "スコア獲得量", "percent_score", "(2)"), target_scope=["master"], condition_raw="夜間に被アクセスでリブートした時の獲得スコア増加", label="(2)", role="additional_effect", target_filters={"time_window": "nighttime"}, trigger_conditions={"actor_scope": "skill_holder", "access_direction": "passive", "event_hint": "reboot", "time_window_raw": "18:00～翌6:00"}),
         ]
 
     if denko_id == "awamemo:000":
@@ -215,7 +215,9 @@ def components_for(row: dict[str, Any]) -> list[dict[str, Any]]:
         def match_bonus(fact: dict[str, Any]) -> dict[str, Any] | None:
             value = number(r"マッチボーナス\s*0～\+(\d+)%", str(fact.get("effect") or ""))
             return value_row(fact, f"マッチボーナス 0～+{display_number(value)}%", "percent_range", value_min=0, value_max=value) if value is not None else None
-        return [component(row, "match_bonus", "match_bonus", match_bonus, target_scope=["accessed_denko"], condition_raw=trigger, target_filters={"same_attribute_links": True, "minimum_link_minutes": 15}, trigger_conditions={"access_direction": "passive", "event_hint": "reboot"}, scaling_conditions={"basis": "qualifying_linked_station_count", "count_min": 0, "count_max": 3})]
+        match_component = component(row, "match_bonus", "match_bonus", match_bonus, target_scope=["master"], condition_raw=trigger, target_filters={"same_attribute_links": True, "minimum_link_minutes": 15}, trigger_conditions={"actor_scope": "accessed_team_member", "access_direction": "passive", "event_hint": "reboot"}, scaling_conditions={"basis": "qualifying_linked_station_count", "count_min": 0, "count_max": 3})
+        match_component["availability"]["min_denko_level"] = 50
+        return [match_component]
 
     if denko_id == "iks:000":
         def debuff(stat: str) -> ValueBuilder:

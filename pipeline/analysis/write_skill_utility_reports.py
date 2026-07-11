@@ -858,7 +858,7 @@ def audit_weather_temperature_candidates(candidates: list[dict[str, Any]]) -> No
     if (
         not ginaa
         or ginaa["access_direction"] != "队伍任意成员link"
-        or ginaa["target"] != "访问中的でんこ"
+        or ginaa["target"] != "Master"
         or "必须link成功" not in ginaa["filters"]
     ):
         issues.append("extra:116 trigger actor/recipient/link requirement incorrect")
@@ -1003,6 +1003,7 @@ def main() -> None:
       <option value="30">Lv30</option>
       <option value="80">Lv80</option>
       <option value="92">Lv92(VU)</option>
+      <option value="96">Lv96(VU)</option>
       <option value="100">Lv100(VU)</option>
     </select>
     <select id="activation">

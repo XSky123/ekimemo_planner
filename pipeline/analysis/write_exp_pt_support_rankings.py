@@ -977,7 +977,7 @@ def main() -> None:
 <body>
   <nav aria-label="报表导航" style="margin-bottom:12px"><a href="../../docs/reports/index.html" style="color:#57606a;font-size:13px;font-weight:600">← 返回报表目录</a></nav>
   <h1>Ekimemo Step2 经验/PT辅助排行</h1>
-  <p>从 Step1 DB 自动整理，分类参考 wiki「経験値、スコア系スキル」。固定值、百分比/倍率、ねこぱんち专用、效果量强化分开排行；默认按 Lv50 查看，可切换 Lv30/Lv80/Lv92/Lv100。</p>
+  <p>从 Step1 DB 自动整理，分类参考 wiki「経験値、スコア系スキル」。固定值、百分比/倍率、ねこぱんち专用、效果量强化分开排行；默认按 Lv50 查看，可切换 Lv30/Lv80/Lv92/Lv96/Lv100。</p>
   <div class="tabs">{tab_buttons}</div>
   <div class="toolbar">
     <input id="q" placeholder="搜索ID、名字、条件、效果" size="34">
@@ -986,6 +986,7 @@ def main() -> None:
       <option value="30">Lv30</option>
       <option value="80">Lv80</option>
       <option value="92">Lv92(VU)</option>
+      <option value="96">Lv96(VU)</option>
       <option value="100">Lv100(VU)</option>
     </select>
     <select id="activation">

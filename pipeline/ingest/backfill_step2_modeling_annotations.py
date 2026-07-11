@@ -86,6 +86,229 @@ def mark_values_report_ignore(component: dict[str, Any], source: str) -> int:
     return changed
 
 
+def backfill_lenya_vu_bonus(row: dict[str, Any]) -> int:
+    """Split Extra 041 VU (2) into its real EXP and score effects.
+
+    The old parser classified the component as ``reboot`` because the reset
+    clause mentions リブート.  The detail-table values are actually paired
+    additional EXP and score ranges, so keeping them under ``report_ignore``
+    silently removes valid Step2 candidates.
+    """
+    components = row.setdefault("skill_components", [])
+    wrong = component_by_id(row, "reboot_2")
+    changed = 0
+    if wrong:
+        components.remove(wrong)
+        changed += 1
+
+    shared = {
+        "activation_type": "いつでもアクティブ",
+        "availability": {"levels": ["92", "96", "100"], "note": "VU生效", "vu_only": True},
+        "condition_label": "(2)",
+        "confidence": "high",
+        "effect_role": "additional_effect",
+        "needs_review": False,
+        "remarks_raw": None,
+        "review_reasons": ["manual_semantic_fill", "manual_verified_stable"],
+        "scaling_conditions": {"basis": "activation_count", "max_count": 8, "reset_event": "reboot"},
+        "target_filters": {"own_team_all_attribute": "heat"},
+        "trigger_conditions": {"actor_scope": "any_team_member", "not_rebooted": True},
+    }
+    ranges = {"92": (10, 80), "96": (15, 120), "100": (20, 160)}
+
+    specs = {
+        "exp_gain_2": {
+            "effect_kind": "exp_gain",
+            "condition_raw": "発動条件：編成内が全員heat属性 / (2)(1)の発動回数に応じて経験値付与量が追加で増加(上限8回、リブートでリセット)",
+            "target_scope": ["accessed_denko"],
+            "depends_on_component": "exp_gain_1",
+            "unit": "flat_exp_range",
+            "prefix": "追加経験値付与",
+        },
+        "score_gain_2": {
+            "effect_kind": "additional_score_gain",
+            "condition_raw": "発動条件：編成内が全員heat属性 / (2)(1)の発動回数に応じてスコア獲得量が追加で増加(上限8回、リブートでリセット)",
+            "target_scope": ["master"],
+            "depends_on_component": "score_gain",
+            "unit": "score_range",
+            "prefix": "追加スコア獲得",
+        },
+    }
+    for component_id, spec in specs.items():
+        component = component_by_id(row, component_id)
+        desired = copy.deepcopy(shared)
+        desired.update(
+            {
+                "component_id": component_id,
+                "effect_kind": spec["effect_kind"],
+                "condition_raw": spec["condition_raw"],
+                "target_scope": spec["target_scope"],
+                "values_by_denko_level": {
+                    level: {
+                        "probability": {"発動率": "100%"},
+                        "unit": spec["unit"],
+                        "value_min": lower,
+                        "value_max": upper,
+                        "value_numeric": lower,
+                        "value_raw": f"{spec['prefix']} {lower}～{upper}",
+                    }
+                    for level, (lower, upper) in ranges.items()
+                },
+            }
+        )
+        desired["trigger_conditions"]["depends_on_component"] = spec["depends_on_component"]
+        mark_component(desired, f"step2_lenya_split_{component_id}")
+        if component != desired:
+            if component:
+                components[components.index(component)] = desired
+            else:
+                components.append(desired)
+            changed += 1
+
+    base_specs = {
+        "exp_gain_1": (["accessed_denko"], "step2_lenya_base_exp_recipient"),
+        "score_gain": (["master"], "step2_lenya_base_score_recipient"),
+    }
+    for component_id, (target_scope, patch_id) in base_specs.items():
+        component = component_by_id(row, component_id)
+        if not component:
+            continue
+        component_changed = 0
+        if component.get("target_scope") != target_scope:
+            component["target_scope"] = target_scope
+            component_changed += 1
+        filters = component.setdefault("target_filters", {})
+        if filters.pop("attribute", None) is not None:
+            component_changed += 1
+        component_changed += update_dict(component, "target_filters", {"own_team_all_attribute": "heat"})
+        component_changed += update_dict(
+            component,
+            "trigger_conditions",
+            {"actor_scope": "any_team_member", "access_direction": "passive", "event_hint": "accessed", "not_rebooted": True},
+        )
+        if component_changed:
+            mark_component(component, patch_id)
+            changed += component_changed
+    return changed
+
+
+def backfill_missing_vu96_report_values(row: dict[str, Any]) -> int:
+    """Preserve Lv96 as either an exact value or an explicit wiki unknown."""
+    specs: dict[str, dict[str, Any]] = {
+        "original:030": {
+            "component_id": "fixed_damage",
+            "source_value_raw": "固定ダメージ ?",
+            "patch_id": "step2_reino_lv96_unrecorded_fixed_damage",
+        },
+        "original:032": {
+            "component_id": "atk_buff_2",
+            "source_value_raw": "ATK +?%",
+            "patch_id": "step2_kotan_lv96_unrecorded_atk_2",
+        },
+        "original:046": {
+            "component_id": "def_buff_2",
+            "source_value_raw": "DEF +?%～0%",
+            "patch_id": "step2_ataru_lv96_unrecorded_def_2",
+        },
+        "original:092": {
+            "component_id": "atk_buff_2",
+            "value_raw": "ATK +3%",
+            "unit": "percent",
+            "value_numeric": 3,
+            "patch_id": "step2_subaru_lv96_atk_2",
+        },
+    }
+    spec = specs.get(str(row.get("denko_id") or ""))
+    if not spec:
+        return 0
+    component = component_by_id(row, str(spec["component_id"]))
+    if not component:
+        return 0
+    source = (row.get("values_by_denko_level") or {}).get("96") or {}
+    source_raw = str(source.get("effect") or (source.get("raw_row") or {}).get("効果") or "")
+    if not source_raw:
+        return 0
+    desired = {
+        key: copy.deepcopy(source.get(key))
+        for key in ("cooldown", "duration", "probability", "raw_row", "skill_level", "source_text")
+        if source.get(key) is not None
+    }
+    if "value_raw" in spec:
+        desired.update(
+            {
+                "unit": spec["unit"],
+                "value_numeric": spec["value_numeric"],
+                "value_raw": spec["value_raw"],
+            }
+        )
+    else:
+        desired.update(
+            {
+                "unit": "unrecorded",
+                "value_numeric": None,
+                "value_raw": "未記載",
+                "source_value_raw": spec["source_value_raw"],
+                "unrecorded_reason": "wiki_value_unknown",
+            }
+        )
+    desired.update(
+        {
+            "db_backfilled_from": "row_level_lv96_effect",
+            "db_backfill_reason": REASON,
+            "db_backfill_version": BACKFILL_VERSION,
+        }
+    )
+    level_values = component.setdefault("values_by_denko_level", {})
+    changed = 0
+    if level_values.get("96") != desired:
+        level_values["96"] = desired
+        changed += 1
+    availability = component.setdefault("availability", {})
+    levels = list(availability.get("levels") or [])
+    if "96" not in levels:
+        levels.append("96")
+        levels.sort(key=lambda item: int(item) if str(item).isdigit() else 999)
+        availability["levels"] = levels
+        changed += 1
+    if changed:
+        mark_component(component, str(spec["patch_id"]))
+    return changed
+
+
+def backfill_score_recipient_semantics(row: dict[str, Any]) -> int:
+    """Separate the actor earning score from the Master receiving score."""
+    score_kinds = {"score_gain", "additional_score_gain", "score_random_modifier", "match_bonus"}
+    actor_by_scope = {
+        "self": "skill_holder",
+        "team_all": "any_team_member",
+        "own_team": "any_team_member",
+        "accessing_denko": "accessing_team_member",
+        "accessed_denko": "accessed_team_member",
+        "front_car": "front_car",
+    }
+    changed = 0
+    for component in row.get("skill_components") or []:
+        if component.get("effect_kind") not in score_kinds:
+            continue
+        scopes = list(component.get("target_scope") or [])
+        if scopes in (["master"], ["master_account"]):
+            continue
+        component_changed = 0
+        trigger = component.setdefault("trigger_conditions", {})
+        if not trigger.get("actor_scope"):
+            actor = next((actor_by_scope[scope] for scope in scopes if scope in actor_by_scope), None)
+            if actor:
+                trigger["actor_scope"] = actor
+                component_changed += 1
+        if component.get("target_scope") != ["master"]:
+            component["target_scope"] = ["master"]
+            component_changed += 1
+        if component_changed:
+            mark_component(component, "step2_score_recipient_master")
+            changed += component_changed
+    return changed
+
+
 def parse_raw_effect_number(value: dict[str, Any], label: str, unit: str, prefix: str | None = None) -> bool:
     raw_row = value.get("raw_row") or {}
     effect = str(raw_row.get("効果") or "")
@@ -887,7 +1110,7 @@ def backfill_trigger_actor_semantics(row: dict[str, Any]) -> int:
             actor_scope="any_team_member",
             access_direction="active",
             event_hint="link",
-            target_scope=["accessing_denko"],
+            target_scope=["master"],
             filters={"weather": "sunny", "requires_link_success": True},
             condition_raw="編成内のでんこが晴れの駅にリンクした時、スコア獲得",
             patch_id="step2_ginaa_any_team_member_link_trigger",
@@ -913,7 +1136,7 @@ def backfill_trigger_actor_semantics(row: dict[str, Any]) -> int:
             actor_scope="any_team_member",
             access_direction="passive",
             event_hint="accessed",
-            target_scope=["accessed_denko"],
+            target_scope=["master"],
             patch_id="step2_jumana_any_team_member_passive_trigger",
         )
     elif denko_id == "original:148":
@@ -1347,10 +1570,7 @@ def backfill_misc_tags(row: dict[str, Any]) -> int:
                 changed += mark_values_report_ignore(component, "film_modifier_without_numeric_value")
                 mark_component(component, "step2_harisha_ignore_film_modifier_without_numeric_value")
     elif denko_id == "extra:041":
-        component = component_by_id(row, "reboot_2")
-        if component:
-            changed += mark_values_report_ignore(component, "misparsed_bonus_not_reboot_defense")
-            mark_component(component, "step2_lenya_ignore_misparsed_bonus_component")
+        changed += backfill_lenya_vu_bonus(row)
     elif denko_id == "extra:058":
         component = component_by_id(row, "hp_recovery_2")
         if component:
@@ -1529,12 +1749,12 @@ def backfill_misc_tags(row: dict[str, Any]) -> int:
                 changed += mark_values_report_ignore(component, "effect_multiplier_shadow_component_without_value")
                 mark_component(component, "step2_ako_ignore_shadow_gain_component")
     elif denko_id == "extra:102":
-        for component_id in ("exp_gain", "score_gain"):
+        for component_id, target_scope in (("exp_gain", ["accessed_denko"]), ("score_gain", ["master"])):
             component = component_by_id(row, component_id)
-            if component and component.get("target_scope") != ["accessed_denko"]:
-                component["target_scope"] = ["accessed_denko"]
+            if component and component.get("target_scope") != target_scope:
+                component["target_scope"] = target_scope
                 changed += 1
-                mark_component(component, "step2_laurie_accessed_denko_target")
+                mark_component(component, f"step2_laurie_{component_id}_target")
     elif denko_id == "original:038":
         component = component_by_id(row, "hp_recovery_1")
         if component:
@@ -1756,6 +1976,7 @@ def backfill_row(row: dict[str, Any]) -> int:
     if denko_id == "original:069":
         changed += backfill_miyu_distance_exp(row)
     changed += backfill_unrecorded_vu_values(row)
+    changed += backfill_missing_vu96_report_values(row)
     if denko_id == "original:162":
         changed += backfill_temperature_bands(row)
     if denko_id in {"extra:002", "extra:003", "extra:004"}:
@@ -1765,6 +1986,7 @@ def backfill_row(row: dict[str, Any]) -> int:
     changed += backfill_cooldown_probability_semantics(row)
     changed += backfill_self_debuff_display_semantics(row)
     changed += backfill_trigger_actor_semantics(row)
+    changed += backfill_score_recipient_semantics(row)
     changed += backfill_step3_player_use_case_conditions(row)
     changed += backfill_misc_tags(row)
     changed += backfill_progression_and_link_semantics(row)

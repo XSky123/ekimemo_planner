@@ -2,13 +2,13 @@
   "artifact": "role_profiles",
   "profile_version": "role_profile.v1",
   "counts": {
-    "source_components": 636,
-    "profiles": 636,
+    "source_components": 637,
+    "profiles": 637,
     "excluded": 2,
-    "conditional": 599,
+    "conditional": 600,
     "needs_review": 0,
     "missing_recipient_info": 0,
-    "unknown_access_direction_info": 388
+    "unknown_access_direction_info": 389
   },
   "issue_count": 0,
   "issues": [],

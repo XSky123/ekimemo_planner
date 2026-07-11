@@ -209,8 +209,9 @@ def audit_skill_row(batch: str, row: dict[str, Any], issues: list[dict[str, Any]
         if label_num == "1" and levels and levels.issubset(VU_LEVELS) and not is_vu_only(component):
             add_issue(issues, batch, denko_id, name, "high", "vu", "primary_label_only_vu", "(1) 主效果只有 VU 等级，通常说明基础效果漏抓。", component_id, fix_hint_zh="复查 Lv30/Lv50 和条件表。")
         if not is_vu_only(component) and not is_dynamic_unfixed_component(component):
+            min_denko_level = int((component.get("availability") or {}).get("min_denko_level") or 0)
             for level in ("30", "50"):
-                if source_has_level(row, level) and level not in levels:
+                if int(level) >= min_denko_level and source_has_level(row, level) and level not in levels:
                     add_issue(issues, batch, denko_id, name, "high", "level", f"non_vu_missing_lv{level}", f"非 VU component 缺 Lv{level}。", component_id, fix_hint_zh="复查技能等级表，或确认该 component 应标为 vu_only。")
 
         for level, value in (component.get("values_by_denko_level") or {}).items():

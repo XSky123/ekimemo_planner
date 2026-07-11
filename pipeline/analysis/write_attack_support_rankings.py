@@ -89,7 +89,7 @@ BASIS_LABELS = {
     "referenced_cars_film_damage_effect": "参照车厢film与伤害效果",
 }
 
-REPORT_LEVELS = ["30", "50", "80", "92", "100"]
+REPORT_LEVELS = ["30", "50", "80", "92", "96", "100"]
 DEFAULT_LEVEL = "50"
 LEVEL_PRIORITY = ["50", "100", "92", "80", "30", "96", "70", "60", "15", "5"]
 
@@ -1099,7 +1099,7 @@ def main() -> None:
 <body>
   <nav aria-label="报表导航" style="margin-bottom:12px"><a href="../../docs/reports/index.html" style="color:#57606a;font-size:13px;font-weight:600">← 返回报表目录</a></nav>
   <h1>Ekimemo Step2 攻击辅助排行</h1>
-  <p>从 Step1 DB 自动整理。默认按 Lv50 查看，也可切换 Lv30/Lv80；打开 VU 项后可用 Lv92/Lv100 查看 VU 后效果。范围型效果同时给出理论最大和平均值，并可切换排序。</p>
+  <p>从 Step1 DB 自动整理。默认按 Lv50 查看，也可切换 Lv30/Lv80；打开 VU 项后可用 Lv92/Lv96/Lv100 查看 VU 后效果。范围型效果同时给出理论最大和平均值，并可切换排序。</p>
   <div class="tabs">{tab_buttons}</div>
   <div class="toolbar">
     <input id="q" placeholder="搜索ID、名字、条件、效果" size="34">
@@ -1108,6 +1108,7 @@ def main() -> None:
       <option value="30">Lv30</option>
       <option value="80">Lv80</option>
       <option value="92">Lv92(VU)</option>
+      <option value="96">Lv96(VU)</option>
       <option value="100">Lv100(VU)</option>
     </select>
     <select id="activation">

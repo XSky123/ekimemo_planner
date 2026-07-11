@@ -31,7 +31,7 @@
     },
     {
       "stratum": "defense",
-      "profile_id": "original:057#def_buff_1",
+      "profile_id": "original:057#def_buff_2",
       "effect_kind": "def_buff",
       "recipient": [
         "team_all"
@@ -40,18 +40,12 @@
       "activation_mode": "auto",
       "availability": {
         "levels": [
-          "5",
-          "15",
-          "30",
-          "50",
-          "60",
-          "70",
-          "80",
           "92",
           "96",
           "100"
         ],
-        "vu_only": false
+        "note": "VU生效",
+        "vu_only": true
       },
       "scene_tags": [
         "defense",
@@ -62,10 +56,10 @@
     },
     {
       "stratum": "commute",
-      "profile_id": "extra:053#atk_debuff_1",
-      "effect_kind": "atk_debuff",
+      "profile_id": "extra:052#def_buff_2",
+      "effect_kind": "def_buff",
       "recipient": [
-        "opponent_denko"
+        "team_all"
       ],
       "access_direction": [],
       "activation_mode": "auto",
@@ -156,13 +150,13 @@
     },
     {
       "stratum": "score_exp",
-      "profile_id": "original:094#exp_gain_2",
-      "effect_kind": "exp_gain",
+      "profile_id": "original:091#score_gain_2",
+      "effect_kind": "score_gain",
       "recipient": [
-        "accessing_denko"
+        "master"
       ],
       "access_direction": [
-        "active"
+        "passive"
       ],
       "activation_mode": "auto",
       "availability": {
@@ -173,16 +167,12 @@
           "50",
           "60",
           "70",
-          "80",
-          "92",
-          "96",
-          "100"
+          "80"
         ],
         "vu_only": false
       },
       "scene_tags": [
         "score_exp",
-        "growth",
         "commute"
       ],
       "review_reasons": [],
@@ -190,10 +180,10 @@
     },
     {
       "stratum": "growth",
-      "profile_id": "extra:055#exp_gain_2",
+      "profile_id": "extra:054#exp_gain_2",
       "effect_kind": "exp_gain",
       "recipient": [
-        "team_all"
+        "self"
       ],
       "access_direction": [],
       "activation_mode": "auto",
@@ -309,8 +299,8 @@
     },
     {
       "stratum": "vu",
-      "profile_id": "original:066#additional_fixed_damage_2",
-      "effect_kind": "additional_fixed_damage",
+      "profile_id": "original:064#atk_buff_3",
+      "effect_kind": "atk_buff",
       "recipient": [
         "team_all"
       ],
@@ -318,8 +308,6 @@
       "activation_mode": "auto",
       "availability": {
         "levels": [
-          "92",
-          "96",
           "100"
         ],
         "note": "VU生效",

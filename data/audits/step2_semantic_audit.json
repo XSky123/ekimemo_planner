@@ -39,7 +39,7 @@
     },
     {
       "report": "exp_pt",
-      "row_count": 114,
+      "row_count": 116,
       "tab_count": 7,
       "issue_count": 0,
       "issues": []
@@ -72,6 +72,11 @@
       "six_public_groups_present": true
     },
     "issue_count": 0
+  },
+  "db_semantic_audit": {
+    "issue_count": 0,
+    "category_counts": {},
+    "issues": []
   },
   "total_issue_rows": 0,
   "category_counts": {},

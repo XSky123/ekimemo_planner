@@ -38,7 +38,7 @@
 ## 结构与分类边界
 
 - attack: rows `165`, tabs `4`, issues `0`
-- exp_pt: rows `114`, tabs `7`, issues `0`
+- exp_pt: rows `116`, tabs `7`, issues `0`
 - defense: rows `257`, tabs `9`, issues `0`
 - utility: rows `105`, tabs `13`, issues `0`
 
@@ -48,3 +48,8 @@
 - directory_items: `1316`
 - known_missing_prefecture: `17`
 - issue_count: `0`
+
+## Step1 DB 语义回归
+
+- issue_count: `0`
+- category_counts: `{}`

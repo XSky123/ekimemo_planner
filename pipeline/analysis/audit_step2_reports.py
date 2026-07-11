@@ -44,6 +44,7 @@ UTILITY_EFFECT_LABELS = {
     "event_access": {"追加访问", "思い出し访问次数增加", "随机访问已访问站", "远程访问"},
     "access_range": {"雷达探测范围", "雷达最大探测范围"},
 }
+EXPECTED_LEVEL_OPTIONS = ["50", "30", "80", "92", "96", "100"]
 
 MISSING_WORD_PATTERNS = {
     "blank_type_subject": re.compile(r"編成内の\s+が|編成内の\s+の"),
@@ -142,6 +143,15 @@ def structural_audit(name: str, path: Path, canonical_ids: set[str]) -> dict[str
     issues: list[dict[str, Any]] = []
     buttons = {button.get("data-tab"): cell_text(button) for button in soup.select(".tab-button[data-tab]")}
     panels = {panel.get("data-tab-panel"): panel for panel in soup.select("[data-tab-panel]")}
+    level_options = [str(option.get("value") or "") for option in soup.select("#levelMode option")]
+    if level_options != EXPECTED_LEVEL_OPTIONS:
+        issues.append(
+            {
+                "category": "level_selector_mismatch",
+                "expected": EXPECTED_LEVEL_OPTIONS,
+                "actual": level_options,
+            }
+        )
     if set(buttons) != set(panels):
         issues.append({"category": "tab_panel_mismatch", "buttons": sorted(buttons), "panels": sorted(panels)})
     row_count = 0
@@ -162,9 +172,12 @@ def structural_audit(name: str, path: Path, canonical_ids: set[str]) -> dict[str
             if not denko_match or denko_match.group(1) not in canonical_ids:
                 issues.append({"category": "unknown_denko", "tab": tab_id, "denko": denko_cell})
             try:
-                json.loads(row.get("data-levels") or "{}")
+                level_data = json.loads(row.get("data-levels") or "{}")
             except json.JSONDecodeError:
                 issues.append({"category": "invalid_level_json", "tab": tab_id, "denko": denko_cell})
+                level_data = {}
+            if "92" in level_data and "100" in level_data and "96" not in level_data:
+                issues.append({"category": "missing_lv96_between_vu_levels", "tab": tab_id, "denko": denko_cell})
             if name == "utility" and tab_id in UTILITY_EFFECT_LABELS:
                 effect = cells[headers.get("效果", 4)].split(" 效果分支", 1)[0]
                 if effect not in UTILITY_EFFECT_LABELS[tab_id]:
@@ -191,6 +204,87 @@ def prototype_audit() -> dict[str, Any]:
         "checks": checks,
         "issue_count": sum(not passed for passed in checks.values()),
     }
+
+
+def db_semantic_audit() -> dict[str, Any]:
+    rows = [json.loads(line) for line in STEP1_SKILLS.read_text(encoding="utf-8").splitlines() if line.strip()]
+    issues: list[dict[str, Any]] = []
+    by_id = {str(row.get("denko_id")): row for row in rows}
+    for row in rows:
+        components = row.get("skill_components") or []
+        kinds_by_label: dict[str, set[str]] = {}
+        for component in components:
+            label = str(component.get("condition_label") or "")
+            kinds_by_label.setdefault(label, set()).add(str(component.get("effect_kind") or ""))
+        for component in components:
+            value_text = " ".join(
+                str(value.get("value_raw") or "")
+                for value in (component.get("values_by_denko_level") or {}).values()
+            )
+            label_kinds = kinds_by_label.get(str(component.get("condition_label") or ""), set())
+            has_split_pair = bool(label_kinds & {"exp_gain"}) and bool(
+                label_kinds & {"score_gain", "additional_score_gain"}
+            )
+            if "経験値" in value_text and "スコア" in value_text and not has_split_pair:
+                issues.append(
+                    {
+                        "category": "compound_effect_unsplit",
+                        "denko_id": row.get("denko_id"),
+                        "component_id": component.get("component_id"),
+                        "effect_kind": component.get("effect_kind"),
+                    }
+                )
+            if component.get("effect_kind") == "reboot" and any(marker in value_text for marker in ("経験値", "スコア")):
+                issues.append(
+                    {
+                        "category": "effect_kind_value_mismatch",
+                        "denko_id": row.get("denko_id"),
+                        "component_id": component.get("component_id"),
+                        "effect_kind": "reboot",
+                    }
+                )
+            if component.get("effect_kind") in {"score_gain", "additional_score_gain", "score_random_modifier", "match_bonus"}:
+                if component.get("target_scope") not in (["master"], ["master_account"]):
+                    issues.append(
+                        {
+                            "category": "score_recipient_not_master",
+                            "denko_id": row.get("denko_id"),
+                            "component_id": component.get("component_id"),
+                            "target_scope": component.get("target_scope"),
+                        }
+                    )
+
+    lenya = by_id.get("extra:041") or {}
+    lenya_components = {str(component.get("component_id")): component for component in lenya.get("skill_components") or []}
+    expected_lenya = {
+        "exp_gain_1": ("exp_gain", ["accessed_denko"]),
+        "score_gain": ("score_gain", ["master"]),
+        "exp_gain_2": ("exp_gain", ["accessed_denko"]),
+        "score_gain_2": ("additional_score_gain", ["master"]),
+    }
+    for component_id, (effect_kind, target_scope) in expected_lenya.items():
+        component = lenya_components.get(component_id)
+        if not component or component.get("effect_kind") != effect_kind or component.get("target_scope") != target_scope:
+            issues.append(
+                {
+                    "category": "lenya_exp_score_split_regression",
+                    "denko_id": "extra:041",
+                    "component_id": component_id,
+                    "expected_effect_kind": effect_kind,
+                    "expected_target_scope": target_scope,
+                }
+            )
+    if "reboot_2" in lenya_components:
+        issues.append(
+            {
+                "category": "lenya_exp_score_split_regression",
+                "denko_id": "extra:041",
+                "component_id": "reboot_2",
+                "reason": "VU additional EXP/score must not remain classified as reboot",
+            }
+        )
+    counts = Counter(issue["category"] for issue in issues)
+    return {"issue_count": len(issues), "category_counts": dict(sorted(counts.items())), "issues": issues}
 
 
 def write_markdown(result: dict[str, Any]) -> None:
@@ -256,6 +350,20 @@ def write_markdown(result: dict[str, Any]) -> None:
             "",
         ]
     )
+    db_semantic = result.get("db_semantic_audit") or {}
+    lines.extend(
+        [
+            "## Step1 DB 语义回归",
+            "",
+            f"- issue_count: `{db_semantic.get('issue_count')}`",
+            f"- category_counts: `{db_semantic.get('category_counts')}`",
+            "",
+        ]
+    )
+    for issue in db_semantic.get("issues") or []:
+        lines.append(f"- `{json.dumps(issue, ensure_ascii=False)}`")
+    if db_semantic.get("issues"):
+        lines.append("")
     OUT_MD.write_text("\n".join(lines).rstrip() + "\n", encoding="utf-8", newline="\n")
 
 
@@ -268,6 +376,7 @@ def main() -> None:
     }
     structural = [structural_audit(name, path, canonical_ids) for name, path in REPORTS.items()]
     prototype = prototype_audit()
+    db_semantic = db_semantic_audit()
     total_counts = Counter()
     for report in reports:
         total_counts.update(report["category_counts"])
@@ -275,11 +384,13 @@ def main() -> None:
         "reports": reports,
         "structural_audits": structural,
         "prototype_audit": prototype,
+        "db_semantic_audit": db_semantic,
         "total_issue_rows": sum(report["row_issue_count"] for report in reports),
         "category_counts": dict(sorted(total_counts.items())),
         "issue_count": sum(report["row_issue_count"] for report in reports)
         + sum(item["issue_count"] for item in structural)
-        + prototype["issue_count"],
+        + prototype["issue_count"]
+        + db_semantic["issue_count"],
     }
     OUT_JSON.write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding="utf-8", newline="\n")
     write_markdown(result)

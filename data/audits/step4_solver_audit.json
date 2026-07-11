@@ -1,6 +1,6 @@
 {
   "artifact": "step4_solver_audit",
-  "profiles": 636,
+  "profiles": 637,
   "regression_exit_code": 0,
   "constraint_issue_count": 0,
   "constraint_issues": [],
@@ -235,6 +235,37 @@
       ]
     },
     {
+      "condition_key": "today_accessed_station_count_min",
+      "affected_components": 5,
+      "scene_counts": {
+        "defense": 4,
+        "growth": 1,
+        "score_exp": 1
+      },
+      "priority": "high",
+      "sample_profile_ids": [
+        "original:067#damage_reduction_2",
+        "original:067#damage_reduction_3",
+        "original:103#damage_reduction_2",
+        "original:103#damage_reduction_3",
+        "original:116#exp_gain_2"
+      ]
+    },
+    {
+      "condition_key": "hp_percent_min",
+      "affected_components": 4,
+      "scene_counts": {
+        "defense": 4
+      },
+      "priority": "high",
+      "sample_profile_ids": [
+        "original:049#damage_reduction_2",
+        "original:089#def_buff_1",
+        "original:089#def_buff_2",
+        "original:089#def_buff_3"
+      ]
+    },
+    {
       "condition_key": "linked_station_attribute",
       "affected_components": 4,
       "scene_counts": {
@@ -262,20 +293,6 @@
         "original:083#atk_buff_2",
         "original:083#def_buff_2",
         "original:083#def_buff_3"
-      ]
-    },
-    {
-      "condition_key": "today_accessed_station_count_min",
-      "affected_components": 4,
-      "scene_counts": {
-        "defense": 4
-      },
-      "priority": "high",
-      "sample_profile_ids": [
-        "original:067#damage_reduction_2",
-        "original:067#damage_reduction_3",
-        "original:103#damage_reduction_2",
-        "original:103#damage_reduction_3"
       ]
     },
     {
@@ -346,16 +363,44 @@
       ]
     },
     {
-      "condition_key": "hp_percent_min",
+      "condition_key": "own_team_attribute_set",
       "affected_components": 3,
       "scene_counts": {
         "defense": 3
       },
       "priority": "high",
       "sample_profile_ids": [
-        "original:089#def_buff_1",
-        "original:089#def_buff_2",
-        "original:089#def_buff_3"
+        "original:112#def_buff_1",
+        "original:112#def_buff_2",
+        "original:112#def_buff_3"
+      ]
+    },
+    {
+      "condition_key": "paired_self_debuff_display",
+      "affected_components": 3,
+      "scene_counts": {
+        "capture": 2,
+        "defense": 1
+      },
+      "priority": "high",
+      "sample_profile_ids": [
+        "original:019#atk_buff_1",
+        "original:162#atk_buff_1",
+        "original:162#def_buff_3"
+      ]
+    },
+    {
+      "condition_key": "paired_self_debuff_raw",
+      "affected_components": 3,
+      "scene_counts": {
+        "capture": 2,
+        "defense": 1
+      },
+      "priority": "high",
+      "sample_profile_ids": [
+        "original:019#atk_buff_1",
+        "original:162#atk_buff_1",
+        "original:162#def_buff_3"
       ]
     },
     {
@@ -397,6 +442,19 @@
         "original:032#atk_buff_1",
         "original:067#damage_reduction_1",
         "original:103#damage_reduction_1"
+      ]
+    },
+    {
+      "condition_key": "access_method_excludes",
+      "affected_components": 2,
+      "scene_counts": {
+        "growth": 1,
+        "score_exp": 2
+      },
+      "priority": "medium",
+      "sample_profile_ids": [
+        "extra:087#exp_gain",
+        "extra:087#score_gain"
       ]
     },
     {
@@ -466,6 +524,18 @@
       ]
     },
     {
+      "condition_key": "max_station_count",
+      "affected_components": 2,
+      "scene_counts": {
+        "defense": 2
+      },
+      "priority": "high",
+      "sample_profile_ids": [
+        "original:027#def_buff_1",
+        "original:035#def_buff_1"
+      ]
+    },
+    {
       "condition_key": "minimum_same_attribute_links",
       "affected_components": 2,
       "scene_counts": {
@@ -479,20 +549,31 @@
       ]
     },
     {
-      "condition_key": "paired_self_debuff_display",
+      "condition_key": "own_team_attribute",
       "affected_components": 2,
       "scene_counts": {
-        "capture": 1,
-        "defense": 1
+        "defense": 2
       },
       "priority": "high",
       "sample_profile_ids": [
-        "original:162#atk_buff_1",
-        "original:162#def_buff_3"
+        "original:112#def_buff_2",
+        "original:112#def_buff_3"
       ]
     },
     {
-      "condition_key": "paired_self_debuff_raw",
+      "condition_key": "own_team_attribute_count_min",
+      "affected_components": 2,
+      "scene_counts": {
+        "defense": 2
+      },
+      "priority": "high",
+      "sample_profile_ids": [
+        "original:112#def_buff_2",
+        "original:112#def_buff_3"
+      ]
+    },
+    {
+      "condition_key": "own_team_attribute_diversity_exact",
       "affected_components": 2,
       "scene_counts": {
         "capture": 1,
@@ -500,8 +581,21 @@
       },
       "priority": "high",
       "sample_profile_ids": [
-        "original:162#atk_buff_1",
-        "original:162#def_buff_3"
+        "extra:050#atk_buff_1",
+        "extra:050#def_buff_2"
+      ]
+    },
+    {
+      "condition_key": "own_team_mileage_class_total_min",
+      "affected_components": 2,
+      "scene_counts": {
+        "capture": 1,
+        "defense": 1
+      },
+      "priority": "high",
+      "sample_profile_ids": [
+        "original:100#atk_buff_2",
+        "original:100#def_buff_2"
       ]
     },
     {
@@ -737,6 +831,17 @@
       ]
     },
     {
+      "condition_key": "linked_station_min_count",
+      "affected_components": 1,
+      "scene_counts": {
+        "defense": 1
+      },
+      "priority": "high",
+      "sample_profile_ids": [
+        "extra:050#def_buff_2"
+      ]
+    },
+    {
       "condition_key": "linked_team_denko_count_cap",
       "affected_components": 1,
       "scene_counts": {
@@ -760,17 +865,6 @@
       ]
     },
     {
-      "condition_key": "max_station_count",
-      "affected_components": 1,
-      "scene_counts": {
-        "defense": 1
-      },
-      "priority": "high",
-      "sample_profile_ids": [
-        "original:035#def_buff_1"
-      ]
-    },
-    {
       "condition_key": "once_per_activation",
       "affected_components": 1,
       "scene_counts": {
@@ -782,6 +876,17 @@
       ]
     },
     {
+      "condition_key": "opponent_attribute_advantageous",
+      "affected_components": 1,
+      "scene_counts": {
+        "defense": 1
+      },
+      "priority": "high",
+      "sample_profile_ids": [
+        "original:073#damage_reduction_2"
+      ]
+    },
+    {
       "condition_key": "opponent_attribute_differs_from_station",
       "affected_components": 1,
       "scene_counts": {
@@ -790,6 +895,17 @@
       "priority": "high",
       "sample_profile_ids": [
         "ekico:001#ap_debuff"
+      ]
+    },
+    {
+      "condition_key": "opponent_attribute_same_as_accessed_denko",
+      "affected_components": 1,
+      "scene_counts": {
+        "defense": 1
+      },
+      "priority": "high",
+      "sample_profile_ids": [
+        "original:073#damage_reduction_1"
       ]
     },
     {
@@ -816,6 +932,17 @@
       ]
     },
     {
+      "condition_key": "opponent_team_attribute",
+      "affected_components": 1,
+      "scene_counts": {
+        "capture": 1
+      },
+      "priority": "high",
+      "sample_profile_ids": [
+        "original:087#atk_buff_3"
+      ]
+    },
+    {
       "condition_key": "opponent_team_attribute_count_basis",
       "affected_components": 1,
       "scene_counts": {
@@ -824,6 +951,17 @@
       "priority": "high",
       "sample_profile_ids": [
         "original:079#def_debuff_2"
+      ]
+    },
+    {
+      "condition_key": "opponent_team_attribute_count_min",
+      "affected_components": 1,
+      "scene_counts": {
+        "capture": 1
+      },
+      "priority": "high",
+      "sample_profile_ids": [
+        "original:087#atk_buff_3"
       ]
     },
     {
@@ -869,6 +1007,18 @@
       "priority": "high",
       "sample_profile_ids": [
         "extra:010#atk_buff_1"
+      ]
+    },
+    {
+      "condition_key": "previous_day_accessed_station_count_min",
+      "affected_components": 1,
+      "scene_counts": {
+        "growth": 1,
+        "score_exp": 1
+      },
+      "priority": "medium",
+      "sample_profile_ids": [
+        "original:099#exp_gain_2"
       ]
     },
     {
@@ -930,6 +1080,17 @@
       ]
     },
     {
+      "condition_key": "requires_active_timed_skill_holder_in_team",
+      "affected_components": 1,
+      "scene_counts": {
+        "capture": 1
+      },
+      "priority": "high",
+      "sample_profile_ids": [
+        "extra:022#atk_buff_2"
+      ]
+    },
+    {
       "condition_key": "same_attribute_as_self_after_change",
       "affected_components": 1,
       "scene_counts": {
@@ -964,6 +1125,18 @@
       ]
     },
     {
+      "condition_key": "station_is_month_new",
+      "affected_components": 1,
+      "scene_counts": {
+        "growth": 1,
+        "score_exp": 1
+      },
+      "priority": "medium",
+      "sample_profile_ids": [
+        "extra:033#exp_gain_1"
+      ]
+    },
+    {
       "condition_key": "station_is_today_new",
       "affected_components": 1,
       "scene_counts": {
@@ -976,6 +1149,17 @@
       ]
     },
     {
+      "condition_key": "station_selection",
+      "affected_components": 1,
+      "scene_counts": {
+        "defense": 1
+      },
+      "priority": "high",
+      "sample_profile_ids": [
+        "original:027#def_buff_1"
+      ]
+    },
+    {
       "condition_key": "target_components",
       "affected_components": 1,
       "scene_counts": {
@@ -984,6 +1168,51 @@
       "priority": "medium",
       "sample_profile_ids": [
         "original:111#effect_multiplier"
+      ]
+    },
+    {
+      "condition_key": "target_denko_name",
+      "affected_components": 1,
+      "scene_counts": {
+        "defense": 1
+      },
+      "priority": "high",
+      "sample_profile_ids": [
+        "original:038#hp_recovery_1"
+      ]
+    },
+    {
+      "condition_key": "target_name_contains_kana",
+      "affected_components": 1,
+      "scene_counts": {
+        "capture": 1
+      },
+      "priority": "high",
+      "sample_profile_ids": [
+        "original:084#atk_buff_1"
+      ]
+    },
+    {
+      "condition_key": "target_state",
+      "affected_components": 1,
+      "scene_counts": {
+        "capture": 1
+      },
+      "priority": "high",
+      "sample_profile_ids": [
+        "extra:022#atk_buff_2"
+      ]
+    },
+    {
+      "condition_key": "this_month_accessed_station_count_min",
+      "affected_components": 1,
+      "scene_counts": {
+        "growth": 1,
+        "score_exp": 1
+      },
+      "priority": "medium",
+      "sample_profile_ids": [
+        "extra:033#exp_gain_2"
       ]
     },
     {
@@ -1020,20 +1249,20 @@
       ]
     }
   ],
-  "unmodeled_condition_type_count": 79,
+  "unmodeled_condition_type_count": 98,
   "coverage_policy_zh": "未建模的限制必须保持 pending_context，不能默认计入数值；此列表是自动扩展规则与回归测试的候选队列。",
   "examples": [
     {
       "request": "capture_original_026_lv50.json",
-      "teams": 8,
-      "active_components": 51,
-      "pending_components": 21
+      "teams": 10,
+      "active_components": 64,
+      "pending_components": 31
     },
     {
       "request": "defense_original_001_lv50.json",
       "teams": 10,
-      "active_components": 67,
-      "pending_components": 23
+      "active_components": 64,
+      "pending_components": 8
     },
     {
       "request": "mechanism_extra_107_lv50.json",

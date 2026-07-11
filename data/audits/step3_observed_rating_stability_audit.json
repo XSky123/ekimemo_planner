@@ -254,20 +254,6 @@
           "intrinsic_front_stat": "351"
         },
         {
-          "denko_id": "extra:048",
-          "name": "エマ・ノアイユ",
-          "category": "score_gain",
-          "score": 59,
-          "fact_model_score": 36,
-          "observed_signal": 1.0,
-          "blog_bonus": 0,
-          "component_count": 1,
-          "component_hash": "8eb40a391008c1d3d3a5ed47721d863373d1560044b509205eeed2149c5ab668",
-          "scene_component_count": 4,
-          "scene_component_hash": "810f7ebe28cf4d40528487d5d4bdeb41b420f3881baea29330cfae565c962d50",
-          "intrinsic_front_stat": null
-        },
-        {
           "denko_id": "original:069",
           "name": "羽貫ミユ",
           "category": "exp_gain",
@@ -279,6 +265,20 @@
           "component_hash": "756c3ed63edc76d15d42e19d2c029867e0bc87a529d854674763ef21e473cc26",
           "scene_component_count": 4,
           "scene_component_hash": "f425d74356a9539be16d67b93e66afd2f1e296906556240509a2b30167e90a07",
+          "intrinsic_front_stat": null
+        },
+        {
+          "denko_id": "extra:048",
+          "name": "エマ・ノアイユ",
+          "category": "score_gain",
+          "score": 59,
+          "fact_model_score": 37,
+          "observed_signal": 1.0,
+          "blog_bonus": 0,
+          "component_count": 1,
+          "component_hash": "9940ec81c1d249da99f5771f67a7643af5f40a837625b38d437078ed5dc02e52",
+          "scene_component_count": 4,
+          "scene_component_hash": "bee4851c943219692d1a920321fa969bef754db7c579df9d672cbb0b21e15498",
           "intrinsic_front_stat": null
         },
         {
@@ -366,20 +366,6 @@
           "intrinsic_front_stat": null
         },
         {
-          "denko_id": "original:078",
-          "name": "海部なる",
-          "category": "score_gain",
-          "score": 67,
-          "fact_model_score": 54,
-          "observed_signal": 1.0,
-          "blog_bonus": 0,
-          "component_count": 2,
-          "component_hash": "3434191109d3e94131bbf380a8ff41da7840756169cfc1f104f7094093d3a27f",
-          "scene_component_count": 4,
-          "scene_component_hash": "8cd41ff0fca98e8c91034eb4160c08a7361ea0d27ae7a7271e61a1e9cd3a1dfb",
-          "intrinsic_front_stat": null
-        },
-        {
           "denko_id": "original:084",
           "name": "汐入みそら",
           "category": "defense_support",
@@ -433,6 +419,20 @@
           "component_hash": "98c7a8c77ecb829da9b23f9844e3873e8a4ce01fddc5329322c2f4de68a692d8",
           "scene_component_count": 1,
           "scene_component_hash": "98c7a8c77ecb829da9b23f9844e3873e8a4ce01fddc5329322c2f4de68a692d8",
+          "intrinsic_front_stat": null
+        },
+        {
+          "denko_id": "original:078",
+          "name": "海部なる",
+          "category": "score_gain",
+          "score": 68,
+          "fact_model_score": 57,
+          "observed_signal": 1.0,
+          "blog_bonus": 0,
+          "component_count": 2,
+          "component_hash": "1dca2e63b3c9005e64c440963050331be49330e9c86028643629862ffe784694",
+          "scene_component_count": 4,
+          "scene_component_hash": "010adb50e0aea21603a58e278316827999f51ebb2f735af7ae8583d630bc1111",
           "intrinsic_front_stat": null
         }
       ],
@@ -637,7 +637,7 @@
           "component_count": 2,
           "component_hash": "775f37d0fe99cc627dcf04b8874d96744377b9260cd1a64e80d202e797200811",
           "scene_component_count": 12,
-          "scene_component_hash": "e3ed6f187e101cf1838246174ecf7bac42fb6e409ab267641f8253abeeb54189",
+          "scene_component_hash": "2e810d09081ad0cf303bbb83e0643aa0a7653937b7f8e7dc24228acd7d371041",
           "intrinsic_front_stat": null
         },
         {

@@ -11,9 +11,9 @@
     "one_line_recommendations_present": true,
     "prior_marker_lv50_mean_for_calibration_only": {
       "◎": 53.58,
-      "○": 59.47,
-      "△": 57.05,
-      "×": 53.44
+      "○": 59.44,
+      "△": 57.06,
+      "×": 53.6
     },
     "wiki_model_mismatch_count": 181,
     "all_mismatches_have_strong_reason": true,
@@ -143,8 +143,8 @@
     {
       "denko_id": "extra:019",
       "marker": "△",
-      "model_score": 78,
-      "published_score": 78,
+      "model_score": 77,
+      "published_score": 77,
       "wiki_reason_ja": "アクセスに耐えれば経験値獲得。 eco 統一編成が必要。強力な防御スキルと組み合わせよう。",
       "model_reason_zh": "模型高于 Wiki：直接效用主要来自远征经验，但依赖项包含attribute、own_team_all_attribute、not_rebooted；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
     },
@@ -271,10 +271,10 @@
     {
       "denko_id": "extra:041",
       "marker": "×",
-      "model_score": 69,
-      "published_score": 69,
+      "model_score": 86,
+      "published_score": 86,
       "wiki_reason_ja": "アクセスに耐えれば経験値/スコア獲得。 heat 統一編成が必要。 heat 版の ひとは だが、スコアまで貰える違いがある。効果量がリンク駅数依存なのでハードルは高め。",
-      "model_reason_zh": "模型高于 Wiki：直接效用主要来自远征积分，但依赖项包含attribute、own_team_all_attribute、not_rebooted；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
+      "model_reason_zh": "模型高于 Wiki：直接效用主要来自远征经验，但依赖项包含own_team_all_attribute、not_rebooted、basis；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
     },
     {
       "denko_id": "extra:042",
@@ -287,8 +287,8 @@
     {
       "denko_id": "extra:043",
       "marker": "△",
-      "model_score": 75,
-      "published_score": 75,
+      "model_score": 74,
+      "published_score": 74,
       "wiki_reason_ja": "アクセスに耐えれば経験値獲得。 cool 統一編成が必要。 cool 版の ひとは 。基本的な注意点はあちらと全く同じ。 ナギサ が来たら諦めてください",
       "model_reason_zh": "模型高于 Wiki：直接效用主要来自远征经验，但依赖项包含attribute、own_team_all_attribute、not_rebooted；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
     },
@@ -391,10 +391,10 @@
     {
       "denko_id": "extra:068",
       "marker": "×",
-      "model_score": 53,
-      "published_score": 53,
+      "model_score": 52,
+      "published_score": 52,
       "wiki_reason_ja": "アクセスに耐えれば経験値/スコア獲得。 eco 統一編成が必要。最大効果を出すには0ダメージにしなければならないため、固定値軽減か ひかる がいないと最大効果を発揮できない。上級者が使うと莫大な効果を発揮する。",
-      "model_reason_zh": "模型高于 Wiki：直接效用主要来自远征积分，但依赖项包含attribute、own_team_all_attribute、opponent_context_raw；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
+      "model_reason_zh": "模型高于 Wiki：直接效用主要来自远征经验，但依赖项包含attribute、own_team_all_attribute、opponent_context_raw；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
     },
     {
       "denko_id": "extra:072",
@@ -511,8 +511,8 @@
     {
       "denko_id": "extra:102",
       "marker": "×",
-      "model_score": 73,
-      "published_score": 73,
+      "model_score": 71,
+      "published_score": 71,
       "wiki_reason_ja": "被アクセス時に被ダメージが25以下なら経験値/スコア獲得。 heat 統一編成が必要。リブート時でも発動し、効果量は高いが アダリヤ 同様防御スキルの重ね掛けが必須。上級者はスコア稼ぎに愛用している。",
       "model_reason_zh": "模型高于 Wiki：直接效用主要来自远征积分，但依赖项包含attribute、own_team_all_attribute；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
     },
@@ -567,8 +567,8 @@
     {
       "denko_id": "extra:115",
       "marker": "○",
-      "model_score": 91,
-      "published_score": 91,
+      "model_score": 92,
+      "published_score": 92,
       "wiki_reason_ja": "雨天時に自身がアクセスするかアクセスに耐えればスコア獲得。初心者に被アクセス時効果は発動させにくいが、アクセス時効果はリンクを問わない。",
       "model_reason_zh": "模型高于 Wiki：直接效用主要来自远征积分，但依赖项包含not_rebooted、weather；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
     },
@@ -975,8 +975,8 @@
     {
       "denko_id": "original:078",
       "marker": "×",
-      "model_score": 73,
-      "published_score": 73,
+      "model_score": 74,
+      "published_score": 74,
       "wiki_reason_ja": "スコア変動。アタッカーではあるものの、スキルの真価はスコアの獲得に置かれている珍しいでんこ。スコア稼ぎに愛用する上級者も多いが、専用構築が必要なためハードルは高め。",
       "model_reason_zh": "模型高于 Wiki：直接效用主要来自远征积分，但依赖项包含exclude_other_skill_score；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
     },
@@ -1063,8 +1063,8 @@
     {
       "denko_id": "original:091",
       "marker": "×",
-      "model_score": 79,
-      "published_score": 79,
+      "model_score": 78,
+      "published_score": 78,
       "wiki_reason_ja": "相手によるDEF増減/経験値とスコア獲得。まずリンクを保持することが条件のうえ、効果が相手に左右されすぎる。耐えれば経験値とスコアがもらえるが、リスクは大きい。",
       "model_reason_zh": "模型高于 Wiki：直接效用主要来自远征经验，但依赖项包含not_rebooted；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
     },
@@ -1455,8 +1455,8 @@
     {
       "denko_id": "original:163",
       "marker": "×",
-      "model_score": 71,
-      "published_score": 71,
+      "model_score": 67,
+      "published_score": 67,
       "wiki_reason_ja": "効果時間内にheatでんこで一定値のダメージを与えるとスコア獲得。火力を出すための編成が必要で初心者にはハードルが高い。オリジナルでんこの中ではかなり珍しいスコア獲得スキル。",
       "model_reason_zh": "模型高于 Wiki：直接效用主要来自远征积分，但依赖项包含attribute、damage_per_additional_reward、requires_component；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
     },
