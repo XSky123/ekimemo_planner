@@ -1,10 +1,10 @@
 {
   "artifact": "role_profiles",
   "profile_version": "role_profile.v1",
-  "generated_at": "2026-07-11T14:36:51.021434+09:00",
+  "generated_at": "2026-07-11T14:40:56.678114+09:00",
   "source": {
     "skill_facts": "data\\step1_db\\skill_facts.jsonl",
-    "content_hash": "51cb229dcbbb0be2ded74c02f4d8a3ad1a81d637ec5bab35c511031caf116ecd"
+    "content_hash": "21390301ba3b540901e03633a052b71f52044611e81ecd280594defb452789e8"
   },
   "outputs": {
     "profiles": "data\\role_profiles\\role_profiles.jsonl",
@@ -15,7 +15,7 @@
     "source_components": 636,
     "profiles": 636,
     "excluded": 2,
-    "conditional": 586,
+    "conditional": 599,
     "needs_review": 0,
     "missing_recipient_info": 0,
     "unknown_access_direction_info": 388

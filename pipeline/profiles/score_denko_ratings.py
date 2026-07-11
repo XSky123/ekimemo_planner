@@ -140,7 +140,10 @@ CONDITION_FACTORS = {
     "previous_day_accessed_station_count_min": 0.42,
     "own_team_mileage_class_total_min": 0.30,
     "opponent_attribute_advantageous": 0.34,
+    "opponent_attribute_same_as_accessed_denko": 0.34,
     "access_method_excludes": 0.68, "reboots_self_at_skill_end": 0.62,
+    "target_name_contains_kana": 0.48, "delayed_effect_seconds": 0.62,
+    "activation_access_method": 0.78, "activation_distance_to_station_max_m": 0.72,
     "target_hp_threshold_percent": 0.70, "state": 0.70,
     "per_battery_use": 0.65, "depends_on_component": 0.80,
     "own_skill_conflict": 0.82, "excluded_when_footbar": 0.95,
@@ -371,7 +374,7 @@ def component_utility(profile: dict[str, Any], level: str, cohorts: dict[str, li
             "scope_basis": scope_basis, "cost": cost, "cost_details": costs,
             "recipients": sorted(recipients),
             "actor_scope": (profile["component"].get("trigger_conditions") or {}).get("actor_scope"),
-            "condition_raw": profile["component"].get("condition_raw"),
+            "condition_raw": profile["component"].get("condition_raw") or (profile["component"].get("source") or {}).get("condition_raw"),
         },
     }
 

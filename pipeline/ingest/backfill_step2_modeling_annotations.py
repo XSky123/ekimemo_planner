@@ -161,10 +161,16 @@ def backfill_momiji(row: dict[str, Any]) -> int:
 
 def backfill_naru(row: dict[str, Any]) -> int:
     score_component = component_by_id(row, "score_random_modifier_1")
+    duplicate_component = component_by_id(row, "score_gain_1")
     atk_component = component_by_id(row, "atk_buff_2")
     if not score_component or not atk_component:
         return 0
     changed = 0
+    if duplicate_component:
+        duplicate_changed = mark_values_report_ignore(duplicate_component, "replaced_by_score_random_modifier_1")
+        if duplicate_changed:
+            mark_component(duplicate_component, "step3_naru_duplicate_score_component_hidden")
+            changed += duplicate_changed
     changed += update_dict(score_component, "target_filters", {"exclude_other_skill_score": True})
     changed += set_tag(score_component, "random_score_modifier", "probability_weighted_expected_score")
     score_values = values(score_component)
@@ -1025,6 +1031,13 @@ def backfill_step3_player_use_case_conditions(row: dict[str, Any]) -> int:
                 "patch_id": "step3_luiza_team_def_link_gate",
             },
         },
+        "extra:070": {
+            "damage_reduction": {
+                "scaling_conditions": {"basis": "own_team_color_diversity", "count_max": 6, "scaling_from_zero": True},
+                "modeling_tags": ("team_color_diversity_scaled_reduction", "conditional_peak_not_baseline"),
+                "patch_id": "step3_amery_color_diversity_scaling",
+            },
+        },
         "extra:073": {
             "score_gain_3": {
                 "trigger_conditions": {"event": "skill_end", "reboots_self_at_skill_end": True},
@@ -1047,6 +1060,11 @@ def backfill_step3_player_use_case_conditions(row: dict[str, Any]) -> int:
             },
         },
         "original:019": {
+            "atk_buff_1": {
+                "target_filters": {"paired_self_debuff_raw": "アクセス時にHPが半減", "paired_self_debuff_display": "remark_only"},
+                "modeling_tags": ("self_hp_halving_cost",),
+                "patch_id": "step3_imura_hp_halving_cost",
+            },
             "atk_buff_2": {
                 "scaling_conditions": {"basis": "hp_consumed_during_activation", "hp_consumed_cap": 500, "scaling_from_zero": True},
                 "modeling_tags": ("consumed_hp_scaled_bonus", "conditional_peak_not_baseline"),
@@ -1058,6 +1076,13 @@ def backfill_step3_player_use_case_conditions(row: dict[str, Any]) -> int:
                 "scaling_conditions": {"basis": "longest_link_duration", "scaling_from_zero": True},
                 "modeling_tags": ("link_duration_scaled_bonus", "conditional_peak_not_baseline"),
                 "patch_id": "step3_alice_link_duration_scaling",
+            },
+        },
+        "original:027": {
+            "def_buff_1": {
+                "target_filters": {"station_selection": "top_accessed_station_last_3_months_and_4_neighbors", "max_station_count": 5},
+                "modeling_tags": ("limited_station_area_defense", "conditional_peak_not_baseline"),
+                "patch_id": "step3_yachiyo_limited_station_area_gate",
             },
         },
         "original:046": {
@@ -1082,6 +1107,11 @@ def backfill_step3_player_use_case_conditions(row: dict[str, Any]) -> int:
             },
         },
         "original:073": {
+            "damage_reduction_1": {
+                "target_filters": {"opponent_attribute_same_as_accessed_denko": True},
+                "modeling_tags": ("same_attribute_opponent_reduction", "conditional_peak_not_baseline"),
+                "patch_id": "step3_yamato_same_attribute_gate",
+            },
             "damage_reduction_2": {
                 "target_filters": {"opponent_attribute_advantageous": True},
                 "modeling_tags": ("advantageous_attribute_reduction", "conditional_peak_not_baseline"),
@@ -1106,6 +1136,13 @@ def backfill_step3_player_use_case_conditions(row: dict[str, Any]) -> int:
                 "scaling_conditions": {"basis": "link_success_count", "count_max": 5, "scaling_from_zero": True},
                 "modeling_tags": ("self_link_count_score_reward",),
                 "patch_id": "step3_nemo_link_count_score_gate",
+            },
+        },
+        "original:084": {
+            "atk_buff_1": {
+                "target_filters": {"target_name_contains_kana": ["ド", "レ", "ミ", "ファ", "ソ", "ラ", "シ"]},
+                "modeling_tags": ("target_name_kana_gate", "conditional_peak_not_baseline"),
+                "patch_id": "step3_misora_target_name_gate",
             },
         },
         "original:087": {
@@ -1133,6 +1170,16 @@ def backfill_step3_player_use_case_conditions(row: dict[str, Any]) -> int:
             },
         },
         "original:100": {
+            "atk_buff_1": {
+                "scaling_conditions": {"basis": "own_team_mileage_class_total", "count_max": 20, "scaling_from_zero": True},
+                "modeling_tags": ("team_mileage_total_scaled", "conditional_peak_not_baseline"),
+                "patch_id": "step3_chizu_team_mileage_base_atk_scaling",
+            },
+            "def_buff_1": {
+                "scaling_conditions": {"basis": "own_team_mileage_class_total", "count_max": 20, "scaling_from_zero": True},
+                "modeling_tags": ("team_mileage_total_scaled", "conditional_peak_not_baseline"),
+                "patch_id": "step3_chizu_team_mileage_base_def_scaling",
+            },
             "atk_buff_2": {
                 "target_filters": {"own_team_mileage_class_total_min": 35},
                 "modeling_tags": ("team_mileage_total_bonus", "conditional_peak_not_baseline"),
@@ -1168,7 +1215,46 @@ def backfill_step3_player_use_case_conditions(row: dict[str, Any]) -> int:
                 "patch_id": "step3_koume_today_40_station_gate",
             },
         },
+        "original:128": {
+            "exp_gain": {
+                "trigger_conditions": {"requires_component_failure": "link"},
+                "modeling_tags": ("link_failure_exp_reward",),
+                "patch_id": "step3_niko_link_failure_gate",
+            },
+        },
+        "original:134": {
+            "atk_buff_1": {
+                "scaling_conditions": {"basis": "remaining_skill_duration", "duration_cap_seconds": 1200, "scaling_from_zero": True},
+                "modeling_tags": ("remaining_duration_scaled_atk", "conditional_peak_not_baseline"),
+                "patch_id": "step3_otoha_remaining_duration_atk_scaling",
+            },
+            "duration_extension_2": {
+                "trigger_conditions": {"requires_link_success": True},
+                "scaling_conditions": {"duration_cap_seconds": 2400},
+                "modeling_tags": ("team_link_duration_extension",),
+                "patch_id": "step3_otoha_link_duration_extension_gate",
+            },
+        },
+        "original:094": {
+            "exp_gain_1": {
+                "scaling_conditions": {"basis": "today_accessed_station_count_probability", "count_max": 14, "scaling_from_zero": True},
+                "modeling_tags": ("daily_station_count_probability", "conditional_peak_not_baseline"),
+                "patch_id": "step3_yuki_daily_station_probability_scaling",
+            },
+        },
+        "original:143": {
+            "exp_gain": {
+                "trigger_conditions": {"activation_access_method": "checkin", "activation_distance_to_station_max_m": 500},
+                "modeling_tags": ("near_station_checkin_activation",),
+                "patch_id": "step3_satomi_checkin_distance_gate",
+            },
+        },
         "original:147": {
+            "exp_gain_1": {
+                "trigger_conditions": {"delayed_effect_seconds": 3600},
+                "modeling_tags": ("delayed_team_exp",),
+                "patch_id": "step3_konata_one_hour_delay",
+            },
             "exp_gain_2": {
                 "scaling_conditions": {"basis": "station_attribute_diversity_with_access_count", "access_count_per_attribute_min": 3, "scaling_from_zero": True},
                 "modeling_tags": ("station_attribute_diversity_bonus", "conditional_peak_not_baseline"),
@@ -1176,6 +1262,11 @@ def backfill_step3_player_use_case_conditions(row: dict[str, Any]) -> int:
             },
         },
         "original:153": {
+            "exp_gain_1": {
+                "scaling_conditions": {"basis": "today_accessed_station_count", "count_max": 20, "scaling_from_zero": True},
+                "modeling_tags": ("daily_station_count_scaled_exp", "conditional_peak_not_baseline"),
+                "patch_id": "step3_mokuri_daily_station_count_scaling",
+            },
             "exp_gain_2": {
                 "target_filters": {"weather": "cloudy"},
                 "modeling_tags": ("cloudy_station_exp_bonus", "conditional_peak_not_baseline"),

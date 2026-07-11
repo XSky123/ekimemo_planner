@@ -1,10 +1,10 @@
 {
   "artifact": "denko_ratings",
   "rating_version": "denko_rating.v4",
-  "generated_at": "2026-07-11T14:36:52.103613+09:00",
+  "generated_at": "2026-07-11T14:40:57.730066+09:00",
   "source": {
     "role_profiles": "data\\role_profiles\\role_profiles.jsonl",
-    "content_hash": "f9f0a3dfd5a01e703c9ec7dab3a837bf2c1666070547585278315d5411691b94"
+    "content_hash": "8f37d6193d47144c6216a293741f9732c02f352caf2a5fc7cf5345914dfaf62d"
   },
   "outputs": {
     "ratings": "data\\role_profiles\\denko_ratings.jsonl",
@@ -26,11 +26,11 @@
   "counts": {
     "denko": 307,
     "grade_lv80": {
-      "A": 42,
-      "B": 85,
-      "C": 64,
+      "A": 45,
+      "B": 84,
+      "C": 65,
       "D": 64,
-      "S": 52
+      "S": 49
     }
   },
   "calibration": {

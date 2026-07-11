@@ -1,0 +1,28 @@
+{
+  "iteration": 3,
+  "focus": "full rerun; scored-component condition audit and front/support direction validation",
+  "llm_review": {
+    "selected": 245,
+    "wiki_mismatches": 180,
+    "selection": "all six use cases top/bottom 15 plus every Wiki mismatch",
+    "cache_hits": 217,
+    "cache_misses": 28
+  },
+  "db_backfill": {
+    "decision": "required_and_completed",
+    "denko_count": 13,
+    "reason_zh": "将核查范围收紧到实际参与用途评分的组件后，补齐同属性受击、限定站区、目标名字、队伍色数、Mileage缩放、Link失败、当日站数、500米check-in、延迟发放与剩余时间缩放；同时隐藏なる的重复积分组件。",
+    "key_examples": ["original:073", "original:019", "original:027", "original:078", "original:084", "original:094", "original:100", "original:128", "original:134", "original:143", "original:147", "original:153", "extra:070"]
+  },
+  "direction_checks_zh": {
+    "attack_front": "前15仅含自身 ATK/AP 或由本人发动的固定伤害。",
+    "attack_support": "前15均面向队伍、队友或相对车位。",
+    "defense_front": "前15均为自身 DEF、减伤或无效化，并计入自身 HP。",
+    "defense_support": "前15均面向全队或受保护对象。"
+  },
+  "observed_result_zh": {
+    "extra_049_lv50_attack_rank": 25,
+    "original_087_lv50_attack_rank": 22,
+    "global_overall_published": false
+  }
+}
