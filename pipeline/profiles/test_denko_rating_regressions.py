@@ -79,6 +79,25 @@ def main() -> int:
         {"id": "defender_role_median_not_structurally_suppressed", "passed": defender_scores[len(defender_scores) // 2] >= 65},
         {"id": "top_defender_role_floor", "passed": defender_scores[14] >= 70},
     ])
+    support_order = sorted(
+        ratings.values(), key=lambda row: (-row["levels"]["80"]["role_scores"]["support"], row["rating_id"])
+    )[:15]
+    support_types = sum("サポーター" in str(row["denko"].get("type") or "") for row in support_order)
+    combat_support_effects = {
+        "atk_buff", "def_buff", "def_debuff", "atk_debuff", "ap_buff", "ap_debuff",
+        "fixed_damage", "additional_fixed_damage", "damage_reduction", "damage_nullification",
+        "hp_recovery", "activation_probability_boost", "duration_extension", "cooldown_reduction",
+        "cooldown_reset", "effect_multiplier", "skill_disable", "effect_nullification",
+    }
+    team_scopes = {"team_all", "own_team", "own_front_car", "front_car", "relative_car", "accessing_denko", "accessed_denko"}
+    support_has_combat_component = all(any(
+        component["effect_kind"] in combat_support_effects and component["factors"].get("scope_basis") in team_scopes
+        for scene in row["levels"]["80"]["scenes"].values() for component in scene["top_components"]
+    ) for row in support_order)
+    checks.extend([
+        {"id": "support_top15_represents_support_slots", "passed": support_types >= 8},
+        {"id": "support_top15_has_combat_team_effect", "passed": support_has_combat_component},
+    ])
     result = {
         "artifact": "step3_denko_rating_regressions", "checks": checks,
         "utilities": {key: value["utility"] for key, value in utilities.items()},

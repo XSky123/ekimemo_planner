@@ -52,6 +52,14 @@
     {
       "id": "top_defender_role_floor",
       "passed": true
+    },
+    {
+      "id": "support_top15_represents_support_slots",
+      "passed": true
+    },
+    {
+      "id": "support_top15_has_combat_team_effect",
+      "passed": true
     }
   ],
   "utilities": {

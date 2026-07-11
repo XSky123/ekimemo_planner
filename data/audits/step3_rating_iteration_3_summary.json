@@ -1,0 +1,16 @@
+{
+  "iteration": 3,
+  "roles": [
+    "attack",
+    "defense",
+    "expedition",
+    "growth",
+    "mechanism",
+    "support"
+  ],
+  "selected": 246,
+  "wiki_mismatches": 175,
+  "cache_hits": 236,
+  "cache_misses": 10,
+  "db_cross_checks": 52
+}

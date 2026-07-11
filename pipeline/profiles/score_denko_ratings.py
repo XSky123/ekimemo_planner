@@ -431,11 +431,38 @@ def calibrated_beginner_score(marker: str | None, model_score: int) -> int:
     return round(low + (high - low) * model_score / 100)
 
 
+def support_score(scenes: dict[str, dict[str, Any]]) -> int:
+    # “支援”只衡量能替队友承担战斗槽位的效果。经验、积分、移动等
+    # 已分别进入育成/远征职责，若在这里重复会让泛用经济技能压过真正辅助。
+    team_scopes = {"team_all", "own_team", "own_front_car", "front_car", "relative_car", "accessing_denko", "accessed_denko"}
+    combat_support_effects = {
+        "atk_buff", "def_buff", "def_debuff", "atk_debuff", "ap_buff", "ap_debuff",
+        "fixed_damage", "additional_fixed_damage", "damage_reduction", "damage_nullification",
+        "hp_recovery", "activation_probability_boost", "duration_extension", "cooldown_reduction",
+        "cooldown_reset", "effect_multiplier", "skill_disable", "effect_nullification",
+    }
+    best_by_profile: dict[str, dict[str, Any]] = {}
+    for payload in scenes.values():
+        for component in payload["top_components"]:
+            if component["effect_kind"] not in combat_support_effects:
+                continue
+            if component["factors"].get("scope_basis") not in team_scopes:
+                continue
+            previous = best_by_profile.get(component["profile_id"])
+            if previous is None or component["utility"] > previous["utility"]:
+                best_by_profile[component["profile_id"]] = component
+    if not best_by_profile:
+        return 0
+    utility = aggregate_components(list(best_by_profile.values()))
+    return utility_score(utility)
+
+
 def role_scores(scenes: dict[str, dict[str, Any]]) -> dict[str, int]:
     attack = round(0.55 * scenes["daily_attack"]["score"] + 0.45 * scenes["burst_attack"]["score"])
     return {
         "attack": attack,
         "defense": scenes["home_defense"]["score"],
+        "support": support_score(scenes),
         "expedition": max(scenes["expedition_score"]["score"], scenes["expedition_exp"]["score"]),
         "growth": scenes["growth"]["score"],
         "mechanism": scenes["mechanism"]["score"],

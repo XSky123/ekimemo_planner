@@ -1,0 +1,24 @@
+{
+  "iteration": 3,
+  "focus": "independent combat-support role and economy-effect separation",
+  "before_after": {
+    "support_top15_supporter_type_before": 3,
+    "support_top15_supporter_type_after": 11,
+    "support_top_score_after": 78,
+    "support_top15_floor_after": 62
+  },
+  "llm_review": {
+    "selected": 246,
+    "wiki_mismatches": 175,
+    "cache_hits": 236,
+    "cache_misses": 10
+  },
+  "db_backfill": {
+    "decision": "not_required_for_this_iteration",
+    "reason_zh": "本轮仅重新组合 Step1 已有的效果类型、对象范围与触发成本，不新增游戏事实。抽查出现的 position_exception_raw 已由解析器稳定表达为“自身在先头时改取第二辆”，无需因榜单变化回填。"
+  },
+  "horizontal_review": {
+    "scope": "all 307 denko plus support top/bottom 15 and all 175 Wiki mismatches",
+    "result_zh": "辅助职责仅纳入面向队伍/前排/访问对象的战斗效果；经验、积分、道具和移动效果继续归入育成或远征职责。前 15 均至少有一个结构化战斗团队效果。"
+  }
+}

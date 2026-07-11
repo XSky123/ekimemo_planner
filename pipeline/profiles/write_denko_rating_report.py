@@ -20,7 +20,7 @@ SCENES = [
     ("expedition_exp", "远征经验"), ("growth", "日常育成"),
     ("mechanism", "机制辅助"),
 ]
-ROLES = [("attack", "攻击职责"), ("defense", "防守职责"), ("expedition", "远征职责"), ("growth", "育成职责"), ("mechanism", "机制辅助")]
+ROLES = [("attack", "攻击职责"), ("defense", "防守职责"), ("support", "辅助职责"), ("expedition", "远征职责"), ("growth", "育成职责"), ("mechanism", "机制职责")]
 
 
 def esc(value: Any) -> str:
