@@ -58,45 +58,31 @@ def main() -> int:
         {"id": "cooldown_keeps_burst_value", "passed": utilities["cooldown"]["utility"] > 0},
     ]
     ratings = {row["rating_id"]: row for row in read_jsonl(RATINGS)}
-    for denko_id in ("extra:110", "extra:111", "extra:112"):
-        row = ratings[denko_id]
-        checks.append({
-            "id": f"{denko_id}_beginner_low_veteran_recovery",
-            "passed": row["levels"]["50"]["published_score"] <= 40 and row["levels"]["80"]["overall_score"] >= 45,
-        })
+    categories = {"attack_front", "defense_front", "attack_support", "defense_support", "score_gain", "exp_gain"}
     checks.extend([
-        {"id": "original_081_link_gate_stays_low", "passed": ratings["original:081"]["levels"]["50"]["published_score"] < 40},
-        {"id": "original_083_link_branch_not_high_generalist", "passed": ratings["original:083"]["levels"]["50"]["overall_score"] < 40},
-        {"id": "extra_119_accessory_dependency_beginner_low", "passed": ratings["extra:119"]["levels"]["50"]["published_score"] <= 40},
+        {"id": "six_player_use_cases_only", "passed": all(set(row["levels"]["80"]["role_scores"]) == categories for row in ratings.values())},
+        {"id": "each_use_case_normalizes_near_100", "passed": all(max(row["levels"]["80"]["role_scores"][category] for row in ratings.values()) >= 95 for category in categories)},
         {"id": "wiki_does_not_override_model_score", "passed": all(
             row["levels"]["50"]["published_score"] == row["levels"]["50"]["model_score"]
             for row in ratings.values()
         )},
+        {"id": "all_use_cases_have_one_line_recommendations", "passed": all(set(row.get("recommendations_zh") or {}) == categories for row in ratings.values())},
     ])
-    defenders = [row for row in ratings.values() if "ディフェンダー" in str(row["denko"].get("type") or "")]
-    defender_scores = sorted((row["levels"]["80"]["role_scores"]["defense"] for row in defenders), reverse=True)
+    attack_order50 = sorted(ratings.values(), key=lambda row: (-row["levels"]["50"]["role_scores"]["attack_front"], row["rating_id"]))
+    attack_ids50 = [row["rating_id"] for row in attack_order50]
     checks.extend([
-        {"id": "defender_role_median_not_structurally_suppressed", "passed": defender_scores[len(defender_scores) // 2] >= 65},
-        {"id": "top_defender_role_floor", "passed": defender_scores[14] >= 70},
-    ])
-    support_order = sorted(
-        ratings.values(), key=lambda row: (-row["levels"]["80"]["role_scores"]["support"], row["rating_id"])
-    )[:15]
-    support_types = sum("サポーター" in str(row["denko"].get("type") or "") for row in support_order)
-    combat_support_effects = {
-        "atk_buff", "def_buff", "def_debuff", "atk_debuff", "ap_buff", "ap_debuff",
-        "fixed_damage", "additional_fixed_damage", "damage_reduction", "damage_nullification",
-        "hp_recovery", "activation_probability_boost", "duration_extension", "cooldown_reduction",
-        "cooldown_reset", "effect_multiplier", "skill_disable", "effect_nullification",
-    }
-    team_scopes = {"team_all", "own_team", "own_front_car", "front_car", "relative_car", "accessing_denko", "accessed_denko"}
-    support_has_combat_component = all(any(
-        component["effect_kind"] in combat_support_effects and component["factors"].get("scope_basis") in team_scopes
-        for scene in row["levels"]["80"]["scenes"].values() for component in scene["top_components"]
-    ) for row in support_order)
-    checks.extend([
-        {"id": "support_top15_represents_support_slots", "passed": support_types >= 8},
-        {"id": "support_top15_has_combat_team_effect", "passed": support_has_combat_component},
+        {"id": "extra_049_repeat_access_not_attack_number_one", "passed": attack_ids50.index("extra:049") >= 10},
+        {"id": "original_087_eco_counter_not_attack_number_two", "passed": attack_ids50.index("original:087") >= 10},
+        {"id": "extra_049_repeat_access_gate_visible", "passed": any(
+            item.get("key") == "previous_self_access_within_seconds"
+            for component in ratings["extra:049"]["levels"]["50"]["use_case_components"]["attack_front"]
+            for item in component["factors"].get("condition_details") or []
+        )},
+        {"id": "original_087_eco_gate_visible", "passed": any(
+            item.get("key") == "opponent_attribute"
+            for component in ratings["original:087"]["levels"]["50"]["use_case_components"]["attack_front"]
+            for item in component["factors"].get("condition_details") or []
+        )},
     ])
     result = {
         "artifact": "step3_denko_rating_regressions", "checks": checks,

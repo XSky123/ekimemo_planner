@@ -1,0 +1,35 @@
+{
+  "iteration": 1,
+  "focus": "player-goal taxonomy, within-use-case normalization, compact report and conditional-peak DB recovery",
+  "player_contract_zh": [
+    "Step3 是 Step2 的懒人入口，不重复展示完整技能明细。",
+    "仅保留攻击车头、守站肉盾、攻击队友、防守队友、加分、加经验六种用途。",
+    "不同用途不发布综合总榜；用途内按有效强度、稳定性和门槛比较。",
+    "报告优先展示一句话推荐与核查评语，并提供属性、类型筛选。"
+  ],
+  "external_prior_zh": {
+    "strategy": "攻略文章先按夺站、守站、刷分、育成等目标组织编成，并明确重视泛用性、独特性和易用性而非峰值。",
+    "original_087": "攻略将其评为三星：15 分钟且高额段仅针对 eco，更适合狙击而非移动扫站。",
+    "authority": "攻略仅作为评价方法先验；技能事实仍以详情 Wiki 为准。"
+  },
+  "llm_review": {
+    "selected": 245,
+    "wiki_mismatches": 184,
+    "selection": "all six use cases top/bottom 15 plus every Wiki mismatch",
+    "cache_hits": 86,
+    "cache_misses": 159
+  },
+  "db_backfill": {
+    "decision": "required_and_completed",
+    "denko_count": 15,
+    "reason_zh": "前后 15 名横扫发现多个附加高额段只在日文 condition_raw 中保留，尚未进入结构化条件；已回填连续访问、对手属性、HP门槛、站数进度、Link、天气及缩放条件。",
+    "key_examples": ["extra:049", "original:087", "original:019", "original:031", "original:049", "original:073", "original:099", "original:116", "original:147"]
+  },
+  "observed_result_zh": {
+    "extra_049_lv50_attack_rank": 24,
+    "original_087_lv50_attack_rank": 21,
+    "use_case_top_score_range": "99-100",
+    "report_columns": 6,
+    "global_overall_published": false
+  }
+}

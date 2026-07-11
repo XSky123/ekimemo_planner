@@ -220,6 +220,7 @@ def uptime_by_level(durations: dict[str, Any], cooldowns: dict[str, Any]) -> dic
 def hard_constraints(component: dict[str, Any]) -> list[dict[str, Any]]:
     filters = component.get("target_filters") or {}
     triggers = component.get("trigger_conditions") or {}
+    scaling = component.get("scaling_conditions") or {}
     hard: list[dict[str, Any]] = []
     for key, value in filters.items():
         if value not in (None, "", [], {}):
@@ -229,6 +230,11 @@ def hard_constraints(component: dict[str, Any]) -> list[dict[str, Any]]:
             continue
         if value not in (None, "", [], {}):
             hard.append({"source": "trigger_conditions", "key": key, "value": value})
+    for key, value in scaling.items():
+        if key in {"per_unit_source", "fixed_numeric_value_status", "source_rule"}:
+            continue
+        if value not in (None, "", [], {}, False):
+            hard.append({"source": "scaling_conditions", "key": key, "value": value})
     present_keys = {str(item["key"]) for item in hard}
     raw_text = " ".join(str(component.get(key) or "") for key in ("condition_raw", "remarks_raw"))
     # Detail-page rows occasionally retain a condition only in Japanese prose.

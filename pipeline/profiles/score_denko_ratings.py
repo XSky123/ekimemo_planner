@@ -16,13 +16,27 @@ PRIOR_AUDIT = ROOT / "data/audits/recommendation_prior_audit.json"
 OUT = ROOT / "data/role_profiles/denko_ratings.jsonl"
 MANIFEST = ROOT / "data/role_profiles/rating_manifest.json"
 AUDIT = ROOT / "data/audits/step3_denko_rating_audit.json"
-MODEL_VERSION = "denko_rating.v3"
+MODEL_VERSION = "denko_rating.v4"
 JST = timezone(timedelta(hours=9))
 LEVELS = ("50", "80")
 PRIMARY_SCENES = (
     "daily_attack", "burst_attack", "home_defense", "expedition_score",
     "expedition_exp", "growth", "mechanism",
 )
+
+USE_CASE_ZH = {
+    "attack_front": "攻击车头",
+    "defense_front": "守站肉盾",
+    "attack_support": "攻击队友",
+    "defense_support": "防守队友",
+    "score_gain": "加分",
+    "exp_gain": "加经验",
+}
+TEAM_RECIPIENTS = {"team_all", "own_team", "own_front_car", "front_car", "relative_car", "accessing_denko", "accessed_denko"}
+ATTACK_EFFECTS = {"atk_buff", "ap_buff", "def_debuff", "fixed_damage", "additional_fixed_damage", "force_hp_zero"}
+DEFENSE_EFFECTS = {"def_buff", "atk_debuff", "ap_debuff", "damage_reduction", "damage_nullification", "survive_hp1", "hp_recovery", "damage_cap", "damage_substitution"}
+SCORE_EFFECTS = {"score_gain", "additional_score_gain", "score_random_modifier", "link_bonus", "today_new_station_bonus"}
+EXP_EFFECTS = {"exp_gain", "exp_distribution", "exp_distribution_bonus"}
 
 SCENE_ZH = {
     "daily_attack": "无脑打站",
@@ -82,12 +96,13 @@ EFFECT_IMPACT = {
 }
 
 EFFECT_ZH = {
-    "atk_buff": "ATK提升", "def_buff": "DEF提升", "def_debuff": "对手DEF削弱",
+    "atk_buff": "ATK提升", "ap_buff": "基础AP提升", "def_buff": "DEF提升", "def_debuff": "对手DEF削弱",
     "atk_debuff": "对手ATK削弱", "fixed_damage": "固定伤害",
     "additional_fixed_damage": "追加固定伤害", "damage_reduction": "减伤",
     "damage_nullification": "伤害无效化", "hp_recovery": "HP回复",
     "exp_gain": "经验加成", "score_gain": "积分加成", "additional_score_gain": "追加积分",
-    "exp_distribution": "经验分配", "extra_access": "追加访问",
+    "score_random_modifier": "积分随机变化", "link_bonus": "Link积分", "today_new_station_bonus": "今日新站奖励",
+    "exp_distribution": "经验分配", "exp_distribution_bonus": "经验分配强化", "extra_access": "追加访问",
     "random_previous_station_access": "随机访问旧站", "remote_station_access": "远程访问",
     "skill_disable": "技能无效化", "skill_effect_nullification": "技能效果无效化",
     "activation_probability_boost": "发动率提升", "duration_extension": "持续延长",
@@ -116,6 +131,13 @@ CONDITION_FACTORS = {
     "station_ownership": 0.72, "not_rebooted": 0.88,
     "linked_station_min_count": 0.72, "minimum_same_attribute_links": 0.66,
     "damage_received": 0.72, "hp_threshold_percent": 0.70,
+    "previous_self_access_within_seconds": 0.32,
+    "opponent_team_attribute_count_min": 0.30,
+    "target_state": 0.62, "requires_active_timed_skill_holder_in_team": 0.55,
+    "this_month_accessed_station_count_min": 0.55,
+    "previous_day_accessed_station_count_min": 0.42,
+    "own_team_mileage_class_total_min": 0.30,
+    "opponent_attribute_advantageous": 0.34,
     "target_hp_threshold_percent": 0.70, "state": 0.70,
     "per_battery_use": 0.65, "depends_on_component": 0.80,
     "own_skill_conflict": 0.82, "excluded_when_footbar": 0.95,
@@ -344,6 +366,9 @@ def component_utility(profile: dict[str, Any], level: str, cohorts: dict[str, li
             "availability_basis": active_time_basis, "condition": condition,
             "condition_details": condition_details, "scope": scope,
             "scope_basis": scope_basis, "cost": cost, "cost_details": costs,
+            "recipients": sorted(recipients),
+            "actor_scope": (profile["component"].get("trigger_conditions") or {}).get("actor_scope"),
+            "condition_raw": profile["component"].get("condition_raw"),
         },
     }
 
@@ -431,42 +456,63 @@ def calibrated_beginner_score(marker: str | None, model_score: int) -> int:
     return round(low + (high - low) * model_score / 100)
 
 
-def support_score(scenes: dict[str, dict[str, Any]]) -> int:
-    # “支援”只衡量能替队友承担战斗槽位的效果。经验、积分、移动等
-    # 已分别进入育成/远征职责，若在这里重复会让泛用经济技能压过真正辅助。
-    team_scopes = {"team_all", "own_team", "own_front_car", "front_car", "relative_car", "accessing_denko", "accessed_denko"}
-    combat_support_effects = {
-        "atk_buff", "def_buff", "def_debuff", "atk_debuff", "ap_buff", "ap_debuff",
-        "fixed_damage", "additional_fixed_damage", "damage_reduction", "damage_nullification",
-        "hp_recovery", "activation_probability_boost", "duration_extension", "cooldown_reduction",
-        "cooldown_reset", "effect_multiplier", "skill_disable", "effect_nullification",
-    }
-    best_by_profile: dict[str, dict[str, Any]] = {}
-    for payload in scenes.values():
-        for component in payload["top_components"]:
-            if component["effect_kind"] not in combat_support_effects:
-                continue
-            if component["factors"].get("scope_basis") not in team_scopes:
-                continue
-            previous = best_by_profile.get(component["profile_id"])
-            if previous is None or component["utility"] > previous["utility"]:
-                best_by_profile[component["profile_id"]] = component
-    if not best_by_profile:
-        return 0
-    utility = aggregate_components(list(best_by_profile.values()))
-    return utility_score(utility)
+def use_case_components(
+    scenes: dict[str, dict[str, Any]], category: str, denko_type: str,
+) -> list[dict[str, Any]]:
+    scene = {
+        "attack_front": "daily_attack", "attack_support": "daily_attack",
+        "defense_front": "home_defense", "defense_support": "home_defense",
+        "score_gain": "expedition_score", "exp_gain": "growth",
+    }[category]
+    candidates = scenes[scene]["top_components"]
+    selected: list[dict[str, Any]] = []
+    for component in candidates:
+        kind = component["effect_kind"]
+        factors = component["factors"]
+        recipients = set(factors.get("recipients") or [])
+        actor = factors.get("actor_scope")
+        if category == "attack_front":
+            direct_self_buff = kind in {"atk_buff", "ap_buff"} and "self" in recipients
+            direct_attack = kind in {"def_debuff", "fixed_damage", "additional_fixed_damage", "force_hp_zero"} and (
+                actor == "skill_holder" or (not actor and "アタッカー" in denko_type)
+            )
+            keep = direct_self_buff or direct_attack
+        elif category == "attack_support":
+            team_buff = kind in {"atk_buff", "ap_buff"} and bool(recipients & TEAM_RECIPIENTS)
+            team_attack = kind in {"def_debuff", "fixed_damage", "additional_fixed_damage"} and actor == "any_team_member"
+            keep = team_buff or team_attack
+        elif category == "defense_front":
+            keep = kind in DEFENSE_EFFECTS and "self" in recipients
+        elif category == "defense_support":
+            team_defense = kind in DEFENSE_EFFECTS and bool(recipients & TEAM_RECIPIENTS)
+            team_interference = kind in {"atk_debuff", "ap_debuff"} and actor == "any_team_member"
+            keep = team_defense or team_interference
+        elif category == "score_gain":
+            keep = kind in SCORE_EFFECTS
+        else:
+            keep = kind in EXP_EFFECTS
+        if keep:
+            selected.append(component)
+    return selected
 
 
-def role_scores(scenes: dict[str, dict[str, Any]]) -> dict[str, int]:
-    attack = round(0.55 * scenes["daily_attack"]["score"] + 0.45 * scenes["burst_attack"]["score"])
-    return {
-        "attack": attack,
-        "defense": scenes["home_defense"]["score"],
-        "support": support_score(scenes),
-        "expedition": max(scenes["expedition_score"]["score"], scenes["expedition_exp"]["score"]),
-        "growth": scenes["growth"]["score"],
-        "mechanism": scenes["mechanism"]["score"],
-    }
+def normalize_use_case(raw: dict[str, float]) -> dict[str, int]:
+    positive = sorted(value for value in raw.values() if value > 0)
+    if not positive:
+        return {key: 0 for key in raw}
+    median = statistics.median(positive)
+    log_ceiling = math.log1p(max(positive) / max(median, 1e-9)) or 1.0
+    result: dict[str, int] = {}
+    for key, value in raw.items():
+        if value <= 0:
+            result[key] = 0
+            continue
+        below = sum(item < value for item in positive)
+        equal = sum(item == value for item in positive)
+        percentile = (below + 0.5 * equal) / len(positive)
+        log_scaled = min(1.0, math.log1p(value / max(median, 1e-9)) / log_ceiling)
+        result[key] = round(25 + 75 * (0.70 * percentile + 0.30 * log_scaled))
+    return result
 
 
 def grade(score: int) -> str:
@@ -503,6 +549,39 @@ def recommendation(row: dict[str, Any], level: str) -> str:
     if factors["probability"] >= 0.99 and factors["availability"] >= 0.99 and factors["condition"] >= 0.90:
         return strengths + "；触发稳定且接近常驻，泛用性较好。"
     return strengths + "；有效强度与稳定性较均衡。"
+
+
+def use_case_recommendation(row: dict[str, Any], level: str, category: str) -> str:
+    result = row["levels"][level]
+    score = result["role_scores"].get(category, 0)
+    components = result.get("use_case_components", {}).get(category) or []
+    if not components:
+        if category == "attack_front" and score:
+            return f"{score}分：主要依靠较高 AP 作为攻击车头，技能没有提供稳定的自身火力增益。"
+        if category == "defense_front" and score:
+            return f"{score}分：主要依靠 HP 与 Defender 基础耐久守站，技能贡献有限。"
+        return "不属于这一用途的有效候选。"
+    lead = components[0]
+    factors = lead["factors"]
+    caveats: list[str] = []
+    keys = {
+        str(item.get("key")) for component in components
+        for item in component["factors"].get("condition_details") or []
+    }
+    if factors.get("probability", 1.0) < 0.75:
+        caveats.append("发动率偏低")
+    if factors.get("availability", 1.0) < 0.55:
+        caveats.append("覆盖时间短")
+    if keys & {"previous_self_access_within_seconds", "recent_access_window"}:
+        caveats.append("需要连续访问")
+    if keys & {"opponent_attribute", "opponent_type", "opponent_team_attribute_count_min"}:
+        caveats.append("只在克制目标时发挥高额段")
+    if factors.get("condition", 1.0) < 0.60 and not caveats:
+        caveats.append("编成或场景门槛较高")
+    if "self_debuff" in (factors.get("cost_details") or []):
+        caveats.append("伴随自身减益")
+    suffix = "；" + "、".join(caveats[:2]) if caveats else "；条件宽松，适合日常采用"
+    return f"{score}分：以{lead['effect_zh']}承担{USE_CASE_ZH[category]}用途{suffix}。"
 
 
 def build() -> tuple[list[dict[str, Any]], dict[str, Any], dict[str, Any]]:
@@ -544,6 +623,7 @@ def build() -> tuple[list[dict[str, Any]], dict[str, Any], dict[str, Any]]:
                         skill_utility += 0.12 * hp_foundation
                 utilities[scene][denko_id] = round(skill_utility, 6)
         payload: dict[str, dict[str, Any]] = {}
+        category_raw: dict[str, dict[str, float]] = {category: {} for category in USE_CASE_ZH}
         for denko_id in grouped:
             scenes = {}
             for scene in PRIMARY_SCENES:
@@ -551,17 +631,38 @@ def build() -> tuple[list[dict[str, Any]], dict[str, Any], dict[str, Any]]:
                 scenes[scene] = {
                     "score": utility_score(utilities[scene][denko_id]),
                     "utility": utilities[scene][denko_id],
-                    "top_components": components[:3],
+                    "top_components": components[:8],
                 }
-            roles = role_scores(scenes)
-            ranked = sorted(roles.values(), reverse=True)
+            denko_type = str(grouped[denko_id][0]["denko"].get("type") or "")
+            selected_by_case = {
+                category: use_case_components(scenes, category, denko_type)
+                for category in USE_CASE_ZH
+            }
+            for category, selected in selected_by_case.items():
+                raw_value = aggregate_components(selected)
+                if category == "attack_front" and (selected or "アタッカー" in denko_type):
+                    raw_value += 0.20 * ap.get(denko_id, 0.5)
+                elif category == "defense_front" and (selected or "ディフェンダー" in denko_type):
+                    raw_value += 0.30 * hp.get(denko_id, 0.5)
+                    if "ディフェンダー" in denko_type:
+                        raw_value += 0.08
+                category_raw[category][denko_id] = round(raw_value, 6)
             active_scene_count = sum(bool(item["top_components"]) for item in scenes.values())
             versatility = min(100, active_scene_count * 18)
-            # Overall starts from the strongest usable role. The second role is
-            # a real versatility bonus (up to five points), never a discount on
-            # specialists such as pure defenders or dedicated supporters.
-            overall = min(100, round(ranked[0] + 0.05 * ranked[1]))
-            payload[denko_id] = {"overall_score": overall, "grade": grade(overall), "versatility": versatility, "role_scores": roles, "scenes": scenes}
+            payload[denko_id] = {
+                "overall_score": 0, "grade": "D", "versatility": versatility,
+                "role_scores": {}, "use_case_raw": {category: category_raw[category][denko_id] for category in USE_CASE_ZH},
+                "use_case_components": selected_by_case, "scenes": scenes,
+            }
+        normalized = {category: normalize_use_case(values) for category, values in category_raw.items()}
+        for denko_id, result in payload.items():
+            scores = {category: normalized[category][denko_id] for category in USE_CASE_ZH}
+            # Kept only for schema compatibility. The report intentionally has
+            # no cross-purpose total or global ranking.
+            compatibility_score = max(scores.values(), default=0)
+            result["role_scores"] = scores
+            result["overall_score"] = compatibility_score
+            result["grade"] = grade(compatibility_score)
         level_payloads[level] = payload
     rows = []
     for denko_id, items in sorted(grouped.items()):
@@ -569,7 +670,7 @@ def build() -> tuple[list[dict[str, Any]], dict[str, Any], dict[str, Any]]:
         row = {
             "rating_id": denko_id, "rating_version": MODEL_VERSION,
             "denko": denko, "levels": {level: level_payloads[level][denko_id] for level in LEVELS},
-            "recommendation_zh": "", "calibration": {"beginner_prior_marker": priors.get(denko_id)},
+            "recommendation_zh": "", "recommendations_zh": {}, "recommendations_by_level": {}, "calibration": {"beginner_prior_marker": priors.get(denko_id)},
             "record_meta": {
                 "source_authority": "derived", "source_url": items[0]["record_meta"].get("source_url"),
                 "parser_version": MODEL_VERSION, "parsed_at": datetime.now(JST).isoformat(),
@@ -584,7 +685,13 @@ def build() -> tuple[list[dict[str, Any]], dict[str, Any], dict[str, Any]]:
         row["levels"]["50"]["grade"] = grade(row["levels"]["50"]["published_score"])
         row["calibration"].update(prior_alignment(priors.get(denko_id), row["levels"]["50"]["overall_score"], row["levels"]["50"]["scenes"]))
         row["calibration"]["wiki_reason_ja"] = comments.get(denko_id)
-        row["recommendation_zh"] = recommendation(row, "80")
+        row["recommendations_by_level"] = {
+            level: {category: use_case_recommendation(row, level, category) for category in USE_CASE_ZH}
+            for level in LEVELS
+        }
+        row["recommendations_zh"] = row["recommendations_by_level"]["80"]
+        strongest = max(USE_CASE_ZH, key=lambda category: row["levels"]["80"]["role_scores"].get(category, 0))
+        row["recommendation_zh"] = row["recommendations_zh"][strongest]
         rows.append(row)
     source_hash = hashlib.sha256(PROFILES.read_bytes()).hexdigest()
     score_counts = Counter(row["levels"]["80"]["grade"] for row in rows)
@@ -603,8 +710,9 @@ def build() -> tuple[list[dict[str, Any]], dict[str, Any], dict[str, Any]]:
         "formula": {
             "component": "impact * absolute_magnitude_anchor * probability * scenario_availability * stage_condition * scope * cost",
             "scene": "top_component + 0.5*second + 0.25*third + 0.125*fourth, then 100*(1-exp(-utility/0.72))",
-            "overall": "strongest role + up to 5 points from second role; roles are attack, defense, support, expedition, growth and mechanism",
-            "note_zh": "总评以最强可用职责为基准，第二职责最多奖励 5 分；不会再用无关场景平均稀释专精防守或专精辅助角色。Wiki 新手标记只进入差异审计，不直接改写评分。",
+            "use_case_normalization": "25 + 75 * (70% within-category percentile + 30% log-scaled raw utility)",
+            "overall": "compatibility-only max(use_case_scores); never published or used for cross-purpose ranking",
+            "note_zh": "按攻击车头、守站肉盾、攻击队友、防守队友、加分、加经验六种玩家用途分别归一化。不同用途不发布综合总榜。",
         },
     }
     audit = audit_rows(rows, manifest)

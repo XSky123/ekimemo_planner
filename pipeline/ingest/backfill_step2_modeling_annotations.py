@@ -981,6 +981,143 @@ def backfill_trigger_actor_semantics(row: dict[str, Any]) -> int:
     return changed
 
 
+def backfill_step3_player_use_case_conditions(row: dict[str, Any]) -> int:
+    """Recover stable gates exposed by the player-facing Step3 ranking audit."""
+    denko_id = str(row.get("denko_id") or "")
+    changed = 0
+    specs: dict[str, dict[str, dict[str, Any]]] = {
+        "extra:022": {
+            "atk_buff_2": {
+                "target_filters": {"target_state": "cooldown", "requires_active_timed_skill_holder_in_team": True},
+                "modeling_tags": ("cooldown_member_bonus", "conditional_peak_not_baseline"),
+                "patch_id": "step3_leila_cooldown_member_gate",
+            },
+        },
+        "extra:033": {
+            "exp_gain_2": {
+                "target_filters": {"this_month_accessed_station_count_min": 50},
+                "modeling_tags": ("monthly_station_progression_bonus", "conditional_peak_not_baseline"),
+                "patch_id": "step3_olivia_monthly_50_station_gate",
+            },
+        },
+        "extra:049": {
+            "atk_buff_2": {
+                "trigger_conditions": {"previous_self_access_within_seconds": 180},
+                "modeling_tags": ("rapid_repeat_access_bonus", "conditional_peak_not_baseline"),
+                "patch_id": "step3_rare_repeat_access_gate",
+            },
+        },
+        "original:019": {
+            "atk_buff_2": {
+                "scaling_conditions": {"basis": "hp_consumed_during_activation", "hp_consumed_cap": 500, "scaling_from_zero": True},
+                "modeling_tags": ("consumed_hp_scaled_bonus", "conditional_peak_not_baseline"),
+                "patch_id": "step3_imura_consumed_hp_scaling",
+            },
+        },
+        "original:031": {
+            "def_buff_2": {
+                "scaling_conditions": {"basis": "longest_link_duration", "scaling_from_zero": True},
+                "modeling_tags": ("link_duration_scaled_bonus", "conditional_peak_not_baseline"),
+                "patch_id": "step3_alice_link_duration_scaling",
+            },
+        },
+        "original:049": {
+            "damage_reduction_2": {
+                "target_filters": {"hp_percent_min": 85},
+                "modeling_tags": ("high_hp_only_bonus", "conditional_peak_not_baseline"),
+                "patch_id": "step3_mei_hp85_gate",
+            },
+        },
+        "original:071": {
+            "atk_buff_2": {
+                "target_filters": {"station_is_today_new": False},
+                "modeling_tags": ("non_today_new_station_bonus", "conditional_peak_not_baseline"),
+                "patch_id": "step3_ruri_non_today_new_station_gate",
+            },
+        },
+        "original:073": {
+            "damage_reduction_2": {
+                "target_filters": {"opponent_attribute_advantageous": True},
+                "modeling_tags": ("advantageous_attribute_reduction", "conditional_peak_not_baseline"),
+                "patch_id": "step3_yamato_attribute_advantage_gate",
+            },
+        },
+        "original:075": {
+            "exp_gain_3": {
+                "trigger_conditions": {"requires_link_success": True},
+                "modeling_tags": ("link_success_repeat_exp", "conditional_peak_not_baseline"),
+                "patch_id": "step3_nina_link_repeat_exp_gate",
+            },
+        },
+        "original:087": {
+            "atk_buff_2": {
+                "target_filters": {"opponent_attribute": "eco"},
+                "modeling_tags": ("attribute_counter_bonus", "conditional_peak_not_baseline"),
+                "patch_id": "step3_hime_eco_opponent_gate",
+            },
+            "atk_buff_3": {
+                "target_filters": {"opponent_attribute": "eco", "opponent_team_attribute": "eco", "opponent_team_attribute_count_min": 4},
+                "modeling_tags": ("attribute_counter_bonus", "opponent_formation_gate", "conditional_peak_not_baseline"),
+                "patch_id": "step3_hime_vu_eco_team_gate",
+            },
+        },
+        "original:099": {
+            "exp_gain_2": {
+                "target_filters": {"previous_day_accessed_station_count_min": 35},
+                "modeling_tags": ("previous_day_station_progression_bonus", "conditional_peak_not_baseline"),
+                "patch_id": "step3_otome_previous_day_35_station_gate",
+            },
+        },
+        "original:100": {
+            "atk_buff_2": {
+                "target_filters": {"own_team_mileage_class_total_min": 35},
+                "modeling_tags": ("team_mileage_total_bonus", "conditional_peak_not_baseline"),
+                "patch_id": "step3_chizu_team_mileage35_atk_gate",
+            },
+            "def_buff_2": {
+                "target_filters": {"own_team_mileage_class_total_min": 35},
+                "modeling_tags": ("team_mileage_total_bonus", "conditional_peak_not_baseline"),
+                "patch_id": "step3_chizu_team_mileage35_def_gate",
+            },
+        },
+        "original:116": {
+            "exp_gain_2": {
+                "target_filters": {"today_accessed_station_count_min": 40},
+                "modeling_tags": ("daily_station_progression_bonus", "conditional_peak_not_baseline"),
+                "patch_id": "step3_koume_today_40_station_gate",
+            },
+        },
+        "original:147": {
+            "exp_gain_2": {
+                "scaling_conditions": {"basis": "station_attribute_diversity_with_access_count", "access_count_per_attribute_min": 3, "scaling_from_zero": True},
+                "modeling_tags": ("station_attribute_diversity_bonus", "conditional_peak_not_baseline"),
+                "patch_id": "step3_konata_station_attribute_diversity_gate",
+            },
+        },
+        "original:153": {
+            "exp_gain_2": {
+                "target_filters": {"weather": "cloudy"},
+                "modeling_tags": ("cloudy_station_exp_bonus", "conditional_peak_not_baseline"),
+                "patch_id": "step3_mokuri_cloudy_station_gate",
+            },
+        },
+    }
+    for component_id, spec in specs.get(denko_id, {}).items():
+        component = component_by_id(row, component_id)
+        if not component:
+            continue
+        component_changed = 0
+        for container in ("target_filters", "trigger_conditions"):
+            updates = spec.get(container)
+            if updates:
+                component_changed += update_dict(component, container, updates)
+        component_changed += set_tag(component, *spec.get("modeling_tags", ()))
+        if component_changed:
+            mark_component(component, str(spec["patch_id"]))
+            changed += component_changed
+    return changed
+
+
 def backfill_misc_tags(row: dict[str, Any]) -> int:
     denko_id = row.get("denko_id")
     changed = 0
@@ -1452,6 +1589,7 @@ def backfill_row(row: dict[str, Any]) -> int:
     changed += backfill_cooldown_probability_semantics(row)
     changed += backfill_self_debuff_display_semantics(row)
     changed += backfill_trigger_actor_semantics(row)
+    changed += backfill_step3_player_use_case_conditions(row)
     changed += backfill_misc_tags(row)
     changed += backfill_progression_and_link_semantics(row)
     if changed:

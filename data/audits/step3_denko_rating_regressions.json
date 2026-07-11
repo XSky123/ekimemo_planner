@@ -18,27 +18,11 @@
       "passed": true
     },
     {
-      "id": "extra:110_beginner_low_veteran_recovery",
+      "id": "six_player_use_cases_only",
       "passed": true
     },
     {
-      "id": "extra:111_beginner_low_veteran_recovery",
-      "passed": true
-    },
-    {
-      "id": "extra:112_beginner_low_veteran_recovery",
-      "passed": true
-    },
-    {
-      "id": "original_081_link_gate_stays_low",
-      "passed": true
-    },
-    {
-      "id": "original_083_link_branch_not_high_generalist",
-      "passed": true
-    },
-    {
-      "id": "extra_119_accessory_dependency_beginner_low",
+      "id": "each_use_case_normalizes_near_100",
       "passed": true
     },
     {
@@ -46,19 +30,23 @@
       "passed": true
     },
     {
-      "id": "defender_role_median_not_structurally_suppressed",
+      "id": "all_use_cases_have_one_line_recommendations",
       "passed": true
     },
     {
-      "id": "top_defender_role_floor",
+      "id": "extra_049_repeat_access_not_attack_number_one",
       "passed": true
     },
     {
-      "id": "support_top15_represents_support_slots",
+      "id": "original_087_eco_counter_not_attack_number_two",
       "passed": true
     },
     {
-      "id": "support_top15_has_combat_team_effect",
+      "id": "extra_049_repeat_access_gate_visible",
+      "passed": true
+    },
+    {
+      "id": "original_087_eco_gate_visible",
       "passed": true
     }
   ],

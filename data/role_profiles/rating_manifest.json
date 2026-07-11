@@ -1,10 +1,10 @@
 {
   "artifact": "denko_ratings",
-  "rating_version": "denko_rating.v3",
-  "generated_at": "2026-07-11T14:11:30.248396+09:00",
+  "rating_version": "denko_rating.v4",
+  "generated_at": "2026-07-11T14:33:12.233166+09:00",
   "source": {
     "role_profiles": "data\\role_profiles\\role_profiles.jsonl",
-    "content_hash": "6462792ead0d79b2f63df1b4c47350f6f83c2a752fecc944fce7e2365a107e21"
+    "content_hash": "eec17b3509c8552e7416abc3ca3c2be1396bc2c6a57bc539b9ec7cbf35385160"
   },
   "outputs": {
     "ratings": "data\\role_profiles\\denko_ratings.jsonl",
@@ -26,11 +26,11 @@
   "counts": {
     "denko": 307,
     "grade_lv80": {
-      "A": 26,
-      "B": 74,
-      "C": 103,
-      "D": 99,
-      "S": 5
+      "A": 40,
+      "B": 88,
+      "C": 63,
+      "D": 64,
+      "S": 52
     }
   },
   "calibration": {
@@ -41,7 +41,8 @@
   "formula": {
     "component": "impact * absolute_magnitude_anchor * probability * scenario_availability * stage_condition * scope * cost",
     "scene": "top_component + 0.5*second + 0.25*third + 0.125*fourth, then 100*(1-exp(-utility/0.72))",
-    "overall": "strongest role + up to 5 points from second role; roles are attack, defense, support, expedition, growth and mechanism",
-    "note_zh": "总评以最强可用职责为基准，第二职责最多奖励 5 分；不会再用无关场景平均稀释专精防守或专精辅助角色。Wiki 新手标记只进入差异审计，不直接改写评分。"
+    "use_case_normalization": "25 + 75 * (70% within-category percentile + 30% log-scaled raw utility)",
+    "overall": "compatibility-only max(use_case_scores); never published or used for cross-purpose ranking",
+    "note_zh": "按攻击车头、守站肉盾、攻击队友、防守队友、加分、加经验六种玩家用途分别归一化。不同用途不发布综合总榜。"
   }
 }

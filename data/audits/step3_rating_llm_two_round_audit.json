@@ -41,8 +41,10 @@
     "one_line_recommendations_present": true,
     "report_hides_review_process_metadata": true,
     "report_has_review_comments": true,
-    "report_has_structured_factor_columns": true,
-    "report_localizes_scope_cost_condition_labels": true
+    "report_is_compact_use_case_lookup": true,
+    "report_has_attribute_type_filters": true,
+    "report_hides_step2_detail_columns": true,
+    "report_has_no_published_overall": true
   },
   "issue_count": 0,
   "issues": []

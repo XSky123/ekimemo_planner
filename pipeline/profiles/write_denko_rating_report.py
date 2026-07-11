@@ -196,9 +196,64 @@ function sort(scene=''){{[...rows].sort((a,b)=>val(b,scene)-val(a,scene)||a.data
 </script></body></html>'''
 
 
+def render_compact() -> str:
+    rows = read_jsonl(RATINGS)
+    manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
+    categories = [
+        ("attack_front", "攻击车头"), ("defense_front", "守站肉盾"),
+        ("attack_support", "攻击队友"), ("defense_support", "防守队友"),
+        ("score_gain", "加分"), ("exp_gain", "加经验"),
+    ]
+    review_paths = sorted((ROOT / "data/audits").glob("step3_player_rating_iteration_*_reviews.jsonl"))
+    reviews: dict[str, str] = {}
+    if review_paths:
+        for item in read_jsonl(review_paths[-1]):
+            reviews[item["denko_id"]] = item["llm_review"]["review_zh"]
+    attributes = sorted({str(row["denko"].get("attribute") or "-") for row in rows})
+    types = sorted({str(row["denko"].get("type") or "-") for row in rows})
+    body: list[str] = []
+    for row in rows:
+        denko = row["denko"]
+        attribute = str(denko.get("attribute") or "-")
+        denko_type = str(denko.get("type") or "-")
+        wiki = row["calibration"].get("wiki_reason_ja")
+        review = reviews.get(row["rating_id"])
+        review_html = f'<div>{esc(review)}</div>' if review else '<span class="muted">暂无专项核查评语</span>'
+        if wiki:
+            review_html += f'<details><summary>Wiki 对照</summary>{esc(wiki)}</details>'
+        for category, _ in categories:
+            score50 = row["levels"]["50"]["role_scores"].get(category, 0)
+            score80 = row["levels"]["80"]["role_scores"].get(category, 0)
+            if not score50 and not score80:
+                continue
+            rec50 = row.get("recommendations_by_level", {}).get("50", {}).get(category) or "—"
+            rec80 = row.get("recommendations_by_level", {}).get("80", {}).get(category) or row.get("recommendations_zh", {}).get(category) or row.get("recommendation_zh") or "—"
+            search = " ".join((row["rating_id"], str(denko.get("name") or ""), attribute, denko_type, rec50, rec80)).lower()
+            body.append(
+                f'<tr data-category="{category}" data-attribute="{esc(attribute)}" data-type="{esc(denko_type)}" data-search="{esc(search)}" data-score50="{score50}" data-score80="{score80}">'
+                f'<td><a href="{esc(row["record_meta"].get("source_url") or "#")}" target="_blank" rel="noreferrer"><code>{esc(row["rating_id"])}</code><br><b>{esc(denko.get("name") or "-")}</b></a></td>'
+                f'<td class="score"><span class="s50">{score50}</span><span class="s80">{score80}</span></td>'
+                f'<td>{esc(attribute)}</td><td>{esc(denko_type)}</td><td class="recommend"><span class="s50">{esc(rec50)}</span><span class="s80">{esc(rec80)}</span></td><td class="review">{review_html}</td></tr>'
+            )
+    tabs = "".join(f'<button data-category="{key}" class="{"active" if i == 0 else ""}">{label}</button>' for i, (key, label) in enumerate(categories))
+    attr_options = "".join(f'<option>{esc(item)}</option>' for item in attributes)
+    type_options = "".join(f'<option>{esc(item)}</option>' for item in types)
+    return f'''<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ekimemo Step3 玩家用途速查</title><style>
+:root{{font-family:system-ui,"Microsoft YaHei",sans-serif;color:#172033;background:#f5f7fa}}*{{box-sizing:border-box}}body{{margin:0}}header,main{{padding:20px max(16px,calc((100vw - 1180px)/2))}}header{{background:#fff;border-bottom:1px solid #dbe1e8}}h1{{margin:8px 0}}p{{line-height:1.65;color:#586574}}.tabs,.tools{{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}}button,input,select{{font:inherit;border:1px solid #bdc8d3;background:#fff;border-radius:5px;padding:8px 10px}}button{{cursor:pointer}}button.active{{background:#1261a0;color:#fff;border-color:#1261a0}}input{{min-width:260px}}.table-wrap{{overflow:auto;background:#fff;border:1px solid #d9e0e7}}table{{border-collapse:collapse;width:100%}}th,td{{padding:10px;border-bottom:1px solid #e1e6eb;text-align:left;vertical-align:top;font-size:13px;line-height:1.55}}th{{background:#eaf0f5;position:sticky;top:0}}td.score{{font-size:24px;font-weight:700;width:72px;text-align:center}}td.recommend{{min-width:330px;width:38%}}td.review{{min-width:330px;width:38%}}details{{margin-top:7px;color:#647180}}a{{color:#075f9c;text-decoration:none}}code{{font-size:11px}}.muted{{color:#78838d}}.hidden,.s50{{display:none}}body.lv50 .s50{{display:inline}}body.lv50 .s80{{display:none}}@media(max-width:760px){{header,main{{padding:12px}}input{{min-width:100%}}td.recommend,td.review{{min-width:260px}}}}
+</style></head><body class="lv80"><header><a href="../../docs/reports/index.html">返回报表目录</a><h1>Step3 玩家用途速查</h1>
+<p>这是 Step2 的懒人入口：先选择你要找的用途，再在同一用途内部比较。不同用途分别归一化，不发布跨用途综合总榜；需要技能数值、分支和完整条件时请进入 Step2 报表。</p>
+<div class="tabs">{tabs}</div></header><main><div class="tools"><button data-level="80" class="active">Lv80</button><button data-level="50">Lv50</button><input id="search" placeholder="搜索名字或 ID"><select id="attribute"><option value="">全部属性</option>{attr_options}</select><select id="type"><option value="">全部类型</option>{type_options}</select></div>
+<div class="table-wrap"><table><thead><tr><th>でんこ</th><th id="scoreHead">用途分</th><th>属性</th><th>类型</th><th>一句话推荐</th><th>核查评语</th></tr></thead><tbody>{''.join(body)}</tbody></table></div></main><script>
+const rows=[...document.querySelectorAll('tbody tr')],tbody=document.querySelector('tbody'),body=document.body;let category='attack_front',level='80';
+function apply(){{const q=document.querySelector('#search').value.trim().toLowerCase(),a=document.querySelector('#attribute').value,t=document.querySelector('#type').value;rows.forEach(r=>r.classList.toggle('hidden',r.dataset.category!==category||!!q&&!r.dataset.search.includes(q)||!!a&&r.dataset.attribute!==a||!!t&&r.dataset.type!==t));[...rows].filter(r=>!r.classList.contains('hidden')).sort((a,b)=>+b.dataset['score'+level]-+a.dataset['score'+level]||a.dataset.search.localeCompare(b.dataset.search)).forEach(r=>tbody.appendChild(r));}}
+document.querySelectorAll('button[data-category]').forEach(b=>b.onclick=()=>{{category=b.dataset.category;document.querySelectorAll('button[data-category]').forEach(x=>x.classList.toggle('active',x===b));apply()}});document.querySelectorAll('[data-level]').forEach(b=>b.onclick=()=>{{level=b.dataset.level;body.className='lv'+level;document.querySelectorAll('[data-level]').forEach(x=>x.classList.toggle('active',x===b));apply()}});document.querySelector('#search').oninput=apply;document.querySelector('#attribute').onchange=apply;document.querySelector('#type').onchange=apply;document.querySelector('#scoreHead').onclick=apply;apply();
+</script></body></html>'''
+
+
 def main() -> None:
     OUT.parent.mkdir(parents=True, exist_ok=True)
-    OUT.write_text(render().replace("\r\n", "\n"), encoding="utf-8", newline="\n")
+    OUT.write_text(render_compact().replace("\r\n", "\n"), encoding="utf-8", newline="\n")
     print(json.dumps({"report": str(OUT.relative_to(ROOT))}, ensure_ascii=False))
 
 

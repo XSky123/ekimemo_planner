@@ -9,8 +9,12 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[2]
 RATINGS = ROOT / "data/role_profiles/denko_ratings.jsonl"
-CACHE = ROOT / "data/audits/step3_rating_llm_cache.jsonl"
-ROLE_ZH = {"attack": "攻击", "defense": "防守", "support": "辅助", "expedition": "远征", "growth": "育成", "mechanism": "机制"}
+CACHE = ROOT / "data/audits/step3_player_rating_llm_cache.jsonl"
+ROLE_ZH = {
+    "attack_front": "攻击车头", "defense_front": "守站肉盾",
+    "attack_support": "攻击队友", "defense_support": "防守队友",
+    "score_gain": "加分", "exp_gain": "加经验",
+}
 
 
 def read_jsonl(path: Path) -> list[dict[str, Any]]:
@@ -117,7 +121,7 @@ def main() -> None:
     all_cache = sorted(cache_index.values(), key=lambda item: (item["denko_id"], item["semantic_hash"]))
     CACHE.parent.mkdir(parents=True, exist_ok=True)
     CACHE.write_text("".join(json.dumps(item, ensure_ascii=False, sort_keys=True) + "\n" for item in all_cache), encoding="utf-8", newline="\n")
-    result_path = ROOT / "data/audits" / f"step3_rating_iteration_{args.iteration}_reviews.jsonl"
+    result_path = ROOT / "data/audits" / f"step3_player_rating_iteration_{args.iteration}_reviews.jsonl"
     result_path.write_text("".join(json.dumps(item, ensure_ascii=False, sort_keys=True) + "\n" for item in output), encoding="utf-8", newline="\n")
     summary = {
         "iteration": args.iteration, "roles": role_names, "selected": len(output),
@@ -125,7 +129,7 @@ def main() -> None:
         "cache_hits": hits, "cache_misses": len(output) - hits,
         "db_cross_checks": sum(item["llm_review"]["db_backfill_decision"] == "cross_check_raw_condition" for item in output),
     }
-    summary_path = ROOT / "data/audits" / f"step3_rating_iteration_{args.iteration}_summary.json"
+    summary_path = ROOT / "data/audits" / f"step3_player_rating_iteration_{args.iteration}_summary.json"
     summary_path.write_text(json.dumps(summary, ensure_ascii=False, indent=2) + "\n", encoding="utf-8", newline="\n")
     print(json.dumps(summary, ensure_ascii=False))
 
