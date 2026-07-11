@@ -1,10 +1,10 @@
 {
   "artifact": "denko_ratings",
   "rating_version": "denko_rating.v5",
-  "generated_at": "2026-07-11T15:13:43.169679+09:00",
+  "generated_at": "2026-07-11T15:16:08.664249+09:00",
   "source": {
     "role_profiles": "data\\role_profiles\\role_profiles.jsonl",
-    "role_profiles_content_hash": "4877a340b79422a7d5a2c4e9180c0569a6514a6b35b58acd8e9f8e918b857dfd",
+    "role_profiles_content_hash": "e0b4899df5941edd425ed9890102c8d864c2a7285a64315667e57e872609e6c2",
     "observed_team_calibration": "data\\observed_cases\\team_calibration.json",
     "observed_team_calibration_content_hash": "da5b119b1ff273faaa4414b5d75c65fd3091dec34494f125a3235359ea13df44",
     "blog_character_ratings": "data\\reference_priors\\blog_character_ratings.json",

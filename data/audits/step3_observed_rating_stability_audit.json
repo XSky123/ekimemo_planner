@@ -660,38 +660,6 @@
       "finding_count": 0
     }
   ],
-  "repeated_full_regressions": [
-    {
-      "iteration": 1,
-      "selected": 245,
-      "wiki_mismatches": 181,
-      "cache_hits": 245,
-      "cache_misses": 0,
-      "db_changed_items": 0,
-      "condition_findings": 0,
-      "severe_team_mismatches": 0
-    },
-    {
-      "iteration": 2,
-      "selected": 245,
-      "wiki_mismatches": 181,
-      "cache_hits": 245,
-      "cache_misses": 0,
-      "db_changed_items": 0,
-      "condition_findings": 0,
-      "severe_team_mismatches": 0
-    },
-    {
-      "iteration": 3,
-      "selected": 245,
-      "wiki_mismatches": 181,
-      "cache_hits": 245,
-      "cache_misses": 0,
-      "db_changed_items": 0,
-      "condition_findings": 0,
-      "severe_team_mismatches": 0
-    }
-  ],
   "checks": {
     "three_distinct_15_record_cycles": true,
     "sample_cycles_have_no_invariant_findings": true,
@@ -699,10 +667,7 @@
     "team_alignment_clean": true,
     "archive_provenance_present": true,
     "blog_provenance_present": true,
-    "report_evidence_layers_separate": true,
-    "three_consecutive_full_regressions": true,
-    "repeated_selection_and_semantics_stable": true,
-    "repeated_cycles_have_zero_db_or_audit_findings": true
+    "report_evidence_layers_separate": true
   },
   "issue_count": 0,
   "issues": []

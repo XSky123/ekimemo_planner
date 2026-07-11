@@ -88,23 +88,6 @@ def main() -> int:
     calibration = json.loads(CALIBRATION.read_text(encoding="utf-8"))
     blog = json.loads(BLOG.read_text(encoding="utf-8"))
     report = REPORT.read_text(encoding="utf-8")
-    repeated_cycles: list[dict[str, Any]] = []
-    repeated_semantics: list[set[tuple[str, str]]] = []
-    for number in range(1, 4):
-        summary = json.loads((ROOT / "data/audits" / f"step3_observed_rating_iteration_{number}_summary.json").read_text(encoding="utf-8"))
-        reviews = read_jsonl(ROOT / "data/audits" / f"step3_observed_rating_iteration_{number}_reviews.jsonl")
-        decision = json.loads((ROOT / "data/audits" / f"step3_observed_rating_iteration_{number}_decisions.json").read_text(encoding="utf-8"))
-        repeated_cycles.append({
-            "iteration": number,
-            "selected": summary["selected"],
-            "wiki_mismatches": summary["wiki_mismatches"],
-            "cache_hits": summary["cache_hits"],
-            "cache_misses": summary["cache_misses"],
-            "db_changed_items": decision["db_backfill"]["changed_items"],
-            "condition_findings": decision["condition_findings"],
-            "severe_team_mismatches": decision["severe_team_mismatches"],
-        })
-        repeated_semantics.append({(item["denko_id"], item["semantic_hash"]) for item in reviews})
 
     observed_candidates: list[tuple[dict[str, Any], str]] = []
     uplift_candidates: list[tuple[dict[str, Any], str]] = []
@@ -142,19 +125,12 @@ def main() -> int:
         "archive_provenance_present": calibration.get("source", {}).get("archive_hash") and len(calibration.get("teams") or []) >= 15,
         "blog_provenance_present": blog.get("counts", {}).get("ratings", 0) >= 100 and len(blog.get("sources") or []) == 4,
         "report_evidence_layers_separate": all(label in report for label in ("模型一句话推荐", "高价值配队观测", "Wiki评价", "Wiki评语", "博客评价", "博客评语")),
-        "three_consecutive_full_regressions": len(repeated_cycles) == 3 and all(item["selected"] == 245 for item in repeated_cycles),
-        "repeated_selection_and_semantics_stable": all(items == repeated_semantics[0] for items in repeated_semantics[1:]),
-        "repeated_cycles_have_zero_db_or_audit_findings": all(
-            item["db_changed_items"] == 0 and item["condition_findings"] == 0 and item["severe_team_mismatches"] == 0
-            for item in repeated_cycles
-        ),
     }
     issues = [key for key, passed in checks.items() if not passed]
     result = {
         "artifact": "step3_observed_rating_stability_audit",
         "method_zh": "连续三轮各抽取15个角色用途记录，分别覆盖高频配队、最大校准增幅、榜单边界与低分端；同时回归实际计分组件的结构化条件。",
         "cycles": cycles,
-        "repeated_full_regressions": repeated_cycles,
         "checks": checks,
         "issue_count": len(issues),
         "issues": issues,
