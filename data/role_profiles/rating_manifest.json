@@ -1,10 +1,10 @@
 {
   "artifact": "denko_ratings",
   "rating_version": "denko_rating.v4",
-  "generated_at": "2026-07-11T14:42:34.306072+09:00",
+  "generated_at": "2026-07-11T14:43:10.075374+09:00",
   "source": {
     "role_profiles": "data\\role_profiles\\role_profiles.jsonl",
-    "content_hash": "4a6539e32ac69f1fcff945909b9b903c55eff1a69737634aad91e93e61e103e4"
+    "content_hash": "c58ee784b988451831d7fcd360becb4a25c2e26fdebf4f78361d1de2b43b693e"
   },
   "outputs": {
     "ratings": "data\\role_profiles\\denko_ratings.jsonl",

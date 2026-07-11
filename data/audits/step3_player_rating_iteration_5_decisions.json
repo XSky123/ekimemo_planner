@@ -1,0 +1,28 @@
+{
+  "iteration": 5,
+  "focus": "final full rebuild, extreme-sample review, Wiki disagreement review and idempotence proof",
+  "llm_review": {
+    "selected": 245,
+    "wiki_mismatches": 180,
+    "selection": "all six use cases top/bottom 15 plus every Wiki mismatch",
+    "cache_hits": 245,
+    "cache_misses": 0,
+    "verdicts": {
+      "reasonable_or_contextual": 177,
+      "possible_underrating": 28,
+      "stage_divergence": 29,
+      "aligned_low": 11
+    }
+  },
+  "db_backfill": {
+    "decision": "not_required_for_this_iteration",
+    "reason_zh": "最终 backfill dry-run 为 0，Step1 为 307 denko / 307 skills / 0 issue；前后15名实际计分组件未发现新的条件或对象缺口。Wiki高推荐但六类低分的对象主要属于无效化、概率/CD操作、Link转移等未纳入本懒人包的机制用途，评语保留分歧但不伪造直接攻防/积分/经验分。"
+  },
+  "final_contract_zh": {
+    "categories": ["攻击车头", "守站肉盾", "攻击队友", "防守队友", "加分", "加经验"],
+    "normalization": "within-use-case percentile plus log-scaled utility",
+    "global_overall_published": false,
+    "report_filters": ["attribute", "type"],
+    "named_ranks": {"extra:049_lv50_attack_front": 25, "original:087_lv50_attack_front": 22}
+  }
+}

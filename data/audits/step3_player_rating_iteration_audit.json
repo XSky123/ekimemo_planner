@@ -1,0 +1,71 @@
+{
+  "artifact": "step3_player_rating_iteration_audit",
+  "iterations": [
+    {
+      "iteration": 1,
+      "selected": 245,
+      "wiki_mismatches": 184,
+      "cache_hits": 86,
+      "cache_misses": 159,
+      "db_decision": "required_and_completed"
+    },
+    {
+      "iteration": 2,
+      "selected": 247,
+      "wiki_mismatches": 184,
+      "cache_hits": 230,
+      "cache_misses": 17,
+      "db_decision": "required_and_completed"
+    },
+    {
+      "iteration": 3,
+      "selected": 245,
+      "wiki_mismatches": 180,
+      "cache_hits": 217,
+      "cache_misses": 28,
+      "db_decision": "required_and_completed"
+    },
+    {
+      "iteration": 4,
+      "selected": 245,
+      "wiki_mismatches": 180,
+      "cache_hits": 245,
+      "cache_misses": 0,
+      "db_decision": "not_required_for_this_iteration"
+    },
+    {
+      "iteration": 5,
+      "selected": 245,
+      "wiki_mismatches": 180,
+      "cache_hits": 245,
+      "cache_misses": 0,
+      "db_decision": "not_required_for_this_iteration"
+    }
+  ],
+  "checks": {
+    "five_full_iterations_present": true,
+    "final_all_wiki_mismatches_reviewed": true,
+    "final_all_category_extremes_reviewed": true,
+    "step1_validation_green": true,
+    "use_case_audit_green": true,
+    "report_is_compact": true,
+    "report_has_no_overall_or_process": true
+  },
+  "final_selection_labels": {
+    "attack_front:bottom15": 15,
+    "attack_front:top15": 15,
+    "attack_support:bottom15": 15,
+    "attack_support:top15": 15,
+    "defense_front:bottom15": 15,
+    "defense_front:top15": 15,
+    "defense_support:bottom15": 15,
+    "defense_support:top15": 15,
+    "exp_gain:bottom15": 15,
+    "exp_gain:top15": 15,
+    "score_gain:bottom15": 15,
+    "score_gain:top15": 15,
+    "wiki_mismatch": 180
+  },
+  "issue_count": 0,
+  "issues": []
+}
