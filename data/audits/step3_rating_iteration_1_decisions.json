@@ -1,0 +1,22 @@
+{
+  "iteration": 1,
+  "focus": "split role scores and stop diluting specialists",
+  "llm_review": {
+    "selected": 236,
+    "wiki_mismatches": 180,
+    "cache_hits": 0,
+    "cache_misses": 236
+  },
+  "db_backfill": {
+    "decision": "not_required_for_this_iteration",
+    "reason_zh": "本轮只改变职责聚合和总评定义，不改变详情页事实。原始条件字段进入后续横向语义轮次，不因评分差异直接回写 DB。"
+  },
+  "horizontal_review": {
+    "opponent_context_raw": 40,
+    "time_window_raw": 6,
+    "position_exception_raw": 5,
+    "excluded_station_raw": 1,
+    "weekday_raw": 1,
+    "season_months_raw": 1
+  }
+}

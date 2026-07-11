@@ -39,8 +39,8 @@
     "rating_schema_issue_count": 0,
     "profile_issue_count": 0,
     "template_recommendations_removed": true,
-    "report_has_round1_reviews": true,
-    "report_has_round2_reviews": true,
+    "report_hides_review_process_metadata": true,
+    "report_has_review_comments": true,
     "report_has_structured_factor_columns": true
   },
   "issue_count": 0,

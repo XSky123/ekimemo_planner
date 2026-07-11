@@ -20,6 +20,7 @@ SCENES = [
     ("expedition_exp", "远征经验"), ("growth", "日常育成"),
     ("mechanism", "机制辅助"),
 ]
+ROLES = [("attack", "攻击职责"), ("defense", "防守职责"), ("expedition", "远征职责"), ("growth", "育成职责"), ("mechanism", "机制辅助")]
 
 
 def esc(value: Any) -> str:
@@ -67,11 +68,15 @@ def render() -> str:
             level_cells[level] = {
                 "overall": result.get("published_score", result["overall_score"]), "model": result.get("model_score", result["overall_score"]), "grade": result["grade"],
                 "top_scene": dict(SCENES)[top_scene], "top_score": top_payload["score"],
-                "factor": factor_summary(top_component), "component": top_component, "scores": scores,
+                "factor": factor_summary(top_component), "component": top_component, "scores": scores, "roles": result.get("role_scores") or {},
             }
         scene_cells = "".join(
             f'<td class="scene" data-scene="{scene}"><span class="s50">{level_cells["50"]["scores"][scene]}</span><span class="s80">{level_cells["80"]["scores"][scene]}</span></td>'
             for scene, _ in SCENES
+        )
+        role_cells = "".join(
+            f'<td class="scene role" data-scene="role-{role}"><span class="s50">{level_cells["50"]["roles"].get(role, 0)}</span><span class="s80">{level_cells["80"]["roles"].get(role, 0)}</span></td>'
+            for role, _ in ROLES
         )
         prior = row["calibration"].get("beginner_prior_marker") or "—"
         calibration_detail = ""
@@ -93,11 +98,17 @@ def render() -> str:
                 "scope_cost": (str(factors.get("scope_basis") or "—") + (" / " + "、".join(factors.get("cost_details") or []) if factors.get("cost_details") else "")),
             }
         reviewed_items = reviews.get(row["rating_id"], [])
-        review_html = "".join(
-            f'<div class="review-item"><b>R{item["round"]} {esc(dict(SCENES).get(item["scene"], item["scene"]))} {esc(item["band"])}</b> '
-            f'<span class="verdict">{esc(item["llm_review"]["verdict"])}</span><br>{esc(item["llm_review"]["review_zh"])}</div>'
+        comments = list(dict.fromkeys(
+            item["llm_review"]["review_zh"]
             for item in reviewed_items
-        ) or '<span class="muted">未进入两轮极端样本</span>'
+            if item["llm_review"]["verdict"] != "pass"
+        ))
+        if comments:
+            review_html = "".join(f'<div class="review-item">{esc(comment)}</div>' for comment in comments)
+        elif reviewed_items:
+            review_html = '<span class="muted">极端样本核查未发现异常</span>'
+        else:
+            review_html = '<span class="muted">暂无专项核查评语</span>'
         search = " ".join([row["rating_id"], str(denko.get("name") or ""), str(denko.get("attribute") or ""), str(denko.get("type") or ""), row["recommendation_zh"]])
         body.append(
             f'<tr data-search="{esc(search.lower())}" data-score50="{level_cells["50"]["overall"]}" data-score80="{level_cells["80"]["overall"]}">'
@@ -109,9 +120,10 @@ def render() -> str:
             f'<td><span class="s50">{esc(factor_cells["50"]["availability"])}</span><span class="s80">{esc(factor_cells["80"]["availability"])}</span></td>'
             f'<td><span class="s50">{esc(factor_cells["50"]["conditions"])}</span><span class="s80">{esc(factor_cells["80"]["conditions"])}</span></td>'
             f'<td><span class="s50">{esc(factor_cells["50"]["scope_cost"])}</span><span class="s80">{esc(factor_cells["80"]["scope_cost"])}</span></td>'
-            f'{scene_cells}<td class="reviewed">{review_html}<small>Wiki 新手标记：{esc(prior)}</small>{calibration_detail}</td></tr>'
+            f'{role_cells}{scene_cells}<td class="reviewed">{review_html}<small>Wiki 新手标记：{esc(prior)}</small>{calibration_detail}</td></tr>'
         )
     heads = "".join(f'<th data-sort-scene="{scene}">{label}</th>' for scene, label in SCENES)
+    role_heads = "".join(f'<th data-sort-scene="role-{role}">{label}</th>' for role, label in ROLES)
     return f'''<!doctype html>
 <html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Ekimemo Step3 角色综合评分</title>
@@ -124,7 +136,7 @@ def render() -> str:
 <div class="formula"><div><b>组件有效效用</b>固定效果量锚点 × 发动概率 × 场景覆盖 × 成长阶段条件 × 作用范围 × 代价。</div><div><b>七个实际场景</b>无脑打站、计划爆发、在家守站、远征积分、远征经验、日常育成、机制辅助分别计算。</div><div><b>Wiki 校准</b>×/△/○/◎ 决定新手推荐粗区间，事实模型只负责区间内排序；※ 保留为场景型。所有模型分歧均进入审计并保留双方理由。</div></div>
 <p class="note">Mileage Class 10、饰品槽/饰品数量、先 Link 成功、今日新站、车站属性分支等条件会随新手/后期和场景使用不同满足率。Lv50 表中同时显示“模型原始分”，便于继续发现 Wiki 与模型的偏差。</p></header>
 <main><div class="tools"><button data-level="80" class="active">Lv80 标准</button><button data-level="50">Lv50 入门</button><input id="search" placeholder="搜索 ID、名字、属性、类型或推荐"><select id="grade"><option value="">全部等级</option><option>S</option><option>A</option><option>B</option><option>C</option><option>D</option></select><button id="sortOverall">按总分排序</button></div>
-<div class="table-wrap"><table><thead><tr><th>でんこ</th><th>总评</th><th>最强场景</th><th>主效果</th><th>概率</th><th>覆盖</th><th>启动条件</th><th>范围 / 代价</th>{heads}<th>两轮 LLM 核查</th></tr></thead><tbody>{''.join(body)}</tbody></table></div></main>
+<div class="table-wrap"><table><thead><tr><th>でんこ</th><th>总评</th><th>最强场景</th><th>主效果</th><th>概率</th><th>覆盖</th><th>启动条件</th><th>范围 / 代价</th>{role_heads}{heads}<th>核查评语</th></tr></thead><tbody>{''.join(body)}</tbody></table></div></main>
 <script>
 const body=document.body,rows=[...document.querySelectorAll('tbody tr')],tbody=document.querySelector('tbody');let level='80';
 function val(row,scene){{if(scene)return +(row.querySelector(`[data-scene="${{scene}}"] .s${{level}}`).textContent);return +row.dataset[`score${{level}}`];}}

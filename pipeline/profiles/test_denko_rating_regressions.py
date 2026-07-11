@@ -65,14 +65,11 @@ def main() -> int:
             "passed": row["levels"]["50"]["published_score"] <= 40 and row["levels"]["80"]["overall_score"] >= 45,
         })
     checks.extend([
-        {"id": "original_081_stays_wiki_triangle", "passed": 45 <= ratings["original:081"]["levels"]["50"]["published_score"] <= 64},
+        {"id": "original_081_link_gate_stays_low", "passed": ratings["original:081"]["levels"]["50"]["published_score"] < 40},
         {"id": "original_083_link_branch_not_high_generalist", "passed": ratings["original:083"]["levels"]["50"]["overall_score"] < 40},
         {"id": "extra_119_accessory_dependency_beginner_low", "passed": ratings["extra:119"]["levels"]["50"]["published_score"] <= 40},
-        {"id": "all_wiki_band_scores_aligned", "passed": all(
-            row["calibration"].get("status") in {"no_prior", "contextual"}
-            or ({"×": (0, 44), "△": (45, 64), "○": (65, 84), "◎": (85, 100)}[row["calibration"]["beginner_prior_marker"]][0]
-                <= row["levels"]["50"]["published_score"]
-                <= {"×": (0, 44), "△": (45, 64), "○": (65, 84), "◎": (85, 100)}[row["calibration"]["beginner_prior_marker"]][1])
+        {"id": "wiki_does_not_override_model_score", "passed": all(
+            row["levels"]["50"]["published_score"] == row["levels"]["50"]["model_score"]
             for row in ratings.values()
         )},
     ])

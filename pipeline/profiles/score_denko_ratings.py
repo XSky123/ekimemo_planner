@@ -16,7 +16,7 @@ PRIOR_AUDIT = ROOT / "data/audits/recommendation_prior_audit.json"
 OUT = ROOT / "data/role_profiles/denko_ratings.jsonl"
 MANIFEST = ROOT / "data/role_profiles/rating_manifest.json"
 AUDIT = ROOT / "data/audits/step3_denko_rating_audit.json"
-MODEL_VERSION = "denko_rating.v2"
+MODEL_VERSION = "denko_rating.v3"
 JST = timezone(timedelta(hours=9))
 LEVELS = ("50", "80")
 PRIMARY_SCENES = (
@@ -431,6 +431,17 @@ def calibrated_beginner_score(marker: str | None, model_score: int) -> int:
     return round(low + (high - low) * model_score / 100)
 
 
+def role_scores(scenes: dict[str, dict[str, Any]]) -> dict[str, int]:
+    attack = round(0.55 * scenes["daily_attack"]["score"] + 0.45 * scenes["burst_attack"]["score"])
+    return {
+        "attack": attack,
+        "defense": scenes["home_defense"]["score"],
+        "expedition": max(scenes["expedition_score"]["score"], scenes["expedition_exp"]["score"]),
+        "growth": scenes["growth"]["score"],
+        "mechanism": scenes["mechanism"]["score"],
+    }
+
+
 def grade(score: int) -> str:
     if score >= 85: return "S"
     if score >= 75: return "A"
@@ -507,11 +518,15 @@ def build() -> tuple[list[dict[str, Any]], dict[str, Any], dict[str, Any]]:
                     "utility": utilities[scene][denko_id],
                     "top_components": components[:3],
                 }
-            ranked = sorted((item["score"] for item in scenes.values()), reverse=True)
+            roles = role_scores(scenes)
+            ranked = sorted(roles.values(), reverse=True)
             active_scene_count = sum(bool(item["top_components"]) for item in scenes.values())
             versatility = min(100, active_scene_count * 18)
-            overall = round(0.62 * ranked[0] + 0.23 * ranked[1] + 0.10 * ranked[2] + 0.05 * versatility)
-            payload[denko_id] = {"overall_score": overall, "grade": grade(overall), "versatility": versatility, "scenes": scenes}
+            # Overall means the strongest usable role, with only a small bonus
+            # for a second role. A specialist defender is no longer diluted by
+            # having no attack/economy component.
+            overall = min(100, round(0.88 * ranked[0] + 0.12 * ranked[1]))
+            payload[denko_id] = {"overall_score": overall, "grade": grade(overall), "versatility": versatility, "role_scores": roles, "scenes": scenes}
         level_payloads[level] = payload
     rows = []
     for denko_id, items in sorted(grouped.items()):
@@ -530,7 +545,7 @@ def build() -> tuple[list[dict[str, Any]], dict[str, Any], dict[str, Any]]:
         }
         beginner_model_score = row["levels"]["50"]["overall_score"]
         row["levels"]["50"]["model_score"] = beginner_model_score
-        row["levels"]["50"]["published_score"] = calibrated_beginner_score(priors.get(denko_id), beginner_model_score)
+        row["levels"]["50"]["published_score"] = beginner_model_score
         row["levels"]["50"]["grade"] = grade(row["levels"]["50"]["published_score"])
         row["calibration"].update(prior_alignment(priors.get(denko_id), row["levels"]["50"]["overall_score"], row["levels"]["50"]["scenes"]))
         row["calibration"]["wiki_reason_ja"] = comments.get(denko_id)
@@ -547,14 +562,13 @@ def build() -> tuple[list[dict[str, Any]], dict[str, Any], dict[str, Any]]:
         "calibration": {
             "beginner_prior": str(PRIOR_AUDIT.relative_to(ROOT)),
             "content_hash": hashlib.sha256(PRIOR_AUDIT.read_bytes()).hexdigest() if PRIOR_AUDIT.exists() else None,
-            "method": "Wiki marker selects the beginner recommendation band; the fact model orders characters inside that band. Contextual marker ※ remains unbanded.",
-            "bands": {"×": [5, 40], "△": [47, 62], "○": [67, 82], "◎": [87, 98]},
+            "method": "Wiki markers and comments are review evidence only. They never overwrite model scores; every disagreement enters the cached LLM review queue.",
         },
         "formula": {
             "component": "impact * absolute_magnitude_anchor * probability * scenario_availability * stage_condition * scope * cost",
             "scene": "top_component + 0.5*second + 0.25*third + 0.125*fourth, then 100*(1-exp(-utility/0.72))",
-            "overall": "62% best scene + 23% second + 10% third + 5% versatility",
-            "note_zh": "Lv50 使用新手条件先验，Lv80 使用后期条件先验；场景分采用固定效果锚点，不再把任意正效果抬到高百分位。",
+            "overall": "88% strongest role + 12% second role; roles are attack, defense, expedition, growth and mechanism",
+            "note_zh": "总评代表最强可用职责，不再用无关场景平均稀释专精防守或专精辅助角色。Wiki 新手标记只进入差异审计，不直接改写评分。",
         },
     }
     audit = audit_rows(rows, manifest)
@@ -597,16 +611,6 @@ def audit_rows(rows: list[dict[str, Any]], manifest: dict[str, Any]) -> dict[str
          "wiki_reason_ja": row["calibration"].get("wiki_reason_ja"), "model_reason_zh": row["calibration"].get("reason_zh")}
         for row in rows if row["calibration"].get("status") == "mismatch"
     ]
-    published_aligned = 0
-    published_checked = 0
-    bands = {"×": (0, 44), "△": (45, 64), "○": (65, 84), "◎": (85, 100)}
-    for row in rows:
-        marker = row["calibration"].get("beginner_prior_marker")
-        if marker in bands:
-            published_checked += 1
-            low, high = bands[marker]
-            if low <= row["levels"]["50"]["published_score"] <= high:
-                published_aligned += 1
     return {
         "artifact": "step3_denko_rating_audit", "rating_version": MODEL_VERSION,
         "denko_count": len(rows), "issue_count": len(issues), "issues": issues,
@@ -618,7 +622,7 @@ def audit_rows(rows: list[dict[str, Any]], manifest: dict[str, Any]) -> dict[str
             "prior_marker_lv50_mean_for_calibration_only": prior_summary,
             "wiki_model_mismatch_count": len(mismatch_rows),
             "all_mismatches_have_strong_reason": all(row["wiki_reason_ja"] and row["model_reason_zh"] for row in mismatch_rows),
-            "published_wiki_band_alignment": {"aligned": published_aligned, "checked": published_checked, "rate": round(published_aligned / published_checked, 6) if published_checked else None},
+            "wiki_is_review_only": all(row["levels"]["50"]["published_score"] == row["levels"]["50"]["model_score"] for row in rows),
         },
         "mismatches": mismatch_rows,
         "formula": manifest["formula"],

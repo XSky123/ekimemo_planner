@@ -1,10 +1,10 @@
 {
   "artifact": "denko_ratings",
-  "rating_version": "denko_rating.v2",
-  "generated_at": "2026-07-11T13:57:31.829221+09:00",
+  "rating_version": "denko_rating.v3",
+  "generated_at": "2026-07-11T13:59:40.126399+09:00",
   "source": {
     "role_profiles": "data\\role_profiles\\role_profiles.jsonl",
-    "content_hash": "7cefdc17f0951513b152e1024c345cf400a04f81bbbf1e94ef8775faffbc0ed0"
+    "content_hash": "c71546488cc77edef701a10e526ccea6641461be37075069d2be58e7f1cf6c99"
   },
   "outputs": {
     "ratings": "data\\role_profiles\\denko_ratings.jsonl",
@@ -26,39 +26,22 @@
   "counts": {
     "denko": 307,
     "grade_lv80": {
-      "A": 1,
-      "B": 39,
-      "C": 103,
-      "D": 164
+      "A": 4,
+      "B": 55,
+      "C": 107,
+      "D": 140,
+      "S": 1
     }
   },
   "calibration": {
     "beginner_prior": "data\\audits\\recommendation_prior_audit.json",
     "content_hash": "8d4f65ec818bd69eebdf0fabefa9555b7f4b10e442d026ca6c23ab6d05426f4e",
-    "method": "Wiki marker selects the beginner recommendation band; the fact model orders characters inside that band. Contextual marker ※ remains unbanded.",
-    "bands": {
-      "×": [
-        5,
-        40
-      ],
-      "△": [
-        47,
-        62
-      ],
-      "○": [
-        67,
-        82
-      ],
-      "◎": [
-        87,
-        98
-      ]
-    }
+    "method": "Wiki markers and comments are review evidence only. They never overwrite model scores; every disagreement enters the cached LLM review queue."
   },
   "formula": {
     "component": "impact * absolute_magnitude_anchor * probability * scenario_availability * stage_condition * scope * cost",
     "scene": "top_component + 0.5*second + 0.25*third + 0.125*fourth, then 100*(1-exp(-utility/0.72))",
-    "overall": "62% best scene + 23% second + 10% third + 5% versatility",
-    "note_zh": "Lv50 使用新手条件先验，Lv80 使用后期条件先验；场景分采用固定效果锚点，不再把任意正效果抬到高百分位。"
+    "overall": "88% strongest role + 12% second role; roles are attack, defense, expedition, growth and mechanism",
+    "note_zh": "总评代表最强可用职责，不再用无关场景平均稀释专精防守或专精辅助角色。Wiki 新手标记只进入差异审计，不直接改写评分。"
   }
 }

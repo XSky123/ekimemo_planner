@@ -1,7 +1,7 @@
 {
   "artifact": "role_profiles",
   "profile_version": "role_profile.v1",
-  "generated_at": "2026-07-11T13:57:30.796856+09:00",
+  "generated_at": "2026-07-11T13:59:39.036276+09:00",
   "source": {
     "skill_facts": "data\\step1_db\\skill_facts.jsonl",
     "content_hash": "262c0722fa8372c8b03c33c35a75cfac260c929c08f353234c0e8804fbd11ae9"

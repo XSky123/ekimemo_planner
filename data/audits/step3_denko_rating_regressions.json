@@ -30,7 +30,7 @@
       "passed": true
     },
     {
-      "id": "original_081_stays_wiki_triangle",
+      "id": "original_081_link_gate_stays_low",
       "passed": true
     },
     {
@@ -42,7 +42,7 @@
       "passed": true
     },
     {
-      "id": "all_wiki_band_scores_aligned",
+      "id": "wiki_does_not_override_model_score",
       "passed": true
     }
   ],

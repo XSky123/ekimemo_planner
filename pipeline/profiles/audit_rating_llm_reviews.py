@@ -44,8 +44,8 @@ def main() -> int:
         "rating_schema_issue_count": schema_audit["issue_count"],
         "profile_issue_count": profile_validation["issue_count"],
         "template_recommendations_removed": rating_audit["checks"].get("template_recommendations_removed"),
-        "report_has_round1_reviews": "R1 " in report,
-        "report_has_round2_reviews": "R2 " in report,
+        "report_hides_review_process_metadata": "R1 " not in report and "R2 " not in report,
+        "report_has_review_comments": "峰值" in report or "门槛" in report or "条件" in report,
         "report_has_structured_factor_columns": all(label in report for label in ("概率", "覆盖", "启动条件", "范围 / 代价")),
     }
     if not all(value == 0 for key, value in final_checks.items() if key.endswith("issue_count")):
