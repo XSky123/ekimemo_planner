@@ -557,10 +557,10 @@ def build() -> tuple[list[dict[str, Any]], dict[str, Any], dict[str, Any]]:
             ranked = sorted(roles.values(), reverse=True)
             active_scene_count = sum(bool(item["top_components"]) for item in scenes.values())
             versatility = min(100, active_scene_count * 18)
-            # Overall means the strongest usable role, with only a small bonus
-            # for a second role. A specialist defender is no longer diluted by
-            # having no attack/economy component.
-            overall = min(100, round(0.88 * ranked[0] + 0.12 * ranked[1]))
+            # Overall starts from the strongest usable role. The second role is
+            # a real versatility bonus (up to five points), never a discount on
+            # specialists such as pure defenders or dedicated supporters.
+            overall = min(100, round(ranked[0] + 0.05 * ranked[1]))
             payload[denko_id] = {"overall_score": overall, "grade": grade(overall), "versatility": versatility, "role_scores": roles, "scenes": scenes}
         level_payloads[level] = payload
     rows = []
@@ -584,6 +584,7 @@ def build() -> tuple[list[dict[str, Any]], dict[str, Any], dict[str, Any]]:
         row["levels"]["50"]["grade"] = grade(row["levels"]["50"]["published_score"])
         row["calibration"].update(prior_alignment(priors.get(denko_id), row["levels"]["50"]["overall_score"], row["levels"]["50"]["scenes"]))
         row["calibration"]["wiki_reason_ja"] = comments.get(denko_id)
+        row["recommendation_zh"] = recommendation(row, "80")
         rows.append(row)
     source_hash = hashlib.sha256(PROFILES.read_bytes()).hexdigest()
     score_counts = Counter(row["levels"]["80"]["grade"] for row in rows)
@@ -602,8 +603,8 @@ def build() -> tuple[list[dict[str, Any]], dict[str, Any], dict[str, Any]]:
         "formula": {
             "component": "impact * absolute_magnitude_anchor * probability * scenario_availability * stage_condition * scope * cost",
             "scene": "top_component + 0.5*second + 0.25*third + 0.125*fourth, then 100*(1-exp(-utility/0.72))",
-            "overall": "88% strongest role + 12% second role; roles are attack, defense, expedition, growth and mechanism",
-            "note_zh": "总评代表最强可用职责，不再用无关场景平均稀释专精防守或专精辅助角色。Wiki 新手标记只进入差异审计，不直接改写评分。",
+            "overall": "strongest role + up to 5 points from second role; roles are attack, defense, support, expedition, growth and mechanism",
+            "note_zh": "总评以最强可用职责为基准，第二职责最多奖励 5 分；不会再用无关场景平均稀释专精防守或专精辅助角色。Wiki 新手标记只进入差异审计，不直接改写评分。",
         },
     }
     audit = audit_rows(rows, manifest)
@@ -653,7 +654,7 @@ def audit_rows(rows: list[dict[str, Any]], manifest: dict[str, Any]) -> dict[str
             "all_scores_bounded": not any("out_of_range" in issue for issue in issues),
             "cooldown_discount_samples": len(comparisons),
             "cooldown_discount_passed": bool(comparisons) and all(item["passed"] for item in comparisons),
-            "template_recommendations_removed": all(not row["recommendation_zh"] for row in rows),
+            "one_line_recommendations_present": all(bool(row["recommendation_zh"]) for row in rows),
             "prior_marker_lv50_mean_for_calibration_only": prior_summary,
             "wiki_model_mismatch_count": len(mismatch_rows),
             "all_mismatches_have_strong_reason": all(row["wiki_reason_ja"] and row["model_reason_zh"] for row in mismatch_rows),

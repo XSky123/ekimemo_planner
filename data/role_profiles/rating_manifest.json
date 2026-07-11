@@ -1,10 +1,10 @@
 {
   "artifact": "denko_ratings",
   "rating_version": "denko_rating.v3",
-  "generated_at": "2026-07-11T14:08:24.399962+09:00",
+  "generated_at": "2026-07-11T14:11:30.248396+09:00",
   "source": {
     "role_profiles": "data\\role_profiles\\role_profiles.jsonl",
-    "content_hash": "671c63a6472312fe963357b13becc93763f05f0f9f8b3c10338da4ffc4b657c1"
+    "content_hash": "6462792ead0d79b2f63df1b4c47350f6f83c2a752fecc944fce7e2365a107e21"
   },
   "outputs": {
     "ratings": "data\\role_profiles\\denko_ratings.jsonl",
@@ -26,11 +26,11 @@
   "counts": {
     "denko": 307,
     "grade_lv80": {
-      "A": 8,
-      "B": 80,
+      "A": 26,
+      "B": 74,
       "C": 103,
-      "D": 114,
-      "S": 2
+      "D": 99,
+      "S": 5
     }
   },
   "calibration": {
@@ -41,7 +41,7 @@
   "formula": {
     "component": "impact * absolute_magnitude_anchor * probability * scenario_availability * stage_condition * scope * cost",
     "scene": "top_component + 0.5*second + 0.25*third + 0.125*fourth, then 100*(1-exp(-utility/0.72))",
-    "overall": "88% strongest role + 12% second role; roles are attack, defense, expedition, growth and mechanism",
-    "note_zh": "总评代表最强可用职责，不再用无关场景平均稀释专精防守或专精辅助角色。Wiki 新手标记只进入差异审计，不直接改写评分。"
+    "overall": "strongest role + up to 5 points from second role; roles are attack, defense, support, expedition, growth and mechanism",
+    "note_zh": "总评以最强可用职责为基准，第二职责最多奖励 5 分；不会再用无关场景平均稀释专精防守或专精辅助角色。Wiki 新手标记只进入差异审计，不直接改写评分。"
   }
 }

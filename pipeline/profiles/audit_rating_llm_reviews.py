@@ -43,7 +43,7 @@ def main() -> int:
         "rating_issue_count": rating_audit["issue_count"],
         "rating_schema_issue_count": schema_audit["issue_count"],
         "profile_issue_count": profile_validation["issue_count"],
-        "template_recommendations_removed": rating_audit["checks"].get("template_recommendations_removed"),
+        "one_line_recommendations_present": rating_audit["checks"].get("one_line_recommendations_present"),
         "report_hides_review_process_metadata": all(token not in report for token in ("R1 ", "R2 ", "模型原始分", "处理：")),
         "report_has_review_comments": "峰值" in report or "门槛" in report or "条件" in report,
         "report_has_structured_factor_columns": all(label in report for label in ("概率", "覆盖", "启动条件", "范围 / 代价")),

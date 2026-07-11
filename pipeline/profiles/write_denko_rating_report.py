@@ -10,10 +10,7 @@ ROOT = Path(__file__).resolve().parents[2]
 RATINGS = ROOT / "data/role_profiles/denko_ratings.jsonl"
 MANIFEST = ROOT / "data/role_profiles/rating_manifest.json"
 OUT = ROOT / "data/reports/step3_denko_ratings_zh.html"
-LLM_REVIEWS = [
-    ROOT / "data/audits/step3_rating_llm_round1.jsonl",
-    ROOT / "data/audits/step3_rating_llm_round2.jsonl",
-]
+LLM_REVIEWS = [ROOT / "data/audits/step3_rating_iteration_5_reviews.jsonl"]
 SCOPE_ZH = {
     "accessed_denko": "被访问角色", "accessing_denko": "访问角色", "front_car": "队伍首位",
     "master": "玩家", "master_account": "玩家账号", "opponent_denko": "对手角色",
@@ -172,7 +169,7 @@ def render() -> str:
             f'<td><span class="s50">{esc(factor_cells["50"]["availability"])}</span><span class="s80">{esc(factor_cells["80"]["availability"])}</span></td>'
             f'<td><span class="s50">{esc(factor_cells["50"]["conditions"])}</span><span class="s80">{esc(factor_cells["80"]["conditions"])}</span></td>'
             f'<td><span class="s50">{esc(factor_cells["50"]["scope_cost"])}</span><span class="s80">{esc(factor_cells["80"]["scope_cost"])}</span></td>'
-            f'{role_cells}{scene_cells}<td class="reviewed">{review_html}<small>Wiki 新手标记：{esc(prior)}</small>{calibration_detail}</td></tr>'
+            f'{role_cells}{scene_cells}<td class="recommend">{esc(row["recommendation_zh"])}</td><td class="reviewed">{review_html}<small>Wiki 新手标记：{esc(prior)}</small>{calibration_detail}</td></tr>'
         )
     heads = "".join(f'<th data-sort-scene="{scene}">{label}</th>' for scene, label in SCENES)
     role_heads = "".join(f'<th data-sort-scene="role-{role}">{label}</th>' for role, label in ROLES)
@@ -188,7 +185,7 @@ def render() -> str:
 <div class="formula"><div><b>组件有效效用</b>固定效果量锚点 × 发动概率 × 场景覆盖 × 成长阶段条件 × 作用范围 × 代价。</div><div><b>六项职责分</b>攻击、防守、辅助、远征、育成与机制独立排名，避免强力专职角色被无关场景平均拉低。</div><div><b>Wiki 对照</b>×/△/○/◎ 仅用于发现模型与玩家经验的分歧；表中只展示可供读者判断的核查评语。</div></div>
 <p class="note">Mileage Class 10、饰品槽/饰品数量、先 Link 成功、今日新站、车站属性分支等条件会随成长阶段和使用场景采用不同满足率。</p></header>
 <main><div class="tools"><button data-level="80" class="active">Lv80 标准</button><button data-level="50">Lv50 入门</button><input id="search" placeholder="搜索 ID、名字、属性、类型或推荐"><select id="grade"><option value="">全部等级</option><option>S</option><option>A</option><option>B</option><option>C</option><option>D</option></select><button id="sortOverall">按总分排序</button></div>
-<div class="table-wrap"><table><thead><tr><th>でんこ</th><th>总评</th><th>最强场景</th><th>主效果</th><th>概率</th><th>覆盖</th><th>启动条件</th><th>范围 / 代价</th>{role_heads}{heads}<th>核查评语</th></tr></thead><tbody>{''.join(body)}</tbody></table></div></main>
+<div class="table-wrap"><table><thead><tr><th>でんこ</th><th>总评</th><th>最强场景</th><th>主效果</th><th>概率</th><th>覆盖</th><th>启动条件</th><th>范围 / 代价</th>{role_heads}{heads}<th>一句话推荐</th><th>核查评语</th></tr></thead><tbody>{''.join(body)}</tbody></table></div></main>
 <script>
 const body=document.body,rows=[...document.querySelectorAll('tbody tr')],tbody=document.querySelector('tbody');let level='80';
 function val(row,scene){{if(scene)return +(row.querySelector(`[data-scene="${{scene}}"] .s${{level}}`).textContent);return +row.dataset[`score${{level}}`];}}

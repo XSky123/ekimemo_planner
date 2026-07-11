@@ -95,11 +95,15 @@ def main() -> None:
         if row["rating_id"] not in selected:
             continue
         payload = evidence(row)
-        semantic_payload = {**payload, "roles": None}
+        # Review wording names the strongest role and its score, so role-score
+        # changes are semantic changes rather than safe weight-only cache hits.
+        semantic_payload = {**payload, "review_schema": 2}
         semantic_hash = hashlib.sha256(json.dumps(semantic_payload, ensure_ascii=False, sort_keys=True).encode("utf-8")).hexdigest()
         cache_key = f"{row['rating_id']}:{semantic_hash}"
         if cache_key in cache_index:
-            item = {**cache_index[cache_key], "last_used_iteration": args.iteration, "cache_hit": True}
+            review = {**cache_index[cache_key]["llm_review"], "selected_by": sorted(selected[row["rating_id"]])}
+            item = {**cache_index[cache_key], "last_used_iteration": args.iteration, "cache_hit": True, "llm_review": review}
+            cache_index[cache_key] = item
             hits += 1
         else:
             item = {

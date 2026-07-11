@@ -1,0 +1,27 @@
+{
+  "iteration": 5,
+  "focus": "overall-score convergence, one-line recommendations and final review cache correctness",
+  "before_after": {
+    "lv80_median_before": 41,
+    "lv80_median_after": 44,
+    "lv80_max_before": 89,
+    "lv80_max_after": 93,
+    "lv80_a_or_s_count_before": 10,
+    "lv80_a_or_s_count_after": 31
+  },
+  "llm_review": {
+    "selected": 242,
+    "wiki_mismatches": 173,
+    "cache_hits": 0,
+    "cache_misses": 242,
+    "reason_for_full_refresh_zh": "旧缓存键忽略职责分，但评语会引用职责与分数；本轮将职责分纳入语义键后全部重审，避免陈旧评语。"
+  },
+  "db_backfill": {
+    "decision": "not_required_for_this_iteration",
+    "reason_zh": "总评公式与一句话推荐属于 Step3 派生层。横向复核的 raw 条件集中于对手情境、时段、位置例外、星期和月份；其对象范围与效果类型均已结构化，Step1 验证仍为 0 issue，没有发现可稳定补写的新事实。"
+  },
+  "horizontal_review": {
+    "scope": "top/bottom 15 for all six roles, all 173 Wiki mismatches, and all raw-condition groups",
+    "result_zh": "总评改为最强职责分加第二职责最多 5 分，使专职角色不再被折价；一句话推荐逐角色生成，明确主效果、适用场景及概率、覆盖、条件或自损限制。"
+  }
+}
