@@ -1,0 +1,16 @@
+{
+  "iteration": 2,
+  "roles": [
+    "attack_front",
+    "attack_support",
+    "defense_front",
+    "defense_support",
+    "exp_gain",
+    "score_gain"
+  ],
+  "selected": 247,
+  "wiki_mismatches": 184,
+  "cache_hits": 230,
+  "cache_misses": 17,
+  "db_cross_checks": 55
+}

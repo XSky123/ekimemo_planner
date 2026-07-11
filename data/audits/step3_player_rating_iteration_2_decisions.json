@@ -1,0 +1,22 @@
+{
+  "iteration": 2,
+  "focus": "full rerun after use-case split; recipient-direction and remaining conditional-peak audit",
+  "llm_review": {
+    "selected": 247,
+    "wiki_mismatches": 184,
+    "selection": "all six use cases top/bottom 15 plus every Wiki mismatch",
+    "cache_hits": 230,
+    "cache_misses": 17
+  },
+  "db_backfill": {
+    "decision": "required_and_completed",
+    "denko_count": 11,
+    "reason_zh": "本轮重新抽样发现对象方向和基础段缩放仍有遗漏，包括 extra:050 的自身 ATK 被误标为全队、月新站/非 check-in Link、前日站数缩放、HP/受击衰减及 cool+eco 编成分支。",
+    "key_examples": ["extra:050", "extra:087", "original:046", "original:080", "original:099", "original:112"]
+  },
+  "classification_review_zh": {
+    "attack_support_change": "extra:050 因目标恢复为 self，从攻击队友榜第 1 移除。",
+    "exp_top_after": ["ekico:002", "original:147", "original:128"],
+    "result": "用途榜继续分别归一化，六类榜首为 99-100；没有恢复跨用途总榜。"
+  }
+}

@@ -994,6 +994,11 @@ def backfill_step3_player_use_case_conditions(row: dict[str, Any]) -> int:
             },
         },
         "extra:033": {
+            "exp_gain_1": {
+                "target_filters": {"station_is_month_new": True},
+                "modeling_tags": ("monthly_new_station_exp", "conditional_peak_not_baseline"),
+                "patch_id": "step3_olivia_monthly_new_station_gate",
+            },
             "exp_gain_2": {
                 "target_filters": {"this_month_accessed_station_count_min": 50},
                 "modeling_tags": ("monthly_station_progression_bonus", "conditional_peak_not_baseline"),
@@ -1005,6 +1010,40 @@ def backfill_step3_player_use_case_conditions(row: dict[str, Any]) -> int:
                 "trigger_conditions": {"previous_self_access_within_seconds": 180},
                 "modeling_tags": ("rapid_repeat_access_bonus", "conditional_peak_not_baseline"),
                 "patch_id": "step3_rare_repeat_access_gate",
+            },
+        },
+        "extra:050": {
+            "atk_buff_1": {
+                "target_filters": {"own_team_attribute_diversity_exact": 2},
+                "target_scope": ["self"],
+                "modeling_tags": ("two_attribute_formation_gate", "self_attack_not_team_support"),
+                "patch_id": "step3_luiza_self_atk_two_attribute_gate",
+            },
+            "def_buff_2": {
+                "target_filters": {"own_team_attribute_diversity_exact": 2, "linked_station_min_count": 1},
+                "modeling_tags": ("two_attribute_formation_gate", "link_required_team_defense"),
+                "patch_id": "step3_luiza_team_def_link_gate",
+            },
+        },
+        "extra:073": {
+            "score_gain_3": {
+                "trigger_conditions": {"event": "skill_end", "reboots_self_at_skill_end": True},
+                "modeling_tags": ("skill_end_score_bonus", "forced_self_reboot_cost"),
+                "patch_id": "step3_achara_skill_end_reboot_score_gate",
+            },
+        },
+        "extra:087": {
+            "score_gain": {
+                "target_filters": {"access_method_excludes": "checkin"},
+                "trigger_conditions": {"requires_link_success": True},
+                "modeling_tags": ("non_checkin_link_reward",),
+                "patch_id": "step3_aina_non_checkin_score_gate",
+            },
+            "exp_gain": {
+                "target_filters": {"access_method_excludes": "checkin"},
+                "trigger_conditions": {"requires_link_success": True},
+                "modeling_tags": ("non_checkin_link_reward",),
+                "patch_id": "step3_aina_non_checkin_exp_gate",
             },
         },
         "original:019": {
@@ -1019,6 +1058,13 @@ def backfill_step3_player_use_case_conditions(row: dict[str, Any]) -> int:
                 "scaling_conditions": {"basis": "longest_link_duration", "scaling_from_zero": True},
                 "modeling_tags": ("link_duration_scaled_bonus", "conditional_peak_not_baseline"),
                 "patch_id": "step3_alice_link_duration_scaling",
+            },
+        },
+        "original:046": {
+            "def_buff_2": {
+                "scaling_conditions": {"basis": "damage_received_count", "decreases_per_damage_received": True, "scaling_from_peak": True},
+                "modeling_tags": ("damage_received_decay", "conditional_peak_not_baseline"),
+                "patch_id": "step3_ataru_def_decay_scaling",
             },
         },
         "original:049": {
@@ -1049,6 +1095,19 @@ def backfill_step3_player_use_case_conditions(row: dict[str, Any]) -> int:
                 "patch_id": "step3_nina_link_repeat_exp_gate",
             },
         },
+        "original:080": {
+            "additional_score_gain_3": {
+                "trigger_conditions": {"requires_link_success": True},
+                "modeling_tags": ("self_link_score_reward",),
+                "patch_id": "step3_nemo_link_score_gate",
+            },
+            "additional_score_gain_4": {
+                "trigger_conditions": {"requires_link_success": True},
+                "scaling_conditions": {"basis": "link_success_count", "count_max": 5, "scaling_from_zero": True},
+                "modeling_tags": ("self_link_count_score_reward",),
+                "patch_id": "step3_nemo_link_count_score_gate",
+            },
+        },
         "original:087": {
             "atk_buff_2": {
                 "target_filters": {"opponent_attribute": "eco"},
@@ -1062,6 +1121,11 @@ def backfill_step3_player_use_case_conditions(row: dict[str, Any]) -> int:
             },
         },
         "original:099": {
+            "exp_gain_1": {
+                "scaling_conditions": {"basis": "previous_day_accessed_station_count", "scaling_from_zero": True},
+                "modeling_tags": ("previous_day_station_count_scaled_exp", "conditional_peak_not_baseline"),
+                "patch_id": "step3_otome_previous_day_station_scaling",
+            },
             "exp_gain_2": {
                 "target_filters": {"previous_day_accessed_station_count_min": 35},
                 "modeling_tags": ("previous_day_station_progression_bonus", "conditional_peak_not_baseline"),
@@ -1078,6 +1142,23 @@ def backfill_step3_player_use_case_conditions(row: dict[str, Any]) -> int:
                 "target_filters": {"own_team_mileage_class_total_min": 35},
                 "modeling_tags": ("team_mileage_total_bonus", "conditional_peak_not_baseline"),
                 "patch_id": "step3_chizu_team_mileage35_def_gate",
+            },
+        },
+        "original:112": {
+            "def_buff_1": {
+                "target_filters": {"own_team_attribute_set": ["cool", "eco"]},
+                "modeling_tags": ("cool_eco_only_formation",),
+                "patch_id": "step3_mie_cool_eco_base_gate",
+            },
+            "def_buff_2": {
+                "target_filters": {"own_team_attribute_set": ["cool", "eco"], "own_team_attribute": "cool", "own_team_attribute_count_min": 3},
+                "modeling_tags": ("cool_eco_only_formation", "cool_count_bonus"),
+                "patch_id": "step3_mie_cool_count3_gate",
+            },
+            "def_buff_3": {
+                "target_filters": {"own_team_attribute_set": ["cool", "eco"], "own_team_attribute": "eco", "own_team_attribute_count_min": 3},
+                "modeling_tags": ("cool_eco_only_formation", "eco_count_bonus"),
+                "patch_id": "step3_mie_eco_count3_gate",
             },
         },
         "original:116": {
@@ -1107,7 +1188,11 @@ def backfill_step3_player_use_case_conditions(row: dict[str, Any]) -> int:
         if not component:
             continue
         component_changed = 0
-        for container in ("target_filters", "trigger_conditions"):
+        target_scope = spec.get("target_scope")
+        if target_scope is not None and component.get("target_scope") != target_scope:
+            component["target_scope"] = target_scope
+            component_changed += 1
+        for container in ("target_filters", "trigger_conditions", "scaling_conditions"):
             updates = spec.get(container)
             if updates:
                 component_changed += update_dict(component, container, updates)

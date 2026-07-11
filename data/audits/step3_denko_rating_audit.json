@@ -10,10 +10,10 @@
     "cooldown_discount_passed": true,
     "one_line_recommendations_present": true,
     "prior_marker_lv50_mean_for_calibration_only": {
-      "◎": 52.5,
-      "○": 58.15,
-      "△": 55.69,
-      "×": 52.18
+      "◎": 53.21,
+      "○": 58.44,
+      "△": 55.79,
+      "×": 52.48
     },
     "wiki_model_mismatch_count": 184,
     "all_mismatches_have_strong_reason": true,
@@ -79,16 +79,16 @@
     {
       "denko_id": "extra:009",
       "marker": "△",
-      "model_score": 66,
-      "published_score": 66,
+      "model_score": 68,
+      "published_score": 68,
       "wiki_reason_ja": "相手をリブートさせた際に相手の獲得経験値の一部を編成内に山分けする。長時間・複数駅にリンクしていた相手なら多くの経験値を獲得できるが、短時間しかリンクできていないと効果量は微弱。",
       "model_reason_zh": "模型高于 Wiki：直接效用主要来自日常育成，但依赖项包含exclude_self、opponent_context_raw；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
     },
     {
       "denko_id": "extra:010",
       "marker": "○",
-      "model_score": 52,
-      "published_score": 52,
+      "model_score": 53,
+      "published_score": 53,
       "wiki_reason_ja": "先頭のATK大幅増加&相手のDEF大幅減少。効果量は絶大だが効果時間はたったの5分、クールタイムは8時間もある上に うらら や アサ も無効。確実にリンクを取りたい時に活用しよう。",
       "model_reason_zh": "模型低于 Wiki：当前只量化了计划爆发的直接数值；Wiki 评语认可的克制关系、组合工具性或低等级使用价值无法可靠换算为固定效果量，因此发布分采用 Wiki 新手区间。"
     },
@@ -135,24 +135,24 @@
     {
       "denko_id": "extra:018",
       "marker": "×",
-      "model_score": 79,
-      "published_score": 79,
+      "model_score": 81,
+      "published_score": 81,
       "wiki_reason_ja": "自身以外の cool がスキルによる被アクセス時、HPを100消費してダメージ無効化。対象が限定的すぎる上にいつでもアクティブではないためスキルを活かすのが非常に難しい。",
       "model_reason_zh": "模型高于 Wiki：直接效用主要来自在家守站，但依赖项包含attribute、exclude_self；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
     },
     {
       "denko_id": "extra:019",
       "marker": "△",
-      "model_score": 74,
-      "published_score": 74,
+      "model_score": 77,
+      "published_score": 77,
       "wiki_reason_ja": "アクセスに耐えれば経験値獲得。 eco 統一編成が必要。強力な防御スキルと組み合わせよう。",
       "model_reason_zh": "模型高于 Wiki：直接效用主要来自远征经验，但依赖项包含attribute、own_team_all_attribute、not_rebooted；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
     },
     {
       "denko_id": "extra:021",
       "marker": "◎",
-      "model_score": 73,
-      "published_score": 73,
+      "model_score": 75,
+      "published_score": 75,
       "wiki_reason_ja": "クールタイム中のでんこのATK増加&リンク成功時に確率でクールタイム短縮。スキル再発動までのスパンを短くしてくれる。",
       "model_reason_zh": "模型低于 Wiki：当前只量化了无脑打站的直接数值；Wiki 评语认可的克制关系、组合工具性或低等级使用价值无法可靠换算为固定效果量，因此发布分采用 Wiki 新手区间。"
     },
@@ -167,8 +167,8 @@
     {
       "denko_id": "extra:025",
       "marker": "△",
-      "model_score": 35,
-      "published_score": 35,
+      "model_score": 36,
+      "published_score": 36,
       "wiki_reason_ja": "複数駅にリンク中にリンク解除で経験値とスコアがランダムに増減。 cool 統一編成が必要。最大値は高いがギャンブル性が大きい。",
       "model_reason_zh": "模型低于 Wiki：当前只量化了无脑打站的直接数值；Wiki 评语认可的克制关系、组合工具性或低等级使用价值无法可靠换算为固定效果量，因此发布分采用 Wiki 新手区间。"
     },
@@ -199,8 +199,8 @@
     {
       "denko_id": "extra:031",
       "marker": "△",
-      "model_score": 71,
-      "published_score": 71,
+      "model_score": 72,
+      "published_score": 72,
       "wiki_reason_ja": "リンク中は編成内全員のDEF増加、複数駅リンクで追加効果。 cool 統一編成が必要。複数駅リンクを取れるかが鍵だが、一度リンクしてしまえばなかなか無効化されない。",
       "model_reason_zh": "模型高于 Wiki：直接效用主要来自在家守站，但依赖项包含attribute、own_team_all_attribute、linked_station_min_count；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
     },
@@ -215,16 +215,16 @@
     {
       "denko_id": "extra:034",
       "marker": "△",
-      "model_score": 74,
-      "published_score": 74,
+      "model_score": 72,
+      "published_score": 72,
       "wiki_reason_ja": "ATK増加&アクセスしてきた相手が heat なら発動時間延長。効果量は高いが効果時間を延長できるかどうかは完全に運。",
       "model_reason_zh": "模型高于 Wiki：直接效用主要来自计划爆发，但依赖项包含基础数值/无条件效果；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
     },
     {
       "denko_id": "extra:035",
       "marker": "○",
-      "model_score": 57,
-      "published_score": 57,
+      "model_score": 58,
+      "published_score": 58,
       "wiki_reason_ja": "相手のDEF減少。 eco 統一編成が必要。 まふゆ や まい 、 ももな との組み合わせが良好。",
       "model_reason_zh": "模型低于 Wiki：当前只量化了计划爆发的直接数值；Wiki 评语认可的克制关系、组合工具性或低等级使用价值无法可靠换算为固定效果量，因此发布分采用 Wiki 新手区间。"
     },
@@ -255,8 +255,8 @@
     {
       "denko_id": "extra:039",
       "marker": "×",
-      "model_score": 48,
-      "published_score": 48,
+      "model_score": 47,
+      "published_score": 47,
       "wiki_reason_ja": "APは非常に高いが、90%の確率でATKが大幅に下がってしまう。使い心地は ベティー に近いが下降補正が重い。HPも低い。 まひる がいれば短時間だけとはいえ本領発揮できる。",
       "model_reason_zh": "模型低于 Wiki：当前只量化了无脑打站的直接数值；Wiki 评语认可的克制关系、组合工具性或低等级使用价值无法可靠换算为固定效果量，因此发布分采用 Wiki 新手区间。"
     },
@@ -279,16 +279,16 @@
     {
       "denko_id": "extra:042",
       "marker": "△",
-      "model_score": 42,
-      "published_score": 42,
+      "model_score": 43,
+      "published_score": 43,
       "wiki_reason_ja": "リンクするたびにATK/DEF増加。 heat 統一編成が必要。 めぐる 同様初期値が0なのがネックなので、他のでんこと併用しよう。",
       "model_reason_zh": "模型低于 Wiki：当前只量化了计划爆发的直接数值；Wiki 评语认可的克制关系、组合工具性或低等级使用价值无法可靠换算为固定效果量，因此发布分采用 Wiki 新手区间。"
     },
     {
       "denko_id": "extra:043",
       "marker": "△",
-      "model_score": 71,
-      "published_score": 71,
+      "model_score": 73,
+      "published_score": 73,
       "wiki_reason_ja": "アクセスに耐えれば経験値獲得。 cool 統一編成が必要。 cool 版の ひとは 。基本的な注意点はあちらと全く同じ。 ナギサ が来たら諦めてください",
       "model_reason_zh": "模型高于 Wiki：直接效用主要来自远征经验，但依赖项包含attribute、own_team_all_attribute、not_rebooted；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
     },
@@ -303,8 +303,8 @@
     {
       "denko_id": "extra:045",
       "marker": "○",
-      "model_score": 30,
-      "published_score": 30,
+      "model_score": 31,
+      "published_score": 31,
       "wiki_reason_ja": "ねこぱんちの効果量増加。周年で配布される限定品との相性が良い。",
       "model_reason_zh": "模型低于 Wiki：当前只量化了无脑打站的直接数值；Wiki 评语认可的克制关系、组合工具性或低等级使用价值无法可靠换算为固定效果量，因此发布分采用 Wiki 新手区间。"
     },
@@ -317,36 +317,36 @@
       "model_reason_zh": "模型低于 Wiki：当前只量化了机制辅助的直接数值；Wiki 评语认可的克制关系、组合工具性或低等级使用价值无法可靠换算为固定效果量，因此发布分采用 Wiki 新手区间。"
     },
     {
-      "denko_id": "extra:050",
-      "marker": "○",
-      "model_score": 100,
-      "published_score": 100,
-      "wiki_reason_ja": "eco ともう1種類の属性のみ編成でATK増加&自身のリンク中は編成内のDEF増加。他属性の強力な防御スキルと組み合わせると良い。",
-      "model_reason_zh": "模型高于 Wiki：直接效用主要来自无脑打站，但依赖项包含基础数值/无条件效果；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
-    },
-    {
       "denko_id": "extra:051",
       "marker": "○",
-      "model_score": 90,
-      "published_score": 90,
+      "model_score": 92,
+      "published_score": 92,
       "wiki_reason_ja": "編成内のATK増加、ただしリンク失敗時に強制終了。 cool 統一編成が必要。ハイリスクだが効果量が高くクールタイムも短め。 あるは などのカウンターと併用するとノーリスクで活用できる。",
       "model_reason_zh": "模型高于 Wiki：直接效用主要来自无脑打站，但依赖项包含attribute、exclude_self、own_team_all_attribute；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
     },
     {
       "denko_id": "extra:052",
       "marker": "△",
-      "model_score": 72,
-      "published_score": 72,
+      "model_score": 74,
+      "published_score": 74,
       "wiki_reason_ja": "リンク駅数に応じてDEF増加&複数駅リンクで編成内効果。サポーター代わりに使うには少し手間がかかる。効果時間は長い。",
       "model_reason_zh": "模型高于 Wiki：直接效用主要来自在家守站，但依赖项包含basis；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
     },
     {
       "denko_id": "extra:054",
       "marker": "△",
-      "model_score": 66,
-      "published_score": 66,
+      "model_score": 67,
+      "published_score": 67,
       "wiki_reason_ja": "eco と cool のみ編成で固定値軽減&アクセスに耐えれば経験値/スコア獲得。オリジナルには みえ ・ ミキ ・ ほなみ と同条件のでんこが多く、併用が利きやすい。",
       "model_reason_zh": "模型高于 Wiki：直接效用主要来自在家守站，但依赖项包含attributes、formation_only；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
+    },
+    {
+      "denko_id": "extra:055",
+      "marker": "△",
+      "model_score": 66,
+      "published_score": 66,
+      "wiki_reason_ja": "heat と eco のみ編成でDEF増加&アクセスに耐えれば経験値/スコア獲得。 あすか のトリガーにできる。",
+      "model_reason_zh": "模型高于 Wiki：直接效用主要来自远征经验，但依赖项包含attributes、formation_only、not_rebooted；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
     },
     {
       "denko_id": "extra:056",
@@ -359,8 +359,8 @@
     {
       "denko_id": "extra:057",
       "marker": "×",
-      "model_score": 81,
-      "published_score": 81,
+      "model_score": 82,
+      "published_score": 82,
       "wiki_reason_ja": "eco が2人以上リンクで eco のDEF増加。複数人のリンク維持は初心者にはハードルが高い。一方で上級者が使うと ふたば や ネネ とのシナジーも相まって、無類の強さを発揮する。",
       "model_reason_zh": "模型高于 Wiki：直接效用主要来自在家守站，但依赖项包含attribute；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
     },
@@ -375,8 +375,8 @@
     {
       "denko_id": "extra:063",
       "marker": "○",
-      "model_score": 55,
-      "published_score": 55,
+      "model_score": 57,
+      "published_score": 57,
       "wiki_reason_ja": "自身よりも獲得スコアが高い相手なら編成内のATK増加&リンク成功で編成内全員に経験値付与。むしろ初心者のうちが使いやすい。",
       "model_reason_zh": "模型低于 Wiki：当前只量化了计划爆发的直接数值；Wiki 评语认可的克制关系、组合工具性或低等级使用价值无法可靠换算为固定效果量，因此发布分采用 Wiki 新手区间。"
     },
@@ -399,8 +399,8 @@
     {
       "denko_id": "extra:067",
       "marker": "○",
-      "model_score": 87,
-      "published_score": 87,
+      "model_score": 89,
+      "published_score": 89,
       "wiki_reason_ja": "ATK増加、ただし一定回数リンク成功で強制終了。 cool 統一編成が必要。手っ取り早くリンクが欲しい時に使える。",
       "model_reason_zh": "模型高于 Wiki：直接效用主要来自计划爆发，但依赖项包含attribute、own_team_all_attribute；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
     },
@@ -431,16 +431,16 @@
     {
       "denko_id": "extra:076",
       "marker": "×",
-      "model_score": 65,
-      "published_score": 65,
+      "model_score": 66,
+      "published_score": 66,
       "wiki_reason_ja": "複数駅にリンクしている heat もしくは cool がいる場合、 heat と cool のDEF増加。初心者には最大効果を出す難易度が高い。",
       "model_reason_zh": "模型高于 Wiki：直接效用主要来自在家守站，但依赖项包含attributes、linked_denko_attribute、linked_station_min_count；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
     },
     {
       "denko_id": "extra:078",
       "marker": "○",
-      "model_score": 59,
-      "published_score": 59,
+      "model_score": 58,
+      "published_score": 58,
       "wiki_reason_ja": "ATK増加。発動率は低いが、相手編成にリンクしているでんこが複数いれば確定で発動する。複数人リンクで発動するスキルを使っている相手に一泡吹かせられるかも。",
       "model_reason_zh": "模型低于 Wiki：当前只量化了无脑打站的直接数值；Wiki 评语认可的克制关系、组合工具性或低等级使用价值无法可靠换算为固定效果量，因此发布分采用 Wiki 新手区间。"
     },
@@ -471,16 +471,16 @@
     {
       "denko_id": "extra:088",
       "marker": "×",
-      "model_score": 57,
-      "published_score": 57,
+      "model_score": 59,
+      "published_score": 59,
       "wiki_reason_ja": "リンク成功時に経験値付与、残り時間10分以下でリンクすると発動時間/効果量増加。 cool 統一編成が必要。素の効果量が低く、リンクし続けないと中途半端なところで終わってしまう。クールタイムは短いのが救い。",
       "model_reason_zh": "模型高于 Wiki：直接效用主要来自远征经验，但依赖项包含own_team_all_attribute、requires_link_success；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
     },
     {
       "denko_id": "extra:089",
       "marker": "△",
-      "model_score": 66,
-      "published_score": 66,
+      "model_score": 67,
+      "published_score": 67,
       "wiki_reason_ja": "自身と前後のリンク数に応じてDEF増加。 heat 統一編成が必要。heat版の なのか だが、複数人の同時リンクが前提。 きらら やローマ三姉妹を持っていれば組み合わせられる。",
       "model_reason_zh": "模型高于 Wiki：直接效用主要来自在家守站，但依赖项包含own_team_all_attribute、basis；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
     },
@@ -503,8 +503,8 @@
     {
       "denko_id": "extra:094",
       "marker": "△",
-      "model_score": 41,
-      "published_score": 41,
+      "model_score": 42,
+      "published_score": 42,
       "wiki_reason_ja": "自身以外の heat のアクセス時、相手編成にサポーターが3体以上で相手のDEF減少。相手編成依存だが、サポーターで固めている相手には効果覿面。一方でサポーター以外で固めている相手には不発。",
       "model_reason_zh": "模型低于 Wiki：当前只量化了计划爆发的直接数值；Wiki 评语认可的克制关系、组合工具性或低等级使用价值无法可靠换算为固定效果量，因此发布分采用 Wiki 新手区间。"
     },
@@ -535,32 +535,32 @@
     {
       "denko_id": "extra:103",
       "marker": "×",
-      "model_score": 52,
-      "published_score": 52,
+      "model_score": 51,
+      "published_score": 51,
       "wiki_reason_ja": "編成内のスキル発動数に応じてATKが増加するが、リンク失敗時に編成内全員のスキルが強制終了してしまう。最大効果量は高いが、一度でもリンクを取れないとサポーター諸共クールタイムに入ってしまうので非常にハイリスク。",
       "model_reason_zh": "模型高于 Wiki：直接效用主要来自机制辅助，但依赖项包含ends_own_team_active_skills、triggered_by_holder_link_failure；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
     },
     {
       "denko_id": "extra:107",
       "marker": "○",
-      "model_score": 59,
-      "published_score": 59,
+      "model_score": 60,
+      "published_score": 60,
       "wiki_reason_ja": "同属性の駅でトリックスターにアクセスされた場合DEF増加&相手が自身と異なる属性ならアクセスしてきた相手のスキル無効化。DEF増加はほぼおまけレベルだが無効化効果が強力。攻撃系・即死系トリックスターからのお守りに。",
       "model_reason_zh": "模型低于 Wiki：当前只量化了在家守站的直接数值；Wiki 评语认可的克制关系、组合工具性或低等级使用价值无法可靠换算为固定效果量，因此发布分采用 Wiki 新手区间。"
     },
     {
       "denko_id": "extra:108",
       "marker": "○",
-      "model_score": 59,
-      "published_score": 59,
+      "model_score": 60,
+      "published_score": 60,
       "wiki_reason_ja": "同属性の駅でトリックスターにアクセスされた場合DEF増加&相手が自身と異なる属性ならアクセスしてきた相手のスキル無効化。DEF増加はほぼおまけレベルだが無効化効果が強力。攻撃系・即死系トリックスターからのお守りに。",
       "model_reason_zh": "模型低于 Wiki：当前只量化了在家守站的直接数值；Wiki 评语认可的克制关系、组合工具性或低等级使用价值无法可靠换算为固定效果量，因此发布分采用 Wiki 新手区间。"
     },
     {
       "denko_id": "extra:109",
       "marker": "○",
-      "model_score": 59,
-      "published_score": 59,
+      "model_score": 60,
+      "published_score": 60,
       "wiki_reason_ja": "同属性の駅でトリックスターにアクセスされた場合DEF増加&相手が自身と異なる属性ならアクセスしてきた相手のスキル無効化。DEF増加はほぼおまけレベルだが無効化効果が強力。攻撃系・即死系トリックスターからのお守りに。",
       "model_reason_zh": "模型低于 Wiki：当前只量化了在家守站的直接数值；Wiki 评语认可的克制关系、组合工具性或低等级使用价值无法可靠换算为固定效果量，因此发布分采用 Wiki 新手区间。"
     },
@@ -575,8 +575,8 @@
     {
       "denko_id": "extra:114",
       "marker": "×",
-      "model_score": 65,
-      "published_score": 65,
+      "model_score": 67,
+      "published_score": 67,
       "wiki_reason_ja": "サポーターのマイレージクラスに応じて自身以外のATK/DEF増加。 ちづ を常時発動にした効果。初心者のうちはほぼ効果が出ない。",
       "model_reason_zh": "模型高于 Wiki：直接效用主要来自无脑打站，但依赖项包含exclude_self、type；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
     },
@@ -589,18 +589,10 @@
       "model_reason_zh": "模型高于 Wiki：直接效用主要来自远征积分，但依赖项包含not_rebooted、weather；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
     },
     {
-      "denko_id": "extra:116",
-      "marker": "○",
-      "model_score": 63,
-      "published_score": 63,
-      "wiki_reason_ja": "リンクした駅が晴天時にスコア付与。同じく晴天でしか効果が出ない れお との相性が抜群。",
-      "model_reason_zh": "模型低于 Wiki：当前只量化了远征积分的直接数值；Wiki 评语认可的克制关系、组合工具性或低等级使用价值无法可靠换算为固定效果量，因此发布分采用 Wiki 新手区间。"
-    },
-    {
       "denko_id": "extra:119",
       "marker": "×",
-      "model_score": 59,
-      "published_score": 59,
+      "model_score": 60,
+      "published_score": 60,
       "wiki_reason_ja": "無条件で編成内のDEF/ATK増加に加え、防御/攻撃系のアクセサリーの効果を増加させる。アクセサリーを複数装備しないと効果を十分に発揮できないため上級者向け。",
       "model_reason_zh": "模型高于 Wiki：直接效用主要来自机制辅助，但依赖项包含accessory_skill_tag、accessory_slot_progression_required、disabled_if_other_accessory_booster_in_team；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
     },
@@ -623,8 +615,8 @@
     {
       "denko_id": "original:002",
       "marker": "○",
-      "model_score": 41,
-      "published_score": 41,
+      "model_score": 39,
+      "published_score": 39,
       "wiki_reason_ja": "御三家でんこ。スキル発動は期待できないが基本のAPが高い。",
       "model_reason_zh": "模型低于 Wiki：当前只量化了无脑打站的直接数值；Wiki 评语认可的克制关系、组合工具性或低等级使用价值无法可靠换算为固定效果量，因此发布分采用 Wiki 新手区间。"
     },
@@ -655,8 +647,8 @@
     {
       "denko_id": "original:008",
       "marker": "○",
-      "model_score": 48,
-      "published_score": 48,
+      "model_score": 47,
+      "published_score": 47,
       "wiki_reason_ja": "スキルを持たない代わりに高AP。相手がDEFを上げていない限り強い。",
       "model_reason_zh": "模型低于 Wiki：当前只量化了无脑打站的直接数值；Wiki 评语认可的克制关系、组合工具性或低等级使用价值无法可靠换算为固定效果量，因此发布分采用 Wiki 新手区间。"
     },
@@ -695,8 +687,8 @@
     {
       "denko_id": "original:014",
       "marker": "◎",
-      "model_score": 78,
-      "published_score": 78,
+      "model_score": 79,
+      "published_score": 79,
       "wiki_reason_ja": "無条件で編成内のでんこのDEFを増加させる。無条件かつ確実なDEF増加は貴重。",
       "model_reason_zh": "模型低于 Wiki：当前只量化了在家守站的直接数值；Wiki 评语认可的克制关系、组合工具性或低等级使用价值无法可靠换算为固定效果量，因此发布分采用 Wiki 新手区间。"
     },
@@ -719,16 +711,16 @@
     {
       "denko_id": "original:021",
       "marker": "△",
-      "model_score": 75,
-      "published_score": 75,
+      "model_score": 76,
+      "published_score": 76,
       "wiki_reason_ja": "アタッカーのDEFを確率で上げる。低レベルのうちはスキルが発動しても一発KOされがち。",
       "model_reason_zh": "模型高于 Wiki：直接效用主要来自在家守站，但依赖项包含type；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
     },
     {
       "denko_id": "original:022",
       "marker": "△",
-      "model_score": 43,
-      "published_score": 43,
+      "model_score": 42,
+      "published_score": 42,
       "wiki_reason_ja": "相手でんこの被アクセス時効果を無効化するが、自身のATKを上げるスキルでないのが弱み。ステータスは良好。",
       "model_reason_zh": "模型低于 Wiki：当前只量化了计划爆发的直接数值；Wiki 评语认可的克制关系、组合工具性或低等级使用价值无法可靠换算为固定效果量，因此发布分采用 Wiki 新手区间。"
     },
@@ -823,8 +815,8 @@
     {
       "denko_id": "original:037",
       "marker": "△",
-      "model_score": 84,
-      "published_score": 84,
+      "model_score": 86,
+      "published_score": 86,
       "wiki_reason_ja": "ディフェンダーのATKを増加させることがある。低レベルのうちはディフェンダーの低APと彼女の低効果量が相まって焼け石に水。",
       "model_reason_zh": "模型高于 Wiki：直接效用主要来自无脑打站，但依赖项包含type；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
     },
@@ -847,8 +839,8 @@
     {
       "denko_id": "original:040",
       "marker": "△",
-      "model_score": 41,
-      "published_score": 41,
+      "model_score": 39,
+      "published_score": 39,
       "wiki_reason_ja": "自身のアクセス時に味方と相手の全サポーターを無効化することがある。素の火力はそれなりに高いが、味方の支援さえたまに無効化してしまうため安定性に欠ける。",
       "model_reason_zh": "模型低于 Wiki：当前只量化了计划爆发的直接数值；Wiki 评语认可的克制关系、组合工具性或低等级使用价值无法可靠换算为固定效果量，因此发布分采用 Wiki 新手区间。"
     },
@@ -879,8 +871,8 @@
     {
       "denko_id": "original:045",
       "marker": "○",
-      "model_score": 88,
-      "published_score": 88,
+      "model_score": 90,
+      "published_score": 90,
       "wiki_reason_ja": "先頭でんこのATK+15%。どれだけ育っても効果量は上がらず持続時間が延びる。",
       "model_reason_zh": "模型高于 Wiki：直接效用主要来自计划爆发，但依赖项包含exclude_self、position_exception_raw；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
     },
@@ -903,8 +895,8 @@
     {
       "denko_id": "original:053",
       "marker": "×",
-      "model_score": 56,
-      "published_score": 56,
+      "model_score": 55,
+      "published_score": 55,
       "wiki_reason_ja": "編成内のアタッカーの数に応じてATK増加、編成内のディフェンダーの数に応じてDEF増加することがある。発動率の低さがネック。",
       "model_reason_zh": "模型高于 Wiki：直接效用主要来自无脑打站，但依赖项包含type、count_max、range_source；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
     },
@@ -927,8 +919,8 @@
     {
       "denko_id": "original:059",
       "marker": "○",
-      "model_score": 63,
-      "published_score": 63,
+      "model_score": 62,
+      "published_score": 62,
       "wiki_reason_ja": "相手の編成内のタイプ数に応じてATKが増加することがある。自身の編成が縛られないのが強み。",
       "model_reason_zh": "模型低于 Wiki：当前只量化了无脑打站的直接数值；Wiki 评语认可的克制关系、组合工具性或低等级使用价值无法可靠换算为固定效果量，因此发布分采用 Wiki 新手区间。"
     },
@@ -949,6 +941,14 @@
       "model_reason_zh": "模型低于 Wiki：当前只量化了计划爆发的直接数值；Wiki 评语认可的克制关系、组合工具性或低等级使用价值无法可靠换算为固定效果量，因此发布分采用 Wiki 新手区间。"
     },
     {
+      "denko_id": "original:063",
+      "marker": "△",
+      "model_score": 65,
+      "published_score": 65,
+      "wiki_reason_ja": "クールタイムに入ったでんこの数によって編成内でんこのATK＆DEFが増加。",
+      "model_reason_zh": "模型高于 Wiki：直接效用主要来自计划爆发，但依赖项包含count_max、range_source；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
+    },
+    {
       "denko_id": "original:065",
       "marker": "×",
       "model_score": 57,
@@ -959,8 +959,8 @@
     {
       "denko_id": "original:066",
       "marker": "×",
-      "model_score": 71,
-      "published_score": 71,
+      "model_score": 70,
+      "published_score": 70,
       "wiki_reason_ja": "自身以外に2体のでんこがリンクしないとスキルが発動しない。",
       "model_reason_zh": "模型高于 Wiki：直接效用主要来自无脑打站，但依赖项包含opponent_context_raw；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
     },
@@ -999,16 +999,16 @@
     {
       "denko_id": "original:078",
       "marker": "×",
-      "model_score": 66,
-      "published_score": 66,
+      "model_score": 67,
+      "published_score": 67,
       "wiki_reason_ja": "スコア変動。アタッカーではあるものの、スキルの真価はスコアの獲得に置かれている珍しいでんこ。スコア稼ぎに愛用する上級者も多いが、専用構築が必要なためハードルは高め。",
       "model_reason_zh": "模型高于 Wiki：直接效用主要来自远征积分，但依赖项包含exclude_other_skill_score；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
     },
     {
       "denko_id": "original:079",
       "marker": "○",
-      "model_score": 58,
-      "published_score": 58,
+      "model_score": 60,
+      "published_score": 60,
       "wiki_reason_ja": "heat 属性のATK増加＋相手のDEF減少。 heat 統一編成が必要。わざと編成でんこを少なくしても、その全員が heat なら効果を発揮する。効果が相手の属性数に依存するところは不安定要素。",
       "model_reason_zh": "模型低于 Wiki：当前只量化了计划爆发的直接数值；Wiki 评语认可的克制关系、组合工具性或低等级使用价值无法可靠换算为固定效果量，因此发布分采用 Wiki 新手区间。"
     },
@@ -1031,24 +1031,24 @@
     {
       "denko_id": "original:082",
       "marker": "△",
-      "model_score": 69,
-      "published_score": 69,
+      "model_score": 71,
+      "published_score": 71,
       "wiki_reason_ja": "eco 属性でDEF増加。先頭でんこのDEF増加はおまけ程度。 eco 属性が4両以上揃っていれば、かなり優秀な防御手段となる。",
       "model_reason_zh": "模型高于 Wiki：直接效用主要来自在家守站，但依赖项包含attribute、own_team_attribute_min_count、position_exception_raw；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
     },
     {
       "denko_id": "original:084",
       "marker": "△",
-      "model_score": 85,
-      "published_score": 85,
+      "model_score": 87,
+      "published_score": 87,
       "wiki_reason_ja": "音階が名前に入ったでんこのATK/DEF増加。対象でんこは限られる。典型的な、いつでもアクティブ＆低効果のスキル。",
       "model_reason_zh": "模型高于 Wiki：直接效用主要来自无脑打站，但依赖项包含基础数值/无条件效果；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
     },
     {
       "denko_id": "original:085",
       "marker": "×",
-      "model_score": 55,
-      "published_score": 55,
+      "model_score": 54,
+      "published_score": 54,
       "wiki_reason_ja": "リンクするたびにATK増加。最大効果は大きいが、1つ目のリンクを獲得するときにはATK補正はゼロ。APも低めであり、他のでんこのサポートが揃わないと運用は厳しい。ハマれば強い。",
       "model_reason_zh": "模型高于 Wiki：直接效用主要来自计划爆发，但依赖项包含prior_link_success_count_for_max、scaling_from_zero；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
     },
@@ -1063,16 +1063,16 @@
     {
       "denko_id": "original:087",
       "marker": "△",
-      "model_score": 69,
-      "published_score": 69,
+      "model_score": 68,
+      "published_score": 68,
       "wiki_reason_ja": "相手が eco ならATKを大きく増加できるが、発動時間が15分とかなり短い。",
       "model_reason_zh": "模型高于 Wiki：直接效用主要来自计划爆发，但依赖项包含opponent_attribute；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
     },
     {
       "denko_id": "original:088",
       "marker": "○",
-      "model_score": 62,
-      "published_score": 62,
+      "model_score": 63,
+      "published_score": 63,
       "wiki_reason_ja": "編成内のATK増加。 レイカ ほどの効果はないが、無条件で編成内全員のATKを増加させられる。運よくリンクを獲得できれば、さらに効果時間が伸びる。",
       "model_reason_zh": "模型低于 Wiki：当前只量化了计划爆发的直接数值；Wiki 评语认可的克制关系、组合工具性或低等级使用价值无法可靠换算为固定效果量，因此发布分采用 Wiki 新手区间。"
     },
@@ -1095,8 +1095,8 @@
     {
       "denko_id": "original:092",
       "marker": "△",
-      "model_score": 76,
-      "published_score": 76,
+      "model_score": 77,
+      "published_score": 77,
       "wiki_reason_ja": "先頭のタイプに応じた様々な効果。タイプにより適した効果が低レベルのうちからそこそこ見込めるが、先頭車両限定なのと確率発動なのがネック。",
       "model_reason_zh": "模型高于 Wiki：直接效用主要来自无脑打站，但依赖项包含exclude_self、position_exception_raw；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
     },
@@ -1109,6 +1109,14 @@
       "model_reason_zh": "模型高于 Wiki：直接效用主要来自在家守站，但依赖项包含opponent_context_raw；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
     },
     {
+      "denko_id": "original:094",
+      "marker": "○",
+      "model_score": 89,
+      "published_score": 89,
+      "wiki_reason_ja": "経験値付与、 cool なら効果大。14駅さえアクセスできれば発動率100%になるのが強力。チェックインでなくても、レーダーや シャルロッテ のスキルなどでもよい。",
+      "model_reason_zh": "模型高于 Wiki：直接效用主要来自远征经验，但依赖项包含基础数值/无条件效果；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
+    },
+    {
       "denko_id": "original:095",
       "marker": "○",
       "model_score": 0,
@@ -1119,24 +1127,24 @@
     {
       "denko_id": "original:096",
       "marker": "×",
-      "model_score": 80,
-      "published_score": 80,
+      "model_score": 82,
+      "published_score": 82,
       "wiki_reason_ja": "相手のいつでもアクティブの数に応じて編成内のATK増加。相手の編成に大きく依存してしまう。そのうえ、いつでもアクティブのでんこを1体外されるだけでも効果量がガタ落ちする。不意討ちの可能性があるくらいか。",
       "model_reason_zh": "模型高于 Wiki：直接效用主要来自计划爆发，但依赖项包含exclude_self、opponent_context_raw；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
     },
     {
       "denko_id": "original:097",
       "marker": "△",
-      "model_score": 70,
-      "published_score": 70,
+      "model_score": 69,
+      "published_score": 69,
       "wiki_reason_ja": "ATK増加/リンクの成否で自身の効果時間が変動。効果量は並。リンクを次々と獲得できる状況にさえなれば、かなりの長時間の発動が可能。",
       "model_reason_zh": "模型高于 Wiki：直接效用主要来自计划爆发，但依赖项包含基础数值/无条件效果；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
     },
     {
       "denko_id": "original:098",
       "marker": "△",
-      "model_score": 70,
-      "published_score": 70,
+      "model_score": 71,
+      "published_score": 71,
       "wiki_reason_ja": "自身より前の eco 属性のATK増加。 eco 属性にしか乗らないが、そこそこの長時間に渡りATK増加効果が得られる。",
       "model_reason_zh": "模型高于 Wiki：直接效用主要来自计划爆发，但依赖项包含attribute、position_relative_to_self；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
     },
@@ -1167,42 +1175,34 @@
     {
       "denko_id": "original:104",
       "marker": "○",
-      "model_score": 54,
-      "published_score": 54,
+      "model_score": 55,
+      "published_score": 55,
       "wiki_reason_ja": "編成内のDEF増加/バッテリーで自身の効果時間延長。被アクセスの多い路線で、バッテリーをこまめに使う手間さえかければ、かなりの長時間DEF増加に一役買ってくれる。バッテリーは無課金や序盤でも比較的入手しやすい。",
       "model_reason_zh": "模型低于 Wiki：当前只量化了在家守站的直接数值；Wiki 评语认可的克制关系、组合工具性或低等级使用价值无法可靠换算为固定效果量，因此发布分采用 Wiki 新手区间。"
     },
     {
       "denko_id": "original:108",
       "marker": "△",
-      "model_score": 77,
-      "published_score": 77,
+      "model_score": 78,
+      "published_score": 78,
       "wiki_reason_ja": "自分の1つ前のATK増加。無条件かつ確実にATKの増加が得られる。その分、効果量は低め。",
       "model_reason_zh": "模型高于 Wiki：直接效用主要来自无脑打站，但依赖项包含relative_position；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
     },
     {
       "denko_id": "original:109",
       "marker": "×",
-      "model_score": 57,
-      "published_score": 57,
+      "model_score": 58,
+      "published_score": 58,
       "wiki_reason_ja": "heat 、 eco がそれぞれ2体以上いれば編成内のDEF増加。低レベル、短編成のうちは効果が小さい。",
       "model_reason_zh": "模型高于 Wiki：直接效用主要来自在家守站，但依赖项包含attributes；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
     },
     {
       "denko_id": "original:110",
       "marker": "△",
-      "model_score": 38,
-      "published_score": 38,
+      "model_score": 39,
+      "published_score": 39,
       "wiki_reason_ja": "相手のDEFに応じた固定ダメージ。単独では厳しいので、ATK増加のでんこと組み合わせよう。",
       "model_reason_zh": "模型低于 Wiki：当前只量化了计划爆发的直接数值；Wiki 评语认可的克制关系、组合工具性或低等级使用价值无法可靠换算为固定效果量，因此发布分采用 Wiki 新手区间。"
-    },
-    {
-      "denko_id": "original:112",
-      "marker": "△",
-      "model_score": 83,
-      "published_score": 83,
-      "wiki_reason_ja": "cool と eco の混合編成で編成内のDEF増加、編成内の cool 3体以上で追加効果。追加効果の発動条件さえ満たせば、そこそこのDEF増加効果になる。そのためには、まず4両編成を達成しよう。",
-      "model_reason_zh": "模型高于 Wiki：直接效用主要来自在家守站，但依赖项包含基础数值/无条件效果；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
     },
     {
       "denko_id": "original:114",
@@ -1215,24 +1215,16 @@
     {
       "denko_id": "original:115",
       "marker": "×",
-      "model_score": 56,
-      "published_score": 56,
+      "model_score": 57,
+      "published_score": 57,
       "wiki_reason_ja": "相手が3属性以上で編成内のDEF増加。相手編成に大きく依存し、流行の単属性編成には一切効果がない。対象が heat 属性に限られるのもマイナスポイント。",
       "model_reason_zh": "模型高于 Wiki：直接效用主要来自在家守站，但依赖项包含attribute、opponent_context_raw、opponent_team_attribute_count；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
     },
     {
-      "denko_id": "original:117",
-      "marker": "○",
-      "model_score": 64,
-      "published_score": 64,
-      "wiki_reason_ja": "編成内のDEF増加。 heat 統一編成が必要だが、いつでもアクティブなうえ効果量もそれなりに高い。",
-      "model_reason_zh": "模型低于 Wiki：当前只量化了在家守站的直接数值；Wiki 评语认可的克制关系、组合工具性或低等级使用价值无法可靠换算为固定效果量，因此发布分采用 Wiki 新手区间。"
-    },
-    {
       "denko_id": "original:118",
       "marker": "×",
-      "model_score": 71,
-      "published_score": 71,
+      "model_score": 73,
+      "published_score": 73,
       "wiki_reason_ja": "リンクするたび編成内のATK増加。最初の効果量が微小なので、他のでんこでサポートしてやる必要がある。リンクをたくさん取れる環境でないとつらい。",
       "model_reason_zh": "模型高于 Wiki：直接效用主要来自计划爆发，但依赖项包含基础数值/无条件效果；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
     },
@@ -1247,16 +1239,16 @@
     {
       "denko_id": "original:120",
       "marker": "×",
-      "model_score": 63,
-      "published_score": 63,
+      "model_score": 64,
+      "published_score": 64,
       "wiki_reason_ja": "リンク時間の合計に応じて編成内のDEF増加。30分以上保持できるようになってからは大活躍。",
       "model_reason_zh": "模型高于 Wiki：直接效用主要来自在家守站，但依赖项包含attribute、basis；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
     },
     {
       "denko_id": "original:123",
       "marker": "△",
-      "model_score": 67,
-      "published_score": 67,
+      "model_score": 69,
+      "published_score": 69,
       "wiki_reason_ja": "最大ダメージに応じて編成内のATK増加。大ダメージを出せば出すほど、さらなるダメージが期待できる。 heat のアタッカーがいれば、好循環が期待できるかもしれない。",
       "model_reason_zh": "模型高于 Wiki：直接效用主要来自计划爆发，但依赖项包含attribute；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
     },
@@ -1271,8 +1263,8 @@
     {
       "denko_id": "original:125",
       "marker": "○",
-      "model_score": 61,
-      "published_score": 61,
+      "model_score": 62,
+      "published_score": 62,
       "wiki_reason_ja": "編成内のDEF増加、発動回数に応じて効果量増加。恩恵を受けられるのは cool 属性のみだが、とりあえず編成に入れておくだけで勝手に効果量は上がっていく。",
       "model_reason_zh": "模型低于 Wiki：当前只量化了在家守站的直接数值；Wiki 评语认可的克制关系、组合工具性或低等级使用价值无法可靠换算为固定效果量，因此发布分采用 Wiki 新手区间。"
     },
@@ -1295,48 +1287,48 @@
     {
       "denko_id": "original:131",
       "marker": "△",
-      "model_score": 79,
-      "published_score": 79,
+      "model_score": 80,
+      "published_score": 80,
       "wiki_reason_ja": "cool と eco の混合編成で固定ダメージ＋固定値軽減。攻防一体型スキルのため、効果量は少ない。目的によってATK増加・DEF増加でんこを組み合わせることができれば、最後の一押しになるかもしれない。",
       "model_reason_zh": "模型高于 Wiki：直接效用主要来自在家守站，但依赖项包含attributes、formation_only；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
     },
     {
       "denko_id": "original:132",
       "marker": "×",
-      "model_score": 73,
-      "published_score": 73,
+      "model_score": 74,
+      "published_score": 74,
       "wiki_reason_ja": "確率で3種類の防御効果。 cool 統一編成が必要。確率依存で安定性に欠けるが、いつでもアクティブなスキルにしてはそれなりの防御力を得られる。",
       "model_reason_zh": "模型高于 Wiki：直接效用主要来自在家守站，但依赖项包含attribute、own_team_all_attribute；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
     },
     {
       "denko_id": "original:133",
       "marker": "△",
-      "model_score": 76,
-      "published_score": 76,
+      "model_score": 77,
+      "published_score": 77,
       "wiki_reason_ja": "編成内のDEF増加、ただし全員リブートで強制終了。初心者はすぐにリンクを切られてしまいがちなので、せっかくのスキルもすぐに終了してしまう。上級者が使うと手が付けられなくなる。",
       "model_reason_zh": "模型高于 Wiki：直接效用主要来自在家守站，但依赖项包含basis；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
     },
     {
       "denko_id": "original:135",
       "marker": "△",
-      "model_score": 67,
-      "published_score": 67,
+      "model_score": 68,
+      "published_score": 68,
       "wiki_reason_ja": "編成内のATK増加、ただし確率でリブート。リンクを保持していれば、高火力でさらなるリンクを獲得できる見込みがある。ただしギャンブル要素が強い。",
       "model_reason_zh": "模型高于 Wiki：直接效用主要来自计划爆发，但依赖项包含attribute、depends_on_component、basis；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
     },
     {
       "denko_id": "original:136",
       "marker": "×",
-      "model_score": 80,
-      "published_score": 80,
+      "model_score": 81,
+      "published_score": 81,
       "wiki_reason_ja": "編成内のATK/DEF増加、ただしリブートで強制終了。瞬間効果量は大きいものの、任意で発動できない点がネック。発動中にリンクを切られると即スキル終了のため、安定性もない。",
       "model_reason_zh": "模型高于 Wiki：直接效用主要来自计划爆发，但依赖项包含requires_link_success；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
     },
     {
       "denko_id": "original:137",
       "marker": "○",
-      "model_score": 63,
-      "published_score": 63,
+      "model_score": 64,
+      "published_score": 64,
       "wiki_reason_ja": "トリックスターのアクセス時に固定ダメージ、 eco なら効果量増加。アクセススキルを持つ シャルロッテ 、 リト との相性が抜群。それ以外もトリックスターであればそこそこの効果が得られる。",
       "model_reason_zh": "模型低于 Wiki：当前只量化了无脑打站的直接数值；Wiki 评语认可的克制关系、组合工具性或低等级使用价值无法可靠换算为固定效果量，因此发布分采用 Wiki 新手区间。"
     },
@@ -1367,8 +1359,8 @@
     {
       "denko_id": "original:141",
       "marker": "×",
-      "model_score": 74,
-      "published_score": 74,
+      "model_score": 75,
+      "published_score": 75,
       "wiki_reason_ja": "リンク中でんこ数で自身の、自身のリンク中に編成内のDEF増加。多くのでんこのリンクが見込めない場合、使い物にならない。上級者向け。",
       "model_reason_zh": "模型高于 Wiki：直接效用主要来自在家守站，但依赖项包含requires_skill_holder_link_success、station_ownership；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
     },
@@ -1383,8 +1375,8 @@
     {
       "denko_id": "original:145",
       "marker": "△",
-      "model_score": 67,
-      "published_score": 67,
+      "model_score": 68,
+      "published_score": 68,
       "wiki_reason_ja": "自身と相手の先頭車両のDEF増加。 cool 統一編成が必要だが、いつでもアクティブなので、防御のつなぎに使える。",
       "model_reason_zh": "模型高于 Wiki：直接效用主要来自在家守站，但依赖项包含own_team_all_attribute；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
     },
@@ -1415,8 +1407,8 @@
     {
       "denko_id": "original:151",
       "marker": "△",
-      "model_score": 69,
-      "published_score": 69,
+      "model_score": 70,
+      "published_score": 70,
       "wiki_reason_ja": "cool 統一編成でATK増加。効果量は小さくはないが、併用できるATK増加でんこが限られる。",
       "model_reason_zh": "模型高于 Wiki：直接效用主要来自计划爆发，但依赖项包含attribute、own_team_all_attribute；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
     },
@@ -1431,8 +1423,8 @@
     {
       "denko_id": "original:154",
       "marker": "△",
-      "model_score": 75,
-      "published_score": 75,
+      "model_score": 76,
+      "published_score": 76,
       "wiki_reason_ja": "cool と eco の混合編成で編成内でんこのリンク中に編成内のDEF増加。いつでもアクティブの割に効果量は高めだが、最大値を出すには最低2体のリンクが必要。",
       "model_reason_zh": "模型高于 Wiki：直接效用主要来自在家守站，但依赖项包含attributes、formation_only；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
     },
@@ -1471,16 +1463,16 @@
     {
       "denko_id": "original:160",
       "marker": "△",
-      "model_score": 68,
-      "published_score": 68,
+      "model_score": 69,
+      "published_score": 69,
       "wiki_reason_ja": "heat と eco がそれぞれ2体以上で昼の間編成内のDEF増加。 らら の全体適用版で、条件を満たせるなら日中の防衛に貢献できる。まずは4両編成を目指そう。",
       "model_reason_zh": "模型高于 Wiki：直接效用主要来自在家守站，但依赖项包含attributes、time_window_raw；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
     },
     {
       "denko_id": "original:161",
       "marker": "○",
-      "model_score": 86,
-      "published_score": 86,
+      "model_score": 88,
+      "published_score": 88,
       "wiki_reason_ja": "相手のHPが80%以上なら編成内のATK増加。比較的緩い条件でそこそこのATK増加を得られる。属性を問わず使える点もメリット。",
       "model_reason_zh": "模型高于 Wiki：直接效用主要来自无脑打站，但依赖项包含opponent_context_raw；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
     },
@@ -1491,6 +1483,14 @@
       "published_score": 71,
       "wiki_reason_ja": "効果時間内にheatでんこで一定値のダメージを与えるとスコア獲得。火力を出すための編成が必要で初心者にはハードルが高い。オリジナルでんこの中ではかなり珍しいスコア獲得スキル。",
       "model_reason_zh": "模型高于 Wiki：直接效用主要来自远征积分，但依赖项包含attribute、damage_per_additional_reward、requires_component；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
+    },
+    {
+      "denko_id": "original:164",
+      "marker": "△",
+      "model_score": 65,
+      "published_score": 65,
+      "wiki_reason_ja": "編成内の被アクセス時、そのでんこの累計アクセス回数に応じてDEF増加。事前にアクセス回数を稼いでおく必要がある。即戦力にはしにくいため、無課金マスターは×。",
+      "model_reason_zh": "模型高于 Wiki：直接效用主要来自在家守站，但依赖项包含基础数值/无条件效果；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
     }
   ],
   "formula": {
