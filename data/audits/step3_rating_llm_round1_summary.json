@@ -1,0 +1,15 @@
+{
+  "artifact": "step3_rating_llm_round1",
+  "rows": 210,
+  "reviewed": 210,
+  "by_verdict": {
+    "conditional": 1,
+    "overrated": 16,
+    "pass": 188,
+    "scene_error": 2,
+    "underrated": 3
+  },
+  "actionable": 22,
+  "queue": "data\\review_queue\\step3_rating_llm_round1.jsonl",
+  "results": "data\\audits\\step3_rating_llm_round1.jsonl"
+}

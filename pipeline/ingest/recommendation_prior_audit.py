@@ -186,6 +186,19 @@ def has_access_direction(row: dict[str, Any], direction: str) -> bool:
     )
 
 
+def has_passive_or_damage_received(row: dict[str, Any]) -> bool:
+    if has_access_direction(row, "passive"):
+        return True
+    for component in row.get("skill_components") or []:
+        trigger = component.get("trigger_conditions") or {}
+        if trigger.get("damage_received"):
+            return True
+        condition = str(component.get("condition_raw") or "")
+        if "ダメージを受けた" in condition:
+            return True
+    return False
+
+
 def row_has_any(row: dict[str, Any], needles: list[str]) -> bool:
     blob = skill_blob(row)
     return any(needle in blob for needle in needles)
@@ -510,8 +523,8 @@ def audit_row(candidate: dict[str, Any], skill_row: dict[str, Any]) -> dict[str,
     passive_context_only = "相手でんこの被アクセス時効果" in text or "被アクセスの多い" in text
     if passive_trigger_text and not passive_context_only and not grouped_recommendation:
         expected_claims.append("access_direction:passive")
-        if has_access_direction(skill_row, "passive"):
-            matched_claims.append("access_direction:passive")
+        if has_passive_or_damage_received(skill_row):
+            matched_claims.append("access_direction:passive_or_damage_received")
         else:
             findings.append(
                 {

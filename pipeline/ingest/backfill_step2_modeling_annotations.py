@@ -589,6 +589,11 @@ def backfill_nullification_semantics(row: dict[str, Any]) -> int:
             filters = component.setdefault("target_filters", {})
             if filters.pop("attribute", None) is not None:
                 changed += 1
+            # The adjacent DEF branch is conditioned on the matching opponent
+            # attribute; this separate nullification branch is explicitly the
+            # inverse ("<attribute>属性以外"). Keep the two semantics split.
+            if filters.pop("opponent_attribute", None) is not None:
+                changed += 1
             changed += update_dict(
                 component,
                 "target_filters",
@@ -597,6 +602,11 @@ def backfill_nullification_semantics(row: dict[str, Any]) -> int:
                     "opponent_attribute_excluded": attribute,
                     "opponent_type": "trickster",
                 },
+            )
+            changed += update_dict(
+                component,
+                "trigger_conditions",
+                {"access_direction": "passive", "event_hint": "accessed", "actor_scope": "any_team_member"},
             )
             if denko_id == "extra:108":
                 changed += update_dict(component, "target_filters", {"excluded_when_footbar": True})
@@ -1250,6 +1260,179 @@ def backfill_misc_tags(row: dict[str, Any]) -> int:
     return changed
 
 
+def backfill_progression_and_link_semantics(row: dict[str, Any]) -> int:
+    """Persist progression gates and mutually exclusive link branches used by Step3.
+
+    These are detail-page facts that were present in Japanese condition text but
+    were previously absent from structured filters, which made rating layers
+    treat late-game or post-link effects as unconditional.
+    """
+    denko_id = str(row.get("denko_id") or "")
+    changed = 0
+    if denko_id in {"extra:110", "extra:111", "extra:112"}:
+        attribute = {"extra:110": "cool", "extra:111": "eco", "extra:112": "heat"}[denko_id]
+        for component_id in ("exp_gain_1", "exp_gain_2", "exp_gain_3"):
+            component = component_by_id(row, component_id)
+            if not component:
+                continue
+            component_changed = 0
+            if component.get("target_scope") != ["accessing_denko"]:
+                component["target_scope"] = ["accessing_denko"]
+                component_changed += 1
+            component_changed += update_dict(
+                component,
+                "target_filters",
+                {"accessing_denko_attribute": attribute},
+            )
+            component_changed += update_dict(
+                component,
+                "trigger_conditions",
+                {"access_direction": "active", "actor_scope": "any_team_member", "event_hint": "access"},
+            )
+            if component_id in {"exp_gain_2", "exp_gain_3"}:
+                component_changed += update_dict(
+                    component,
+                    "target_filters",
+                    {
+                        "owned_denko_attribute": attribute,
+                        "include_out_of_formation": True,
+                        "minimum_mileage_class": 10,
+                        "matching_owned_denko_min_count": 5 if component_id == "exp_gain_2" else 6,
+                        "progression_stage": "late_game",
+                        "requires_component": "exp_gain_1",
+                    },
+                )
+                component_changed += set_tag(component, "late_game_roster_gate", "mileage_class_10_gate")
+                if component_id == "exp_gain_3":
+                    component_changed += update_dict(component, "scaling_conditions", {"basis": "matching_owned_denko_above_five", "per_unit": True})
+            if component_changed:
+                mark_component(component, f"step3_{denko_id.replace(':', '_')}_{component_id}_progression_gate")
+                changed += component_changed
+    elif denko_id == "original:081":
+        for component_id in ("exp_gain_1", "exp_gain_2"):
+            component = component_by_id(row, component_id)
+            if not component:
+                continue
+            component_changed = update_dict(
+                component,
+                "target_filters",
+                {"accessing_denko_attribute": "heat", "requires_link_success": True},
+            )
+            component_changed += update_dict(
+                component,
+                "trigger_conditions",
+                {"access_direction": "own_team_link", "actor_scope": "any_team_member", "event_hint": "link"},
+            )
+            if component_id == "exp_gain_2":
+                component_changed += update_dict(component, "target_filters", {"station_is_today_new": True, "requires_component": "exp_gain_1"})
+            if component_changed:
+                mark_component(component, f"step3_original_081_{component_id}_link_gate")
+                changed += component_changed
+    elif denko_id == "original:083":
+        branches = {
+            "atk_buff_1": "heat",
+            "atk_buff_2": "cool",
+            "def_buff_2": "cool",
+            "def_buff_3": "eco",
+        }
+        for component_id, station_attribute in branches.items():
+            component = component_by_id(row, component_id)
+            if not component:
+                continue
+            component_changed = update_dict(
+                component,
+                "target_filters",
+                {
+                    "requires_skill_holder_link_success": True,
+                    "linked_station_attribute": station_attribute,
+                    "excluded_station_state": "closed_station",
+                    "mutually_exclusive_branch_group": "linked_station_attribute",
+                },
+            )
+            component_changed += update_dict(
+                component,
+                "trigger_conditions",
+                {"access_direction": "own_team_link", "actor_scope": "skill_holder", "event_hint": "link"},
+            )
+            component_changed += set_tag(component, "post_link_only", "station_attribute_branch")
+            if component_changed:
+                mark_component(component, f"step3_original_083_{component_id}_station_branch")
+                changed += component_changed
+    elif denko_id in {"extra:118", "extra:119", "extra:120"}:
+        component = component_by_id(row, "effect_multiplier_2")
+        if component:
+            component_changed = update_dict(
+                component,
+                "target_filters",
+                {
+                    "requires_relevant_accessory_equipped": True,
+                    "accessory_slot_progression_required": True,
+                    "progression_stage": "late_game",
+                },
+            )
+            component_changed += set_tag(component, "late_game_accessory_dependency")
+            if component_changed:
+                mark_component(component, f"step3_{denko_id.replace(':', '_')}_accessory_gate")
+                changed += component_changed
+    operational_updates: dict[str, dict[str, dict[str, Any]]] = {
+        "original:015": {"atk_buff_1": {"time_window": "06:00-18:00"}},
+        "original:032": {"atk_buff_1": {"today_accessed_station_count_cap": 50, "scaling_from_zero": True}},
+        "original:046": {"atk_buff_1": {"prior_received_access_count_for_max": 20, "scaling_from_low_or_zero": True}},
+        "original:067": {
+            "damage_reduction_1": {"today_accessed_station_count_cap": 70, "scaling_from_zero": True},
+            "damage_reduction_2": {"today_accessed_station_count_min": 26},
+            "damage_reduction_3": {"today_accessed_station_count_min": 40, "requires_component": "damage_reduction_2"},
+        },
+        "original:064": {
+            "atk_buff_1": {"today_travel_distance_cap_km": 100, "scaling_from_zero": True},
+            "atk_buff_2": {"today_travel_distance_min_km": 100},
+        },
+        "original:085": {"atk_buff_1": {"prior_link_success_count_for_max": 20, "scaling_from_zero": True}},
+        "extra:103": {
+            "atk_buff_1": {"active_auto_skill_holder_count_cap": 4},
+            "skill_force_end_2": {"triggered_by_holder_link_failure": True, "ends_own_team_active_skills": True},
+        },
+        "extra:044": {"damage_reduction": {"other_linked_denko_min_count": 2}},
+        "original:089": {
+            "def_buff_1": {"hp_percent_min": 100},
+            "def_buff_2": {"hp_percent_min": 80, "hp_percent_max_exclusive": 100},
+            "def_buff_3": {"hp_percent_min": 50, "hp_percent_max_exclusive": 80},
+        },
+        "original:103": {
+            "damage_reduction_1": {"today_accessed_station_count_cap": 50, "scaling_from_zero": True},
+            "damage_reduction_2": {"today_accessed_station_count_min": 15},
+            "damage_reduction_3": {"today_accessed_station_count_min": 70, "requires_component": "damage_reduction_2"},
+        },
+        "original:121": {"exp_gain": {"matching_film_theme_denko_count_cap": 7, "scaling_from_zero": True}},
+        "original:124": {"def_buff_2": {"previous_received_access_within_seconds": 120}},
+        "original:141": {
+            "def_buff_1": {"linked_team_denko_count_cap": 5, "scaling_from_zero": True},
+            "def_buff_2": {"requires_skill_holder_link_success": True},
+        },
+        "original:163": {
+            "score_gain_1": {"cumulative_damage_threshold_required": True, "once_per_activation": True},
+            "additional_score_gain_2": {"requires_component": "score_gain_1", "damage_per_additional_reward": 1000},
+        },
+        "original:149": {"atk_buff_1": {"link_failure_can_reboot_and_force_end": True}},
+        "extra:091": {
+            "exp_gain": {"recent_access_window": 3, "requires_other_team_member_recent_link": True, "requires_link_success": True},
+            "score_gain_1": {"recent_access_window": 3, "requires_other_team_member_recent_link": True, "requires_link_success": True},
+        },
+    }
+    for component_id, filters in operational_updates.get(denko_id, {}).items():
+        component = component_by_id(row, component_id)
+        if not component:
+            continue
+        component_changed = update_dict(component, "target_filters", filters)
+        if denko_id == "extra:091":
+            component_changed += update_dict(component, "trigger_conditions", {"link_failure_shortens_duration": True})
+        if component_changed:
+            component_changed += set_tag(component, "operational_cost_reviewed")
+            mark_component(component, f"step3_{denko_id.replace(':', '_')}_{component_id}_operational_gate")
+            changed += component_changed
+    return changed
+
+
 def backfill_row(row: dict[str, Any]) -> int:
     denko_id = row.get("denko_id")
     changed = 0
@@ -1270,6 +1453,7 @@ def backfill_row(row: dict[str, Any]) -> int:
     changed += backfill_self_debuff_display_semantics(row)
     changed += backfill_trigger_actor_semantics(row)
     changed += backfill_misc_tags(row)
+    changed += backfill_progression_and_link_semantics(row)
     if changed:
         postprocess = row.setdefault("record_meta", {}).setdefault("postprocess", {})
         postprocess["step2_modeling_annotations"] = {

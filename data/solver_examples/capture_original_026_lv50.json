@@ -1,0 +1,11 @@
+{
+  "main_denko_id": "original:026",
+  "scene": "capture",
+  "level": "50",
+  "slots": 6,
+  "context": {
+    "assume_main_access": true,
+    "main_position": "front",
+    "allow_manual_activation": true
+  }
+}

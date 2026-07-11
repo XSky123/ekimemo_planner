@@ -437,7 +437,7 @@ def normalize_access_direction(component: dict[str, Any]) -> bool:
         active_text = active_text.replace(noise, "")
     active = bool(
         re.search(r"(?<!被)アクセス時", active_text)
-        or any(phrase in active_text for phrase in ["アクセスしたとき", "アクセスした時", "アクセスする", "チェックイン時"])
+        or any(phrase in active_text for phrase in ["アクセスしたとき", "アクセスした時", "アクセスした際", "アクセスした場合", "アクセスする", "チェックイン時"])
     )
     if any(phrase in condition for phrase in ["アクセスした・された", "アクセス時・被アクセス時", "アクセス時/被アクセス時"]):
         active = True
@@ -457,6 +457,90 @@ def normalize_access_direction(component: dict[str, Any]) -> bool:
         trigger.setdefault("event_hint", "access")
         trigger.pop("access_directions", None)
     return json.dumps(trigger, ensure_ascii=False, sort_keys=True) != original
+
+
+def normalize_damage_received_trigger(component: dict[str, Any]) -> bool:
+    text = " ".join(component_source_texts(component))
+    if not any(phrase in text for phrase in ["ダメージを受けた時", "ダメージを受けたとき", "ダメージを受ける度"]):
+        return False
+    trigger = component.setdefault("trigger_conditions", {})
+    if trigger.get("damage_received") is True:
+        return False
+    trigger["damage_received"] = True
+    return True
+
+
+def normalize_access_trigger_actor(component: dict[str, Any]) -> bool:
+    """Disambiguate a holder's own access from a formation member's access."""
+    condition = component.get("condition_raw") or ""
+    trigger = component.setdefault("trigger_conditions", {})
+    before = json.dumps(trigger, ensure_ascii=False, sort_keys=True)
+    if re.search(r"(?:自身|自分)(?:の)?アクセス(?:時|した|する)", condition):
+        trigger["actor_scope"] = "skill_holder"
+    elif re.search(r"(?:編成内|自分以外|自身以外).*?(?:でんこ)?(?:が|の)?アクセス(?:時|した|する|した際|した場合)", condition):
+        trigger["actor_scope"] = "any_team_member"
+    return json.dumps(trigger, ensure_ascii=False, sort_keys=True) != before
+
+
+def normalize_matching_access_station_constraints(component: dict[str, Any]) -> bool:
+    """Extract explicit accessor/station attributes without touching values or branches.
+
+    This is safe for a `db_backfill_lock`: the raw condition itself names both
+    the accessing denko and the station, while the lock protects manually
+    repaired component/value layout from generic reconstruction.
+    """
+    condition = component.get("condition_raw") or ""
+    filters = component.setdefault("target_filters", {})
+    before = json.dumps(
+        {
+            "target_scope": component.get("target_scope"),
+            "target_filters": filters,
+            "trigger_conditions": component.get("trigger_conditions"),
+        },
+        ensure_ascii=False,
+        sort_keys=True,
+    )
+    for attr in ATTRIBUTES:
+        accesses_matching_station = bool(
+            re.search(
+                rf"編成内(?:の)?{attr}属性(?:の)?でんこが(?:同じ属性|{attr}属性)(?:の)?駅にアクセス(?:した|する|時)",
+                condition,
+            )
+        )
+        if accesses_matching_station and component.get("effect_kind") in {
+            "fixed_damage",
+            "additional_fixed_damage",
+            "exp_gain",
+            "exp_distribution",
+            "score_gain",
+            "additional_score_gain",
+            "today_new_station_bonus",
+            "mile_gain",
+        }:
+            filters.pop("attribute", None)
+            filters["own_access_attribute"] = attr
+            filters["station_attribute"] = attr
+            component["target_scope"] = ["accessing_denko"]
+            trigger = component.setdefault("trigger_conditions", {})
+            trigger["actor_scope"] = "any_team_member"
+            trigger["access_direction"] = "active"
+            trigger["event_hint"] = "access"
+        # Passive effects such as fixed damage reduction still depend on the
+        # station's attribute, but do not inherit the active accessor rule.
+        if re.search(rf"{attr}属性(?:の)?駅で受けるダメージ", condition):
+            filters["station_attribute"] = attr
+    return (
+        json.dumps(
+            {
+                "target_scope": component.get("target_scope"),
+                "target_filters": filters,
+                "trigger_conditions": component.get("trigger_conditions"),
+            },
+            ensure_ascii=False,
+            sort_keys=True,
+        )
+        != before
+    )
 
 
 def normalize_scope_and_filters(component: dict[str, Any]) -> bool:
@@ -479,6 +563,7 @@ def normalize_scope_and_filters(component: dict[str, Any]) -> bool:
         and not re.search(rf"相手(?:が|のでんこが|編成内.*?){own_attr}属性", text)
     ):
         filters.pop("opponent_attribute", None)
+    changed = normalize_matching_access_station_constraints(component)
     for attr in ATTRIBUTES:
         combined_count = bool(
             re.search(rf"相手と自身の編成内の{attr}属性(?:の)?でんこの数", text)
@@ -535,7 +620,7 @@ def normalize_scope_and_filters(component: dict[str, Any]) -> bool:
         for key, value in list(trigger.items()):
             if isinstance(value, str):
                 trigger[key] = fill_attribute_placeholder(value, own_attr)
-    return (
+    return changed or (
         json.dumps(
             {
                 "target_scope": component.get("target_scope"),
@@ -547,6 +632,34 @@ def normalize_scope_and_filters(component: dict[str, Any]) -> bool:
         )
         != before
     )
+
+
+def normalize_missing_target_scope(component: dict[str, Any]) -> bool:
+    """Fill only recipient scopes that are explicit in the source prose."""
+    if component.get("target_scope"):
+        return False
+    effect_kind = str(component.get("effect_kind") or "")
+    text = " ".join(component_source_texts(component))
+    inferred: list[str] | None = None
+    if effect_kind == "ap_debuff" and "相手" in text:
+        inferred = ["opponent_denko"]
+    elif effect_kind == "def_debuff" and any(marker in text for marker in ["代わりに", "自身のDEF", "自分のDEF"]):
+        inferred = ["self"]
+    elif effect_kind in {"exp_gain", "score_gain"} and any(marker in text for marker in ["編成内", "編成している", "リンクしているでんこ"]):
+        inferred = ["team_all"]
+    elif effect_kind == "duration_extension":
+        inferred = ["team_all"] if any(marker in text for marker in ["編成内", "編成中", "各でんこ"]) else ["own_skill_effects"]
+    elif effect_kind == "def_modifier":
+        inferred = ["team_all"] if "編成内" in text else ["own_skill_effects"]
+    elif effect_kind == "skill_continue":
+        inferred = ["own_skill_effects"]
+    elif effect_kind == "reboot" and "リブート" in text:
+        inferred = ["self"]
+    if not inferred:
+        return False
+    component["target_scope"] = inferred
+    component.setdefault("review_reasons", []).append("deterministic_recipient_inference")
+    return True
 
 
 def next_component_id(base_id: str, components: list[dict[str, Any]]) -> str:
@@ -977,12 +1090,30 @@ def refresh_component_review_reasons(row: dict[str, Any]) -> int:
 def normalize_skill_rows(rows: list[dict[str, Any]]) -> int:
     changed = 0
     for row in rows:
+        # A semantic backfill can replace the component layout of the entire
+        # detail row. Generic supplemental inference must not recreate the
+        # pre-backfill branches on a later normalization pass.
+        if any(component.get("db_backfill_lock") for component in row.get("skill_components") or []):
+            # Scope-only inference is conservative and can still fill an
+            # explicitly named recipient without touching locked values/branches.
+            for component in row.get("skill_components") or []:
+                if normalize_access_trigger_actor(component):
+                    changed += 1
+                if normalize_matching_access_station_constraints(component):
+                    changed += 1
+                if normalize_missing_target_scope(component):
+                    changed += 1
+            continue
         if create_fallback_component(row):
             changed += 1
         changed += normalize_supplemental_components(row)
         changed += cleanup_overbroad_supplements(row)
         used_ids: set[str] = set()
         for component in row.get("skill_components") or []:
+            # Stable semantic backfills are reapplied before DB merge. Do not
+            # normalize their locked component values back into a generic form.
+            if component.get("db_backfill_lock"):
+                continue
             changed += normalize_fallback_component(component, row)
             if normalize_fallback_component_id(component, used_ids):
                 changed += 1
@@ -992,7 +1123,13 @@ def normalize_skill_rows(rows: list[dict[str, Any]]) -> int:
                 changed += 1
             if normalize_access_direction(component):
                 changed += 1
+            if normalize_access_trigger_actor(component):
+                changed += 1
+            if normalize_damage_received_trigger(component):
+                changed += 1
             if normalize_scope_and_filters(component):
+                changed += 1
+            if normalize_missing_target_scope(component):
                 changed += 1
             if normalize_opponent_access_attribute_phrase(component):
                 changed += 1

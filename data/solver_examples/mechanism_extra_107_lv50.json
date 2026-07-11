@@ -1,0 +1,14 @@
+{
+  "main_denko_id": "original:026",
+  "scene": "mechanism",
+  "level": "50",
+  "slots": 2,
+  "allowed_denko_ids": ["extra:107"],
+  "context": {
+    "assume_main_accessed": true,
+    "station_attribute": "eco",
+    "opponent_attribute": "heat",
+    "opponent_type": "trickster",
+    "main_position": "front"
+  }
+}

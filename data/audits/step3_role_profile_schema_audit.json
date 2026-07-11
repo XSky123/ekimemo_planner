@@ -1,0 +1,7 @@
+{
+  "artifact": "step3_role_profile_schema_audit",
+  "schema": "schemas\\role_profile.schema.json",
+  "profiles": 636,
+  "issue_count": 0,
+  "issues": []
+}

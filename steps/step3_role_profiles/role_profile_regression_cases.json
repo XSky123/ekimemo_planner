@@ -1,0 +1,111 @@
+[
+  {
+    "id": "manual_burst_or_recovery",
+    "profile_id": "original:009#hp_recovery_1",
+    "equals": {"activation.mode": "manual"},
+    "contains": {"scene_ids": "defense", "opportunity_costs": "manual_activation"}
+  },
+  {
+    "id": "probability_branch",
+    "profile_id": "original:001#hp_recovery_1",
+    "equals": {"activation.probability_by_level.50.percent": 35.0},
+    "contains": {"recipient": "team_all", "opportunity_costs": "probabilistic"}
+  },
+  {
+    "id": "accessed_trigger",
+    "profile_id": "original:007#counter_damage_1",
+    "equals": {"component.trigger_actor": "accessed_denko"},
+    "contains": {"component.access_direction": "passive", "scene_ids": "defense"}
+  },
+  {
+    "id": "weather_condition_from_raw",
+    "profile_id": "original:148#atk_buff",
+    "equals": {"component.trigger_actor": "skill_holder"},
+    "contains": {"hard_constraint_keys": "weather", "scene_ids": "capture"}
+  },
+  {
+    "id": "temperature_branch_and_self_debuff",
+    "profile_id": "original:162#atk_buff_1",
+    "contains": {"hard_constraint_keys": "temperature_band", "opportunity_costs": "self_debuff"}
+  },
+  {
+    "id": "vu_only_component",
+    "profile_id": "original:001#activation_probability_boost_2",
+    "equals": {"component.availability.vu_only": true},
+    "absent": ["component.level_values.50"]
+  },
+  {
+    "id": "random_access_after_being_accessed",
+    "profile_id": "original:006#random_previous_station_access",
+    "equals": {"component.trigger_actor": "accessed_denko"},
+    "contains": {"scene_ids": "visit_count_event", "component.access_direction": "passive"}
+  },
+  {
+    "id": "nullification_with_own_team_conflict",
+    "profile_id": "original:061#skill_disable_1",
+    "contains": {"recipient": ["opponent_team", "own_team"], "hard_constraint_keys": "own_skill_conflict"}
+  },
+  {
+    "id": "self_debuff",
+    "profile_id": "original:050#battery_disable_2",
+    "contains": {"opportunity_costs": "self_debuff", "self_debuff_kinds": "battery_disable"}
+  },
+  {
+    "id": "special_pool_branch_preserved",
+    "profile_id": "iks:001#skill_disable_original_extra",
+    "contains": {"target_filter_keys": "opponent_pool_in", "component.access_direction": "both"}
+  },
+  {
+    "id": "special_damage_threshold_values",
+    "profile_id": "iks:004#damage_nullification_3",
+    "equals": {"component.level_values.50.value_numeric": 120},
+    "contains": {"scene_ids": "defense"}
+  },
+  {
+    "id": "conditional_probability_range",
+    "profile_id": "extra:029#skill_disable",
+    "equals": {"activation.probability_by_level.50.parse_status": "range", "activation.probability_by_level.50.min_percent": 0.7, "activation.probability_by_level.50.max_percent": 70.0}
+  },
+  {
+    "id": "precomputed_score_branch_expectation",
+    "profile_id": "original:078#score_random_modifier_1",
+    "equals": {"activation.probability_by_level.50.parse_status": "branch_expected", "component.level_values.50.value_expected": 198.0, "component.level_values.50.value_expected_multiplier": 2.98}
+  },
+  {
+    "id": "accessing_member_and_station_attribute",
+    "profile_id": "extra:006#fixed_damage_1",
+    "equals": {
+      "component.recipient": ["accessing_denko"],
+      "component.target_filters.own_access_attribute": "eco",
+      "component.target_filters.station_attribute": "eco",
+      "component.trigger_actor": "any_team_member"
+    },
+    "contains": {"scene_ids": "capture", "hard_constraint_keys": ["own_access_attribute", "station_attribute"]}
+  },
+  {
+    "id": "attribute_excluded_nullification_branch",
+    "profile_id": "extra:107#skill_disable_2",
+    "equals": {
+      "component.recipient": ["opponent_denko"],
+      "component.target_filters.opponent_attribute_excluded": "eco",
+      "component.target_filters.station_attribute": "eco",
+      "component.trigger_actor": "any_team_member"
+    },
+    "absent": ["component.target_filters.opponent_attribute"]
+  },
+  {
+    "id": "own_team_stat_loss_is_cost_not_enemy_debuff",
+    "profile_id": "extra:008#def_debuff_1",
+    "contains": {"opportunity_costs": "self_debuff", "self_debuff_kinds": "def_debuff"}
+  },
+  {
+    "id": "holder_access_is_not_any_team_access",
+    "profile_id": "original:066#fixed_damage_1",
+    "equals": {"component.trigger_actor": "skill_holder"}
+  },
+  {
+    "id": "team_member_access_is_explicit",
+    "profile_id": "extra:032#fixed_damage_1",
+    "equals": {"component.trigger_actor": "any_team_member"}
+  }
+]

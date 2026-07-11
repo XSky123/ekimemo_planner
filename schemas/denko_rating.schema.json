@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "denko_rating.schema.json",
+  "title": "DenkoRating",
+  "description": "Step3 derived comparative rating. Detail pages remain fact authority; condition factors and cross-effect impact are versioned scoring priors.",
+  "type": "object",
+  "required": ["rating_id", "rating_version", "denko", "levels", "recommendation_zh", "calibration", "record_meta"],
+  "properties": {
+    "rating_id": {"type": "string"},
+    "rating_version": {"type": "string"},
+    "denko": {
+      "type": "object",
+      "required": ["denko_id", "name", "pool"],
+      "properties": {
+        "denko_id": {"type": "string"},
+        "name": {"type": ["string", "null"]},
+        "pool": {"type": "string"},
+        "attribute": {"type": ["string", "null"]},
+        "type": {"type": ["string", "null"]},
+        "key_level_stats": {"type": "object"}
+      }
+    },
+    "levels": {
+      "type": "object",
+      "required": ["50", "80"],
+      "additionalProperties": {"$ref": "#/$defs/levelRating"}
+    },
+    "recommendation_zh": {"type": "string"},
+    "calibration": {
+      "type": "object",
+      "properties": {"beginner_prior_marker": {"type": ["string", "null"]}}
+    },
+    "record_meta": {"type": "object"}
+  },
+  "$defs": {
+    "score": {"type": "integer", "minimum": 0, "maximum": 100},
+    "componentContribution": {
+      "type": "object",
+      "required": ["profile_id", "effect_kind", "effect_zh", "utility", "factors"],
+      "properties": {
+        "profile_id": {"type": "string"},
+        "effect_kind": {"type": "string"},
+        "effect_zh": {"type": "string"},
+        "utility": {"type": "number", "minimum": 0},
+        "factors": {"type": "object"}
+      }
+    },
+    "sceneRating": {
+      "type": "object",
+      "required": ["score", "utility", "top_components"],
+      "properties": {
+        "score": {"$ref": "#/$defs/score"},
+        "utility": {"type": "number", "minimum": 0},
+        "top_components": {"type": "array", "items": {"$ref": "#/$defs/componentContribution"}, "maxItems": 3}
+      }
+    },
+    "levelRating": {
+      "type": "object",
+      "required": ["overall_score", "grade", "versatility", "scenes"],
+      "properties": {
+        "overall_score": {"$ref": "#/$defs/score"},
+        "grade": {"type": "string", "enum": ["S", "A", "B", "C", "D"]},
+        "versatility": {"$ref": "#/$defs/score"},
+        "scenes": {
+          "type": "object",
+          "required": ["daily_attack", "burst_attack", "home_defense", "expedition_score", "expedition_exp", "growth", "mechanism"],
+          "additionalProperties": {"$ref": "#/$defs/sceneRating"}
+        }
+      }
+    }
+  }
+}

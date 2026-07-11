@@ -1,0 +1,45 @@
+{
+  "artifact": "role_profiles",
+  "profile_version": "role_profile.v1",
+  "counts": {
+    "source_components": 636,
+    "profiles": 636,
+    "excluded": 2,
+    "conditional": 568,
+    "needs_review": 0,
+    "missing_recipient_info": 0,
+    "unknown_access_direction_info": 388
+  },
+  "issue_count": 0,
+  "issues": [],
+  "informational_samples": {
+    "missing_recipient": [],
+    "unknown_access_direction": [
+      "another:002#skill_force_end_3",
+      "another:003#def_buff_1",
+      "awamemo:000#radar_detection_range_1",
+      "awamemo:000#radar_detection_range_2",
+      "awamemo:000#radar_max_detection_range_2",
+      "ekico:003#cooldown_reduction_2",
+      "extra:006#exp_gain_2",
+      "extra:007#exp_gain_2",
+      "extra:008#atk_debuff_1",
+      "extra:008#atk_debuff_2",
+      "extra:008#def_debuff_1",
+      "extra:008#exp_gain_1",
+      "extra:009#exp_distribution",
+      "extra:010#atk_buff_1",
+      "extra:010#def_debuff_2",
+      "extra:011#duration_extension_3",
+      "extra:011#hp_recovery_2",
+      "extra:013#atk_buff",
+      "extra:013#def_buff",
+      "extra:013#exp_gain_1"
+    ]
+  },
+  "review_queue": {
+    "path": "data\\review_queue\\step3_role_profile_review.jsonl",
+    "count": 0,
+    "by_reason": {}
+  }
+}

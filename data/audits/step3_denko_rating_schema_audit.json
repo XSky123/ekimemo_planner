@@ -1,0 +1,7 @@
+{
+  "artifact": "step3_denko_rating_schema_audit",
+  "schema": "schemas\\denko_rating.schema.json",
+  "ratings": 307,
+  "issue_count": 0,
+  "issues": []
+}

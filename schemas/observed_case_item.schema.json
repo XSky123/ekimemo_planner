@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "observed_case_item.schema.json",
+  "title": "ObservedCaseQueueItem",
+  "description": "Metadata-only queue item for observed teams, screenshots, and user exports. Never a Step1 fact source.",
+  "type": "object",
+  "required": ["case_id", "source_kind", "archive_path", "archive_hash", "entry_path", "entry_hash", "parse_status", "record_meta"],
+  "properties": {
+    "case_id": { "type": "string" },
+    "source_kind": { "const": "observed_case" },
+    "archive_path": { "type": "string" },
+    "archive_hash": { "type": "string" },
+    "entry_path": { "type": "string" },
+    "entry_hash": { "type": "string" },
+    "media_kind": { "type": "string", "enum": ["image", "text", "structured", "other"] },
+    "parse_status": { "type": "string", "enum": ["queued", "parsed", "needs_review", "ignored"] },
+    "calibration_only": { "const": true },
+    "record_meta": { "$ref": "record_meta.schema.json" }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "artifact": "observed_case_manifest",
+  "parser_version": "observed_case_manifest.v1",
+  "generated_at": "2026-07-11T05:48:58.825833+09:00",
+  "archives": [],
+  "queue_count": 0,
+  "issues": [],
+  "policy_zh": "案例只用于校准与解释，不覆盖 wiki 详情事实；此阶段不解压落盘、不 OCR、不推断队伍含义。"
+}

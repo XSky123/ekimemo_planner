@@ -1,0 +1,47 @@
+<!doctype html><html><head><meta charset="utf-8">
+<title>推荐语全量审计</title>
+<style>
+body{font-family:system-ui,'Microsoft YaHei',sans-serif;margin:24px;color:#202124;background:#fafafa}
+h1{font-size:24px} h2{font-size:18px;margin-top:28px}
+table{border-collapse:collapse;width:100%;background:white;margin:12px 0}
+th,td{border:1px solid #d0d7de;padding:6px 8px;vertical-align:top;font-size:13px}
+th{background:#f1f3f4}.blocker{background:#ffe7e7}.warn{background:#fff4d6}.info{background:#eef5ff}.ok{background:#eef9ee}
+code{font-family:ui-monospace,Consolas,monospace;font-size:12px}
+</style></head><body>
+<h1>推荐语全量审计</h1>
+<p>生成时间：2026-07-11T05:16:45.683879+09:00</p>
+<table><tbody>
+<tr><th>候选推荐行</th><td>290</td></tr>
+<tr><th>有发现的行</th><td>2</td></tr>
+<tr><th>发现数</th><td>2</td></tr>
+<tr><th>严重度统计</th><td><code>{&quot;info&quot;: 2}</code></td></tr>
+</tbody></table>
+<h2>可疑项目</h2>
+<table><thead><tr><th>severity</th><th>denko</th><th>推荐语</th><th>DB 技能摘要</th><th>发现</th><th>kinds</th></tr></thead><tbody>
+<tr class="info"><td>info</td><td><code>extra:118</code><br>リーガ・イマンタ<br>AIで可能性100%</td><td>EX118 / リーガ / cool / サポーター / × / 無条件で編成内のDEF/ATK増加に加え、防御/攻撃系のアクセサリーの効果を増加させる。アクセサリーを複数装備しないと効果を十分に発揮できないため上級者向け。</td><td>技能分量1：DEF增加 / 对象：编成内全员 / Lv50，DEF +3%，発動率 100%；技能分量2：効果量倍率 / 对象：编成内全员 / Lv50，効果量 1.3倍，発動率 100%</td><td><b>info</b> <code>prior_detail_conflict:atk_buff</code>: 推荐页 prior 提到 atk_buff，但详情页事实中未确认；不覆盖 DB</td><td><code>def_buff, effect_multiplier</code></td></tr>
+<tr class="info"><td>info</td><td><code>extra:125</code><br>ベルナデット・ヴィルパント<br>ちょい悪がカッコイイのよ！</td><td>EX125 / ベルナデット / heat / サポーター / ○ / 編成内をflat以外の3属性にし、1～3両目の属性をばらすと編成内のATK/DEF増加。単属性編成よりも条件は満たしやすく、効果量もそこそこ高い。</td><td>技能分量1：ATK增加 / 对象：编成内全员 / Lv50，ATK +15.5%，発動率 100%，45分，CD 2時間15分</td><td><b>info</b> <code>prior_detail_conflict:def_buff</code>: 推荐页 prior 提到 def_buff，但详情页事实中未确认；不覆盖 DB</td><td><code>atk_buff</code></td></tr>
+</tbody></table>
+<h2>随机 OK 样本</h2>
+<table><thead><tr><th>denko</th><th>推荐语</th><th>DB kinds</th></tr></thead><tbody>
+<tr class="ok"><td><code>extra:101</code><br>ジャニス・ゴガーバーン</td><td>EX101 / ジャニス / cool / トリックスター / ○ / 自身よりもAPが低いでんこのアクセス時に固定ダメージ。 cool 統一編成が必要。低レベルのでんこやディフェンダーの攻撃支援に使いやすい。自身にスキルの効果は無いがAPが高め。</td><td><code>fixed_damage</code></td></tr>
+<tr class="ok"><td><code>extra:081</code><br>ロッサ・ローマ</td><td>EX81 / ロッサ / heat / トリックスター / × / アクセスに耐えれば経験値/スコア獲得。 heat 統一編成が必要。効果量増加条件が複数でんこの同時リンクなので初心者には厳しめ。</td><td><code>exp_gain, score_gain</code></td></tr>
+<tr class="ok"><td><code>original:106</code><br>北府ゆめの</td><td>106 / ゆめの / heat / サポーター / ※ / heat 数に応じて編成内のDEF増加。まずはれんけつ器の入手が必要。5両編成になれば、結構リンクを保持できる。</td><td><code>def_buff</code></td></tr>
+<tr class="ok"><td><code>original:006</code><br>シャルロッテ＝フォン＝ハノーファー</td><td>6 / シャルロッテ / eco / トリックスター / ◎ / アクセス済みのいずれかの駅にアクセスするスキル。スキルを使っていると勝手に育つ。</td><td><code>random_previous_station_access</code></td></tr>
+<tr class="ok"><td><code>extra:037</code><br>ニーカ・ヤロスラフスキー</td><td>EX37 / ニーカ / cool / サポーター / ○ / 自身と同属性のでんこが不利属性以外からアクセスされると相手のAP減少。DEF増加との違いは基礎ステータスに作用することなので、単純なDEF増加よりも被ダメージを減らしやすい。ただし対策されやすく弱点を突かれた場合は丸腰。</td><td><code>ap_debuff</code></td></tr>
+<tr class="ok"><td><code>extra:051</code><br>エレナ・オリャンタイタンボ</td><td>EX51 / エレナ / cool / サポーター / ○ / 編成内のATK増加、ただしリンク失敗時に強制終了。 cool 統一編成が必要。ハイリスクだが効果量が高くクールタイムも短め。 あるは などのカウンターと併用するとノーリスクで活用できる。</td><td><code>atk_buff</code></td></tr>
+<tr class="ok"><td><code>original:142</code><br>南小谷れんげ</td><td>142 / れんげ / eco / トリックスター / ○ / 相手のHPが半分以下で追加アクセス。相手のHPの半分以上を削れる場合は、実質攻撃力が2倍になる。そうでなくても、弱った相手に追撃を加えることもできる。</td><td><code>extra_access</code></td></tr>
+<tr class="ok"><td><code>original:072</code><br>蓮台寺ナギサ</td><td>72 / ナギサ / cool / アタッカー / △ / 自身と相手の cool 数に応じた固定ダメージ。編成両数が多くなればなるほど力を発揮する。 cool 属性が揃っていない最序盤は、相手の編成に大きく左右される。</td><td><code>additional_fixed_damage, fixed_damage</code></td></tr>
+<tr class="ok"><td><code>original:064</code><br>角館あけひ</td><td>64 / あけひ / heat / アタッカー / ※ / 移動距離に応じてATK増加。100km以上なら編成内でんこにも。長距離通勤・通学マスターや、遠征中マスターにおすすめ。APが早熟。</td><td><code>atk_buff</code></td></tr>
+<tr class="ok"><td><code>original:102</code><br>八戸ましろ</td><td>102 / ましろ / eco / トリックスター / ※ / 効果の種類自体が日替わりのため、欲しい効果が思ったときに得られないことも多い。しかし、土曜日の経験値獲得効果は、週末キャンペーンとうまく噛み合う。</td><td><code>atk_buff, damage_reduction, def_buff, duration_extension, effect_multiplier, exp_gain, fixed_damage, score_gain</code></td></tr>
+<tr class="ok"><td><code>extra:031</code><br>アヌシュカ・ニューデリー</td><td>EX31 / アヌシュカ / cool / ディフェンダー / △ / リンク中は編成内全員のDEF増加、複数駅リンクで追加効果。 cool 統一編成が必要。複数駅リンクを取れるかが鍵だが、一度リンクしてしまえばなかなか無効化されない。</td><td><code>def_buff</code></td></tr>
+<tr class="ok"><td><code>extra:063</code><br>浜松みちほ</td><td>EX63 / みちほ / cool / トリックスター / ○ / 自身よりも獲得スコアが高い相手なら編成内のATK増加&amp;リンク成功で編成内全員に経験値付与。むしろ初心者のうちが使いやすい。</td><td><code>atk_buff, exp_gain</code></td></tr>
+<tr class="ok"><td><code>extra:011</code><br>木屋はかり</td><td>EX11 / はかり / cool / サポーター / ○ / 編成内の被アクセス時にHP回復、 cool 統一編成で効果量増加。 セリア よりも発動率が高いのがメリットで、 なほ や まやか などバッテリーが使えないでんことの相性が良好。</td><td><code>duration_extension, hp_recovery</code></td></tr>
+<tr class="ok"><td><code>extra:040</code><br>レオニー・シュトース</td><td>EX40 / レオニー / cool / トリックスター / × / アクセス時にHPを消費する代わりにHPが低いほどATK/DEF増加。最大効果量は高いがHPをギリギリまで減らさなければならず、固定ダメージには非常に弱い。</td><td><code>atk_buff, def_buff</code></td></tr>
+<tr class="ok"><td><code>original:057</code><br>岩国みづほ</td><td>57 / みづほ / cool / サポーター / ○ / みづほと同じラッピング（いつもの含む）を着ているでんこのATK＆DEF増加。「いつもの」がカウントされるため、 ひまり や わかな と比べて発動させやすい。</td><td><code>atk_buff, def_buff</code></td></tr>
+<tr class="ok"><td><code>original:128</code><br>所沢にこ</td><td>128 / にこ / cool / トリックスター / ◎ / リンク失敗で経験値付与。初心者のうちはリンクを奪えないことも多く、ほぼ確実に成長の助けとなってくれる。属性問わずすべてのでんこが恩恵を受けることができ、大変便利。ねこぱんちとの相性も良好。</td><td><code>exp_gain</code></td></tr>
+<tr class="ok"><td><code>original:001</code><br>黄陽セリア</td><td>1 / セリア / eco / サポーター / × / でんこのHP減少時に回復するスキル。初心者のうちは一発KOされることが多いため発動機会が少ない。</td><td><code>activation_probability_boost, hp_recovery</code></td></tr>
+<tr class="ok"><td><code>extra:073</code><br>アチャラ・メークローン</td><td>EX73 / アチャラ / eco / トリックスター / × / 20分後に強制リブートし、その際に得られるスコアを増加させるスキル。ただしその間は完全に丸腰。防御の選択肢が揃っていないと扱いにくい。</td><td><code>def_debuff, score_gain</code></td></tr>
+<tr class="ok"><td><code>extra:057</code><br>ナム・ソユン</td><td>EX57 / ソユン / eco / サポーター / × / eco が2人以上リンクで eco のDEF増加。複数人のリンク維持は初心者にはハードルが高い。一方で上級者が使うと ふたば や ネネ とのシナジーも相まって、無類の強さを発揮する。</td><td><code>def_buff</code></td></tr>
+<tr class="ok"><td><code>original:071</code><br>大雄山るり</td><td>71 / るり / cool / サポーター / ※ / 通勤時間帯にATK増加。そこそこの距離を移動しながらアクセスする場合には力を発揮する。発動時間帯になれば実質3時間アクティブなのも良い。</td><td><code>atk_buff</code></td></tr>
+</tbody></table>
+</body></html>

@@ -1825,7 +1825,10 @@ def probability_for_label(probability: dict[str, str], label: str | None) -> dic
 def extract_labeled_probability(value: str, label_number: str) -> str | None:
     text = normalize_numeric_text(value)
     # Handles both "(1)75%" and combined labels like "(1)(2)100%".
-    percent_value = r"[+＋-]?(?:\d+(?:\.\d+)?|x|\?)(?:\s*[～〜~\-]\s*[+＋-]?(?:\d+(?:\.\d+)?|x|\?))?\s*[％%]"
+    number = r"[+＋-]?(?:\d+(?:\.\d+)?|x|\?)"
+    # Wiki ranges are written as "0.7%～70%": each endpoint carries its
+    # own percent sign. Keep the entire range for the component label.
+    percent_value = rf"{number}\s*[％%](?:\s*[～〜~\-]\s*{number}\s*[％%])?"
     pattern = re.compile(rf"((?:\(\d+\))+)\s*({percent_value})")
     for match in pattern.finditer(text):
         labels = re.findall(r"\((\d+)\)", match.group(1))

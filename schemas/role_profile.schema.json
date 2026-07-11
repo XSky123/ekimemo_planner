@@ -1,0 +1,122 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "role_profile.schema.json",
+  "title": "RoleProfile",
+  "description": "Step3 derived role profile. Source facts remain in Step1 Japanese records; this layer normalizes reusable solver semantics.",
+  "type": "object",
+  "required": [
+    "profile_id",
+    "profile_version",
+    "record_meta",
+    "denko",
+    "component",
+    "activation",
+    "constraints",
+    "scene_tags",
+    "solver_eligibility"
+  ],
+  "properties": {
+    "profile_id": { "type": "string", "description": "Stable denko_id#component_id identity." },
+    "profile_version": { "type": "string" },
+    "record_meta": {
+      "allOf": [
+        { "$ref": "record_meta.schema.json" },
+        {
+          "type": "object",
+          "required": ["derived_from"],
+          "properties": {
+            "derived_from": {
+              "type": "object",
+              "required": ["skill_fact_content_hash", "component_id"],
+              "properties": {
+                "skill_fact_content_hash": { "type": ["string", "null"] },
+                "component_id": { "type": "string" },
+                "manual_patch_ids": { "type": "array", "items": { "type": "string" } },
+                "db_backfill_lock": { "type": "boolean" }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "denko": {
+      "type": "object",
+      "required": ["denko_id", "name", "pool"],
+      "properties": {
+        "denko_id": { "type": "string" },
+        "name": { "type": "string" },
+        "pool": { "type": "string" },
+        "attribute": { "type": ["string", "null"] },
+        "type": { "type": ["string", "null"] },
+        "key_level_stats": { "type": "object" }
+      }
+    },
+    "component": {
+      "type": "object",
+      "required": ["component_id", "effect_kind", "effect_channel", "source"],
+      "properties": {
+        "component_id": { "type": "string" },
+        "effect_kind": { "type": "string" },
+        "effect_channel": { "type": "string" },
+        "effect_role": { "type": ["string", "null"] },
+        "recipient": { "type": "array", "items": { "type": "string" } },
+        "target_filters": { "type": "object" },
+        "trigger_conditions": { "type": "object" },
+        "trigger_actor": { "type": "string" },
+        "access_direction": { "type": "array", "items": { "type": "string" } },
+        "availability": { "type": "object" },
+        "level_values": { "type": "object" },
+        "source": {
+          "type": "object",
+          "required": ["condition_raw", "remarks_raw"],
+          "properties": {
+            "condition_raw": { "type": ["string", "null"] },
+            "remarks_raw": { "type": ["string", "null"] },
+            "condition_label": { "type": ["string", "null"] }
+          }
+        }
+      }
+    },
+    "activation": {
+      "type": "object",
+      "required": ["mode", "probability_by_level", "duration_by_level", "cooldown_by_level", "uptime_by_level"],
+      "properties": {
+        "mode": { "type": "string", "enum": ["always", "manual", "auto", "unknown"] },
+        "raw_activation_type": { "type": ["string", "null"] },
+        "probability_by_level": { "type": "object" },
+        "duration_by_level": { "type": "object" },
+        "cooldown_by_level": { "type": "object" },
+        "uptime_by_level": { "type": "object" }
+      }
+    },
+    "constraints": {
+      "type": "object",
+      "required": ["hard", "opportunity_costs", "self_debuff"],
+      "properties": {
+        "hard": { "type": "array", "items": { "type": "object" } },
+        "opportunity_costs": { "type": "array", "items": { "type": "string" } },
+        "self_debuff": { "type": "array", "items": { "type": "object" } }
+      }
+    },
+    "scene_tags": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "confidence", "reasons_zh"],
+        "properties": {
+          "id": { "type": "string" },
+          "confidence": { "type": "string", "enum": ["high", "medium", "low"] },
+          "reasons_zh": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "solver_eligibility": {
+      "type": "object",
+      "required": ["status", "reason"],
+      "properties": {
+        "status": { "type": "string", "enum": ["eligible", "conditional", "not_standalone", "excluded"] },
+        "reason": { "type": "string" }
+      }
+    }
+  }
+}

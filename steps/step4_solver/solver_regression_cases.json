@@ -1,0 +1,62 @@
+[
+  {
+    "id": "self_only_ally_is_not_main_support",
+    "expect": "An ally component with recipient=self is inactive for a fixed main denko."
+  },
+  {
+    "id": "all_attribute_formation_is_checked_after_team_selection",
+    "expect": "A cool-only formation component is inactive in a mixed-attribute team."
+  },
+  {
+    "id": "allowed_attribute_formation_is_checked_after_team_selection",
+    "expect": "A formation limited to named attributes accepts only those attributes and rejects other members."
+  },
+  {
+    "id": "own_attribute_min_count_uses_structured_shape",
+    "expect": "The structured attribute/min_count condition is evaluated without treating its field names as attributes."
+  },
+  {
+    "id": "probability_multiplies_expected_not_maximum",
+    "expect": "A 40% 20-point component has theoretical 20 and expected 8."
+  },
+  {
+    "id": "probability_range_is_not_synthetic_mean",
+    "expect": "A documented probability range remains active_unquantified and does not produce a synthetic expected value."
+  },
+  {
+    "id": "defense_does_not_leak_into_capture",
+    "expect": "A defense-only component is inactive in a capture request."
+  },
+  {
+    "id": "accessor_station_condition_blocks_wrong_main",
+    "expect": "A matching-accessor/matching-station fixed-damage component is inactive for a cool main without station context."
+  },
+  {
+    "id": "accessor_station_condition_allows_matching_main",
+    "expect": "The same component becomes active for an eco main at an eco station."
+  },
+  {
+    "id": "opponent_type_count_is_explicit_context",
+    "expect": "A supporter-count condition stays inactive when supplied opponent counts are below its minimum."
+  },
+  {
+    "id": "temperature_and_season_are_context_checked",
+    "expect": "Temperature bands, invalid gaps and seasonal month sets are evaluated from explicit request context."
+  },
+  {
+    "id": "holder_access_damage_is_not_main_support",
+    "expect": "A teammate's own-access fixed damage is excluded from a fixed main denko's direct capture contribution."
+  },
+  {
+    "id": "team_access_damage_can_support_main",
+    "expect": "A fixed-damage effect explicitly triggered by any team member can contribute when the fixed main accesses."
+  },
+  {
+    "id": "own_team_debuff_is_not_capture_candidate",
+    "expect": "A teammate DEF-loss component cannot appear as enemy DEF reduction in a capture candidate pool."
+  },
+  {
+    "id": "auto_positioning_respects_relative_car",
+    "expect": "For a relative-car support, bounded position enumeration places the holder so the fixed main denko receives the effect."
+  }
+]

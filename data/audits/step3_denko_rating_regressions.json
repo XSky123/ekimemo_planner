@@ -1,0 +1,56 @@
+{
+  "artifact": "step3_denko_rating_regressions",
+  "checks": [
+    {
+      "id": "same_10_percent_always_beats_cooldown",
+      "passed": true
+    },
+    {
+      "id": "same_10_percent_certain_beats_probability",
+      "passed": true
+    },
+    {
+      "id": "same_10_percent_unconditional_beats_formation_constraint",
+      "passed": true
+    },
+    {
+      "id": "cooldown_keeps_burst_value",
+      "passed": true
+    },
+    {
+      "id": "extra:110_beginner_low_veteran_recovery",
+      "passed": true
+    },
+    {
+      "id": "extra:111_beginner_low_veteran_recovery",
+      "passed": true
+    },
+    {
+      "id": "extra:112_beginner_low_veteran_recovery",
+      "passed": true
+    },
+    {
+      "id": "original_081_stays_wiki_triangle",
+      "passed": true
+    },
+    {
+      "id": "original_083_link_branch_not_high_generalist",
+      "passed": true
+    },
+    {
+      "id": "extra_119_accessory_dependency_beginner_low",
+      "passed": true
+    },
+    {
+      "id": "all_wiki_band_scores_aligned",
+      "passed": true
+    }
+  ],
+  "utilities": {
+    "always": 0.295,
+    "cooldown": 0.111499,
+    "probabilistic": 0.118,
+    "constrained": 0.1888
+  },
+  "issue_count": 0
+}

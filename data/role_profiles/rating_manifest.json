@@ -1,0 +1,64 @@
+{
+  "artifact": "denko_ratings",
+  "rating_version": "denko_rating.v2",
+  "generated_at": "2026-07-11T13:57:31.829221+09:00",
+  "source": {
+    "role_profiles": "data\\role_profiles\\role_profiles.jsonl",
+    "content_hash": "7cefdc17f0951513b152e1024c345cf400a04f81bbbf1e94ef8775faffbc0ed0"
+  },
+  "outputs": {
+    "ratings": "data\\role_profiles\\denko_ratings.jsonl",
+    "audit": "data\\audits\\step3_denko_rating_audit.json"
+  },
+  "levels": [
+    "50",
+    "80"
+  ],
+  "primary_scenes": [
+    "daily_attack",
+    "burst_attack",
+    "home_defense",
+    "expedition_score",
+    "expedition_exp",
+    "growth",
+    "mechanism"
+  ],
+  "counts": {
+    "denko": 307,
+    "grade_lv80": {
+      "A": 1,
+      "B": 39,
+      "C": 103,
+      "D": 164
+    }
+  },
+  "calibration": {
+    "beginner_prior": "data\\audits\\recommendation_prior_audit.json",
+    "content_hash": "8d4f65ec818bd69eebdf0fabefa9555b7f4b10e442d026ca6c23ab6d05426f4e",
+    "method": "Wiki marker selects the beginner recommendation band; the fact model orders characters inside that band. Contextual marker ※ remains unbanded.",
+    "bands": {
+      "×": [
+        5,
+        40
+      ],
+      "△": [
+        47,
+        62
+      ],
+      "○": [
+        67,
+        82
+      ],
+      "◎": [
+        87,
+        98
+      ]
+    }
+  },
+  "formula": {
+    "component": "impact * absolute_magnitude_anchor * probability * scenario_availability * stage_condition * scope * cost",
+    "scene": "top_component + 0.5*second + 0.25*third + 0.125*fourth, then 100*(1-exp(-utility/0.72))",
+    "overall": "62% best scene + 23% second + 10% third + 5% versatility",
+    "note_zh": "Lv50 使用新手条件先验，Lv80 使用后期条件先验；场景分采用固定效果锚点，不再把任意正效果抬到高百分位。"
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "artifact": "step3_external_strategy_prior_audit",
+  "source_authority": "recommendation_prior",
+  "sources": [
+    {
+      "source_id": "3secondsgameover_attacker",
+      "url": "https://3secondsgameover.com/e/ekimemo_attacker",
+      "updated_through": "2025-05-07"
+    },
+    {
+      "source_id": "3secondsgameover_formation",
+      "url": "https://3secondsgameover.com/e/ekimemo_hensei",
+      "updated_through": "2025-05-07"
+    }
+  ],
+  "profile_count": 636,
+  "checks": [
+    {
+      "id": "reusable_profile_fields",
+      "passed": true,
+      "reason_zh": "每个组件都有独立的效果、发动、约束、场景与可求解状态。",
+      "sample": []
+    },
+    {
+      "id": "goal_first_scene_projection",
+      "passed": true,
+      "reason_zh": "外部编成文章强调先选目标；画像层已保留攻、防、积分/经验与成长的独立场景。",
+      "missing": []
+    },
+    {
+      "id": "condition_cost_model",
+      "passed": true,
+      "reason_zh": "低概率、手动、统一属性/VU 与自损不会被当作无条件强度。",
+      "missing": []
+    },
+    {
+      "id": "defense_synergy_channels",
+      "passed": true,
+      "reason_zh": "防守链可分别读取概率操作、承伤/减伤、回复与无效化相关组件。",
+      "missing": []
+    },
+    {
+      "id": "no_article_fact_override",
+      "passed": true,
+      "reason_zh": "外部文章已停止更新，因此只作为先验/契约校验，不覆盖详情页事实。"
+    }
+  ],
+  "issue_count": 0,
+  "caveat_zh": "这是对画像建模维度的双重校验，不是把旧策略文章的角色排名写回当前 DB。"
+}

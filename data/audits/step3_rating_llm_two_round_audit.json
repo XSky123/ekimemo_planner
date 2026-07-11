@@ -1,0 +1,48 @@
+{
+  "artifact": "step3_rating_llm_two_round_audit",
+  "rounds": [
+    {
+      "round": 1,
+      "rows": 210,
+      "reviewed": 210,
+      "by_verdict": {
+        "conditional": 1,
+        "overrated": 16,
+        "pass": 188,
+        "scene_error": 2,
+        "underrated": 3
+      },
+      "actionable_by_layer": {
+        "step1": 16,
+        "step3": 6
+      }
+    },
+    {
+      "round": 2,
+      "rows": 210,
+      "reviewed": 210,
+      "by_verdict": {
+        "conditional": 1,
+        "overrated": 4,
+        "pass": 199,
+        "underrated": 6
+      },
+      "actionable_by_layer": {
+        "step1": 4,
+        "step3": 7
+      }
+    }
+  ],
+  "review_instances": 420,
+  "final_checks": {
+    "rating_issue_count": 0,
+    "rating_schema_issue_count": 0,
+    "profile_issue_count": 0,
+    "template_recommendations_removed": true,
+    "report_has_round1_reviews": true,
+    "report_has_round2_reviews": true,
+    "report_has_structured_factor_columns": true
+  },
+  "issue_count": 0,
+  "issues": []
+}

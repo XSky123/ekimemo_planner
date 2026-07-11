@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "solver_request.schema.json",
+  "title": "SolverRequest",
+  "type": "object",
+  "required": ["main_denko_id", "scene"],
+  "properties": {
+    "main_denko_id": { "type": "string" },
+    "scene": { "type": "string", "enum": ["capture", "defense", "commute", "expedition", "visit_count_event", "score_exp", "growth", "mechanism"] },
+    "level": { "type": "string", "enum": ["30", "50", "80", "92", "100"], "default": "50" },
+    "slots": { "type": "integer", "minimum": 1, "maximum": 6 },
+    "allowed_denko_ids": { "type": "array", "items": { "type": "string" } },
+    "excluded_denko_ids": { "type": "array", "items": { "type": "string" } },
+    "context": {
+      "type": "object",
+      "properties": {
+        "weather": { "type": "string" },
+        "temperature_c": { "type": "number" },
+        "weekday": { "type": "string" },
+        "month": { "type": "integer", "minimum": 1, "maximum": 12 },
+        "time_window": { "type": "string", "enum": ["daytime", "nighttime"] },
+        "opponent_attribute": { "type": "string" },
+        "opponent_attribute_counts": { "type": "object", "additionalProperties": { "type": "integer", "minimum": 0 } },
+        "opponent_team_size": { "type": "integer", "minimum": 1, "maximum": 6 },
+        "accessing_attribute": { "type": "string" },
+        "station_attribute": { "type": "string" },
+        "opponent_type": { "type": "string" },
+        "opponent_type_counts": { "type": "object", "additionalProperties": { "type": "integer", "minimum": 0 } },
+        "opponent_pool": { "type": "string" },
+        "allow_manual_activation": { "type": "boolean" },
+        "assume_main_access": { "type": "boolean" },
+        "assume_main_accessed": { "type": "boolean" },
+        "main_position": { "type": "string", "enum": ["front", "non_front", "unknown"] },
+        "member_positions": { "type": "object", "additionalProperties": { "type": "integer", "minimum": 1, "maximum": 6 } },
+        "auto_positioning": { "type": "boolean" },
+        "link_minutes": { "type": "number", "minimum": 0 },
+        "linked_station_count": { "type": "integer", "minimum": 0 },
+        "station_occupied": { "type": "boolean" },
+        "holder_footbar": { "type": "boolean" },
+        "opponent_skill_categories": { "type": "array", "items": { "type": "string" } },
+        "team_attributes": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}

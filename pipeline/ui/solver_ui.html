@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ekimemo 配队求解</title>
+  <style>
+    :root { color: #172433; background: #f5f7f9; font-family: system-ui, "Microsoft YaHei", sans-serif; }
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+    header { background: #fff; border-bottom: 1px solid #dce3e9; padding: 18px max(18px, calc((100% - 1320px) / 2)); }
+    h1 { margin: 0; font-size: 24px; letter-spacing: 0; }
+    main { max-width: 1320px; margin: 0 auto; padding: 18px; }
+    .request { display: grid; grid-template-columns: minmax(220px, 1.6fr) repeat(3, minmax(130px, .7fr)) auto; gap: 10px; align-items: end; }
+    label { display: grid; gap: 5px; color: #435363; font-size: 13px; }
+    input, select, button { font: inherit; }
+    input, select { min-width: 0; height: 36px; border: 1px solid #c7d1db; border-radius: 4px; background: #fff; color: #172433; padding: 0 9px; }
+    button { height: 36px; border: 1px solid #096da8; border-radius: 4px; background: #096da8; color: #fff; padding: 0 15px; cursor: pointer; white-space: nowrap; }
+    button:disabled { opacity: .55; cursor: wait; }
+    details { border-top: 1px solid #dce3e9; margin-top: 16px; padding-top: 12px; }
+    summary { color: #29495f; cursor: pointer; font-size: 13px; }
+    .context { display: grid; grid-template-columns: repeat(5, minmax(120px, 1fr)); gap: 10px; margin-top: 12px; }
+    .check { display: flex; align-items: center; gap: 6px; height: 36px; font-size: 13px; }
+    .status { min-height: 24px; margin: 16px 0 8px; color: #526473; font-size: 13px; }
+    .status.error { color: #a33a2b; }
+    .team { border-top: 1px solid #cfd9e1; padding: 16px 0; }
+    .team:first-child { border-top: 0; }
+    .team h2 { margin: 0 0 8px; font-size: 18px; }
+    .members, .metrics { display: flex; flex-wrap: wrap; gap: 7px; margin: 7px 0; }
+    .member, .metric { border: 1px solid #cdd8e2; background: #fff; padding: 4px 7px; border-radius: 4px; font-size: 13px; }
+    .member small { display: block; color: #6b7b89; }
+    .components { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 8px; margin-top: 10px; }
+    .component { border-left: 3px solid #3383ad; background: #fff; padding: 9px 10px; font-size: 13px; line-height: 1.45; }
+    .component.pending { border-color: #b77a19; background: #fffaf0; }
+    .component.inactive { border-color: #a45a55; background: #fff8f7; }
+    .component b { display: block; }
+    .muted { color: #637383; }
+    .empty { padding: 28px 0; color: #637383; }
+    @media (max-width: 900px) { .request { grid-template-columns: repeat(2, minmax(0, 1fr)); } .context { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  </style>
+</head>
+<body>
+  <header><h1>Ekimemo 配队求解</h1></header>
+  <main>
+    <form id="request" class="request">
+      <label>主力でんこ<input id="main" list="denko" required placeholder="original:026"></label>
+      <label>场景<select id="scene"><option value="capture">突破/抢站</option><option value="defense">守站</option><option value="commute">通勤低操作</option><option value="expedition">远征/连续 link</option><option value="visit_count_event">回数活动</option><option value="score_exp">积分/经验</option><option value="growth">成长</option><option value="mechanism">机制与干扰</option></select></label>
+      <label>等级<select id="level"><option value="30">Lv30</option><option value="50" selected>Lv50</option><option value="80">Lv80</option><option value="92">Lv92</option><option value="100">Lv100</option></select></label>
+      <label>编成槽位<select id="slots"><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6" selected>6</option></select></label>
+      <button id="submit" type="submit">生成候选</button>
+    </form>
+    <datalist id="denko">__DENKO_OPTIONS__</datalist>
+    <details>
+      <summary>场景条件</summary>
+      <div class="context">
+        <label>站点属性<select id="station_attribute"><option value="">未指定</option><option>cool</option><option>heat</option><option>eco</option></select></label>
+        <label>对手属性<select id="opponent_attribute"><option value="">未指定</option><option>cool</option><option>heat</option><option>eco</option></select></label>
+        <label>对手类型<select id="opponent_type"><option value="">未指定</option><option value="attacker">attacker</option><option value="defender">defender</option><option value="supporter">supporter</option><option value="trickster">trickster</option></select></label>
+        <label>气温 °C<input id="temperature_c" type="number" step="1" placeholder="未指定"></label>
+        <label>月份<select id="month"><option value="">未指定</option><option value="1">1月</option><option value="2">2月</option><option value="3">3月</option><option value="4">4月</option><option value="5">5月</option><option value="6">6月</option><option value="7">7月</option><option value="8">8月</option><option value="9">9月</option><option value="10">10月</option><option value="11">11月</option><option value="12">12月</option></select></label>
+        <label>link 分钟<input id="link_minutes" type="number" min="0" step="1" placeholder="未指定"></label>
+        <label class="check"><input id="manual" type="checkbox">允许手动发动</label>
+        <label class="check"><input id="main_access" type="checkbox" checked>主力访问站点</label>
+        <label class="check"><input id="main_accessed" type="checkbox">主力被访问</label>
+      </div>
+    </details>
+    <p id="status" class="status"></p>
+    <section id="results" aria-live="polite"><div class="empty">等待请求</div></section>
+  </main>
+  <script>
+    const effect = { atk_buff:'ATK增加', ap_buff:'AP增加', fixed_damage:'固定伤害', additional_fixed_damage:'追加固定伤害', def_debuff:'降低对手DEF', ap_debuff:'降低对手AP', def_buff:'DEF增加', atk_debuff:'降低对手ATK', damage_reduction:'伤害轻减', hp_recovery:'HP回复', skill_disable:'技能无效化', skill_effect_nullification:'技能效果无效化', extra_access:'追加访问', random_previous_station_access:'随机访问', remote_station_access:'远程访问' };
+    const text = (value) => value == null ? '' : String(value);
+    const node = (tag, className, value) => { const item = document.createElement(tag); if (className) item.className = className; if (value != null) item.textContent = value; return item; };
+    function contextValue(id, number = false) { const raw = document.getElementById(id).value; return raw === '' ? undefined : number ? Number(raw) : raw; }
+    function renderComponent(item, state) { const card = node('div', `component ${state}`); card.append(node('b', '', `${item.denko_name} · ${effect[item.effect_kind] || item.effect_kind}`)); const metric = item.metric ? `${item.metric} 最大 ${item.theoretical_max ?? '未记载'} / 期望 ${item.expected_value ?? '未量化'}` : ''; if (metric) card.append(node('div', '', metric)); if (item.condition_raw) card.append(node('div', 'muted', item.condition_raw)); if (item.reasons_zh?.length) card.append(node('div', state === 'inactive' ? '' : 'muted', item.reasons_zh.join('；'))); if (item.warnings_zh?.length) card.append(node('div', 'muted', item.warnings_zh.join('；'))); return card; }
+    function render(result) { const root = document.getElementById('results'); root.replaceChildren(); if (!result.teams.length) { root.append(node('div', 'empty', '没有满足当前已知条件的候选')); return; }
+      result.teams.forEach((team, i) => { const section = node('article', 'team'); section.append(node('h2', '', `方案 ${i + 1}`)); const members = node('div', 'members'); team.members.forEach(m => { const pill = node('div', 'member'); pill.append(node('div', '', m.name)); pill.append(node('small', '', `${m.denko_id}${m.position ? ` / ${m.position}号位` : ''}`)); members.append(pill); }); section.append(members);
+        const metrics = node('div', 'metrics'); const values = team.metrics.expected_value || {}; Object.entries(values).forEach(([key, value]) => metrics.append(node('span', 'metric', `${key} +${value}`))); metrics.append(node('span', 'metric', `操作成本 ${team.operation_cost}`)); metrics.append(node('span', 'metric', `待确认/未计入 ${team.constraints_check.inactive_or_pending_count}`)); section.append(metrics);
+        const cards = node('div', 'components'); team.active_components.forEach(item => cards.append(renderComponent(item, 'active'))); team.inactive_components.forEach(item => cards.append(renderComponent(item, item.status === 'pending_context' ? 'pending' : 'inactive'))); section.append(cards); root.append(section); }); }
+    document.getElementById('request').addEventListener('submit', async event => { event.preventDefault(); const button = document.getElementById('submit'); const status = document.getElementById('status'); const context = {};
+      for (const [id, numeric] of [['station_attribute'], ['opponent_attribute'], ['opponent_type'], ['temperature_c', true], ['month', true], ['link_minutes', true]]) { const value = contextValue(id, numeric); if (value !== undefined) context[id] = value; }
+      context.allow_manual_activation = document.getElementById('manual').checked; context.assume_main_access = document.getElementById('main_access').checked; context.assume_main_accessed = document.getElementById('main_accessed').checked;
+      const request = { main_denko_id: document.getElementById('main').value.trim(), scene: document.getElementById('scene').value, level: document.getElementById('level').value, slots: Number(document.getElementById('slots').value), context };
+      button.disabled = true; status.className = 'status'; status.textContent = '正在计算'; try { const response = await fetch('/api/solve', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(request) }); const payload = await response.json(); if (!response.ok) throw new Error(payload.error_zh || '请求失败'); render(payload); status.textContent = `候选池 ${payload.candidate_summary.candidate_pool_size} 人，Pareto 方案 ${payload.candidate_summary.pareto_team_count} 个`; } catch (error) { status.className = 'status error'; status.textContent = error.message; document.getElementById('results').replaceChildren(node('div', 'empty', '未生成结果')); } finally { button.disabled = false; } });
+  </script>
+</body>
+</html>

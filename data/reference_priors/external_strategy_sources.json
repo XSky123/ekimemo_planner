@@ -1,0 +1,35 @@
+{
+  "artifact": "external_strategy_priors",
+  "record_meta": {
+    "source_authority": "recommendation_prior",
+    "parser_version": "manual_strategy_contract.v1",
+    "confidence": "medium",
+    "needs_review": false,
+    "review_reasons": ["external_articles_stopped_updating_2025_05_07"]
+  },
+  "sources": [
+    {
+      "source_id": "3secondsgameover_attacker",
+      "url": "https://3secondsgameover.com/e/ekimemo_attacker",
+      "updated_through": "2025-05-07",
+      "use": "evaluation_method_prior",
+      "claims_zh": [
+        "攻击手常以高 AP、低 HP 和抢站能力为特点，防御面需要由队伍补足。",
+        "评价不能只看效果量；泛用性、独特性、易用性和条件成本同样重要。",
+        "低概率、属性统一、指定对象等苛刻条件可换来高数值，不应直接等同于通用强度。",
+        "文章未纳入 wrapping 与 VU，因此不能覆盖当前详情页事实。"
+      ]
+    },
+    {
+      "source_id": "3secondsgameover_formation",
+      "url": "https://3secondsgameover.com/e/ekimemo_hensei",
+      "updated_through": "2025-05-07",
+      "use": "scene_and_synergy_prior",
+      "claims_zh": [
+        "配队应先明确目标：抢站、守站、积分、成长或针对特定对手。",
+        "守站组合需要同时表达概率、回复、减伤、效果持续、无效化风险与编成约束。",
+        "属性统一、两色与位置条件属于硬约束，而非独立角色强度。"
+      ]
+    }
+  ]
+}

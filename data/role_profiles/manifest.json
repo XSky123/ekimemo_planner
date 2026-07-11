@@ -1,0 +1,25 @@
+{
+  "artifact": "role_profiles",
+  "profile_version": "role_profile.v1",
+  "generated_at": "2026-07-11T13:57:30.796856+09:00",
+  "source": {
+    "skill_facts": "data\\step1_db\\skill_facts.jsonl",
+    "content_hash": "262c0722fa8372c8b03c33c35a75cfac260c929c08f353234c0e8804fbd11ae9"
+  },
+  "outputs": {
+    "profiles": "data\\role_profiles\\role_profiles.jsonl",
+    "validation": "data\\role_profiles\\validation.json",
+    "review_queue": "data\\review_queue\\step3_role_profile_review.jsonl"
+  },
+  "counts": {
+    "source_components": 636,
+    "profiles": 636,
+    "excluded": 2,
+    "conditional": 568,
+    "needs_review": 0,
+    "missing_recipient_info": 0,
+    "unknown_access_direction_info": 388
+  },
+  "generator": "pipeline\\profiles\\build_role_profiles.py",
+  "schema": "schemas/role_profile.schema.json"
+}

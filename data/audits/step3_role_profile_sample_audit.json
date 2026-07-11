@@ -1,0 +1,336 @@
+{
+  "artifact": "step3_role_profile_sample_audit",
+  "seed": 20260711,
+  "sample_count": 11,
+  "issue_count": 0,
+  "samples": [
+    {
+      "stratum": "capture",
+      "profile_id": "original:076#def_debuff_3",
+      "effect_kind": "def_debuff",
+      "recipient": [
+        "opponent_denko"
+      ],
+      "access_direction": [],
+      "activation_mode": "auto",
+      "availability": {
+        "levels": [
+          "92",
+          "96",
+          "100"
+        ],
+        "note": "VU生效",
+        "vu_only": true
+      },
+      "scene_tags": [
+        "capture",
+        "commute"
+      ],
+      "review_reasons": [],
+      "passed": true
+    },
+    {
+      "stratum": "defense",
+      "profile_id": "original:057#def_buff_1",
+      "effect_kind": "def_buff",
+      "recipient": [
+        "team_all"
+      ],
+      "access_direction": [],
+      "activation_mode": "auto",
+      "availability": {
+        "levels": [
+          "5",
+          "15",
+          "30",
+          "50",
+          "60",
+          "70",
+          "80",
+          "92",
+          "96",
+          "100"
+        ],
+        "vu_only": false
+      },
+      "scene_tags": [
+        "defense",
+        "commute"
+      ],
+      "review_reasons": [],
+      "passed": true
+    },
+    {
+      "stratum": "commute",
+      "profile_id": "extra:053#atk_debuff_1",
+      "effect_kind": "atk_debuff",
+      "recipient": [
+        "opponent_denko"
+      ],
+      "access_direction": [],
+      "activation_mode": "auto",
+      "availability": {
+        "levels": [
+          "5",
+          "15",
+          "30",
+          "50",
+          "60",
+          "70",
+          "80"
+        ],
+        "vu_only": false
+      },
+      "scene_tags": [
+        "defense",
+        "commute"
+      ],
+      "review_reasons": [],
+      "passed": true
+    },
+    {
+      "stratum": "expedition",
+      "profile_id": "original:041#link_transfer_1",
+      "effect_kind": "link_transfer",
+      "recipient": [
+        "front_car"
+      ],
+      "access_direction": [],
+      "activation_mode": "auto",
+      "availability": {
+        "levels": [
+          "5",
+          "15",
+          "30",
+          "50",
+          "60",
+          "70",
+          "80",
+          "92",
+          "96",
+          "100"
+        ],
+        "vu_only": false
+      },
+      "scene_tags": [
+        "defense",
+        "expedition",
+        "visit_count_event",
+        "commute"
+      ],
+      "review_reasons": [],
+      "passed": true
+    },
+    {
+      "stratum": "visit_count_event",
+      "profile_id": "original:010#station_link_transfer",
+      "effect_kind": "station_link_transfer",
+      "recipient": [
+        "self"
+      ],
+      "access_direction": [],
+      "activation_mode": "auto",
+      "availability": {
+        "levels": [
+          "5",
+          "15",
+          "30",
+          "50",
+          "60",
+          "70",
+          "80",
+          "92",
+          "96",
+          "100"
+        ],
+        "vu_only": false
+      },
+      "scene_tags": [
+        "defense",
+        "expedition",
+        "visit_count_event",
+        "commute"
+      ],
+      "review_reasons": [],
+      "passed": true
+    },
+    {
+      "stratum": "score_exp",
+      "profile_id": "original:094#exp_gain_2",
+      "effect_kind": "exp_gain",
+      "recipient": [
+        "accessing_denko"
+      ],
+      "access_direction": [
+        "active"
+      ],
+      "activation_mode": "auto",
+      "availability": {
+        "levels": [
+          "5",
+          "15",
+          "30",
+          "50",
+          "60",
+          "70",
+          "80",
+          "92",
+          "96",
+          "100"
+        ],
+        "vu_only": false
+      },
+      "scene_tags": [
+        "score_exp",
+        "growth",
+        "commute"
+      ],
+      "review_reasons": [],
+      "passed": true
+    },
+    {
+      "stratum": "growth",
+      "profile_id": "extra:055#exp_gain_2",
+      "effect_kind": "exp_gain",
+      "recipient": [
+        "team_all"
+      ],
+      "access_direction": [],
+      "activation_mode": "auto",
+      "availability": {
+        "levels": [
+          "5",
+          "15",
+          "30",
+          "50",
+          "60",
+          "70",
+          "80"
+        ],
+        "vu_only": false
+      },
+      "scene_tags": [
+        "score_exp",
+        "growth",
+        "commute"
+      ],
+      "review_reasons": [],
+      "passed": true
+    },
+    {
+      "stratum": "mechanism",
+      "profile_id": "iks:003#skill_effect_nullification_non_original_extra",
+      "effect_kind": "skill_effect_nullification",
+      "recipient": [
+        "opponent_denko"
+      ],
+      "access_direction": [
+        "active"
+      ],
+      "activation_mode": "auto",
+      "availability": {
+        "levels": [
+          "5",
+          "15",
+          "30",
+          "50",
+          "60",
+          "70",
+          "80"
+        ],
+        "vu_only": false
+      },
+      "scene_tags": [
+        "mechanism",
+        "commute"
+      ],
+      "review_reasons": [],
+      "passed": true
+    },
+    {
+      "stratum": "manual",
+      "profile_id": "original:009#hp_recovery_1",
+      "effect_kind": "hp_recovery",
+      "recipient": [
+        "team_all"
+      ],
+      "access_direction": [],
+      "activation_mode": "manual",
+      "availability": {
+        "levels": [
+          "5",
+          "15",
+          "30",
+          "50",
+          "60",
+          "70",
+          "80",
+          "92",
+          "96",
+          "100"
+        ],
+        "vu_only": false
+      },
+      "scene_tags": [
+        "defense"
+      ],
+      "review_reasons": [],
+      "passed": true
+    },
+    {
+      "stratum": "probability",
+      "profile_id": "iks:001#skill_disable_non_original_extra",
+      "effect_kind": "skill_disable",
+      "recipient": [
+        "opponent_team"
+      ],
+      "access_direction": [
+        "both"
+      ],
+      "activation_mode": "auto",
+      "availability": {
+        "levels": [
+          "5",
+          "15",
+          "30",
+          "50",
+          "60",
+          "70",
+          "80"
+        ],
+        "vu_only": false
+      },
+      "scene_tags": [
+        "mechanism",
+        "commute"
+      ],
+      "review_reasons": [],
+      "passed": true
+    },
+    {
+      "stratum": "vu",
+      "profile_id": "original:066#additional_fixed_damage_2",
+      "effect_kind": "additional_fixed_damage",
+      "recipient": [
+        "team_all"
+      ],
+      "access_direction": [],
+      "activation_mode": "auto",
+      "availability": {
+        "levels": [
+          "92",
+          "96",
+          "100"
+        ],
+        "note": "VU生效",
+        "vu_only": true
+      },
+      "scene_tags": [
+        "capture",
+        "commute"
+      ],
+      "review_reasons": [],
+      "passed": true
+    }
+  ]
+}
