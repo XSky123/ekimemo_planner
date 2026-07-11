@@ -35,6 +35,7 @@ def main() -> int:
     run("pipeline/profiles/test_denko_rating_regressions.py")
     run("pipeline/profiles/write_role_profile_report.py")
     run("pipeline/profiles/write_denko_rating_report.py")
+    run("pipeline/profiles/audit_player_use_case_ratings.py")
     run("pipeline/profiles/audit_rating_llm_reviews.py")
     return 0
 

@@ -1,0 +1,21 @@
+{
+  "iteration": 4,
+  "focus": "full rerun; normalization proof, compact report contract and recipient-direction regression",
+  "llm_review": {
+    "selected": 245,
+    "wiki_mismatches": 180,
+    "selection": "all six use cases top/bottom 15 plus every Wiki mismatch",
+    "cache_hits": 245,
+    "cache_misses": 0
+  },
+  "db_backfill": {
+    "decision": "not_required_for_this_iteration",
+    "reason_zh": "本轮 Step1 backfill dry-run 为 0；前后15名实际计分组件未发现新的高风险条件缺口。"
+  },
+  "formal_audit_zh": {
+    "normalization": "Lv50/Lv80 六类评分均对原始有效效用保持单调，榜首均不低于95。",
+    "direction": "自身攻击与队伍攻击、自身防守与队伍防守的对象约束全部通过。",
+    "report": "仅保留六种用途、用途分、属性、类型、一句话推荐和核查评语；无综合总榜或Step2明细列。",
+    "named_ranks": {"extra:049_lv50_attack_front": 25, "original:087_lv50_attack_front": 22}
+  }
+}
