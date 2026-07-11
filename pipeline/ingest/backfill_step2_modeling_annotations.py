@@ -1536,7 +1536,7 @@ def backfill_misc_tags(row: dict[str, Any]) -> int:
                 changed += 1
                 mark_component(component, "step2_laurie_accessed_denko_target")
     elif denko_id == "original:038":
-        component = component_by_id(row, "hp_recovery")
+        component = component_by_id(row, "hp_recovery_1")
         if component:
             if component.get("target_scope") != ["specific_denko"]:
                 component["target_scope"] = ["specific_denko"]

@@ -12,8 +12,8 @@
     "prior_marker_lv50_mean_for_calibration_only": {
       "◎": 53.58,
       "○": 59.47,
-      "△": 57.04,
-      "×": 53.52
+      "△": 57.05,
+      "×": 53.44
     },
     "wiki_model_mismatch_count": 181,
     "all_mismatches_have_strong_reason": true,
@@ -791,8 +791,8 @@
     {
       "denko_id": "original:038",
       "marker": "×",
-      "model_score": 59,
-      "published_score": 59,
+      "model_score": 53,
+      "published_score": 53,
       "wiki_reason_ja": "自身に関する効果を一切持たない。HPが減ったみことを回復しカウンターすることがあるが時限制のうえに確率発動。無論みことが居なければスキルは無いも同然。素のステータスは良好。",
       "model_reason_zh": "模型高于 Wiki：直接效用主要来自在家守站，但依赖项包含基础数值/无条件效果；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
     },
@@ -927,8 +927,8 @@
     {
       "denko_id": "original:065",
       "marker": "×",
-      "model_score": 57,
-      "published_score": 57,
+      "model_score": 58,
+      "published_score": 58,
       "wiki_reason_ja": "HPは非常に高いが、バッテリー使用不可＆被アクセス時サポーター無効化。一応確率でHPが回復するが･･････",
       "model_reason_zh": "模型高于 Wiki：直接效用主要来自在家守站，但依赖项包含type；Wiki 将实际养成/编成成本判得更重，因此发布分采用 Wiki 新手区间，原始分只保留为反例。"
     },

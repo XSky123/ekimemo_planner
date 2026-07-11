@@ -272,8 +272,6 @@ def all_level_values(component: dict[str, Any]) -> list[tuple[str, dict[str, Any
 
 def clean_display_text(text: Any) -> str:
     out = str(text or "")
-    out = re.sub(r"(^|[\s　])[\(（]\d+[\)）]\s*", r"\1", out)
-    out = re.sub(r"(^|[\s　/／、，。])[\(（]\d+[\)）]\s*", r"\1", out)
     out = out.replace("※", "")
     out = out.replace("未記載", "未记载")
     return re.sub(r"\s+", " ", out).strip()
@@ -622,6 +620,7 @@ def compact_filter_text(component: dict[str, Any]) -> str:
 
 def display_condition_text(component: dict[str, Any]) -> str:
     condition = str(component.get("condition_raw") or "")
+    condition_label = str(component.get("condition_label") or "").strip()
     filters = component.get("target_filters") or {}
     attributes = filters.get("attributes") or []
     if " と のみの編成" in condition and len(attributes) >= 2:
@@ -664,6 +663,8 @@ def display_condition_text(component: dict[str, Any]) -> str:
         condition = condition.replace(" と のみの編成", f"{attrs[0]}と{attrs[1]}のみの編成", 1)
     if filters.get("target_denko_name"):
         condition = condition.replace("のHPが30%以下", f"{filters['target_denko_name']}のHPが30%以下")
+    if condition_label and condition.startswith(condition_label):
+        condition = condition[len(condition_label):].lstrip()
     return clean_display_text(condition)
 
 

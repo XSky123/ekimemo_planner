@@ -734,8 +734,8 @@ def audit_nullification_candidates(
     actual_items: dict[tuple[str, str], dict[str, Any]] = {}
     for tab_id, expected_direction in NULLIFICATION_TABS.items():
         accepted_labels = {
-            "passive": {"被访问", "访问/被访问"},
-            "active": {"访问", "访问/被访问"},
+            "passive": {"被访问", "访问/被访问", "队伍任意成员被访问", "自己被访问", "先头车被访问"},
+            "active": {"访问", "访问/被访问", "队伍任意成员访问", "自己访问", "先头车访问"},
         }[expected_direction]
         for item in candidates_by_tab[tab_id]:
             key = (str(item["denko_id"]), str(item["component_id"]))

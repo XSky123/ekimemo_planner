@@ -20,8 +20,60 @@
       "row_issue_count": 0,
       "category_counts": {},
       "issues": []
+    },
+    {
+      "report": "utility",
+      "path": "data\\reports\\step2_skill_utility_reports_zh.html",
+      "row_issue_count": 0,
+      "category_counts": {},
+      "issues": []
     }
   ],
+  "structural_audits": [
+    {
+      "report": "attack",
+      "row_count": 165,
+      "tab_count": 4,
+      "issue_count": 0,
+      "issues": []
+    },
+    {
+      "report": "exp_pt",
+      "row_count": 114,
+      "tab_count": 7,
+      "issue_count": 0,
+      "issues": []
+    },
+    {
+      "report": "defense",
+      "row_count": 257,
+      "tab_count": 9,
+      "issue_count": 0,
+      "issues": []
+    },
+    {
+      "report": "utility",
+      "row_count": 105,
+      "tab_count": 13,
+      "issue_count": 0,
+      "issues": []
+    }
+  ],
+  "prototype_audit": {
+    "record_count": 307,
+    "character_cards": 307,
+    "directory_items": 1316,
+    "known_missing_prefecture": 17,
+    "checks": {
+      "record_count_matches_index": true,
+      "all_records_rendered": true,
+      "all_records_have_source_badge": true,
+      "prompt_errors_empty": true,
+      "six_public_groups_present": true
+    },
+    "issue_count": 0
+  },
   "total_issue_rows": 0,
-  "category_counts": {}
+  "category_counts": {},
+  "issue_count": 0
 }
